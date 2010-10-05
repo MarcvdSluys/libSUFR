@@ -9,7 +9,7 @@ endif(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "internal")
 
 
-project(libAF Fortran)
+project(libSUFR Fortran)
 
 
 # Increase verbosity for debugging:
@@ -33,7 +33,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
 # Place the products in their directories;
 get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 message ("Using compiler: " ${Fortran_COMPILER_NAME} " (" ${CMAKE_Fortran_COMPILER}")" )
-set(MODULE_DIRECTORY "/home/user/usr/include/libAF/${Fortran_COMPILER_NAME}")
+set(MODULE_DIRECTORY "/home/user/usr/include/libSUFR/${Fortran_COMPILER_NAME}")
 set(LIBRARY_OUTPUT_PATH "~/usr/lib")
 
 
@@ -45,10 +45,10 @@ include(CompilerFlags)
 
 
 # create library
-add_library( "libAF_shared"  SHARED  ${SRC_FILES} )
-add_library( "libAF_static"  STATIC  ${SRC_FILES} )
+add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
+add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
 
-set_target_properties( libAF_shared libAF_static PROPERTIES OUTPUT_NAME "AF_${Fortran_COMPILER_NAME}")
-set_target_properties( libAF_shared libAF_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+set_target_properties( libSUFR_shared libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+set_target_properties( libSUFR_shared libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
 
 

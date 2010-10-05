@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines for sorting
-module AF_sorting
+module SUFR_sorting
   implicit none
   save
   
@@ -40,7 +40,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.8.4.
   !< 
   subroutine sorted_index_list(n,array,index_list)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     integer, intent(in) :: n
@@ -147,7 +147,7 @@ contains
   !! \note Uses sorted_index_list().
   !<
   subroutine sort_array(array)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     real(double), intent(inout) :: array(:)
@@ -163,5 +163,5 @@ contains
   end subroutine sort_array
   !*********************************************************************************************************************************
   
-end module AF_sorting
+end module SUFR_sorting
 !***********************************************************************************************************************************

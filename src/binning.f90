@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines to bin data
-module AF_binning
+module SUFR_binning
   implicit none
   save
   
@@ -97,5 +97,5 @@ contains
   !*********************************************************************************************************************************
   
   
-end module AF_binning
+end module SUFR_binning
 

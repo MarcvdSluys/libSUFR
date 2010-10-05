@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -21,22 +21,22 @@
 
 !***********************************************************************************************************************************
 !> \brief Mathematical constants
-module AF_constants_math
-  use AF_kinds
+module SUFR_constants_math
+  use SUFR_kinds
   implicit none
   private
   save
   
   real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2as,as2d,am2r,r2am,r2as,as2r
   
-end module AF_constants_math
+end module SUFR_constants_math
 !***********************************************************************************************************************************
 
 
 !***********************************************************************************************************************************
 !> Astronomical constants and satellite data
-module AF_constants_astro
-  use AF_kinds
+module SUFR_constants_astro
+  use SUFR_kinds
   implicit none
   private
   save
@@ -51,13 +51,13 @@ module AF_constants_astro
   ! Physical constants:
   real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
   
-end module AF_constants_astro
+end module SUFR_constants_astro
 !***********************************************************************************************************************************
 
 
 !***********************************************************************************************************************************
 !> Planet names and their abbreviations in English and Dutch
-module AF_constants_planetnames
+module SUFR_constants_planetnames
   implicit none
   private
   save
@@ -65,26 +65,26 @@ module AF_constants_planetnames
   character, public :: enpname(-1:19)*7,enpnames(-1:19)*7,enpnamel(-1:19)*8,enpnamelb(-1:19)*8,enpnamess(-1:19)*4
   character, public :: nlpname(-1:19)*9,nlpnames(-1:19)*9,nlpnamel(-1:19)*9,nlpnamelb(-1:19)*9,nlpnamess(-1:19)*4
   
-end module AF_constants_planetnames
+end module SUFR_constants_planetnames
 !***********************************************************************************************************************************
 
 
 !***********************************************************************************************************************************
 !> Names of lunar phases in English and Dutch
-module AF_constants_moonphases
+module SUFR_constants_moonphases
   implicit none
   private
   save
   
   character, public :: enphases(0:3)*13,nlphases(0:3)*16
   
-end module AF_constants_moonphases
+end module SUFR_constants_moonphases
 !***********************************************************************************************************************************
 
 
 !***********************************************************************************************************************************
 !> Names of months, days and time zones in English and Dutch
-module AF_constants_calendar
+module SUFR_constants_calendar
   implicit none
   private
   save
@@ -103,14 +103,14 @@ module AF_constants_calendar
   !Length of the months:
   integer, public :: mlen(12)
   
-end module AF_constants_calendar
+end module SUFR_constants_calendar
 !***********************************************************************************************************************************
 
 
 !***********************************************************************************************************************************
 !> Current date/time constants
-module AF_constants_datetime
-  use AF_kinds
+module SUFR_constants_datetime
+  use SUFR_kinds
   implicit none
   private
   save
@@ -121,7 +121,7 @@ module AF_constants_datetime
   character, public :: currentyearstr*4,currentdatestr*10,currenttimestr*8,currenttimezonestr*9
   character, public :: currentdowstrnl*9,currentdatestrnl*39
   
-end module AF_constants_datetime
+end module SUFR_constants_datetime
 !***********************************************************************************************************************************
 
 
@@ -129,28 +129,28 @@ end module AF_constants_datetime
 
 !***********************************************************************************************************************************
 !> Character constants (e.g. Greek letters)
-module AF_constants_characters
+module SUFR_constants_characters
   implicit none
   private
   save
   
   character, public :: engrchar(24)*7,htmlgrchar(24)*9 !Greek letters
   
-end module AF_constants_characters
+end module SUFR_constants_characters
 !***********************************************************************************************************************************
 
 
 
 !***********************************************************************************************************************************
 !> Constants that describe cursor movement
-module AF_constants_cursor
+module SUFR_constants_cursor
   implicit none
   private
   save
   
   character, public :: cursorup*4, cursordown*4, cursorright*4, cursorleft*4
   
-end module AF_constants_cursor
+end module SUFR_constants_cursor
 !***********************************************************************************************************************************
 
 
@@ -158,14 +158,14 @@ end module AF_constants_cursor
 
 !***********************************************************************************************************************************
 !> Constants that describe the working environment
-module AF_constants_environment
+module SUFR_constants_environment
   implicit none
   private
   save
   
   character, public :: homedir*99, workdir*99, programname*99
   
-end module AF_constants_environment
+end module SUFR_constants_environment
 !***********************************************************************************************************************************
 
 
@@ -175,18 +175,18 @@ end module AF_constants_environment
 
 !***********************************************************************************************************************************
 !> Provides all constants in the library, and routines to define them
-module AF_constants
-  use AF_constants_math
-  use AF_constants_astro
-  use AF_constants_planetnames
-  use AF_constants_moonphases
-  use AF_constants_calendar
-  use AF_constants_datetime
-  use AF_constants_characters
-  use AF_constants_cursor
-  use AF_constants_environment
+module SUFR_constants
+  use SUFR_constants_math
+  use SUFR_constants_astro
+  use SUFR_constants_planetnames
+  use SUFR_constants_moonphases
+  use SUFR_constants_calendar
+  use SUFR_constants_datetime
+  use SUFR_constants_characters
+  use SUFR_constants_cursor
+  use SUFR_constants_environment
   
-  use AF_kinds
+  use SUFR_kinds
   
   implicit none
   !private
@@ -230,7 +230,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of the mathematical constants
   subroutine set_constants_math
-    use AF_constants_math
+    use SUFR_constants_math
     implicit none
     
     ! Mathematical constants:
@@ -257,7 +257,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of astronomical constants
   subroutine set_constants_astro
-    use AF_constants_astro
+    use SUFR_constants_astro
     implicit none
     
     ! Astronomical constants:
@@ -303,7 +303,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the planet names
   subroutine set_constants_planetnames
-    use AF_constants_planetnames
+    use SUFR_constants_planetnames
     implicit none
     
     !Planet names:
@@ -336,7 +336,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the names of the lunar phases
   subroutine set_constants_moonphases
-    use AF_constants_moonphases
+    use SUFR_constants_moonphases
     implicit none
     
     enphases = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
@@ -349,7 +349,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the names of months, days and timezones;  define month lengths
   subroutine set_constants_calendar
-    use AF_constants_calendar
+    use SUFR_constants_calendar
     implicit none
     
     !Months:
@@ -392,9 +392,9 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of variables that describe the current date and time
   subroutine set_constants_currentdate()
-    use AF_constants_datetime
-    use AF_constants_calendar
-    use AF_date_and_time
+    use SUFR_constants_datetime
+    use SUFR_constants_calendar
+    use SUFR_date_and_time
     
     implicit none
     integer :: dt(8)
@@ -436,7 +436,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of character constants - e.g., Greek letters
   subroutine set_constants_characters()
-    use AF_constants_characters
+    use SUFR_constants_characters
     implicit none
     integer :: i
     
@@ -455,7 +455,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of constants for cursor movement
   subroutine set_constants_cursor()
-    use AF_constants_cursor
+    use SUFR_constants_cursor
     implicit none
     
     ! Cursor movement:
@@ -471,7 +471,7 @@ contains
   !*********************************************************************************************************************************
   !> Define the values of constants that describe the working environment
   subroutine set_constants_environment()
-    use AF_constants_environment
+    use SUFR_constants_environment
     implicit none
     integer :: i
     character :: tmpstr*99
@@ -491,7 +491,7 @@ contains
   !*********************************************************************************************************************************
   
   
-end module AF_constants
+end module SUFR_constants
 !***********************************************************************************************************************************
 
 

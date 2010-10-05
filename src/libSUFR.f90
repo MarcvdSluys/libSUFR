@@ -1,12 +1,12 @@
-!>  \file libAF.f90  This file is currently used for documentation purposes only.
+!!>  \file libSUFR.f90  This file is currently used for documentation purposes only.
 !!  
 !!  \mainpage
-!!  libAF contains a variety of Fortran routines that I wrote for my own use, but that may also be useful for others.
+!!  libSUFR is a library of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful for others.
 !<  
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.

@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines to generate random numbers
-module AF_random_numbers
+module SUFR_random_numbers
   implicit none
   save
   
@@ -36,7 +36,7 @@ contains
   !! \retval get_ran_seed  Randon-number seed:  -1e6 < seed < 0 (int)
   !<
   function get_ran_seed(degree)  
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     integer, intent(in) :: degree
@@ -75,7 +75,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.7.1.
   !<
   function ran_unif(seed1)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     integer, intent(inout) :: seed1
@@ -128,6 +128,6 @@ contains
   
   
   
-end module AF_random_numbers
+end module SUFR_random_numbers
 !***********************************************************************************************************************************
 

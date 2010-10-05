@@ -5,7 +5,7 @@
    
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -22,7 +22,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines to solve equations
-module AF_solvers
+module SUFR_solvers
   implicit none
   save
   
@@ -42,7 +42,7 @@ contains
   !<
   
   function root_solver(func,x1,x2,accur, status,verbose)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     real(double), intent(in) :: x1,x2,accur
@@ -177,7 +177,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   !<
   function minimum_solver(func,ax,bx,cx,accur,xmin, status,verbose)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     real(double), intent(in) :: ax,bx,cx,accur
@@ -307,7 +307,7 @@ contains
   
   
   
-end module AF_solvers
+end module SUFR_solvers
 !***********************************************************************************************************************************
 
 
@@ -317,7 +317,7 @@ end module AF_solvers
 !> \brief Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
 !<
 subroutine golden_section(x1,x2, a1,a2, y1,y2)
-  use AF_kinds
+  use SUFR_kinds
   
   implicit none
   real(double), intent(in)  :: x1,x2, a1,a2

@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+    8: Marc van der Sluys, 5/10/2010
+      - Renamed libAF to libSUFR internally
+      
     7: Marc van der Sluys, 5/10/2010
       - Added statistics.f90
       

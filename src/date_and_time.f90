@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines for manipulation of date and time
-module AF_date_and_time
+module SUFR_date_and_time
   implicit none
   save
   
@@ -37,7 +37,7 @@ contains
   !! \retval  cal2jd  The Julian day number (double)
   !<
   function cal2jd(yy,mm,dd)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     real(double), intent(in) :: dd
@@ -85,7 +85,7 @@ contains
   !! \param s    The second (double)
   !! \retval ymdhms2jd  The Julian day number (double)
   function ymdhms2jd(yy,mmo,dd,h,m,s)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     integer, intent(in) :: yy,mmo,dd,h,m
@@ -110,7 +110,7 @@ contains
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   !<
   function dow_ut(jd0)
-    use AF_kinds
+    use SUFR_kinds
     
     implicit none
     real(double), intent(in) :: jd0
@@ -130,4 +130,4 @@ contains
   
   
   
-end module AF_date_and_time
+end module SUFR_date_and_time

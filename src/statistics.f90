@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -23,7 +23,7 @@
 
 !***********************************************************************************************************************************
 !> Provides functions and routines to do statistics
-module AF_statistics
+module SUFR_statistics
   implicit none
   save
   
@@ -32,10 +32,10 @@ contains
   
   !***********************************************************************************************************************************
   !> \brief  Compute the median of a data set - single precision
-  !! \param data  Data set
+  !! \param datar  Data set
   !! \param ni    Number of data elements
   function compute_median_real(datar,ni)
-    use AF_kinds
+    use SUFR_kinds
     implicit none
     real(double), intent(in) :: datar(ni)
     integer, intent(in) :: ni
@@ -54,8 +54,8 @@ contains
   !! \param data  Data set
   !! \param ni    Number of data elements
   function compute_median(data,ni)
-    use AF_kinds
-    use AF_sorting
+    use SUFR_kinds
+    use SUFR_sorting
     implicit none
     real(double), intent(in) :: data(ni)
     integer, intent(in) :: ni
@@ -82,4 +82,4 @@ contains
   
   
   
-end module AF_statistics
+end module SUFR_statistics

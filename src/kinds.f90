@@ -5,7 +5,7 @@
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libAF package.
+!  This file is part of the libSUFR package.
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -27,7 +27,7 @@
 !! Contains the integers double and dbl, which can be used to provide the kind of a (often double-precision) variable type.
 !! Variables can be declared using e.g. "real(double) :: x"; constants can be defined as e.g. "x = 3.0_dbl".
 !< 
-module AF_kinds
+module SUFR_kinds
   implicit none
   save
   
@@ -91,7 +91,7 @@ contains
   
   
   
-end module AF_kinds
+end module SUFR_kinds
 !***********************************************************************************************************************************
 
 
