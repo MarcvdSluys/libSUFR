@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+    7: Marc van der Sluys, 5/10/2010
+      - Added statistics.f90
+      
     6: Marc van der Sluys, 5/10/2010
       - Converting libAF git repository, 8/09/2010:
 	- updated constants.f90

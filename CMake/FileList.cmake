@@ -6,5 +6,6 @@ set(SRC_FILES
   src/random_numbers.f90
   src/solvers.f90
   src/sorting.f90
+  src/statistics.f90
   )
 
