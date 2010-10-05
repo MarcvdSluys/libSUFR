@@ -24,9 +24,10 @@
 module AF_constants_math
   use AF_kinds
   implicit none
+  private
   save
   
-  real(double) :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2as,as2d,am2r,r2am,r2as,as2r
+  real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2as,as2d,am2r,r2am,r2as,as2r
   
 end module AF_constants_math
 !***********************************************************************************************************************************
@@ -37,14 +38,18 @@ end module AF_constants_math
 module AF_constants_astro
   use AF_kinds
   implicit none
+  private
   save
   
-  !Astronomical constants:
-  real(double) :: siday,planr(0:9),pland(0:9),earthr
-  real(double) :: au,km,rsun,msun,jd1875,jd2000,eps2000
+  ! Astronomical constants:
+  real(double),public :: julyear,solday,siday,planr(0:9),pland(0:9),earthr
+  real(double),public :: au,km,rsun,msun,jd1875,jd2000,eps2000
   
-  !Satellite data for planets 4-8:
-  real(double) :: satrad(4:8,30),satdiam(4:8,30)
+  ! Satellite data for planets 4-8:
+  real(double),public :: satrad(4:8,30),satdiam(4:8,30)
+  
+  ! Physical constants:
+  real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
   
 end module AF_constants_astro
 !***********************************************************************************************************************************
@@ -54,10 +59,11 @@ end module AF_constants_astro
 !> Planet names and their abbreviations in English and Dutch
 module AF_constants_planetnames
   implicit none
+  private
   save
   
-  character :: enpname(-1:19)*7,enpnames(-1:19)*7,enpnamel(-1:19)*8,enpnamelb(-1:19)*8,enpnamess(-1:19)*4
-  character :: nlpname(-1:19)*9,nlpnames(-1:19)*9,nlpnamel(-1:19)*9,nlpnamelb(-1:19)*9,nlpnamess(-1:19)*4
+  character, public :: enpname(-1:19)*7,enpnames(-1:19)*7,enpnamel(-1:19)*8,enpnamelb(-1:19)*8,enpnamess(-1:19)*4
+  character, public :: nlpname(-1:19)*9,nlpnames(-1:19)*9,nlpnamel(-1:19)*9,nlpnamelb(-1:19)*9,nlpnamess(-1:19)*4
   
 end module AF_constants_planetnames
 !***********************************************************************************************************************************
@@ -67,9 +73,10 @@ end module AF_constants_planetnames
 !> Names of lunar phases in English and Dutch
 module AF_constants_moonphases
   implicit none
+  private
   save
   
-  character :: enphases(0:3)*13,nlphases(0:3)*16
+  character, public :: enphases(0:3)*13,nlphases(0:3)*16
   
 end module AF_constants_moonphases
 !***********************************************************************************************************************************
@@ -79,21 +86,22 @@ end module AF_constants_moonphases
 !> Names of months, days and time zones in English and Dutch
 module AF_constants_calendar
   implicit none
+  private
   save
   
   !Month names:
-  character :: enmonths(12)*9,enmonthsm(12)*9,enmnts(12)*3
-  character :: nlmonths(12)*9,nlmonthsb(12)*9,nlmnts(12)*3,nlmntsb(12)*3
+  character, public :: enmonths(12)*9,enmonthsm(12)*9,enmnts(12)*3
+  character, public :: nlmonths(12)*9,nlmonthsb(12)*9,nlmnts(12)*3,nlmntsb(12)*3
   
   !Day names:
-  character :: endays(0:6)*9,ends(0:6)*2,endys(0:6)*3
-  character :: nldays(0:6)*9,nlds(0:6)*2
+  character, public :: endays(0:6)*9,ends(0:6)*2,endys(0:6)*3
+  character, public :: nldays(0:6)*9,nlds(0:6)*2
   
   !Time-zone namess:
-  character :: nltimezones(0:1)*10
+  character, public :: nltimezones(0:1)*10
   
   !Length of the months:
-  integer :: mlen(12)
+  integer, public :: mlen(12)
   
 end module AF_constants_calendar
 !***********************************************************************************************************************************
@@ -104,13 +112,14 @@ end module AF_constants_calendar
 module AF_constants_datetime
   use AF_kinds
   implicit none
+  private
   save
   
-  integer :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentdow
-  real(double) :: currentjd
+  integer, public :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentdow
+  real(double), public :: currentjd
   
-  character :: currentyearstr*4,currentdatestr*10,currenttimestr*8,currenttimezonestr*9
-  character :: currentdowstrnl*9,currentdatestrnl*39
+  character, public :: currentyearstr*4,currentdatestr*10,currenttimestr*8,currenttimezonestr*9
+  character, public :: currentdowstrnl*9,currentdatestrnl*39
   
 end module AF_constants_datetime
 !***********************************************************************************************************************************
@@ -122,9 +131,10 @@ end module AF_constants_datetime
 !> Character constants (e.g. Greek letters)
 module AF_constants_characters
   implicit none
+  private
   save
   
-  character :: engrchar(24)*7,htmlgrchar(24)*9 !Greek letters
+  character, public :: engrchar(24)*7,htmlgrchar(24)*9 !Greek letters
   
 end module AF_constants_characters
 !***********************************************************************************************************************************
@@ -135,9 +145,10 @@ end module AF_constants_characters
 !> Constants that describe cursor movement
 module AF_constants_cursor
   implicit none
+  private
   save
   
-  character :: cursorup*4, cursordown*4, cursorright*4, cursorleft*4
+  character, public :: cursorup*4, cursordown*4, cursorright*4, cursorleft*4
   
 end module AF_constants_cursor
 !***********************************************************************************************************************************
@@ -149,9 +160,10 @@ end module AF_constants_cursor
 !> Constants that describe the working environment
 module AF_constants_environment
   implicit none
+  private
   save
   
-  character :: homedir*99, workdir*99, programname*99
+  character, public :: homedir*99, workdir*99, programname*99
   
 end module AF_constants_environment
 !***********************************************************************************************************************************
@@ -177,6 +189,7 @@ module AF_constants
   use AF_kinds
   
   implicit none
+  !private
   save
   
   
@@ -248,26 +261,41 @@ contains
     implicit none
     
     ! Astronomical constants:
-    au = 1.4959787d13        !A.U. in cgs
-    km = 1.d5                !kilometer in cgs
-    rsun = 6.9599d10         !Solar radius in cgs
-    msun = 1.9891d33         !Solar mass in cgs
-    siday = 0.997269663d0    !Siderial day in days
+    au = 1.4959787d13         ! A.U. in cgs
+    km = 1.d5                 ! kilometer in cgs
+    rsun = 6.9599d10          ! Solar radius in cgs
+    msun = 1.9891d33          ! Solar mass in cgs
+    siday = 0.997269663d0     ! Siderial day in days
+    solday   = 8.64d4         ! Solar day in s
+    julyear  = 3.15569d7      ! Julian year in s
     
-    jd1875 = 2405890.d0      !JD at 1875.0 (when constellation boundaries were defined)
-    jd2000 = 2451545.d0      !JD at J2000.0
-    eps2000 = 0.409092804d0  !Obliquity of the ecliptic at J2000.0
+    jd1875 = 2405890.d0       ! JD at 1875.0 (when constellation boundaries were defined)
+    jd2000 = 2451545.d0       ! JD at J2000.0
+    eps2000 = 0.409092804d0   ! Obliquity of the ecliptic at J2000.0
     
     pland = (/3476.206d5, 4879.d5, 12198.d5, 1.39198d11, 6794.d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
          2390.d5/)      ! Equatorial diameter (cm)
     planr = pland/2.d0  ! Equatorial radii (cm)
     
-    earthr = 6378.14d5  !Eq. radius of the Earth in cm
+    earthr = 6378.14d5  ! Eq. radius of the Earth in cm
     
-    !Satellites:
-    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  !Galilean moons, cm
+    ! Satellites:
+    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  ! Galilean moons, cm
     satdiam = 2*satrad
     
+    
+    ! Physical constants:
+    pc_g       =  6.67259d-8                                  ! Newton's constant, cm^3 g^-1 s^-2
+    pc_c       =  2.99792458d10                               ! Speed of light in vacuo, cm s^-1
+    
+    pc_amu     =  1.6605402d-24                               ! Atomic mass unit; (mass of C12 atom)/12, g
+    pc_mh      =  1.007825*pc_amu                             ! Mass of a hydrogen atom
+    pc_kb      =  1.380658d-16                                ! Boltzmann constant, erg/K
+    pc_hp      =  6.6260755d-27                               ! Planck's constant, erg s
+    pc_hbar    =  pc_hp/pi2                                   ! Reduced Planck constant, erg s
+    pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0  ! Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
+    pc_sigma   =  pc_arad*pc_c*0.25d0                         ! Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
+
   end subroutine set_constants_astro
   !*********************************************************************************************************************************
   

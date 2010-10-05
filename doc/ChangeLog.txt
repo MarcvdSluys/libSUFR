@@ -3,6 +3,11 @@
   ChangeLog.txt for libSUFR
   
   
+    6: Marc van der Sluys, 5/10/2010
+      - Converting libAF git repository, 8/09/2010:
+	- updated constants.f90
+	- make constants explicitly private/public
+      
     5: Marc van der Sluys, 5/10/2010
       - Converting libAF git repository, 8/09/2010:
 	- added binning.f90
