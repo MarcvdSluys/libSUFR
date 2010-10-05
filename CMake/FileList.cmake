@@ -1,4 +1,5 @@
 set(SRC_FILES
+  src/binning.f90
   src/constants.f90
   src/date_and_time.f90
   src/kinds.f90

@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
   
+    5: Marc van der Sluys, 5/10/2010
+      - Converting libAF git repository, 8/09/2010:
+	- added binning.f90
+      
     4: Marc van der Sluys, 5/10/2010
       - Converting libAF git repository:
 	- added constants.f90 (probably happened earlier, but file didn't get added)
