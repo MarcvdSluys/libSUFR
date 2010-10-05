@@ -1,6 +1,4 @@
 # FFLAGS depend on the compiler
-get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-message ("Using compiler: " ${CMAKE_Fortran_COMPILER}, ${Fortran_COMPILER_NAME})
 
 if (Fortran_COMPILER_NAME STREQUAL "gfortran")
   
