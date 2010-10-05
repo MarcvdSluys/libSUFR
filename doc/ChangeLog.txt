@@ -1,0 +1,10 @@
+
+
+  ChangeLog.txt for libSUFR
+  
+  
+    1: Marc van der Sluys, 5/10/2010
+      - Converting libAF git repository: 12/07/2010
+      
+    
+  
