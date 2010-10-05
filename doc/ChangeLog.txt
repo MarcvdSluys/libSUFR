@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
   
+    4: Marc van der Sluys, 5/10/2010
+      - Converting libAF git repository:
+	- added constants.f90 (probably happened earlier, but file didn't get added)
+      
     3: Marc van der Sluys, 5/10/2010
       - Converting libAF git repository, 19/07/2010:
 	- added solvers.f90
