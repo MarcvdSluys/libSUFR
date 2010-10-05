@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
   
+    3: Marc van der Sluys, 5/10/2010
+      - Converting libAF git repository, 19/07/2010:
+	- added solvers.f90
+      
     2: Marc van der Sluys, 5/10/2010
       - Converting libAF git repository, 13/07/2010:
         - adding compiler name to lib name and include dir
