@@ -40,7 +40,7 @@ contains
     real(double), intent(in) :: datar(ni)
     integer, intent(in) :: ni
     real :: compute_median_real
-    real(double) :: datad(ni),mediand,compute_median
+    real(double) :: datad(ni),mediand
     
     datad = dble(datar)
     mediand = compute_median(datad,ni)

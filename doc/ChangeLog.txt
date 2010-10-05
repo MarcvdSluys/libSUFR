@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+    9: Marc van der Sluys, 5/10/2010
+      - Updated Doxygen
+    
     8: Marc van der Sluys, 5/10/2010
       - Renamed libAF to libSUFR internally
       

@@ -1,8 +1,8 @@
-!!>  \file libSUFR.f90  This file is currently used for documentation purposes only.
+!>  \file libSUFR.f90  This file is currently used for documentation purposes only.
 !!  
-!!  \mainpage
-!!  libSUFR is a library of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful for others.
-!<  
+!!  \mainpage libSUFR documentation
+!!  libSUFR is a LIBrary of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful for others.
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
