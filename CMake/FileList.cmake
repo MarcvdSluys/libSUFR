@@ -2,6 +2,7 @@ set(SRC_FILES
   src/binning.f90
   src/constants.f90
   src/date_and_time.f90
+  src/interpolate.f90
   src/kinds.f90
   src/random_numbers.f90
   src/solvers.f90

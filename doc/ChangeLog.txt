@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
   
+   10: Marc van der Sluys, 06/11/2010
+      - Added interpolate.f90 for interpolation/fitting routines
+      - Added constants d2h,h2d, program_path. Renamed programname to program_name
+      
     9: Marc van der Sluys, 5/10/2010
       - Updated Doxygen
     

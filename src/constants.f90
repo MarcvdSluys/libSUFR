@@ -27,7 +27,7 @@ module SUFR_constants_math
   private
   save
   
-  real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2as,as2d,am2r,r2am,r2as,as2r
+  real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2h,h2d,d2as,as2d,am2r,r2am,r2as,as2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -163,7 +163,7 @@ module SUFR_constants_environment
   private
   save
   
-  character, public :: homedir*99, workdir*99, programname*99
+  character, public :: homedir*99, workdir*99, program_name*99, program_path*99, program_args*99
   
 end module SUFR_constants_environment
 !***********************************************************************************************************************************
@@ -243,6 +243,8 @@ contains
     d2r = pi/180.d0
     r2h = 12.d0/pi
     h2r = pi/12.d0
+    d2h = 1.d0/15.d0
+    h2d = 15.d0
     
     d2as = 3600.d0
     as2d = 1/3600.d0
@@ -473,7 +475,7 @@ contains
   subroutine set_constants_environment()
     use SUFR_constants_environment
     implicit none
-    integer :: i
+    integer :: i, narg
     character :: tmpstr*99
     
     !Get info from environment variables:
@@ -483,9 +485,26 @@ contains
     if(i.ne.0) workdir = workdir(1:i-1)//'~'//trim(workdir(i+len_trim(homedir):))  !Replace '/home/name' with '~'
     
     
-    call get_command_argument(0,tmpstr)             ! Path + name of the program that is being executed
+    ! Store the path and name of the program that is being executed in program_path and program_name:
+    call get_command_argument(0,tmpstr)
     i = index(tmpstr,'/',back=.true.)
-    if(i.ne.0) programname = trim(tmpstr(i+1:))     ! The bit after the last slash should be the program name
+    if(i.eq.0) then
+       program_path = ' '
+       program_name = trim(tmpstr)
+    else
+       program_path = trim(tmpstr(1:i))     ! The string before the last slash should be the program path
+       program_name = trim(tmpstr(i+1:))     ! The bit after the last slash should be the program name
+    end if
+    
+    ! Store the command-line arguments of the program that is being executed in program_args:
+    narg = command_argument_count()
+    program_args = ' '
+    if(narg.ge.1) then
+       do i=1,narg
+          call get_command_argument(i,tmpstr)
+          write(program_args,'(A)')trim(program_args)//'  '//trim(tmpstr)
+       end do
+    end if
     
   end subroutine set_constants_environment
   !*********************************************************************************************************************************
