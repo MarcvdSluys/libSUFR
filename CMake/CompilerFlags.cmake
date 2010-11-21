@@ -36,7 +36,7 @@ if (Fortran_COMPILER_NAME STREQUAL "gfortran")
   
 elseif (Fortran_COMPILER_NAME STREQUAL "ifort")
   
-  set (CMAKE_Fortran_FLAGS_ALL "" )
+  set (CMAKE_Fortran_FLAGS_ALL "-stand f03 -diag-disable 6894" )
   set (CMAKE_Fortran_FLAGS "-O2 -vec-guard-write -fpconstant -extend_source -funroll-loops -align all -ip")
   set (CMAKE_Fortran_FLAGS_RELEASE "-O2 -vec-guard-write -fpconstant -extend_source -funroll-loops -align all -ip")
   set (CMAKE_Fortran_FLAGS_DEBUG "-g -traceback")

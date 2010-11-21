@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+   11: Marc van der Sluys, 22/11/2010
+      - Run ifort with Fortran-2003 standard
+   
    10: Marc van der Sluys, 06/11/2010
       - Added interpolate.f90 for interpolation/fitting routines
       - Added constants d2h,h2d, program_path. Renamed programname to program_name

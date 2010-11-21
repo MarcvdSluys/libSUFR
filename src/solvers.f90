@@ -29,7 +29,7 @@ module SUFR_solvers
 contains
   
   !*********************************************************************************************************************************
-  !> \brief Using Minimum_solver's method, find the root of a function func that lies between x1 and x2.
+  !> \brief Using Brent's method, find the root of a function func that lies between x1 and x2.
   !! \param func  Function to find the root of
   !! \param x1    Lower limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
   !! \param x2    Upper limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
@@ -175,7 +175,7 @@ contains
   !!                          (optional argument, default=2)
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
-  !<
+  
   function minimum_solver(func,ax,bx,cx,accur,xmin, status,verbose)
     use SUFR_kinds
     
@@ -315,7 +315,6 @@ end module SUFR_solvers
 
 !***********************************************************************************************************************************
 !> \brief Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
-!<
 subroutine golden_section(x1,x2, a1,a2, y1,y2)
   use SUFR_kinds
   
