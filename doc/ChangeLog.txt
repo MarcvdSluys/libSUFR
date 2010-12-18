@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+   14: Marc van der Sluys, 18/12/2010
+      - added make script to svn
+   
    13: Marc van der Sluys, 18/12/2010
       - updated CMake: compile locally, then install
       

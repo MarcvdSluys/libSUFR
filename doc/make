@@ -1,0 +1,23 @@
+#!/bin/bash
+
+## Script to locally compile and install libSUFR 
+##   for both gfortran and ifort
+## Install in ../usr/, clean afterwards
+
+
+make clean 
+
+echo -e "\n\nMake with ifort:"
+rm -f CMakeCache.txt
+FC=ifort cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+make install
+make clean
+
+echo -e "\n\nMake with gfortran:"
+rm -f CMakeCache.txt
+FC=gfortran cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+make install
+make clean
+
+rm -rf ../usr/
+
