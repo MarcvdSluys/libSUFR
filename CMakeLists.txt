@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.4 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
 # Set build type. Do this *before* we set the project name
 if(NOT CMAKE_BUILD_TYPE)
@@ -16,7 +16,7 @@ project(libSUFR Fortran)
 option(CMAKE_VERBOSE_MAKEFILE "Verbose makefile" on)
 
 
-# Various options that we may want to enable
+# Various options that we may want to enable:
 option(WANT_OPENMP "Use OpenMP parallelisation (experimental)" off)
 option(WANT_SSE42  "Enable generation of SSE4.2 code" off)
 option(WANT_IPO    "Inter-procedural optimisation" off)
@@ -30,25 +30,30 @@ option(WANT_STRICT_FLOATS "Enable strict floating point calculations" off)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
 
 
-# Place the products in their directories;
+# Place the products in their directories:
 get_filename_component (Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
 message ("Using compiler: " ${Fortran_COMPILER_NAME} " (" ${CMAKE_Fortran_COMPILER}")" )
-set(MODULE_DIRECTORY "/home/user/usr/include/libSUFR/${Fortran_COMPILER_NAME}")
-set(LIBRARY_OUTPUT_PATH "~/usr/lib")
+set(MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR/${Fortran_COMPILER_NAME}")
+set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/usr/lib")
 
 
-# Source files:
+# Set source files:
 include(FileList)
 
 # Set FORTRAN compiler flags:
 include(CompilerFlags)
 
 
-# create library
+# Create library:
 add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
 add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
 
 set_target_properties( libSUFR_shared libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
 set_target_properties( libSUFR_shared libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
 
+
+# Install to destination:
+#   use DIRECTORY rather than TARGETS to allow include/<fortrancompiler>/
+install( DIRECTORY usr/
+  DESTINATION ${CMAKE_INSTALL_PREFIX})
 

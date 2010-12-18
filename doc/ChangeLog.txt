@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+   13: Marc van der Sluys, 18/12/2010
+      - updated CMake: compile locally, then install
+      
    12: Marc van der Sluys, 18/12/2010
       - updated Doxygen comments
       
