@@ -1,7 +1,5 @@
-!>  \file date_and_time.f90
-!!  
-!!  This file contains routines to manipulate date and time
-!<   
+!>  \file date_and_time.f90  This file contains routines to manipulate date and time
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,23 +17,24 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines for manipulation of date and time
+!> \brief  Provides functions and routines for manipulation of date and time
+
 module SUFR_date_and_time
   implicit none
   save
   
 contains
   
+  
   !*********************************************************************************************************************************
-  !> \brief Convert a calendar date to JD.  Input and output in UT.
+  !> \brief  Convert a calendar date to JD.  Input and output in UT.
+  !!
   !! \param yy  The year (int)
   !! \param mm  The month (int)
   !! \param dd  The day (double)
   !! \retval  cal2jd  The Julian day number (double)
-  !<
+  
   function cal2jd(yy,mm,dd)
     use SUFR_kinds
     
@@ -76,7 +75,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Convert date and time (y,m,d, h,m,s) to JD.  Input and output in UT.
+  !> \brief  Convert date and time (y,m,d, h,m,s) to JD.  Input and output in UT.
+  !!
   !! \param yy   The year (int)
   !! \param mmo  The month (int)
   !! \param dd   The day (int)
@@ -84,6 +84,7 @@ contains
   !! \param m    The minute (int)
   !! \param s    The second (double)
   !! \retval ymdhms2jd  The Julian day number (double)
+  
   function ymdhms2jd(yy,mmo,dd,h,m,s)
     use SUFR_kinds
     
@@ -105,10 +106,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Calculates day of week (0 - Sunday, ... 6).  Input in UT, call dow_ut(jd+tz/24.d0) for local time.
+  !> \brief  Calculates day of week (0 - Sunday, ... 6).  Input in UT, call dow_ut(jd+tz/24.d0) for local time.
+  !!
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
-  !<
+  
   function dow_ut(jd0)
     use SUFR_kinds
     
@@ -131,3 +133,5 @@ contains
   
   
 end module SUFR_date_and_time
+!***********************************************************************************************************************************
+

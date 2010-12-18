@@ -2,6 +2,7 @@
 !!  
 !!  \mainpage libSUFR documentation
 !!  libSUFR is a LIBrary of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful for others.
+!!  It currently also "SUFRs" from the fact that Fortran module files are compiler dependent...
 
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl

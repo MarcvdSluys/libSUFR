@@ -1,7 +1,5 @@
-!>  \file solvers.f90
-!!  
-!!  This file contains routines to solve equations
-!<
+!>  \file solvers.f90  This file contains routines to solve equations
+
    
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,17 +17,19 @@
 
 
 
-
 !***********************************************************************************************************************************
-!> Provides functions and routines to solve equations
+!> \brief  Provides functions and routines to solve equations
+
 module SUFR_solvers
   implicit none
   save
   
 contains
   
+  
   !*********************************************************************************************************************************
-  !> \brief Using Brent's method, find the root of a function func that lies between x1 and x2.
+  !> \brief  Using Brent's method, find the root of a function func that lies between x1 and x2.
+  !!
   !! \param func  Function to find the root of
   !! \param x1    Lower limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
   !! \param x2    Upper limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
@@ -39,7 +39,6 @@ contains
   !! \retval status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (optional argument)
   !! \retval verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (optional argument, default=2)
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
-  !<
   
   function root_solver(func,x1,x2,accur, status,verbose)
     use SUFR_kinds
@@ -314,7 +313,16 @@ end module SUFR_solvers
 
 
 !***********************************************************************************************************************************
-!> \brief Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
+!> \brief  Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
+!!
+!! \param   x1  
+!! \param   x2  
+!! \param   a1  
+!! \param   a2  
+!! \retval  y1  
+!! \retval  y2  
+
+
 subroutine golden_section(x1,x2, a1,a2, y1,y2)
   use SUFR_kinds
   

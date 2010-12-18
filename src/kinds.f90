@@ -1,7 +1,5 @@
-!>  \file kinds.f90
-!!  
-!!  This file contains routines to distribute variable kinds
-!<   
+!>  \file kinds.f90  This file contains routines to distribute variable kinds
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,14 +17,12 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> \brief Provides kinds and related constants/routines
+!> \brief  Provides kinds and related constants/routines
 !! 
 !! Contains the integers double and dbl, which can be used to provide the kind of a (often double-precision) variable type.
 !! Variables can be declared using e.g. "real(double) :: x"; constants can be defined as e.g. "x = 3.0_dbl".
-!< 
+
 module SUFR_kinds
   implicit none
   save
@@ -45,11 +41,16 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Get the kinds of the most accurate integer and real for the current compiler/system
+  !> \brief  Get the kinds of the most accurate integer and real for the current compiler/system
+  !!
+  !! \retval ikindmax  Maximum integer kind
+  !! \retval rkindmax  Maximum real kind
+  
   subroutine max_accuracy_kinds(ikindmax,rkindmax)
     implicit none
+    integer, intent(out) :: ikindmax,rkindmax
     integer :: acc,rng,kind
-    integer :: accmax,rngmax,ikindmax,rkindmax,rkindmax2
+    integer :: accmax,rngmax,rkindmax2
     
     
     !Integer:

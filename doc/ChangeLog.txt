@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+   12: Marc van der Sluys, 18/12/2010
+      - updated Doxygen comments
+      
    11: Marc van der Sluys, 22/11/2010
       - Run ifort with Fortran-2003 standard
    

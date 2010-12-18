@@ -1,7 +1,5 @@
 !>  \file binning.f90  Contains routines to bin data
-!!  
-!!  This file contains routines to bin data
-!<  
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,10 +17,9 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines to bin data
+!> \brief  Provides functions and routines to bin data
+
 module SUFR_binning
   implicit none
   save
@@ -31,7 +28,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Count the number of points in each bin (1D)
+  !> \brief  Count the number of points in each bin (1D)
+  !!
   !! \param x      input data to be binned, n points
   !! \param n      number of input data points
   !! \param norm   normalise bins (1) or not (0)
@@ -41,7 +39,7 @@ contains
   !! \param xmax1  maximum value for right-most bin.  Set xmin=xmax to auto-determine (I/O)
   !! \retval xbin  x-value of the data bins.  The x values are the left side of the bin!
   !! \retval ybin  y-value of the data bins
-  !<
+  
   subroutine bindata_1d(x,n,norm,cumul, nbin,xmin1,xmax1,xbin,ybin)
     implicit none
     integer, intent(in) :: n,nbin,norm
@@ -98,4 +96,5 @@ contains
   
   
 end module SUFR_binning
+!***********************************************************************************************************************************
 

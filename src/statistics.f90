@@ -1,7 +1,5 @@
-!>  \file statistics.f90
-!!  
-!!  This file contains routines to ...
-!<  
+!>  \file statistics.f90  This file contains routines to compute statistics
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,10 +17,9 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines to do statistics
+!> \brief  Provides functions and routines to do statistics
+
 module SUFR_statistics
   implicit none
   save
@@ -32,8 +29,10 @@ contains
   
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - single precision
+  !!
   !! \param datar  Data set
   !! \param ni    Number of data elements
+  
   function compute_median_real(datar,ni)
     use SUFR_kinds
     implicit none
@@ -49,10 +48,13 @@ contains
   end function compute_median_real
   !*********************************************************************************************************************************
   
+  
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - double precision
+  !!
   !! \param data  Data set
   !! \param ni    Number of data elements
+  
   function compute_median(data,ni)
     use SUFR_kinds
     use SUFR_sorting
@@ -83,3 +85,4 @@ contains
   
   
 end module SUFR_statistics
+!***********************************************************************************************************************************

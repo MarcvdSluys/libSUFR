@@ -1,7 +1,5 @@
-!>  \file interpolate.f90
-!!  
-!!  This file contains routines to do interpolation (and fitting?)
-!<  
+!>  \file interpolate.f90  This file contains routines to do interpolation (and fitting?)
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,27 +17,29 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines to do interpolation (and fitting?)
+!> \brief  Provides functions and routines to do interpolation (and fitting?)
+
 module SUFR_interpolate
   implicit none
   save
   
 contains
   
+  
   !*********************************************************************************************************************************
-  !> \brief Fit a parabola perfectly to three sets of data points x1,y1, x2,y2 and x3,y3
-  !> \param x1  X value 1
-  !> \param x2  X value 2
-  !> \param x3  X value 3
-  !> \param y1  Y value 1, belonging to x1
-  !> \param y2  Y value 2, belonging to x2
-  !> \param y3  Y value 3, belonging to x3
-  !> \retval a  Coefficient a in y = a*x^2 +b*x + c
-  !> \retval b  Coefficient b in y = a*x^2 +b*x + c
-  !> \retval c  Coefficient c in y = a*x^2 +b*x + c
+  !> \brief  Fit a parabola perfectly to three sets of data points x1,y1, x2,y2 and x3,y3
+  !!
+  !! \param x1  X value 1
+  !! \param x2  X value 2
+  !! \param x3  X value 3
+  !! \param y1  Y value 1, belonging to x1
+  !! \param y2  Y value 2, belonging to x2
+  !! \param y3  Y value 3, belonging to x3
+  !! \retval a  Coefficient a in y = a*x^2 +b*x + c
+  !! \retval b  Coefficient b in y = a*x^2 +b*x + c
+  !! \retval c  Coefficient c in y = a*x^2 +b*x + c
+  
   subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
     use SUFR_kinds
     implicit none
@@ -62,11 +62,13 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Compute a parabola  a*x^2 + b*x + c
-  !> \param x  X value
-  !> \param a  Coefficient a in y = a*x^2 +b*x + c
-  !> \param b  Coefficient b in y = a*x^2 +b*x + c
-  !> \param c  Coefficient c in y = a*x^2 +b*x + c
+  !> \brief  Compute a parabola  a*x^2 + b*x + c
+  !!
+  !! \param x  X value
+  !! \param a  Coefficient a in y = a*x^2 +b*x + c
+  !! \param b  Coefficient b in y = a*x^2 +b*x + c
+  !! \param c  Coefficient c in y = a*x^2 +b*x + c
+  
   function parabola(x, a,b,c)
     use SUFR_kinds
     implicit none
@@ -79,3 +81,5 @@ contains
   
   
 end module SUFR_INTERPOLATE
+!***********************************************************************************************************************************
+

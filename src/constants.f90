@@ -1,7 +1,5 @@
-!>  \file constants.f90
-!!  
-!!  This file contains routines to define and share constants
-!<   
+!>  \file constants.f90  This file contains routines to define and share constants
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -20,7 +18,8 @@
 
 
 !***********************************************************************************************************************************
-!> \brief Mathematical constants
+!> \brief  Mathematical constants
+
 module SUFR_constants_math
   use SUFR_kinds
   implicit none
@@ -34,7 +33,8 @@ end module SUFR_constants_math
 
 
 !***********************************************************************************************************************************
-!> Astronomical constants and satellite data
+!> \brief  Astronomical constants and satellite data
+
 module SUFR_constants_astro
   use SUFR_kinds
   implicit none
@@ -56,7 +56,8 @@ end module SUFR_constants_astro
 
 
 !***********************************************************************************************************************************
-!> Planet names and their abbreviations in English and Dutch
+!> \brief  Planet names and their abbreviations in English and Dutch
+
 module SUFR_constants_planetnames
   implicit none
   private
@@ -70,7 +71,8 @@ end module SUFR_constants_planetnames
 
 
 !***********************************************************************************************************************************
-!> Names of lunar phases in English and Dutch
+!> \brief  Names of lunar phases in English and Dutch
+
 module SUFR_constants_moonphases
   implicit none
   private
@@ -83,7 +85,8 @@ end module SUFR_constants_moonphases
 
 
 !***********************************************************************************************************************************
-!> Names of months, days and time zones in English and Dutch
+!> \brief  Names of months, days and time zones in English and Dutch
+
 module SUFR_constants_calendar
   implicit none
   private
@@ -108,7 +111,8 @@ end module SUFR_constants_calendar
 
 
 !***********************************************************************************************************************************
-!> Current date/time constants
+!> \brief  Current date/time constants
+
 module SUFR_constants_datetime
   use SUFR_kinds
   implicit none
@@ -128,7 +132,8 @@ end module SUFR_constants_datetime
 
 
 !***********************************************************************************************************************************
-!> Character constants (e.g. Greek letters)
+!> \brief  Character constants (e.g. Greek letters)
+
 module SUFR_constants_characters
   implicit none
   private
@@ -142,7 +147,8 @@ end module SUFR_constants_characters
 
 
 !***********************************************************************************************************************************
-!> Constants that describe cursor movement
+!> \brief  Constants that describe cursor movement
+
 module SUFR_constants_cursor
   implicit none
   private
@@ -157,7 +163,8 @@ end module SUFR_constants_cursor
 
 
 !***********************************************************************************************************************************
-!> Constants that describe the working environment
+!> \brief  Constants that describe the working environment
+
 module SUFR_constants_environment
   implicit none
   private
@@ -174,7 +181,8 @@ end module SUFR_constants_environment
 
 
 !***********************************************************************************************************************************
-!> Provides all constants in the library, and routines to define them
+!> \brief  Provides all constants in the library, and routines to define them
+
 module SUFR_constants
   use SUFR_constants_math
   use SUFR_constants_astro
@@ -198,7 +206,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the values of all the constants used in this package
+  !> \brief  Define the values of all the constants used in this package
+  
   subroutine set_constants
     implicit none
     
@@ -227,8 +236,10 @@ contains
   end subroutine set_constants
   !*********************************************************************************************************************************
   
+  
   !*********************************************************************************************************************************
-  !> Define the values of the mathematical constants
+  !> \brief  Define the values of the mathematical constants
+  
   subroutine set_constants_math
     use SUFR_constants_math
     implicit none
@@ -257,7 +268,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the values of astronomical constants
+  !> \brief  Define the values of astronomical constants
+  
   subroutine set_constants_astro
     use SUFR_constants_astro
     implicit none
@@ -303,7 +315,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the planet names
+  !> \brief  Define the planet names
+  
   subroutine set_constants_planetnames
     use SUFR_constants_planetnames
     implicit none
@@ -336,7 +349,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the names of the lunar phases
+  !> \brief  Define the names of the lunar phases
+  
   subroutine set_constants_moonphases
     use SUFR_constants_moonphases
     implicit none
@@ -349,7 +363,8 @@ contains
     
   
   !*********************************************************************************************************************************
-  !> Define the names of months, days and timezones;  define month lengths
+  !> \brief  Define the names of months, days and timezones;  define month lengths
+  
   subroutine set_constants_calendar
     use SUFR_constants_calendar
     implicit none
@@ -392,7 +407,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the values of variables that describe the current date and time
+  !> \brief  Define the values of variables that describe the current date and time
+  
   subroutine set_constants_currentdate()
     use SUFR_constants_datetime
     use SUFR_constants_calendar
@@ -436,7 +452,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the values of character constants - e.g., Greek letters
+  !> \brief  Define the values of character constants - e.g., Greek letters
+  
   subroutine set_constants_characters()
     use SUFR_constants_characters
     implicit none
@@ -455,7 +472,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Define the values of constants for cursor movement
+  !> \brief  Define the values of constants for cursor movement
+  
   subroutine set_constants_cursor()
     use SUFR_constants_cursor
     implicit none
@@ -471,7 +489,8 @@ contains
   
     
   !*********************************************************************************************************************************
-  !> Define the values of constants that describe the working environment
+  !> \brief  Define the values of constants that describe the working environment
+  
   subroutine set_constants_environment()
     use SUFR_constants_environment
     implicit none
@@ -512,6 +531,5 @@ contains
   
 end module SUFR_constants
 !***********************************************************************************************************************************
-
 
 

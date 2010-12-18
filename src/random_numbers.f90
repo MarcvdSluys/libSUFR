@@ -1,7 +1,5 @@
-!>  \file random_numbers.f90
-!!  
-!!  This file contains routines to generate random numbers
-!<   
+!>  \file random_numbers.f90  This file contains routines to generate random numbers
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,22 +17,23 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines to generate random numbers
+!> \brief  Provides functions and routines to generate random numbers
+
 module SUFR_random_numbers
   implicit none
   save
   
 contains
   
+  
   !*********************************************************************************************************************************
-  !> Use the system clock to get a random initialisation seed (i.e., negative integer) for a random-numbed generator.
+  !> \brief  Use the system clock to get a random initialisation seed (i.e., negative integer) for a random-numbed generator.
+  !!
   !! \param degree         Degree of randomness: 0-completely (same result for a ms), 1-same result during a clock hour, 
   !!                       2-same result during a calendar day (int)
   !! \retval get_ran_seed  Randon-number seed:  -1e6 < seed < 0 (int)
-  !<
+  
   function get_ran_seed(degree)  
     use SUFR_kinds
     
@@ -65,7 +64,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Generate a pseudo-random number from a uniform distribution 0 < r < 1.
+  !> \brief  Generate a pseudo-random number from a uniform distribution 0 < r < 1.
+  !!
   !! \param seed1   The seed to generate the random number from.  
   !!                Set seed1<0 to initialise the generator; seed1 is updated between calls (int).
   !! \retval ran_unif  The random number, uniformely generated between 0 < r < 1  (double).
@@ -73,7 +73,7 @@ contains
   !! - Use two L'Ecuyer generators, period is \f$ \sim10^{18}\f$
   !! - tab is a Bays-Durham shuffle table of length Ntab
   !! \see Numerical Recipes in Fortran 77, Sect.7.1.
-  !<
+  
   function ran_unif(seed1)
     use SUFR_kinds
     

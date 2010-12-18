@@ -1,7 +1,5 @@
-!>  \file sorting.f90
-!!  
-!!  This file contains routines to sort arrays
-!<   
+!>  \file sorting.f90  This file contains routines to sort arrays
+
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
 !   
@@ -19,18 +17,19 @@
 
 
 
-
-
 !***********************************************************************************************************************************
-!> Provides functions and routines for sorting
+!> \brief  Provides functions and routines for sorting
+
 module SUFR_sorting
   implicit none
   save
   
 contains
   
+  
   !*********************************************************************************************************************************
-  !> Return a list of indices index_list that sorts the members of array to ascending value.
+  !> \brief  Return a list of indices index_list that sorts the members of array to ascending value.
+  !!
   !! \param n            Size of array (int).
   !! \param array        Array of size n with values that must be sorted (double).
   !! \retval index_list  List with indices of array values, sorted to ascending value.  
@@ -38,7 +37,7 @@ contains
   !! \note This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \todo Remove the dummy argument n.
   !! \see Numerical Recipes in Fortran 77, Sect.8.4.
-  !< 
+  
   subroutine sorted_index_list(n,array,index_list)
     use SUFR_kinds
     
@@ -142,10 +141,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> Sort an array to ascending value.
+  !> \brief  Sort an array to ascending value.
+  !!
   !! \param array  Input: array to be sorted, output: sorted array (double)
-  !! \note Uses sorted_index_list().
-  !<
+  !! \note Uses sorted_index_list()
+  
   subroutine sort_array(array)
     use SUFR_kinds
     
