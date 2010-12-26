@@ -42,7 +42,7 @@ contains
     integer :: get_ran_seed
     
     integer :: seed,dt(8)
-    character :: tmpstr*10
+    character :: tmpstr*(10)
     
     
     call date_and_time(tmpstr,tmpstr,tmpstr,dt)  !dt: 1-year, 2-month, 3-day, 5-hour, 6-minute, 7-second, 8-millisecond

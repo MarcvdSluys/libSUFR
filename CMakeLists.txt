@@ -13,7 +13,7 @@ project(libSUFR Fortran)
 
 
 # Increase verbosity for debugging:
-option(CMAKE_VERBOSE_MAKEFILE "Verbose makefile" on)
+option(CMAKE_VERBOSE_MAKEFILE "Verbose makefile" off)
 
 
 # Various options that we may want to enable:

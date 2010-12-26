@@ -57,7 +57,6 @@ contains
     real(double) :: a,b,c,d,e, fa,fb,fc
     real(double) :: p,q,r,s, accur1,xm
     
-    
     if(present(status)) status = 0
     verbosity = 2
     if(present(verbose)) verbosity = verbose

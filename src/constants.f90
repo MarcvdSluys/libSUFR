@@ -63,8 +63,8 @@ module SUFR_constants_planetnames
   private
   save
   
-  character, public :: enpname(-1:19)*7,enpnames(-1:19)*7,enpnamel(-1:19)*8,enpnamelb(-1:19)*8,enpnamess(-1:19)*4
-  character, public :: nlpname(-1:19)*9,nlpnames(-1:19)*9,nlpnamel(-1:19)*9,nlpnamelb(-1:19)*9,nlpnamess(-1:19)*4
+  character, public :: enpname(-1:19)*(7),enpnames(-1:19)*(7),enpnamel(-1:19)*(8),enpnamelb(-1:19)*(8),enpnamess(-1:19)*(4)
+  character, public :: nlpname(-1:19)*(9),nlpnames(-1:19)*(9),nlpnamel(-1:19)*(9),nlpnamelb(-1:19)*(9),nlpnamess(-1:19)*(4)
   
 end module SUFR_constants_planetnames
 !***********************************************************************************************************************************
@@ -78,7 +78,7 @@ module SUFR_constants_moonphases
   private
   save
   
-  character, public :: enphases(0:3)*13,nlphases(0:3)*16
+  character, public :: enphases(0:3)*(13),nlphases(0:3)*(16)
   
 end module SUFR_constants_moonphases
 !***********************************************************************************************************************************
@@ -93,15 +93,15 @@ module SUFR_constants_calendar
   save
   
   !Month names:
-  character, public :: enmonths(12)*9,enmonthsm(12)*9,enmnts(12)*3
-  character, public :: nlmonths(12)*9,nlmonthsb(12)*9,nlmnts(12)*3,nlmntsb(12)*3
+  character, public :: enmonths(12)*(9),enmonthsm(12)*(9),enmnts(12)*(3)
+  character, public :: nlmonths(12)*(9),nlmonthsb(12)*(9),nlmnts(12)*(3),nlmntsb(12)*(3)
   
   !Day names:
-  character, public :: endays(0:6)*9,ends(0:6)*2,endys(0:6)*3
-  character, public :: nldays(0:6)*9,nlds(0:6)*2
+  character, public :: endays(0:6)*(9),ends(0:6)*(2),endys(0:6)*(3)
+  character, public :: nldays(0:6)*(9),nlds(0:6)*(2)
   
   !Time-zone namess:
-  character, public :: nltimezones(0:1)*10
+  character, public :: nltimezones(0:1)*(10)
   
   !Length of the months:
   integer, public :: mlen(12)
@@ -122,8 +122,8 @@ module SUFR_constants_datetime
   integer, public :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentdow
   real(double), public :: currentjd
   
-  character, public :: currentyearstr*4,currentdatestr*10,currenttimestr*8,currenttimezonestr*9
-  character, public :: currentdowstrnl*9,currentdatestrnl*39
+  character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
+  character, public :: currentdowstrnl*(9),currentdatestrnl*(39)
   
 end module SUFR_constants_datetime
 !***********************************************************************************************************************************
@@ -139,7 +139,7 @@ module SUFR_constants_characters
   private
   save
   
-  character, public :: engrchar(24)*7,htmlgrchar(24)*9 !Greek letters
+  character, public :: engrchar(24)*(7),htmlgrchar(24)*(9)
   
 end module SUFR_constants_characters
 !***********************************************************************************************************************************
@@ -154,7 +154,7 @@ module SUFR_constants_cursor
   private
   save
   
-  character, public :: cursorup*4, cursordown*4, cursorright*4, cursorleft*4
+  character, public :: cursorup*(4), cursordown*(4), cursorright*(4), cursorleft*(4)
   
 end module SUFR_constants_cursor
 !***********************************************************************************************************************************
@@ -170,7 +170,7 @@ module SUFR_constants_environment
   private
   save
   
-  character, public :: homedir*99, workdir*99, program_name*99, program_path*99, program_args*99
+  character, public :: homedir*(99), workdir*(99), program_name*(99), program_path*(99), program_args*(99)
   
 end module SUFR_constants_environment
 !***********************************************************************************************************************************
@@ -417,7 +417,7 @@ contains
     implicit none
     integer :: dt(8)
     real(double) :: tz
-    character :: tmpstr*99,tzstr*9,signstr
+    character :: tmpstr*(99),tzstr*(9),signstr
     
     !Date/time:
     call date_and_time(tmpstr,tmpstr,tmpstr,dt)
@@ -495,7 +495,7 @@ contains
     use SUFR_constants_environment
     implicit none
     integer :: i, narg
-    character :: tmpstr*99
+    character :: tmpstr*(99)
     
     !Get info from environment variables:
     call get_environment_variable('HOME',homedir)   ! Set homedir = $HOME, will contain e.g. '/home/name'

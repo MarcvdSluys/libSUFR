@@ -30,19 +30,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - single precision
   !!
+  !! \param ni     Number of data elements
   !! \param datar  Data set
-  !! \param ni    Number of data elements
   
-  function compute_median_real(datar,ni)
+  function compute_median_real(ni,datar)
     use SUFR_kinds
     implicit none
-    real(double), intent(in) :: datar(ni)
     integer, intent(in) :: ni
+    real(double), intent(in) :: datar(ni)
     real :: compute_median_real
     real(double) :: datad(ni),mediand
     
     datad = dble(datar)
-    mediand = compute_median(datad,ni)
+    mediand = compute_median(ni,datad)
     compute_median_real = real(mediand)
     
   end function compute_median_real
@@ -52,15 +52,15 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - double precision
   !!
-  !! \param data  Data set
   !! \param ni    Number of data elements
+  !! \param data  Data set
   
-  function compute_median(data,ni)
+  function compute_median(ni,data)
     use SUFR_kinds
     use SUFR_sorting
     implicit none
-    real(double), intent(in) :: data(ni)
     integer, intent(in) :: ni
+    real(double), intent(in) :: data(ni)
     integer :: indexx(ni)
     real(double) :: compute_median
     

@@ -3,6 +3,7 @@
 if (Fortran_COMPILER_NAME STREQUAL "gfortran")
   
   
+  set (CMAKE_Fortran_FLAGS_ALL "-fwhole-file -std=f2008 -fall-intrinsics -pedantic" )
   set (CMAKE_Fortran_FLAGS "-pipe -funroll-all-loops -O2" )
   set (CMAKE_Fortran_FLAGS_RELEASE "-pipe -funroll-all-loops -O2")
   set (CMAKE_Fortran_FLAGS_DEBUG "-g -ffpe-trap=zero,invalid -fsignaling-nans -fbacktrace")
@@ -27,7 +28,7 @@ if (Fortran_COMPILER_NAME STREQUAL "gfortran")
   endif (WANT_CHECKS)
   
   if (WANT_WARNINGS)
-    set (WARN_FLAGS "-Wall")
+    set (WARN_FLAGS "-Wall -Wextra")
   endif (WANT_WARNINGS)
   
   #if (WANT_LIBRARY)
@@ -63,7 +64,7 @@ elseif (Fortran_COMPILER_NAME STREQUAL "ifort")
   endif (WANT_STATIC)
   
   if (WANT_CHECKS)
-    set (CHECK_FLAGS "-ftrapuv -std95 -check all -traceback")
+    set (CHECK_FLAGS "-ftrapuv -check all -traceback")
   endif (WANT_CHECKS)
   
   if (WANT_WARNINGS)
