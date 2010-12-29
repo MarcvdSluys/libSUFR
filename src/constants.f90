@@ -92,18 +92,18 @@ module SUFR_constants_calendar
   private
   save
   
-  !Month names:
+  ! Month names:
   character, public :: enmonths(12)*(9),enmonthsm(12)*(9),enmnts(12)*(3)
   character, public :: nlmonths(12)*(9),nlmonthsb(12)*(9),nlmnts(12)*(3),nlmntsb(12)*(3)
   
-  !Day names:
+  ! Day names:
   character, public :: endays(0:6)*(9),ends(0:6)*(2),endys(0:6)*(3)
   character, public :: nldays(0:6)*(9),nlds(0:6)*(2)
   
-  !Time-zone namess:
+  ! Time-zone namess:
   character, public :: nltimezones(0:1)*(10)
   
-  !Length of the months:
+  ! Length of the months:
   integer, public :: mlen(12)
   
 end module SUFR_constants_calendar
@@ -123,10 +123,12 @@ module SUFR_constants_datetime
   real(double), public :: currentjd
   
   character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
+  character, public :: currentdowstren*(9),currentdatestren*(39)
   character, public :: currentdowstrnl*(9),currentdatestrnl*(39)
   
 end module SUFR_constants_datetime
 !***********************************************************************************************************************************
+
 
 
 
@@ -184,6 +186,9 @@ end module SUFR_constants_environment
 !> \brief  Provides all constants in the library, and routines to define them
 
 module SUFR_constants
+  
+  use SUFR_kinds
+  
   use SUFR_constants_math
   use SUFR_constants_astro
   use SUFR_constants_planetnames
@@ -193,8 +198,6 @@ module SUFR_constants
   use SUFR_constants_characters
   use SUFR_constants_cursor
   use SUFR_constants_environment
-  
-  use SUFR_kinds
   
   implicit none
   !private
@@ -211,26 +214,26 @@ contains
   subroutine set_constants
     implicit none
     
-    !Get the kinds of the most accurate integer and real for the current compiler/system:
+    ! Get the kinds of the most accurate integer and real for the current compiler/system:
     call max_accuracy_kinds(intkindmax,realkindmax)  
     
-    !Set the mathematical constants:
+    ! Set the mathematical constants:
     call set_constants_math()
     
-    !Set the astronomical constants:
+    ! Set the astronomical constants:
     call set_constants_astro()
     call set_constants_planetnames()
     call set_constants_moonphases()
     
-    !Set calendar stuff:
+    ! Set calendar stuff:
     call set_constants_calendar()
     call set_constants_currentdate()
     
-    !Characters:
-    call set_constants_characters()  !Greek characters
-    call set_constants_cursor()      !Cursor movement
+    ! Characters:
+    call set_constants_characters()  ! Greek characters
+    call set_constants_cursor()      ! Cursor movement
     
-    !Cetera:
+    ! Cetera:
     call set_constants_environment()
     
   end subroutine set_constants
@@ -360,7 +363,7 @@ contains
     
   end subroutine set_constants_moonphases
   !*********************************************************************************************************************************
-    
+  
   
   !*********************************************************************************************************************************
   !> \brief  Define the names of months, days and timezones;  define month lengths
@@ -415,11 +418,11 @@ contains
     use SUFR_date_and_time
     
     implicit none
-    integer :: dt(8)
+    integer :: dt(8), dow
     real(double) :: tz
     character :: tmpstr*(99),tzstr*(9),signstr
     
-    !Date/time:
+    ! Date/time variables:
     call date_and_time(tmpstr,tmpstr,tmpstr,dt)
     currentyear = dt(1)
     currentmonth = dt(2)
@@ -428,23 +431,27 @@ contains
     currentminute = dt(6)
     currentsecond = dt(7)
     
-    !Time zone:
+    ! Time zone:
     tz = abs(dble(dt(4))/60.d0)
     write(tzstr,'(F5.2)')tz
-    if(nint(tz).lt.10) write(tzstr,'(A1,F4.2)')'0',tz
+    !if(nint(tz).lt.10) write(tzstr,'(A1,F4.2)')'0',tz
+    if(nint(tz).lt.10) write(tzstr(1:1),'(A1)')'0'
     signstr = '-'
     if(dt(4).ge.0) signstr = '+'
     write(currenttimezonestr,'(A)')'UTC'//signstr//trim(tzstr)
     if(dt(4).lt.0.d0) tz = -tz
     
-    !JD, dow:
+    ! JD, dow, dow string:
     currentjd = ymdhms2jd(currentyear,currentmonth,currentday,currenthour,currentminute,dble(currentsecond))
+    currentdow = dow(currentjd)
     currentdow = dow_ut(currentjd + tz/24.d0)
-    currentdowstrnl = nldays(currentdow)
+    currentdowstren = endays(currentdow)  ! English
+    currentdowstrnl = nldays(currentdow)  ! Dutch
     
     write(currentyearstr,'(I4)')currentyear
     write(currentdatestr,'(I2.2,A1,I2.2,A1,I4.4)')currentday,'/',currentmonth,'/',currentyear
-    write(currentdatestrnl,'(A,I3,1x,A,I5)')trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear
+    write(currentdatestren,'(A,I3,1x,A,I5)')trim(currentdowstren),currentday,trim(enmonths(currentmonth)),currentyear  ! English
+    write(currentdatestrnl,'(A,I3,1x,A,I5)')trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear  ! Dutch
     write(currenttimestr,'(I2.2,A1,I2.2,A1,I2.2)')currenthour,':',currentminute,':',currentsecond
     
   end subroutine set_constants_currentdate

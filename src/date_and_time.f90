@@ -1,4 +1,4 @@
-!>  \file date_and_time.f90  This file contains routines to manipulate date and time
+!> \file date_and_time.f90  This file contains routines to manipulate date and time
 
 
 !  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
