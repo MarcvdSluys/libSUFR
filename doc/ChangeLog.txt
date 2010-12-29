@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
   
+   17: Marc van der Sluys, 29/12/2010
+     - Updated CMake files
+   
    16: Marc van der Sluys, 26/12/2010
       - Compile with gfortran using F2008 standard
    
