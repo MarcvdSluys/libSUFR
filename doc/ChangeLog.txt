@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
     
+   20: Marc van der Sluys, 30/12/2010
+     - Default CMake files without run-time checks
+     
    19: Marc van der Sluys, 30/12/2010
      - Added doc/README and doc/LICENCE files to svn
      - Extended copyright to 2011, added SF url to source
