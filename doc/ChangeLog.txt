@@ -2,7 +2,11 @@
 
   ChangeLog.txt for libSUFR
   
-  
+    
+   19: Marc van der Sluys, 30/12/2010
+     - Added doc/README and doc/LICENCE files to svn
+     - Extended copyright to 2011, added SF url to source
+   
    18: Marc van der Sluys, 29/12/2010
      - Updated date/time constants
      

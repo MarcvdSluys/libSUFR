@@ -1,9 +1,10 @@
-!>  \file statistics.f90  This file contains routines to compute statistics
+!> \file statistics.f90  This file contains routines to compute statistics
 
 
-!  Copyright 2002-2010 Marc van der Sluys - marc.vandersluys.nl
+!  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl
 !   
-!  This file is part of the libSUFR package.
+!  This file is part of the libSUFR package, 
+!  see: http://libsufr.sourceforge.net/
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
