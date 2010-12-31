@@ -6,7 +6,7 @@
 !!
 !!  \see
 !!  These pages contain the documentation for libSUFR, created by Doxygen.  For the libSUFR project page on SourceForge 
-!!  (package download, bug reports, etc.), see http://libsufr.sourceforge.net/
+!!  (package download, bug reports, etc.), see: https://sourceforge.net/projects/libsufr/
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

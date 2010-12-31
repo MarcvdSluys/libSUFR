@@ -65,8 +65,8 @@ contains
     dx = abs(xmax - xmin)/real(nbin)
     
     do k=1,nbin+1
-       !xbin(k) = xmin + (real(k)-0.5)*dx  !x is the centre of the bin
-       xbin(k) = xmin + (k-1)*dx          !x is the left of the bin
+       !xbin(k) = xmin + (real(k)-0.5)*dx      ! x is the centre of the bin
+       xbin(k) = xmin + real(k-1)*dx          ! x is the left of the bin
     end do
     
     !ybintot=0.

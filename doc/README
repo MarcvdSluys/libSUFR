@@ -39,6 +39,11 @@ To install the code in a specific directory, do:
  $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/me/usr ..
  $ make install
 
+
+To compile the code with your favourite compiler, prepend the cmake line with e.g. FC=gfortran:
+ $ FC=gfortran cmake ..
+
+
 To compile the code without installing it anywhere, replace the last step
  $ make install
 with

@@ -1,9 +1,15 @@
 # Compiler flags for Fortran compilers
 
 
+# Default for all compilers:
+set(MOD_FLAGS "${INCLUDE_FLAGS}" )
+
+
+# Get compiler name:
 get_filename_component( Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME )
 
 
+# Specific options per compiler:
 if( Fortran_COMPILER_NAME STREQUAL "gfortran" )
   
   set( CMAKE_Fortran_FLAGS_ALL "-fwhole-file -std=f2008 -fall-intrinsics -pedantic" )
@@ -43,9 +49,6 @@ if( Fortran_COMPILER_NAME STREQUAL "gfortran" )
     set( LIB_FLAGS "-fPIC -g" )
     message( STATUS "Compiling with library options" )
   endif( WANT_LIBRARY )
-  
-  #set(MOD_FLAGS "-I${MODDIR} -J${MODDIR}" )
-  set(MOD_FLAGS "${INCLUDE_FLAGS}" )
   
   
 elseif( Fortran_COMPILER_NAME STREQUAL "ifort" )
@@ -96,8 +99,30 @@ elseif( Fortran_COMPILER_NAME STREQUAL "ifort" )
     message( STATUS "Compiling with library options" )
   endif( WANT_LIBRARY )
   
-  #set(MOD_FLAGS "-I${MODDIR} -module ${MODDIR}" )
-  set(MOD_FLAGS "${INCLUDE_FLAGS}" )
+
+elseif( Fortran_COMPILER_NAME STREQUAL "g95" )
+  
+  
+  set( CMAKE_Fortran_FLAGS "" )
+  set( CMAKE_Fortran_FLAGS_RELEASE "-O2" )
+  set( CMAKE_Fortran_FLAGS_DEBUG "-O0 -g" )
+  
+  if( WANT_CHECKS )
+    set( CHECK_FLAGS "-O0 -fbounds-check -ftrace=full" )
+    message( STATUS "Compiling with run-time checks" )
+  else( WANT_CHECKS )
+    set( CHECK_FLAGS "-O2 -fshort-circuit" )
+  endif( WANT_CHECKS )
+  
+  if( WANT_WARNINGS )
+    set( WARN_FLAGS "-std=f2003 -Wall -Wobsolescent -Wunused-parameter -Wunused-internal-procs -Wunused-types -Wmissing-intent -pendantic" )
+    message( STATUS "Compiling with warnings" )
+  endif( WANT_WARNINGS )
+  
+  if( WANT_LIBRARY )
+    set( LIB_FLAGS "-fPIC -g" )
+    message( STATUS "Compiling with library options" )
+  endif( WANT_LIBRARY )
   
   
 else( Fortran_COMPILER_NAME STREQUAL "gfortran" )
@@ -125,4 +150,4 @@ set( CMAKE_Fortran_FLAGS_RELWITHDEBINFO "${CMAKE_Fortran_FLAGS_RELEASE} -g" )
 
 message( STATUS "Using Fortran compiler: " ${Fortran_COMPILER_NAME} " (" ${CMAKE_Fortran_COMPILER}")" )
 message( STATUS "Compiler flags used:  ${CMAKE_Fortran_FLAGS}" )
-#message( "" )
+

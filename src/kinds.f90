@@ -28,15 +28,16 @@ module SUFR_kinds
   implicit none
   save
   
-  !Integer, double precision:
+  ! Integer, double precision:
   integer, parameter :: long = selected_int_kind(18)
   integer, parameter :: lng = selected_int_kind(18)
   
-  !Real, double precision:
-  integer, parameter :: double = selected_real_kind(15,307)  !Precision = 15, range = 307
-  integer, parameter :: dbl = selected_real_kind(15,307)     !Precision = 15, range = 307
+  ! Real, double precision:
+  integer, parameter :: double = selected_real_kind(15,307)  ! Precision = 15, range = 307
+  integer, parameter :: dbl = selected_real_kind(15,307)     ! Precision = 15, range = 307
   
-  integer :: intkindmax,realkindmax
+  ! Maximum integer and real kinds:
+  integer :: intkindmax, realkindmax
   
 contains
   
@@ -51,25 +52,25 @@ contains
     implicit none
     integer, intent(out) :: ikindmax,rkindmax
     integer :: acc,rng,kind
-    integer :: accmax,rngmax,rkindmax2
+    integer :: rkindmax2 !,accmax,rngmax
     
     
-    !Integer:
+    ! Integer:
     do rng=1,1000000
        kind = selected_int_kind(rng)
        if(kind.lt.0) exit
-       rngmax   = rng
+       !rngmax   = rng
        ikindmax = kind
     end do
     !write(6,'(A30,I9,9x,I9)')'  Integer:  kind, range:',ikindmax,rngmax
     
     
-    !Real:
+    ! Real:
     rng = 1
     do acc=1,10000
        kind = selected_real_kind(acc,rng)
        if(kind.lt.0) exit
-       accmax   = acc
+       !accmax   = acc
        rkindmax = kind
     end do
     
@@ -77,7 +78,7 @@ contains
     do rng=1,1000000
        kind = selected_real_kind(acc,rng)
        if(kind.lt.0) exit
-       rngmax   = rng
+       !rngmax   = rng
        rkindmax2 = kind
     end do
     
@@ -85,7 +86,7 @@ contains
     if(rkindmax2.ne.rkindmax) then
        write(6,'(/,A)')'  Warning:  max_accuracy_kinds found two different values for max kind: ',rkindmax,rkindmax2
        write(6,'(A,/)')'  You should check what is going on...'
-       rkindmax = min(rkindmax,rkindmax2)  !Play it safe
+       rkindmax = min(rkindmax,rkindmax2)  ! Play it safe
     end if
     
   end subroutine max_accuracy_kinds
