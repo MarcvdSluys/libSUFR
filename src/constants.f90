@@ -28,6 +28,7 @@ module SUFR_constants_math
   save
   
   real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2h,h2d,d2as,as2d,am2r,r2am,r2as,as2r
+  real, public :: rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -212,69 +213,91 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Define the values of all the constants used in this package
   
-  subroutine set_constants
+  subroutine set_SUFR_constants
     implicit none
     
     ! Get the kinds of the most accurate integer and real for the current compiler/system:
     call max_accuracy_kinds(intkindmax,realkindmax)  
     
     ! Set the mathematical constants:
-    call set_constants_math()
+    call set_SUFR_constants_math()
     
     ! Set the astronomical constants:
-    call set_constants_astro()
-    call set_constants_planetnames()
-    call set_constants_moonphases()
+    call set_SUFR_constants_astro()
+    call set_SUFR_constants_planetnames()
+    call set_SUFR_constants_moonphases()
     
     ! Set calendar stuff:
-    call set_constants_calendar()
-    call set_constants_currentdate()
+    call set_SUFR_constants_calendar()
+    call set_SUFR_constants_currentdate()
     
     ! Characters:
-    call set_constants_characters()  ! Greek characters
-    call set_constants_cursor()      ! Cursor movement
+    call set_SUFR_constants_characters()  ! Greek characters
+    call set_SUFR_constants_cursor()      ! Cursor movement
     
     ! Cetera:
-    call set_constants_environment()
+    call set_SUFR_constants_environment()
     
-  end subroutine set_constants
+  end subroutine set_SUFR_constants
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the values of the mathematical constants
   
-  subroutine set_constants_math
+  subroutine set_SUFR_constants_math
     use SUFR_constants_math
     implicit none
     
-    ! Mathematical constants:
-    pi   = 4*atan(1.d0)  !pi
-    pi2  = 8*atan(1.d0)  !2pi
-    pio2 = 2*atan(1.d0)  !pi/2
-    pio4 = atan(1.d0)    !pi/4
+    ! Double precision:
+    pio4 = atan(1.d0)         ! pi/4
+    pio2 = 2*pio4             ! pi/2
+    pi   = 2*pio4             ! pi
+    pi2  = 2*pi               ! 2*pi
     
-    r2d = 180.d0/pi
-    d2r = pi/180.d0
-    r2h = 12.d0/pi
-    h2r = pi/12.d0
-    d2h = 1.d0/15.d0
-    h2d = 15.d0
+    r2d = 180.d0/pi           ! Radians to degrees
+    d2r = 1.d0/r2d            ! Degrees to radians
+    r2h = 12.d0/pi            ! Radians to hours
+    h2r = 1.d0/r2h            ! Hours to radians
+    h2d = 15.d0               ! Hours to degrees
+    d2h = 1.d0/h2d            ! Degrees to hours
     
-    d2as = 3600.d0
-    as2d = 1/3600.d0
-    r2am = 180.d0*60.d0/pi
-    am2r = pi/(180.d0*60.d0)
-    r2as = 180.d0*3600.d0/pi
-    as2r = pi/(180.d0*3600.d0)
-  end subroutine set_constants_math
+    d2as = 3600.d0            ! Degrees to arcseconds
+    as2d = 1.d0/d2as          ! Arcseconds to degrees
+    r2am = 180.d0*60.d0/pi    ! Radians to arcminutes
+    am2r = 1.d0/r2am          ! Arcminutes to radians
+    r2as = 180.d0*3600.d0/pi  ! Radians to arcseconds
+    as2r = 1.d0/r2as          ! Arcseconds to radians
+    
+    
+    ! Single precision:
+    rpio4 = real(pio4)        ! pi/4
+    rpio2 = real(pio2)        ! pi/2
+    rpi   = real(pi)          ! pi
+    rpi2  = real(pi2)         ! 2*pi
+    
+    rr2d = real(r2d)          ! Radians to degrees
+    rd2r = real(d2r)          ! Degrees to radians
+    rr2h = real(r2h)          ! Radians to hours
+    rh2r = real(h2r)          ! Hours to radians
+    rh2d = real(h2d)          ! Hours to degrees
+    rd2h = real(d2h)          ! Degrees to hours
+    
+    rd2as = real(d2as)        ! Degrees to arcseconds
+    ras2d = real(as2d)        ! Arcseconds to degrees
+    rr2am = real(r2am)        ! Radians to arcminutes
+    ram2r = real(am2r)        ! Arcminutes to radians
+    rr2as = real(r2as)        ! Radians to arcseconds
+    ras2r = real(as2r)        ! Arcseconds to radians
+    
+  end subroutine set_SUFR_constants_math
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the values of astronomical constants
   
-  subroutine set_constants_astro
+  subroutine set_SUFR_constants_astro
     use SUFR_constants_astro
     implicit none
     
@@ -314,14 +337,14 @@ contains
     pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0  ! Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
     pc_sigma   =  pc_arad*pc_c*0.25d0                         ! Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
 
-  end subroutine set_constants_astro
+  end subroutine set_SUFR_constants_astro
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the planet names
   
-  subroutine set_constants_planetnames
+  subroutine set_SUFR_constants_planetnames
     use SUFR_constants_planetnames
     implicit none
     
@@ -348,28 +371,28 @@ contains
          'Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
     nlpnamess(-1:11) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.','Plu.','    ','Kom.'/)
     
-  end subroutine set_constants_planetnames
+  end subroutine set_SUFR_constants_planetnames
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the names of the lunar phases
   
-  subroutine set_constants_moonphases
+  subroutine set_SUFR_constants_moonphases
     use SUFR_constants_moonphases
     implicit none
     
     enphases = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
     nlphases = (/'Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ','Laatste Kwartier'/)
     
-  end subroutine set_constants_moonphases
+  end subroutine set_SUFR_constants_moonphases
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the names of months, days and timezones;  define month lengths
   
-  subroutine set_constants_calendar
+  subroutine set_SUFR_constants_calendar
     use SUFR_constants_calendar
     implicit none
     
@@ -405,7 +428,7 @@ contains
     !Length of the months (for non-leap year)
     mlen = (/31,28,31,30,31,30,31,31,30,31,30,31/)
     
-  end subroutine set_constants_calendar
+  end subroutine set_SUFR_constants_calendar
   !*********************************************************************************************************************************
   
   
@@ -413,7 +436,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Define the values of variables that describe the current date and time
   
-  subroutine set_constants_currentdate()
+  subroutine set_SUFR_constants_currentdate()
     use SUFR_constants_datetime
     use SUFR_constants_calendar
     use SUFR_date_and_time
@@ -455,14 +478,14 @@ contains
     write(currentdatestrnl,'(A,I3,1x,A,I5)')trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear  ! Dutch
     write(currenttimestr,'(I2.2,A1,I2.2,A1,I2.2)')currenthour,':',currentminute,':',currentsecond
     
-  end subroutine set_constants_currentdate
+  end subroutine set_SUFR_constants_currentdate
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the values of character constants - e.g., Greek letters
   
-  subroutine set_constants_characters()
+  subroutine set_SUFR_constants_characters()
     use SUFR_constants_characters
     implicit none
     integer :: i
@@ -475,14 +498,14 @@ contains
        htmlgrchar(i) = '&'//trim(engrchar(i))//';     '
     end do
     
-  end subroutine set_constants_characters
+  end subroutine set_SUFR_constants_characters
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Define the values of constants for cursor movement
   
-  subroutine set_constants_cursor()
+  subroutine set_SUFR_constants_cursor()
     use SUFR_constants_cursor
     implicit none
     
@@ -492,14 +515,14 @@ contains
     cursorright = char(27)//'[1C' !Makes the cursor move right one space
     cursorleft = char(27)//'[1D' !Makes the cursor move left one space
     
-  end subroutine set_constants_cursor
+  end subroutine set_SUFR_constants_cursor
   !*********************************************************************************************************************************
   
     
   !*********************************************************************************************************************************
   !> \brief  Define the values of constants that describe the working environment
   
-  subroutine set_constants_environment()
+  subroutine set_SUFR_constants_environment()
     use SUFR_constants_environment
     implicit none
     integer :: i, narg
@@ -533,7 +556,7 @@ contains
        end do
     end if
     
-  end subroutine set_constants_environment
+  end subroutine set_SUFR_constants_environment
   !*********************************************************************************************************************************
   
   

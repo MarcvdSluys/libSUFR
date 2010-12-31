@@ -3,6 +3,12 @@
   ChangeLog.txt for libSUFR
   
     
+   23: Marc van der Sluys, 31/12/2010
+     - Updated constants.f90:
+       - renamed set_constants*() to set_SUFR_constants*()
+       - added a single-precision version of all mathematical constants
+     - Tweaked CMake files a bit
+     
    21,22: Marc van der Sluys, 31/12/2010
      - Added g95 to CMake
      - Fixed a few g95 warnings
