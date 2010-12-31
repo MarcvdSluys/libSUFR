@@ -115,7 +115,7 @@ elseif( Fortran_COMPILER_NAME STREQUAL "g95" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-std=f2003 -Wall -Wobsolescent -Wunused-parameter -Wunused-internal-procs -Wunused-types -Wmissing-intent -pendantic" )
+    set( WARN_FLAGS "-std=f2003 -Wall -Wobsolescent -Wunused-parameter -Wunused-internal-procs -Wunused-types -Wmissing-intent" )
     message( STATUS "Compiling with warnings" )
   endif( WANT_WARNINGS )
   

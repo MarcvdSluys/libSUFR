@@ -3,7 +3,7 @@
   ChangeLog.txt for libSUFR
   
     
-   21: Marc van der Sluys, 31/12/2010
+   21,22: Marc van der Sluys, 31/12/2010
      - Added g95 to CMake
      - Fixed a few g95 warnings
      
