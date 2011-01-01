@@ -2,7 +2,10 @@
 
   ChangeLog.txt for libSUFR
   
-    
+     
+   27: 01/01/2011:
+     - Added doc/CHANGELOG (for releases), version.txt (release version) to svn
+     
    26: 01/01/2011:
      - Updated doc/README, added doc/INSTALL
      

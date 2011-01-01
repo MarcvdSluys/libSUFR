@@ -1,0 +1,22 @@
+
+  CHANGELOG for libSUFR releases
+  
+  
+  0.1.2  01/01/2011
+    * Updated CMake files:
+      - added section for g95
+      - better recognition of compiler name
+    * Code is now compatible with:
+      - gfortran using the F2008 standard
+      - g95 using the F2003 standard
+      - ifort using the F2003 standard
+    * Added single-precision equivalents of mathematical constants
+    
+        
+  0.1.1  18/12/2010
+    First released version, originally called libSUFR_001.tar.bz2, 
+    then renamed to libSUFR-0.1.1.tar.bz2.
+    This is an alpha release, many things need to be done still.
+    Library contains routines for variable kinds, constants, binning, sorting, 
+    interpolation, statistics, random numbers, date and time, and solvers.
+    
