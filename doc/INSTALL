@@ -1,0 +1,42 @@
+
+libSUFR INSTALL
+
+
+You will need CMake to configure and compile the code.  CMake is open-source
+software, and can be downloaded from http://www.cmake.org/.
+
+
+To compile and install the code (in the default directories; /usr/local/), 
+from the main package directory (the one that contains the file CMakeLists.txt), do:
+
+ $ mkdir build && cd build/
+ $ cmake ..
+ $ make install
+
+
+To install the code in a specific directory, do:
+
+ $ mkdir build && cd build/
+ $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/me/usr ..
+ $ make install
+
+
+To compile the code with your favourite compiler, prepend the cmake line with e.g. FC=gfortran:
+
+ $ FC=gfortran cmake ..
+
+
+To compile the code without installing it anywhere, replace the last step
+ $ make install
+with
+ $ make
+
+
+By default, files will be installed as:
+/usr/local/lib/libSUFR_<NameOfFortranCompiler>.*  and
+/usr/local/include/libSUFR/<NameOfFortranCompiler>/*.mod
+
+The reason why the name of the Fortran compiler is included is that the modules
+in Fortran are (still) compiler dependent (sigh...) 
+
+

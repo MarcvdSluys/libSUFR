@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
     
+   26: 01/01/2011:
+     - Updated doc/README, added doc/INSTALL
+     
    25: 01/01/2011:
      - Bugfix: definition of pi in constants.f90, introduced in rev.23
      - Few minor updates in constants.f90, CMake
