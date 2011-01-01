@@ -248,26 +248,29 @@ contains
   subroutine set_SUFR_constants_math
     use SUFR_constants_math
     implicit none
+    real(double) :: one
+    
+    one = 1.0_dbl
     
     ! Double precision:
-    pio4 = atan(1.d0)         ! pi/4
+    pio4 = atan(one)          ! pi/4
     pio2 = 2*pio4             ! pi/2
-    pi   = 2*pio4             ! pi
+    pi   = 2*pio2             ! pi
     pi2  = 2*pi               ! 2*pi
     
-    r2d = 180.d0/pi           ! Radians to degrees
-    d2r = 1.d0/r2d            ! Degrees to radians
-    r2h = 12.d0/pi            ! Radians to hours
-    h2r = 1.d0/r2h            ! Hours to radians
-    h2d = 15.d0               ! Hours to degrees
-    d2h = 1.d0/h2d            ! Degrees to hours
+    r2d = 180.0_dbl/pi        ! Radians to degrees
+    d2r = one/r2d             ! Degrees to radians
+    r2h = 12.0_dbl/pi         ! Radians to hours
+    h2r = one/r2h             ! Hours to radians
+    h2d = 15.0_dbl            ! Hours to degrees
+    d2h = one/h2d             ! Degrees to hours
     
-    d2as = 3600.d0            ! Degrees to arcseconds
-    as2d = 1.d0/d2as          ! Arcseconds to degrees
-    r2am = 180.d0*60.d0/pi    ! Radians to arcminutes
-    am2r = 1.d0/r2am          ! Arcminutes to radians
-    r2as = 180.d0*3600.d0/pi  ! Radians to arcseconds
-    as2r = 1.d0/r2as          ! Arcseconds to radians
+    d2as = 3600.0_dbl         ! Degrees to arcseconds
+    as2d = one/d2as           ! Arcseconds to degrees
+    r2am = dble(180*60)/pi    ! Radians to arcminutes
+    am2r = one/r2am           ! Arcminutes to radians
+    r2as = r2am*60.0_dbl/pi   ! Radians to arcseconds
+    as2r = one/r2as           ! Arcseconds to radians
     
     
     ! Single precision:
@@ -321,7 +324,7 @@ contains
     earthr = 6378.14d5  ! Eq. radius of the Earth in cm
     
     ! Satellites:
-    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  ! Galilean moons, cm
+    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  ! Galilean moons (cm)
     satdiam = 2*satrad
     
     

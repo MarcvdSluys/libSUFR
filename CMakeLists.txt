@@ -24,25 +24,29 @@ set( CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "internal" )
 project( libSUFR Fortran )
 
 
+# Use CPack for packaging:
+#include( CPack )
+#set( CPACK_INSTALL_PREFIX_PATH ${CMAKE_INSTALL_PREFIX_PATH} )
+
 # Search in the CMake/ directory for CMake modules:
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
 
 
 # Various compile/optimisation options that we may want to enable:
-include(SetCompileOptions)
+include( SetCompileOptions )
 
 
 # Place the products in their directories:
-get_filename_component(Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME)
-set(MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR/${Fortran_COMPILER_NAME}")
-set(LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/usr/lib")
+get_filename_component( Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME )
+set( MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR/${Fortran_COMPILER_NAME}" )
+set( LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/usr/lib" )
 
 
 # Set source files:
-include(FileList)
+include( FileList )
 
 # Set FORTRAN compiler flags:
-include(CompilerFlags)
+include( CompilerFlags )
 
 
 # Create library:

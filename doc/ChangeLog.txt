@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
     
+   25: 01/01/2011:
+     - Bugfix: definition of pi in constants.f90, introduced in rev.23
+     - Few minor updates in constants.f90, CMake
+     
    24: 01/01/2011:
      - Fix in CMake: using MATCHES iso STREQUAL allows partial match of compiler name
      
