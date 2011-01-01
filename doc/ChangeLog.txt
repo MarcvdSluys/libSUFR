@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
     
+   24: 01/01/2011:
+     - Fix in CMake: using MATCHES iso STREQUAL allows partial match of compiler name
+     
    23: Marc van der Sluys, 31/12/2010
      - Updated constants.f90:
        - renamed set_constants*() to set_SUFR_constants*()
