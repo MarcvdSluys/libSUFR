@@ -1,4 +1,4 @@
-!> \file solvers.f90  This file contains routines to solve equations
+!> \file solvers.f90  Procedures to solve equations
 
    
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

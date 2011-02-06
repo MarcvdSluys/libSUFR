@@ -1,4 +1,4 @@
-!> \file statistics.f90  This file contains routines to compute statistics
+!> \file statistics.f90  Procedures to compute statistics
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

@@ -1,4 +1,4 @@
-!> \file filename.f90  Procedures to ...
+!> \file system.f90  System-related procedures
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl
@@ -19,22 +19,35 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to ...
+!> \brief  Provides system-related functions and routines
 
-module SUFR_
+module SUFR_system
   implicit none
   save
   
 contains
   
-  
   !*********************************************************************************************************************************
-  !> \brief  
+  !> \brief  Print a message and stop the execution of the current program
+  !!
+  !! \param message  Exit message
   
-  
+  subroutine quit_program(message)
+    use SUFR_kinds
+    implicit none
+    character, intent(in) :: message*(*)
+    
+    write(0,'(//,A)')'  '//trim(message)
+    write(0,'(A,/)')'  Aborting...'
+    stop
+    
+  end subroutine quit_program
   !*********************************************************************************************************************************
   
   
-end module SUFR_
+  
+  
+  
+end module SUFR_system
 !***********************************************************************************************************************************
 

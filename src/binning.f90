@@ -1,4 +1,4 @@
-!> \file binning.f90  Contains routines to bin data
+!> \file binning.f90  Procedures to bin data
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

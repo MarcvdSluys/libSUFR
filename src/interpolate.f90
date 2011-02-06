@@ -1,4 +1,4 @@
-!> \file interpolate.f90  This file contains routines to do interpolation (and fitting?)
+!> \file interpolate.f90  Procedures to do interpolation (and fitting?)
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

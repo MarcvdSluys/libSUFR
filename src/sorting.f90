@@ -1,4 +1,4 @@
-!> \file sorting.f90  This file contains routines to sort arrays
+!> \file sorting.f90  Procedures to sort arrays
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

@@ -1,4 +1,4 @@
-!> \file random_numbers.f90  This file contains routines to generate random numbers
+!> \file random_numbers.f90  Procedures to generate random numbers
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl

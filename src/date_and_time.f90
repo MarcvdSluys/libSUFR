@@ -1,4 +1,4 @@
-!> \file date_and_time.f90  This file contains routines to manipulate date and time
+!> \file date_and_time.f90  Procedures to manipulate date and time
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl
@@ -19,9 +19,9 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines for manipulation of date and time
+!> \brief  Provides functions and routines for manipulation of date and time: core JD routines
 
-module SUFR_date_and_time
+module SUFR_date_and_time_JD
   implicit none
   save
   
@@ -75,19 +75,84 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day to a calendar date (fractional day) - in UT
+  !!
+  !! \param  jd  Julian day (UT)
+  !! \retval yy  Year (CE)
+  !! \retval mm  Month
+  !! \retval dd  Day of month (+ fraction)
+  
+  subroutine jd2cal(jd,yy,mm,dd)
+    use SUFR_kinds
+    
+    implicit none
+    real(double), intent(in) :: jd
+    integer, intent(out) :: yy,mm
+    real(double), intent(out) :: dd
+    real(double) :: f
+    integer(long) :: z,a,b,c,d,e,alpha
+    
+    z = floor(jd+0.5d0)
+    f = jd + 0.5d0 - z
+    if(z.lt.2299161) then   ! Use the Julian calendar
+       a = z
+    else                    ! Use the Gregorian calendar
+       alpha = floor((z-1867216.25d0)/36524.25d0)
+       a = z + 1 + alpha - floor(alpha/4.d0)
+    end if
+    
+    b = a + 1524
+    c = floor((b - 122.1d0)/365.25d0)
+    d = floor(365.25d0*c)
+    e = floor((b-d)/30.6001d0)
+    dd = b - d - floor(30.6001d0*e) + f
+    
+    if(e.lt.14) then
+       mm = e - 1
+    else
+       mm = e - 13
+    end if
+    
+    if(mm.gt.2) then
+       yy = c - 4716
+    else
+       yy = c - 4715
+    end if
+    
+  end subroutine jd2cal
+  !*********************************************************************************************************************************
+  
+end module SUFR_date_and_time_JD
+!***********************************************************************************************************************************
+
+
+
+!***********************************************************************************************************************************
+module SUFR_date_and_time
+  use SUFR_date_and_time_JD
+  implicit none
+  save
+  
+contains
+  
+  
+  
   !*********************************************************************************************************************************
   !> \brief  Convert date and time (y,m,d, h,m,s) to JD.  Input and output in UT.
-  !!
-  !! \param yy   The year (int)
-  !! \param mmo  The month (int)
-  !! \param dd   The day (int)
-  !! \param h    The hour (int)
-  !! \param m    The minute (int)
-  !! \param s    The second (double)
+  !! 
+  !! \param yy          The year (int)
+  !! \param mmo         The month (int)
+  !! \param dd          The day (int)
+  !! \param h           The hour (int)
+  !! \param m           The minute (int)
+  !! \param s           The second (double)
   !! \retval ymdhms2jd  The Julian day number (double)
   
-  function ymdhms2jd(yy,mmo,dd,h,m,s)
+  function ymdhms2jd(yy,mmo,dd, h,m,s)
     use SUFR_kinds
+    use SUFR_date_and_time_JD
     
     implicit none
     integer, intent(in) :: yy,mmo,dd,h,m
@@ -107,6 +172,94 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief Convert date and time (h) to a Julian day -  input in UT
+  !!
+  !! \param yy    Year (CE)
+  !! \param mo    Month
+  !! \param dd    Day of month
+  !! \param time  Time (hours)
+  
+  function dtm2jd(yy,mo,dd,time)
+    use SUFR_kinds
+    use SUFR_date_and_time_JD
+    
+    implicit none
+    integer, intent(in) :: yy,mo,dd
+    real(double), intent(in) :: time
+    real(double) :: d,dtm2jd
+    
+    d = dble(dd) + time/24.d0
+    dtm2jd = cal2jd(yy,mo,d)
+    
+  end function dtm2jd
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert time (h) to hours and minutes
+  !!
+  !! \param  tm  Time (hours)
+  !! \retval h   Hours
+  !! \retval m   Minutes (integer)
+  
+  subroutine tm2hm(tm,h,m)
+    use SUFR_kinds
+    implicit none
+    real(double), intent(in) :: tm
+    integer, intent(out) :: h,m
+    
+    h = floor(tm)
+    m = nint((tm-dble(h))*60)
+    
+    if(m.ge.60) then
+       h = h+1
+       m = m-60
+    end if
+    if(h.ge.24) h = h-24
+    
+  end subroutine tm2hm
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert time (h) to hours, minutes and seconds
+  !!
+  !! \param  tm  Time (hours)
+  !! \retval h   Hours
+  !! \retval m   Minutes
+  !! \retval s   Seconds (integer)
+  
+  subroutine tm2hms(tm,h,m,s)
+    use SUFR_kinds
+    implicit none
+    real(double), intent(in) :: tm
+    integer, intent(out) :: h,m,s
+    
+    h = floor(tm)
+    m = floor((tm-dble(h))*60)
+    s = nint((tm - dble(h) - dble(m)/60.d0)*3600)
+    
+    if(s.ge.60) then
+       m = m+1
+       s = s-60
+    end if
+    if(m.ge.60) then
+       h = h+1
+       m = m-60
+    end if
+    if(h.ge.24) h = h-24
+    
+  end subroutine tm2hms
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Calculates day of week (0 - Sunday, ... 6).  Input in UT, call dow_ut(jd+tz/24.d0) for local time.
   !!
   !! \param  jd0  Julian day number (double)
@@ -118,7 +271,6 @@ contains
     implicit none
     real(double), intent(in) :: jd0
     integer :: dow_ut
-    
     real(double) :: jd,x
     
     jd = dble(nint(jd0)) - 0.5d0
@@ -128,6 +280,103 @@ contains
     
   end function dow_ut
   !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Calculate day of year (1-366) from JD
+  !!
+  !! \param jd0  Julian day
+  
+  function doy(jd0)
+    use SUFR_kinds
+    use SUFR_date_and_time_JD
+    
+    implicit none
+    real(double), intent(in) :: jd0
+    integer :: doy,yr,mon
+    real(double) :: jd1,dy
+    
+    call jd2cal(jd0,yr,mon,dy)
+    jd1 = cal2jd(yr,1,0.d0)
+    doy = nint(jd0-jd1)
+    
+  end function doy
+  !*********************************************************************************************************************************
+  
+  
+
+  !*********************************************************************************************************************************
+  !> \brief  Calculate day of year (1-366) from year,month,day
+  !!
+  !! \param yr   Year (CE)
+  !! \param mon  Month
+  !! \param dy   Day of month
+  
+  function ymd2doy(yr,mon,dy)
+    use SUFR_kinds
+    use SUFR_date_and_time_JD
+    
+    implicit none
+    integer, intent(in) :: yr,mon,dy
+    real(double) :: jd0,jd1
+    integer :: ymd2doy
+    
+    jd0 = cal2jd(yr,mon,dble(dy))
+    jd1 = cal2jd(yr,1,0.d0)
+    ymd2doy = nint(jd0-jd1)
+    
+  end function ymd2doy
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Calculate month and day  from  day of year and year
+  !!
+  !! \param doy   Day of year number
+  !! \param yr    Year (CE)
+  !! \retval mon  Month of year
+  !! \retval dy   Day of month
+  !!
+  !! \note year is input
+  
+  subroutine doy2md(doy,yr, mon,dy)
+    use SUFR_kinds
+    use SUFR_date_and_time_JD
+    
+    implicit none
+    integer, intent(in) :: doy,yr
+    integer, intent(out) :: mon,dy
+    integer :: yr1
+    real(double) :: jd1,dy1
+    
+    jd1 = cal2jd(yr,1,dble(doy))
+    call jd2cal(jd1,yr1,mon,dy1)
+    dy = floor(dy1)
+    
+  end subroutine doy2md
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Calculate whether year is leap (1) or not (0)
+  !!
+  !! \param yr  Year (CE)
+  
+  function leapyr(yr)
+    use SUFR_kinds
+    use SUFR_date_and_time_JD
+    
+    implicit none
+    integer, intent(in) :: yr
+    integer :: leapyr
+    
+    leapyr = nint( cal2jd(yr,3,1.d0) - cal2jd(yr,2,29.d0) )
+    
+  end function leapyr
+  !*********************************************************************************************************************************
+  
   
   
   

@@ -1,4 +1,4 @@
-!> \file constants.f90  This file contains routines to define and share constants
+!> \file constants.f90  Procedures to define and share constants
 
 
 !  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl
