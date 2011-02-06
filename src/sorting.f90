@@ -35,8 +35,8 @@ contains
   !! \param array        Array of size n with values that must be sorted (double).
   !! \retval index_list  List with indices of array values, sorted to ascending value.  
   !!                     array(index_list) gives the sorted array (int).
+  !!
   !! \note This routine does not need to be called directly, but is implicitly called by sort_array().
-  !! \todo Remove the dummy argument n.
   !! \see Numerical Recipes in Fortran 77, Sect.8.4.
   
   subroutine sorted_index_list(n,array,index_list)

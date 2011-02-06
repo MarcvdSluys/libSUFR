@@ -3,6 +3,16 @@
   ChangeLog.txt for libSUFR
   
      
+   29: 06/02/2011:
+     - Moved code from TheSky, use with rev. 209 of TheSky:
+       - added angles.f90: rev*, rv*, asep, calpa, pastr_*, wdstr_*
+       - added system.f90: quit_program
+       - date_and_time.f90: added jd2cal, dtm2jd, tm2hm, tm2hms, doy, ymd2doy, doy2md, leapyr
+     - It seems that a function in a module cannot be called by other functions in the same
+       module - in order to do so, and make all public, create a submodule that is called 
+       by the main module *and* the function(!)
+     - Updated Doxyfile, shortened Doxygen file descriptions
+          
    27: 01/01/2011:
      - Added doc/CHANGELOG (for releases), version.txt (release version) to svn
      
