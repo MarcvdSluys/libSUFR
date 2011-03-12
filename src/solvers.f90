@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to solve equations
+!> \brief  Procedures to solve equations
 
 module SUFR_solvers
   implicit none

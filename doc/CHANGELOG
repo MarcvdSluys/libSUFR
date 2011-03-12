@@ -2,7 +2,17 @@
   CHANGELOG for libSUFR releases
   
   
-  0.1.2  01/01/2011
+  0.1.3  12/03/2011  (SVN rev.31)
+    * Added source files:
+      - angles.f90: manipulate angles
+      - system.f90: system calls
+      - text.f90: procedures to manipulate strings
+    * Updates:
+      - date_and_time.f90: new procedures for date and time
+    * Fixed minor issues
+    * Updated Doxygen comments
+    
+  0.1.2  01/01/2011  (SVN rev.27)
     * Updated CMake files:
       - added section for g95
       - better recognition of compiler name
@@ -13,7 +23,7 @@
     * Added single-precision equivalents of mathematical constants
     
         
-  0.1.1  18/12/2010
+  0.1.1  18/12/2010  (SVN rev.15)
     First released version, originally called libSUFR_001.tar.bz2, 
     then renamed to libSUFR-0.1.1.tar.bz2.
     This is an alpha release, many things need to be done still.

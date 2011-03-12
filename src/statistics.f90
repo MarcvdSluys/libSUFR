@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to do statistics
+!> \brief  Procedures to do statistics
 
 module SUFR_statistics
   implicit none

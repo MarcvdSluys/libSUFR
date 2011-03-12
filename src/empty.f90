@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to ...
+!> \brief  Procedures to ...
 
 module SUFR_
   implicit none

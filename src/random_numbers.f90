@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to generate random numbers
+!> \brief  Procedures to generate random numbers
 
 module SUFR_random_numbers
   implicit none

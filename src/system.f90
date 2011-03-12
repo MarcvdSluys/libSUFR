@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides system-related functions and routines
+!> \brief  System-related procedures
 
 module SUFR_system
   implicit none

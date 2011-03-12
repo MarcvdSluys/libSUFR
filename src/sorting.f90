@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines for sorting
+!> \brief  Procedures for sorting
 
 module SUFR_sorting
   implicit none

@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to manipulate text/strings
+!> \brief  Procedures to manipulate text/strings
 
 module SUFR_text
   implicit none

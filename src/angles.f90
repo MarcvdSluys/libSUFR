@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to handle periodic angles
+!> \brief  Procedures to handle periodic angles
 
 module SUFR_angles_periodic
   use SUFR_kinds
@@ -163,7 +163,7 @@ end module SUFR_angles_periodic
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to handle angles
+!> \brief  Procedures to handle angles
 
 module SUFR_angles
   use SUFR_kinds

@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to bin data
+!> \brief  Procedures to bin data
 
 module SUFR_binning
   implicit none

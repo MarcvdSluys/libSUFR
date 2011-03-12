@@ -12,8 +12,8 @@ get_filename_component( Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME )
 # Specific options per compiler:
 if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   
-  #set( CMAKE_Fortran_FLAGS_ALL "-std=f2008 -fall-intrinsics -pedantic" )               # v.4.4
-  set( CMAKE_Fortran_FLAGS_ALL "-fwhole-file -std=f2008 -fall-intrinsics -pedantic" )  # v.4.5
+  set( CMAKE_Fortran_FLAGS_ALL "-std=f2008 -fall-intrinsics -pedantic" )               # v.4.4
+  #set( CMAKE_Fortran_FLAGS_ALL "-fwhole-file -std=f2008 -fall-intrinsics -pedantic" )  # v.4.5
   set( CMAKE_Fortran_FLAGS "-pipe -funroll-all-loops" )
   set( CMAKE_Fortran_FLAGS_RELEASE "-pipe -funroll-all-loops" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g -ffpe-trap=zero,invalid -fsignaling-nans -fbacktrace" )

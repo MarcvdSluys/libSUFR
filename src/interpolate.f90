@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines to do interpolation (and fitting?)
+!> \brief  Procedures to do interpolation (and fitting?)
 
 module SUFR_interpolate
   implicit none

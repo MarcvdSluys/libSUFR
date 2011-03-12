@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Provides functions and routines for manipulation of date and time: core JD routines
+!> \brief  Procedures for manipulation of date and time: core JD routines
 
 module SUFR_date_and_time_JD
   implicit none
@@ -138,7 +138,10 @@ end module SUFR_date_and_time_JD
 
 
 
+
 !***********************************************************************************************************************************
+!> \brief  Procedures for manipulation of date and time
+
 module SUFR_date_and_time
   use SUFR_date_and_time_JD
   implicit none
