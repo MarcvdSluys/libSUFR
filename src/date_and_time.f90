@@ -84,7 +84,7 @@ contains
   !! \retval mm  Month
   !! \retval dd  Day of month (+ fraction)
   
-  subroutine jd2cal(jd,yy,mm,dd)
+  subroutine jd2cal(jd, yy,mm,dd)
     use SUFR_kinds
     
     implicit none
@@ -93,6 +93,15 @@ contains
     real(double), intent(out) :: dd
     real(double) :: f
     integer(long) :: z,a,b,c,d,e,alpha
+    
+    ! Some programs will JD=-huge if no solution is found - catch this
+    if(jd.lt.-huge(jd)*0.1_dbl .or. jd.gt.huge(jd)*0.1_dbl) then
+       yy = 0
+       mm = 0
+       dd = 0.0_dbl
+       return
+    end if
+    
     
     z = floor(jd+0.5d0)
     f = jd + 0.5d0 - z

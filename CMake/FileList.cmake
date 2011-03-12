@@ -10,5 +10,6 @@ set(SRC_FILES
   src/sorting.f90
   src/statistics.f90
   src/system.f90
+  src/text.f90
   )
 

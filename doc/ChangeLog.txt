@@ -3,6 +3,11 @@
   ChangeLog.txt for libSUFR
   
      
+   30: 12/03/2011:
+     - Added text.f90, with lowercase(), uppercase(), uppercaseinitial() from TheSky
+       - use with TheSky v.213
+     - Small fixes in kinds.f90 and date_and_time.f90
+     
    29: 06/02/2011:
      - Moved code from TheSky, use with rev. 209 of TheSky:
        - added angles.f90: rev*, rv*, asep, calpa, pastr_*, wdstr_*

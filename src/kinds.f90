@@ -84,7 +84,7 @@ contains
     
     !write(6,'(A30,3I9)')'  Real:  kind, accuracy, range:',rkindmax,accmax,rngmax
     if(rkindmax2.ne.rkindmax) then
-       write(6,'(/,A)')'  Warning:  max_accuracy_kinds found two different values for max kind: ',rkindmax,rkindmax2
+       write(6,'(/,A,2I6)')'  Warning:  max_accuracy_kinds found two different values for max kind: ',rkindmax,rkindmax2
        write(6,'(A,/)')'  You should check what is going on...'
        rkindmax = min(rkindmax,rkindmax2)  ! Play it safe
     end if
