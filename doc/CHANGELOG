@@ -2,6 +2,10 @@
   CHANGELOG for libSUFR releases
   
   
+  0.1.4  22/03/2011  (SVN rev.33)
+    * Bugfix: the function dow() was still used but wasn't defined
+              libraries could be compiled but not linked...
+    
   0.1.3  12/03/2011  (SVN rev.31)
     * Added source files:
       - angles.f90: manipulate angles
