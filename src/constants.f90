@@ -445,7 +445,7 @@ contains
     use SUFR_date_and_time
     
     implicit none
-    integer :: dt(8), dow
+    integer :: dt(8)
     real(double) :: tz
     character :: tmpstr*(99),tzstr*(9),signstr
     
@@ -468,9 +468,8 @@ contains
     write(currenttimezonestr,'(A)')'UTC'//signstr//trim(tzstr)
     if(dt(4).lt.0.d0) tz = -tz
     
-    ! JD, dow, dow string:
+    ! JD, dow, dow strings:
     currentjd = ymdhms2jd(currentyear,currentmonth,currentday,currenthour,currentminute,dble(currentsecond))
-    currentdow = dow(currentjd)
     currentdow = dow_ut(currentjd + tz/24.d0)
     currentdowstren = endays(currentdow)  ! English
     currentdowstrnl = nldays(currentdow)  ! Dutch

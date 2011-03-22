@@ -1,23 +1,48 @@
 #!/bin/bash
 
-## Script to locally compile and install libSUFR 
-##   for both gfortran and ifort
-## Install in ../usr/, clean afterwards
+##  Script to locally compile and install libSUFR 
+##    for ifort, gfortran and g95
+##  Install in ../usr/, clean afterwards
+##  AF, 2010
+
 
 
 make clean 
 
-echo -e "\n\nMake with ifort:"
-rm -f CMakeCache.txt
-FC=ifort cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-make install
-make clean
+if [ 2 -eq 1 ]; then
+    echo -e "\n\nMake with ifort:"
+    rm -f CMakeCache.txt
+    FC=ifort cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+    make install
+    make clean
+fi
 
-echo -e "\n\nMake with gfortran:"
-rm -f CMakeCache.txt
-FC=gfortran cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-make install
-make clean
+
+if [ 1 -eq 1 ]; then
+    echo -e "\n\nMake with gfortran:"
+    rm -f CMakeCache.txt
+    FC=gfortran cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+    make install
+    make clean
+fi
+
+if [ 2 -eq 1 ]; then
+    echo -e "\n\nMake with gfortran-4.4:"
+    rm -f CMakeCache.txt
+    FC=gfortran-4.4 cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+    make libSUFR_shared
+    #make install
+    make clean
+fi
+
+if [ 2 -eq 1 ]; then
+    echo -e "\n\nMake with g95:"
+    rm -f CMakeCache.txt
+    FC=g95 cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
+    make install
+    #make libSUFR_shared
+    make clean
+fi
 
 rm -rf ../usr/
 

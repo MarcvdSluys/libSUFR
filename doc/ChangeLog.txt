@@ -3,6 +3,12 @@
   ChangeLog.txt for libSUFR
   
      
+   32: 22/03/2011:  *** SF release 0.1.4 ***
+     - Critical bugfix: 
+       dow() was still called within libSUFR - hence the library couldn't link to
+       programs other than TheSky (which has its own dow()).
+     - Updated doc/make
+     
    31: 12/03/2011:  *** SF release 0.1.3 ***
      - Make gfortran compiler flags compatible with v.4.4
      - Adapted comments
