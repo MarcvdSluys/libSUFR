@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
      
+   34: 23/03/2011:
+     - Updated CMake files, make
+     
    33: 22/03/2011:  *** SF release 0.1.4 ***
    
    32: 22/03/2011:
