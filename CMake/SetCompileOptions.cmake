@@ -9,5 +9,8 @@ option( WANT_SSE42     "Enable generation of SSE4.2 code" off )
 option( WANT_HOST_OPT  "Enable host-specific optimisation. Choose only when compiling and running on the same machine! Overrides WANT_SSE42" off )
 option( WANT_IPO       "Inter-procedural optimisation" off )
 option( WANT_STATIC    "Generate statically linked executable" off )
-option( WANT_LIBRARY   "Use compiler options to create a library" on )
+option( WANT_LIBRARY   "Use compiler options to create libraries" on )
+option( WANT_SHARED    "Create shared libraries" on )
+option( WANT_STATIC    "Create static libraries" off )
+
 

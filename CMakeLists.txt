@@ -49,12 +49,16 @@ include( FileList )
 include( CompilerFlags )
 
 
-# Create library:
-add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
-add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
+# Create libraries:
+if( WANT_SHARED )
+  add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
+  set_target_properties( libSUFR_shared libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+endif( WANT_SHARED )
 
-set_target_properties( libSUFR_shared libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
-set_target_properties( libSUFR_shared libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+if( WANT_STATIC )
+  add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
+  set_target_properties( libSUFR_shared libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+endif( WANT_STATIC )
 
 
 # Install to destination:

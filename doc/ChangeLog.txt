@@ -3,6 +3,11 @@
   ChangeLog.txt for libSUFR
   
      
+   36: 25/03/2011:
+     - Update CMake: 
+       - make shared/static libraries optional, 
+       - add install target
+       
    35: 25/03/2011:
      - Added source files with code from TheSky, textfunctions.f90:
        - angle2string.f90:  convert angles to formatted strings
