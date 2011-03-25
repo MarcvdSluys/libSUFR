@@ -1,4 +1,5 @@
 set(SRC_FILES
+  src/angle2string.f90
   src/angles.f90
   src/binning.f90
   src/constants.f90
@@ -11,5 +12,6 @@ set(SRC_FILES
   src/statistics.f90
   src/system.f90
   src/text.f90
+  src/time2string.f90
   )
 

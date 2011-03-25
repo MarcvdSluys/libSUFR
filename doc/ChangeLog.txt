@@ -3,6 +3,12 @@
   ChangeLog.txt for libSUFR
   
      
+   35: 25/03/2011:
+     - Added source files with code from TheSky, textfunctions.f90:
+       - angle2string.f90:  convert angles to formatted strings
+       - time2string.f90:   convert times to formatted strings
+     - Use with TheSky rev.218
+       
    34: 23/03/2011:
      - Updated CMake files, make
      

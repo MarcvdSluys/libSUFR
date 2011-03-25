@@ -87,7 +87,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "g95" )
 elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   
   
-  set( CMAKE_Fortran_FLAGS_ALL "-stand f03 -diag-disable 6894 -nogen-interfaces" )
+  set( CMAKE_Fortran_FLAGS_ALL "-nogen-interfaces" )
   set( CMAKE_Fortran_FLAGS "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   set( CMAKE_Fortran_FLAGS_RELEASE "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g -traceback" )
@@ -121,7 +121,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-warn all" )
+    set( WARN_FLAGS "-warn all -stand f03 -diag-disable 6894" )
   endif( WANT_WARNINGS )
   
   if( WANT_LIBRARY )
@@ -151,6 +151,7 @@ else( Fortran_COMPILER_NAME MATCHES "gfortran" )
   
 endif( Fortran_COMPILER_NAME MATCHES "gfortran" )
 ######################################################################################################################################################
+
 
 
 
