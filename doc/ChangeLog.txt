@@ -3,11 +3,14 @@
   ChangeLog.txt for libSUFR
   
      
+   37: 25/03/2011:  *** SF release 0.1.5 ***
+     - 4391 lines of code
+     - fixed CREATE_SHAREDLIB, CREATE_STATICLIB issue (WANT_STATIC already existed)
+     
    36: 25/03/2011:
      - Update CMake: 
-       - make shared/static libraries optional, 
-       - add install target
-       
+       - make shared/static libraries optional
+              
    35: 25/03/2011:
      - Added source files with code from TheSky, textfunctions.f90:
        - angle2string.f90:  convert angles to formatted strings

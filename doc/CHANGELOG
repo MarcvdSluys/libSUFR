@@ -2,6 +2,12 @@
   CHANGELOG for libSUFR releases
   
   
+  0.1.5  25/03/2011  (SVN rev.37)
+    * Added source files:
+      - angle2string.f90:  convert angles to formatted strings
+      - time2string.f90:   convert times to formatted strings
+    * Updated CMake files
+          
   0.1.4  22/03/2011  (SVN rev.33)
     * Bugfix: the function dow() was still used but wasn't defined
               libraries could be compiled but not linked...

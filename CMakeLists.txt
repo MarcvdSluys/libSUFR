@@ -50,15 +50,17 @@ include( CompilerFlags )
 
 
 # Create libraries:
-if( WANT_SHARED )
+if( CREATE_SHAREDLIB )
   add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
-  set_target_properties( libSUFR_shared libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
-endif( WANT_SHARED )
+  set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  set_target_properties( libSUFR_shared PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+endif( CREATE_SHAREDLIB )
 
-if( WANT_STATIC )
+if( CREATE_STATICLIB )
   add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
-  set_target_properties( libSUFR_shared libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
-endif( WANT_STATIC )
+  set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+endif( CREATE_STATICLIB )
 
 
 # Install to destination:
