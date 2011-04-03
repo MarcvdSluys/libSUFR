@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
      
+   38: 03/04/2011:
+     - fixed bug in use of dow_ut() for currentdate string
+     - fixed implicit conversions - code compiles with gfortran-4.6
+   
    37: 25/03/2011:  *** SF release 0.1.5 ***
      - 4391 lines of code
      - fixed CREATE_SHAREDLIB, CREATE_STATICLIB issue (WANT_STATIC already existed)

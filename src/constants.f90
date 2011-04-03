@@ -470,7 +470,7 @@ contains
     
     ! JD, dow, dow strings:
     currentjd = ymdhms2jd(currentyear,currentmonth,currentday,currenthour,currentminute,dble(currentsecond))
-    currentdow = dow_ut(currentjd + tz/24.d0)
+    currentdow = dow_ut(currentjd)
     currentdowstren = endays(currentdow)  ! English
     currentdowstrnl = nldays(currentdow)  ! Dutch
     

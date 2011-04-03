@@ -119,15 +119,15 @@ contains
     dd = b - d - floor(30.6001d0*e) + f
     
     if(e.lt.14) then
-       mm = e - 1
+       mm = int(e - 1)
     else
-       mm = e - 13
+       mm = int(e - 13)
     end if
     
     if(mm.gt.2) then
-       yy = c - 4716
+       yy = int(c - 4716)
     else
-       yy = c - 4715
+       yy = int(c - 4715)
     end if
     
   end subroutine jd2cal
@@ -272,7 +272,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculates day of week (0 - Sunday, ... 6).  Input in UT, call dow_ut(jd+tz/24.d0) for local time.
+  !> \brief  Calculates day of week (0 - Sunday, ... 6).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
   !!
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
