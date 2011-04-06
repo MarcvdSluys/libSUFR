@@ -174,7 +174,7 @@ module SUFR_constants_environment
   private
   save
   
-  character, public :: homedir*(99), workdir*(99), program_name*(99), program_path*(99), program_args*(99)
+  character, public :: homedir*(199), workdir*(199), program_name*(99), program_path*(199), program_args*(199)
   
 end module SUFR_constants_environment
 !***********************************************************************************************************************************
@@ -269,7 +269,7 @@ contains
     as2d = one/d2as           ! Arcseconds to degrees
     r2am = dble(180*60)/pi    ! Radians to arcminutes
     am2r = one/r2am           ! Arcminutes to radians
-    r2as = r2am*60.0_dbl/pi   ! Radians to arcseconds
+    r2as = r2am*60.0_dbl      ! Radians to arcseconds
     as2r = one/r2as           ! Arcseconds to radians
     
     
