@@ -1035,7 +1035,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print angle as a string of ss.s, input in rad
+  !> \brief Print angle as a string of ss.s", input in rad
   !!
   !! \param a1  Angle (rad)
   
@@ -1058,6 +1058,34 @@ contains
     write(ass,'(f4.1,a1)') s,'"'
     
   end function ass
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as a string of ss.s", input in rad - HTML version of ass()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wass(a1)
+    use SUFR_kinds
+    use SUFR_angles
+    use SUFR_constants
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: m
+    character :: wass*(11)
+    
+    a = a1
+    a = rev(a)*r2d
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(wass,'(f4.1,a7)') s,'&rdquo;'
+    
+  end function wass
   !*********************************************************************************************************************************
   
   

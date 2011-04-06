@@ -1,16 +1,26 @@
 
   CHANGELOG for libSUFR releases
+  http://libsufr.sourceforge.net/
   
   
+  0.1.6  06/04/2011  (SVN rev.40)
+    * Bugfix: removed a factor of pi from the constants (r)r2as and (r)as2r
+    * Bugfix: use of dow_ut() to create the string constant currentdate
+    * Fixed some implicit type conversions
+    * Added routine wass() to angle2string.f90
+    
+    
   0.1.5  25/03/2011  (SVN rev.37)
     * Added source files:
       - angle2string.f90:  convert angles to formatted strings
       - time2string.f90:   convert times to formatted strings
     * Updated CMake files
+    
           
   0.1.4  22/03/2011  (SVN rev.33)
     * Bugfix: the function dow() was still used but wasn't defined
               libraries could be compiled but not linked...
+    
     
   0.1.3  12/03/2011  (SVN rev.31)
     * Added source files:
@@ -21,6 +31,7 @@
       - date_and_time.f90: new procedures for date and time
     * Fixed minor issues
     * Updated Doxygen comments
+    
     
   0.1.2  01/01/2011  (SVN rev.27)
     * Updated CMake files:

@@ -3,9 +3,13 @@
   ChangeLog.txt for libSUFR
   
      
+   40: 06/04/2011:  ** SF release 0.1.6 **
+     - Added routine wass() to angle2string.f90 - it returns an angle in " in HTML
+     - 4419 lines of code
+     
    39: 06/04/2011:
      - Bugfix:  fixed factor of pi in definitions of r2as and as2r
-     - longer strings for homedir*(199), workdir*(199), program_path, program_args
+     - longer strings for homedir, workdir, program_path, program_args
      
    38: 03/04/2011:
      - fixed bug in use of dow_ut() for currentdate string
