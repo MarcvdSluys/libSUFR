@@ -28,7 +28,7 @@ module SUFR_system
 contains
   
   !*********************************************************************************************************************************
-  !> \brief  Print a message and stop the execution of the current program
+  !> \brief  Print a message to StdOut and stop the execution of the current program
   !!
   !! \param message  Exit message
   
@@ -37,11 +37,66 @@ contains
     implicit none
     character, intent(in) :: message*(*)
     
-    write(0,'(//,A)')'  '//trim(message)
-    write(0,'(A,/)')'  Aborting...'
+    write(6,'(//,A)')'  '//trim(message)
+    write(6,'(A,/)') '  Exiting...'
     stop
     
   end subroutine quit_program
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a warning to StErr and stop the execution of the current program
+  !!
+  !! \param message  Exit message/warning
+  !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
+  
+  subroutine quit_program_warning(message, status)
+    use SUFR_kinds
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: message*(*)
+    integer, intent(in) :: status
+    
+    write(0,'(//,A)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
+    if(status.eq.0) then
+       write(0,'(A,/)') '  Exiting...'
+       stop
+    else
+       write(0,'(A)', advance='no')'  * '
+       stop 1
+    end if
+    
+  end subroutine quit_program_warning
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print an error message to StdErr and stop the execution of the current program
+  !!
+  !! \param message  Exit/error message
+  !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
+  
+  subroutine quit_program_error(message, status)
+    use SUFR_kinds
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: message*(*)
+    integer, intent(in) :: status
+    
+    write(0,'(//,A)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ***'
+    if(status.eq.0) then
+       write(0,'(A,/)') '  Exiting...'
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine quit_program_error
   !*********************************************************************************************************************************
   
   
