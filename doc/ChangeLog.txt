@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
      
+   42: 18/04/2011:
+     - system: Added routines warn() and error() to print standardised warnings and errors
+     
    41: 17/04/2011:
      - system: added quit_program_warning() and quit_program_error() to generate 
        standardized warnings and errors, and allow non-zero exit codes

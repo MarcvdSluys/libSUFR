@@ -100,6 +100,51 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Print a warning to StdOut or StErr
+  !!
+  !! \param message  Warning message
+  !! \param unit     Output unit: 0-StdErr, 1-StdOut
+  
+  subroutine warn(message, unit)
+    use SUFR_kinds
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: message*(*)
+    integer, intent(in) :: unit
+    integer :: u
+    
+    u = 0
+    if(unit.ne.0) u = 6  ! If not StdErr, then StdOut: 6
+    write(u,'(/,A,/)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
+    
+  end subroutine warn
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print an error to StdOut or StErr
+  !!
+  !! \param message  Warning message
+  !! \param unit     Output unit: 0-StdErr, 1-StdOut
+  
+  subroutine error(message, unit)
+    use SUFR_kinds
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: message*(*)
+    integer, intent(in) :: unit
+    integer :: u
+    
+    u = 0
+    if(unit.ne.0) u = 6  ! If not StdErr, then StdOut: 6
+    write(u,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ****'
+    
+  end subroutine error
+  !*********************************************************************************************************************************
+  
+  
   
   
   
