@@ -3,6 +3,18 @@
   http://libsufr.sourceforge.net/
   
   
+  0.1.7  25/04/2011  (SVN rev.44)
+    * Added source files:
+      - earth.f90 with routines for geography
+    * Added routines:
+      - distance() and distance_r() in earth.f90
+      - routines sort_string_array() in sorting.f90
+      - rrev(), rrev2() in angles.f90
+      - warn(), error(), quit_program_warning(), quit_program_error() to system.f90
+    * Added constants:
+      - plana: semi-major axes of planets
+      - currentmillisecond: useful for random-number seeds
+     
   0.1.6  06/04/2011  (SVN rev.40)
     * Bugfix: removed a factor of pi from the constants (r)r2as and (r)as2r
     * Bugfix: use of dow_ut() to create the string constant currentdate

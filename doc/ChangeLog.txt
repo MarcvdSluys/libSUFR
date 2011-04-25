@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
      
+   44: 25/04/2011:  ** SF release 0.1.7 **
+     - 4702 lines of code
+     
    43: 25/04/2011:
      - Added file earth.f90 with distance() and distance_r()
      - Added sort_string_array() in sorting to sort an array of strings
