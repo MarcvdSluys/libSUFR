@@ -36,17 +36,35 @@ contains
   !! \param ang  Input angle (radians)
   
   function rev(ang)
-    use SUFR_constants
     use SUFR_kinds
+    use SUFR_constants
     
     implicit none
     real(double), intent(in) :: ang
     real(double) :: rev
     
-    rev = ang - floor(ang/pi2) * pi2
+    rev = ang - dble(floor(ang/pi2)) * pi2
     
   end function rev
   !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Returns angle in radians between 0 and 2pi  --  single precision
+  !!
+  !! \param ang  Input angle (radians)
+  
+  function rrev(ang)
+    use SUFR_constants
+    
+    implicit none
+    real, intent(in) :: ang
+    real :: rrev
+    
+    rrev = ang - real(floor(ang/rpi2)) * rpi2
+    
+  end function rrev
+  !*********************************************************************************************************************************
+  
   
   
   
@@ -64,11 +82,32 @@ contains
     real(double), intent(in) :: ang
     real(double) :: rev2
     
-    rev2 = ang - floor(ang/pi2) * pi2
+    rev2 = ang - dble(floor(ang/pi2)) * pi2
     if(rev2.gt.pi) rev2 = rev2 - pi2
     
   end function rev2
   !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Returns angle in radians between -pi and pi  --  single precision
+  !!
+  !! \param ang  Input angle (radians)
+  
+  function rrev2(ang)
+    use SUFR_constants
+    
+    implicit none
+    real, intent(in) :: ang
+    real :: rrev2
+    
+    rrev2 = ang - real(floor(ang/rpi2)) * rpi2
+    if(rrev2.gt.rpi) rrev2 = rrev2 - rpi2
+    
+  end function rrev2
+  !*********************************************************************************************************************************
+  
+  
   
   
   

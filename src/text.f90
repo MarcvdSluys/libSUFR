@@ -76,17 +76,16 @@ contains
   subroutine uppercaseinitial(str)
     implicit none
     character, intent(inout) :: str*(*)
-    integer :: i,ch
+    integer :: i,ic
     
-    ! Make first character upper case, the rest lower case:
-    do i=1,len_trim(str)
-       ch = ichar(str(i:i))
-       if(i.eq.1) then  ! First character
-          if(ch.ge.97.and.ch.le.123) ch = ch - 32  ! Make upper case
-       else             ! Rest
-          if(ch.ge.65.and.ch.le.91) ch = ch + 32   ! Make lower case
-       end if
-       str(i:i) = char(ch)
+    ! Capitalise first letter:
+    ic = ichar(str(1:1))
+    if(ic.ge.97.and.ic.le.122) str(1:1) = char(ic-32)
+    
+    ! Make the rest of the letters lower case:
+    do i=2,len_trim(str)
+       ic = ichar(str(i:i))
+       if(ic.ge.65.and.ic.le.90) str(i:i) = char(ic+32)
     end do
     
   end subroutine uppercaseinitial

@@ -31,8 +31,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Return a list of indices index_list that sorts the members of array to ascending value.
   !!
-  !! \param n            Size of array (int).
-  !! \param array        Array of size n with values that must be sorted (double).
+  !! \param  n            Size of array (int).
+  !! \param  array        Array of size n with values that must be sorted (double) - use dble(array) for other variable types
+  !!
   !! \retval index_list  List with indices of array values, sorted to ascending value.  
   !!                     array(index_list) gives the sorted array (int).
   !!
@@ -163,6 +164,45 @@ contains
     
   end subroutine sort_array
   !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Sort strings alphabetically
+  !!
+  !! \param  n     Number of strings in array str
+  !! \param  len   Length of the strings in array str
+  !! \param  str   Array of n strings with length len
+  !! \retval indx  Sorting index
+  
+  subroutine sort_string_array(n,len,str,indx)
+    implicit none
+    integer, intent(in) :: n, len
+    character, intent(in) :: str(n)*(len)
+    integer, intent(out) :: indx(n)
+    
+    integer :: i,l,ic
+    real :: score(n)
+    
+    do i=1,n
+       score(i) = 0.
+       do l=1,len
+          ic = ichar(str(i)(l:l))
+          if(ic.ge.97.and.ic.le.122) ic = ic-32
+          ic = ic-32                                       ! Limits values between 1 and 64
+          score(i) = score(i) + real(ic) * 64.**(len-l)
+       end do
+    end do
+    
+    call sorted_index_list(n,dble(score),indx)
+    
+  end subroutine sort_string_array
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
   
 end module SUFR_sorting
 !***********************************************************************************************************************************

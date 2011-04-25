@@ -3,6 +3,13 @@
   ChangeLog.txt for libSUFR
   
      
+   43: 25/04/2011:
+     - Added file earth.f90 with distance() and distance_r()
+     - Added sort_string_array() in sorting to sort an array of strings
+     - Added rrev() and rrev2() to angles; single-precision versions of rev() and rev2()
+     - Added constant currentmillisecond
+     - Updated uppercaseinitial()
+     
    42: 18/04/2011:
      - system: Added routines warn() and error() to print standardised warnings and errors
      
