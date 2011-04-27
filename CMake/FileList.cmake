@@ -2,6 +2,7 @@ set(SRC_FILES
   src/angle2string.f90
   src/angles.f90
   src/binning.f90
+  src/command_line.f90
   src/constants.f90
   src/date_and_time.f90
   src/earth.f90

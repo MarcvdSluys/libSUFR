@@ -83,7 +83,95 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Compute the faculty of an integer, returning a long integer
+  !!
+  !! \param  n          Number - up to 20 for long integers (up to 13 for integers)
+  !! \retval faculty_i  Faculty of n;  n!  -  a long integer
+  
+  function faculty_i(n)
+    use SUFR_kinds, only: long
+    implicit none
+    integer, intent(in) :: n
+    integer(long) :: faculty_i, i
+    
+    faculty_i = 1
+    do i=2,n
+       faculty_i = faculty_i * i
+    end do
+    
+  end function faculty_i
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the faculty of an integer, returning a double-precision real
+  !!
+  !! \param  n        Number - can be up to 170 for double-precision reals (as opposed to 20 for long integers and 13 for integers)
+  !! \retval faculty  Faculty of n;  n!  -  in double precision
+  
+  function faculty(n)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: n
+    real(double) :: faculty
+    integer :: i
+    
+    faculty = 1.d0
+    do i=2,n
+       faculty = faculty * dble(i)
+    end do
+    
+  end function faculty
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the binomial coefficient of n and k - result in double-precision real
+  !!
+  !! \param  n            Total number of trials;  n in "n choose k"
+  !! \param  k            Number of succesful trials;  k in "n choose k"
+  !! \retval binom_coeff  Binomial coefficient  n! / [k!(n-k)!]
+  
+  function binom_coeff(n, k)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: n, k
+    real(double) :: binom_coeff
+    
+    binom_coeff = faculty(n) / (faculty(k) * faculty(n-k))  ! [n! / k!(n-k)!]
+    
+  end function binom_coeff
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the binomial probability of n and k, and probability p, result in double-precision real
+  !!
+  !! \param  n           Total number of trials;  n in "n choose k"
+  !! \param  k           Number of succesful trials;  k in "n choose k"
+  !! \param  p           probability of a succesful trial
+  !! \retval binom_prob  Binomial probability  n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
+  
+  
+  function binom_prob(n, k, p)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: n, k
+    real(double), intent(in) :: p
+    real(double) :: binom_prob
+    
+    binom_prob = binom_coeff(n,k) * p**k * (1.d0-p)**(n-k)   ! n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
+    
+  end function binom_prob
+  !*********************************************************************************************************************************
+  
+  
+  
   
   
 end module SUFR_statistics
 !***********************************************************************************************************************************
+

@@ -3,6 +3,13 @@
   ChangeLog.txt for libSUFR
   
      
+   45: 27/04/2011:
+     - Added file src/command_line.f90: Procedures to handle command-line options and arguments:
+       - get_command_argument_i(), get_command_argument_l(), get_command_argument_r(), 
+         get_command_argument_d(): read a command-line variable with type int, long, real, double
+     - In statistics, added: faculty_i(), faculty(), binom_coeff() and binom_prob()
+     - CMake: added option to cancel compilation on warning (for gfortran, g95)
+       
    44: 25/04/2011:  ** SF release 0.1.7 **
      - 4702 lines of code
      
