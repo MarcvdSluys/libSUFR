@@ -7,6 +7,7 @@ set(MOD_FLAGS "${INCLUDE_FLAGS}" )
 
 # Get compiler name:
 get_filename_component( Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME )
+message( STATUS "Name:  ${CMAKE_Fortran_COMPILER}" )
 
 
 ######################################################################################################################################################
@@ -127,7 +128,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-warn all -stand f03 -diag-disable 6894" )
+    set( WARN_FLAGS "-warn all -stand f03 -diag-disable 6894,8290" )
   endif( WANT_WARNINGS )
   
   if( WANT_LIBRARY )

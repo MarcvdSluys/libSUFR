@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Procedures for manipulation of date and time: core JD routines
+!> \brief  Procedures for manipulation of date and time: core JD routines (needed by other routines)
 
 module SUFR_date_and_time_JD
   implicit none

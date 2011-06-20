@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
      
+   46: 20/06/2011:
+     - Added routines for linear interpolation to src/interpolate.f90
+     - Updated compile flags for ifort
+     
    45: 27/04/2011:
      - Added file src/command_line.f90: Procedures to handle command-line options and arguments:
        - get_command_argument_i(), get_command_argument_l(), get_command_argument_r(), 

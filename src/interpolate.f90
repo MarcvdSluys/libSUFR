@@ -19,6 +19,46 @@
 
 
 !***********************************************************************************************************************************
+!> \brief  Procedures to do interpolation (and fitting?): core routines (needed by others)
+
+module SUFR_interpolate_core
+  implicit none
+  save
+  
+contains
+  
+  !*********************************************************************************************************************************
+  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x
+  !!
+  !! \param x1  X value 1
+  !! \param x2  X value 2
+  !! \param y1  Y value 1, belonging to x1
+  !! \param y2  Y value 2, belonging to x2
+  !!
+  !! \param x   X value to find y value for
+  !! \retval y  Y value to find
+  
+  function linear_interpolation(x1,x2, y1,y2, x)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in)  :: x1,x2, y1,y2, x
+    real(double) :: linear_interpolation, a,b,y
+    
+    a = (y2-y1)/(x2-x1)
+    b = y1 - a*x1
+    y = a*x + b
+    
+    linear_interpolation = y
+    
+  end function linear_interpolation
+  !*********************************************************************************************************************************
+  
+  
+end module SUFR_interpolate_core
+!***********************************************************************************************************************************
+
+
+!***********************************************************************************************************************************
 !> \brief  Procedures to do interpolation (and fitting?)
 
 module SUFR_interpolate
@@ -26,6 +66,64 @@ module SUFR_interpolate
   save
   
 contains
+  
+  !*********************************************************************************************************************************
+  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x, real variables
+  !!
+  !! \param x1  X value 1
+  !! \param x2  X value 2
+  !! \param y1  Y value 1, belonging to x1
+  !! \param y2  Y value 2, belonging to x2
+  !!
+  !! \param x   X value to find y value for
+  !! \retval y  Y value to find
+  
+  function linear_interpolation_real(x1,x2, y1,y2, x)
+    use SUFR_kinds, only: double
+    use SUFR_interpolate_core, only: linear_interpolation
+    implicit none
+    real, intent(in)  :: x1,x2, y1,y2, x
+    real :: linear_interpolation_real
+    
+    linear_interpolation_real = real(linear_interpolation( dble(x1),dble(x2), dble(y1),dble(y2), dble(x) ))
+    
+  end function linear_interpolation_real
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x
+  !!
+  !! \param narr  Size of the arrays
+  !! \param xarr  X-array, sorted to increasing value
+  !! \param yarr  Y-array
+  !!
+  !! \param  x    X value to find y value for
+  
+  function linear_interpolate_array(narr, xarr, yarr, x)
+    use SUFR_kinds, only: double
+    use SUFR_interpolate_core, only: linear_interpolation
+    implicit none
+    integer, intent(in)  :: narr
+    real(double), intent(in)  :: xarr(narr), yarr(narr), x
+    
+    integer :: i,ii
+    real(double) :: linear_interpolate_array
+    
+    ii = 1
+    do i=1,narr-1
+       !print*,i,x,xarr(i),xarr(i+1)
+       if(xarr(i).gt.x) exit
+       ii = i
+    end do
+    
+    linear_interpolate_array = linear_interpolation(xarr(ii),xarr(ii+1), yarr(ii),yarr(ii+1), x)
+    !write(*,'(A,2I6,6F10.3)') 'ipol:',ii,narr,xarr(ii:ii+1),yarr(ii:ii+1),x,linear_interpolate_array
+    
+  end function linear_interpolate_array
+  !*********************************************************************************************************************************
+  
+  
   
   
   !*********************************************************************************************************************************
@@ -42,7 +140,7 @@ contains
   !! \retval c  Coefficient c in y = a*x^2 +b*x + c
   
   subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in)  :: x1,x2,x3, y1,y2,y3
     real(double), intent(out) :: a,b,c
@@ -71,7 +169,7 @@ contains
   !! \param c  Coefficient c in y = a*x^2 +b*x + c
   
   function parabola(x, a,b,c)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in)  :: x,a,b,c
     real(double) :: parabola
@@ -81,6 +179,10 @@ contains
   !*********************************************************************************************************************************
   
   
-end module SUFR_INTERPOLATE
+end module SUFR_interpolate
 !***********************************************************************************************************************************
+
+
+
+
 
