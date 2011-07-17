@@ -62,6 +62,7 @@ end module SUFR_interpolate_core
 !> \brief  Procedures to do interpolation (and fitting?)
 
 module SUFR_interpolate
+  use SUFR_interpolate_core
   implicit none
   save
   
@@ -92,7 +93,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x
+  !> \brief  Do linear interpolation using the data arrays xarr,yarr to find the value y corresponding to x
   !!
   !! \param narr  Size of the arrays
   !! \param xarr  X-array, sorted to increasing value
@@ -135,9 +136,9 @@ contains
   !! \param y1  Y value 1, belonging to x1
   !! \param y2  Y value 2, belonging to x2
   !! \param y3  Y value 3, belonging to x3
-  !! \retval a  Coefficient a in y = a*x^2 +b*x + c
-  !! \retval b  Coefficient b in y = a*x^2 +b*x + c
-  !! \retval c  Coefficient c in y = a*x^2 +b*x + c
+  !! \retval a  Coefficient a in y = a*x^2 + b*x + c
+  !! \retval b  Coefficient b in y = a*x^2 + b*x + c
+  !! \retval c  Coefficient c in y = a*x^2 + b*x + c
   
   subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
     use SUFR_kinds, only: double

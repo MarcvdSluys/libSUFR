@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
      
+   47: 17/07/2011:
+     - Interpolate: fix module use; minor comment update
+     
    46: 20/06/2011:
      - Added routines for linear interpolation to src/interpolate.f90
      - Updated compile flags for ifort
