@@ -71,9 +71,9 @@ contains
   !! \param a1  Angle (rad)
   
   function prs(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -113,9 +113,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dms(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -154,9 +154,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dmss(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -196,9 +196,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -243,9 +243,9 @@ contains
   !! \param a1  Angle (rad)
   
   function ddms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -287,9 +287,9 @@ contains
   !! \param a1  Angle (rad)
   
   function d1ms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -331,9 +331,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dmss2(a1)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -379,9 +379,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dm(a1)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -414,9 +414,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -454,9 +454,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dmm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -494,9 +494,9 @@ contains
   !! \param a1  Angle (rad)
   
   function dmmm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -535,9 +535,9 @@ contains
   !! \param a1  Angle (rad)
   
   function ddd2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -572,9 +572,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdms(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -614,9 +614,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -662,9 +662,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wddms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -709,9 +709,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wd1ms2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -753,9 +753,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdm(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -787,9 +787,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -828,9 +828,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdmm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -867,9 +867,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wdmmm2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -907,9 +907,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wddd2(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -942,9 +942,9 @@ contains
   !! \param a1  Angle (rad)
   
   function ams(a1)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -973,9 +973,9 @@ contains
   !! \param a1  Angle (rad)
   
   function ams2(a1)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -1010,9 +1010,9 @@ contains
   !! \param a1  Angle (rad)
   
   function amss(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -1040,9 +1040,9 @@ contains
   !! \param a1  Angle (rad)
   
   function ass(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -1068,9 +1068,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wass(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1
@@ -1100,9 +1100,9 @@ contains
   !! \param a1  Angle (rad)
   
   function wams(a1)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: a1

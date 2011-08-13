@@ -3,9 +3,16 @@
   ChangeLog.txt for libSUFR
   
      
-   48: 30/07/2011:
+   50: 13/08/2011:
+     - Use 'only' attributes with 'use' statements in modules almost everywhere, to
+       ensure that only the intended variables and functions become available.
+       Use with TheSky rev.388
+     
+   49: 30/07/2011:
      - Updated ChangeLog.txt, first bzr version
      
+   48: bzr rev.48 = svn rev.47
+   
    47: 17/07/2011:
      - Interpolate: fix module use; minor comment update
      

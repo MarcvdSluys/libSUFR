@@ -33,7 +33,7 @@ contains
   !! \param message  Exit message
   
   subroutine quit_program(message)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     character, intent(in) :: message*(*)
     
@@ -52,7 +52,7 @@ contains
   !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
   
   subroutine quit_program_warning(message, status)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)
@@ -81,7 +81,7 @@ contains
   !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
   
   subroutine quit_program_error(message, status)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)
@@ -107,7 +107,7 @@ contains
   !! \param unit     Output unit: 0-StdErr, 1-StdOut
   
   subroutine warn(message, unit)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)
@@ -130,7 +130,7 @@ contains
   !! \param unit     Output unit: 0-StdErr, 1-StdOut
   
   subroutine error(message, unit)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)

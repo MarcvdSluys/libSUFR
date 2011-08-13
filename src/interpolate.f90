@@ -62,9 +62,10 @@ end module SUFR_interpolate_core
 !> \brief  Procedures to do interpolation (and fitting?)
 
 module SUFR_interpolate
-  use SUFR_interpolate_core
+  use SUFR_interpolate_core, only: linear_interpolation
   implicit none
   save
+  public :: linear_interpolation  ! Make these available through the module SUFR_interpolate
   
 contains
   

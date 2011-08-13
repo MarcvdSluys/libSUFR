@@ -34,14 +34,14 @@ contains
   !! \param  n            Size of array (int).
   !! \param  array        Array of size n with values that must be sorted (double) - use dble(array) for other variable types
   !!
-  !! \retval index_list  List with indices of array values, sorted to ascending value.  
-  !!                     array(index_list) gives the sorted array (int).
+  !! \retval index_list   List with indices of array values, sorted to ascending value.  
+  !!                      array(index_list) gives the sorted array (int).
   !!
   !! \note This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \see Numerical Recipes in Fortran 77, Sect.8.4.
   
   subroutine sorted_index_list(n,array,index_list)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     
     implicit none
     integer, intent(in) :: n
@@ -149,7 +149,7 @@ contains
   !! \note Uses sorted_index_list()
   
   subroutine sort_array(array)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(inout) :: array(:)

@@ -35,7 +35,7 @@ contains
   !! \param datar  Data set
   
   function compute_median_real(ni,datar)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: ni
     real(double), intent(in) :: datar(ni)
@@ -57,8 +57,8 @@ contains
   !! \param data  Data set
   
   function compute_median(ni,data)
-    use SUFR_kinds
-    use SUFR_sorting
+    use SUFR_kinds, only: double
+    use SUFR_sorting, only: sorted_index_list
     implicit none
     integer, intent(in) :: ni
     real(double), intent(in) :: data(ni)

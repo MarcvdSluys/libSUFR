@@ -22,9 +22,10 @@
 !> \brief  Procedures to handle periodic angles
 
 module SUFR_angles_periodic
-  use SUFR_kinds
+  use SUFR_kinds, only: double
   implicit none
   save
+  private :: double
   
   
 contains
@@ -36,8 +37,8 @@ contains
   !! \param ang  Input angle (radians)
   
   function rev(ang)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi2
     
     implicit none
     real(double), intent(in) :: ang
@@ -54,7 +55,7 @@ contains
   !! \param ang  Input angle (radians)
   
   function rrev(ang)
-    use SUFR_constants
+    use SUFR_constants, only: rpi2
     
     implicit none
     real, intent(in) :: ang
@@ -75,8 +76,8 @@ contains
   !! \param ang  Input angle (radians)
   
   function rev2(ang)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi,pi2
     
     implicit none
     real(double), intent(in) :: ang
@@ -95,7 +96,7 @@ contains
   !! \param ang  Input angle (radians)
   
   function rrev2(ang)
-    use SUFR_constants
+    use SUFR_constants, only: rpi,rpi2
     
     implicit none
     real, intent(in) :: ang
@@ -119,8 +120,8 @@ contains
   !! \param cen  'Central value' (radians)
   
   function revc(ang,cen)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi,pi2
     
     implicit none
     real(double), intent(in) :: ang,cen
@@ -145,7 +146,7 @@ contains
   !! \param tm  Input time (hours)
   
   function rv(tm)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
     real(double) :: rv
@@ -162,7 +163,7 @@ contains
   !! \param tm  Input time (hours)
   
   function rv12(tm)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
     real(double) :: rv12
@@ -180,7 +181,7 @@ contains
   !! \param ang  Input angle (degrees)
   
   function rv180(ang)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: ang
     real(double) :: rv180
@@ -205,12 +206,13 @@ end module SUFR_angles_periodic
 !> \brief  Procedures to handle angles
 
 module SUFR_angles
-  use SUFR_kinds
-  use SUFR_angles_periodic 
+  use SUFR_kinds, only: double
+  use SUFR_angles_periodic, only: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180
   
   implicit none
   save
-  
+  private :: double
+  public :: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180  ! make these functions available through the module SUFR_angles
   
 contains
   
@@ -225,7 +227,7 @@ contains
   !! \param b2  Latitude of object 2
   
   function asep(l1,l2, b1,b2)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     use SUFR_angles_periodic, only: rev2
     
     implicit none
@@ -254,7 +256,6 @@ contains
   !! \param b2  Latitude of object 2 - Dec if measuring from the north
   
   function calpa(l1,l2,b1,b2)
-    use SUFR_constants
     implicit none
     real(double), intent(in) :: l1,l2,b1,b2
     real(double) :: calpa,dl
@@ -274,8 +275,8 @@ contains
   !! \param pa  Position angle (radians)
   
   function pastr_en(pa)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi2
     use SUFR_angles_periodic, only: rev
     
     implicit none
@@ -297,8 +298,8 @@ contains
   !! \param pa  Position angle (radians)
   
   function pastr_nl(pa)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi2
     use SUFR_angles_periodic, only: rev
     
     implicit none
@@ -319,8 +320,8 @@ contains
   !! \param pa  Position angle (radians)
   
   function pastr_nls(pa)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi2
     use SUFR_angles_periodic, only: rev
     
     implicit none
@@ -341,8 +342,8 @@ contains
   !! \param  az  Azimuth (radians, S=0)
   
   function wdstr_ens(az)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: az
@@ -365,8 +366,8 @@ contains
   !! \param  az  Azimuth (radians, S=0)
   
   function wdstr_nls(az)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: az
@@ -389,8 +390,8 @@ contains
   !! \param  az  Azimuth (radians, S=0)
   
   function wdstr_nl(az)
-    use SUFR_constants
-    use SUFR_kinds
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: az

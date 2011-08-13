@@ -52,9 +52,9 @@ contains
   !! \param t  Time (h)
   
   function hms(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -93,8 +93,7 @@ contains
   !! \param t  Time (h)
   
   function hms2(t)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
     implicit none
@@ -140,9 +139,9 @@ contains
   !! \param t  Time (h)
   
   function ums(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -184,9 +183,9 @@ contains
   !! \param t  Time (h)
   
   function hms_s(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -229,9 +228,9 @@ contains
   !! \param t  Time (h)
   
   function hms_sss(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -274,9 +273,9 @@ contains
   !! \param t  Time (h)
   
   function hmm(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -310,9 +309,9 @@ contains
   !! \param t  Time (h)
   
   function umm(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -346,9 +345,9 @@ contains
   !! \param t  Time (h)
   
   function hm(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -386,9 +385,9 @@ contains
   !! \param t  Time (h)
   
   function um(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -426,9 +425,9 @@ contains
   !! \param t  Time (h)
   
   function wum(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -465,9 +464,9 @@ contains
   !! \param t  Time (h)
   
   function wumm(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -504,9 +503,9 @@ contains
   !! \param t  Time (h)
   
   function wums(t)
-    use SUFR_kinds
-    use SUFR_constants
-    use SUFR_angles
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
     
     implicit none
     real(double), intent(in) :: t
@@ -552,8 +551,7 @@ contains
   !! \param t  Time (h)
   
   function hm2(t)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
     implicit none
@@ -591,9 +589,9 @@ contains
   !! \param t  Time (h)
   
   function hdm(t)
-    use SUFR_kinds
-    use SUFR_angles
-    use SUFR_constants
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2h,h2r
     
     implicit none
     real(double), intent(in) :: t
@@ -630,8 +628,7 @@ contains
   !! \param a1  Angle (h)
   
   function tms(a1)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: a1
     real(double) :: a,s
@@ -657,8 +654,7 @@ contains
   !! \param a1  Angle (h)
   
   function tms2(a1)
-    use SUFR_kinds
-    use SUFR_constants
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: a1
     real(double) :: a,s

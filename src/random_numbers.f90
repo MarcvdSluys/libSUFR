@@ -36,7 +36,7 @@ contains
   !! \retval get_ran_seed  Randon-number seed:  -1e6 < seed < 0 (int)
   
   function get_ran_seed(degree)  
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     
     implicit none
     integer, intent(in) :: degree
@@ -76,7 +76,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.7.1.
   
   function ran_unif(seed1)
-    use SUFR_kinds
+    use SUFR_kinds, only: double, dbl
     
     implicit none
     integer, intent(inout) :: seed1

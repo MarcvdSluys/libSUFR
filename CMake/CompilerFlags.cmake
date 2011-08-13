@@ -74,7 +74,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "g95" )
   
   if( WANT_WARNINGS )
     # 102: module procedure not referenced,  136: module variable not used,  165: implicit interface
-    set( WARN_FLAGS "-Wall -Wextra -Werror -Wno=102,136,165" )
+    set( WARN_FLAGS "-Wall -Wextra -Wno=102,136,165" )
     set( WARN_FLAGS "-std=f2003 ${WARN_FLAGS}" )
   endif( WANT_WARNINGS )
   if( STOP_ON_WARNING )

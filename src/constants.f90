@@ -22,13 +22,13 @@
 !> \brief  Mathematical constants
 
 module SUFR_constants_math
-  use SUFR_kinds
+  use SUFR_kinds, only: double
   implicit none
   private
   save
   
-  real(double), public :: pi,pi2,pio2,pio4,r2d,d2r,r2h,h2r,d2h,h2d,d2as,as2d,am2r,r2am,r2as,as2r
-  real, public :: rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
+  real(double), public ::  pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
+  real, public ::         rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -38,7 +38,7 @@ end module SUFR_constants_math
 !> \brief  Astronomical constants and satellite data
 
 module SUFR_constants_astro
-  use SUFR_kinds
+  use SUFR_kinds, only: double
   implicit none
   private
   save
@@ -116,7 +116,7 @@ end module SUFR_constants_calendar
 !> \brief  Current date/time constants
 
 module SUFR_constants_datetime
-  use SUFR_kinds
+  use SUFR_kinds, only: double
   implicit none
   private
   save
@@ -189,7 +189,7 @@ end module SUFR_constants_environment
 
 module SUFR_constants
   
-  use SUFR_kinds
+  use SUFR_kinds, only: double, dbl, intkindmax, realkindmax, max_accuracy_kinds
   
   use SUFR_constants_math
   use SUFR_constants_astro
@@ -202,7 +202,7 @@ module SUFR_constants
   use SUFR_constants_environment
   
   implicit none
-  !private
+  private :: double, dbl, intkindmax, realkindmax, max_accuracy_kinds
   save
   
   

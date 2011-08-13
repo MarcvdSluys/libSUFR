@@ -37,7 +37,7 @@ contains
   !! \retval  cal2jd  The Julian day number (double)
   
   function cal2jd(yy,mm,dd)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: dd
@@ -85,7 +85,7 @@ contains
   !! \retval dd  Day of month (+ fraction)
   
   subroutine jd2cal(jd, yy,mm,dd)
-    use SUFR_kinds
+    use SUFR_kinds, only: double, dbl, long
     
     implicit none
     real(double), intent(in) :: jd
@@ -143,9 +143,10 @@ end module SUFR_date_and_time_JD
 !> \brief  Procedures for manipulation of date and time
 
 module SUFR_date_and_time
-  use SUFR_date_and_time_JD
+  use SUFR_date_and_time_JD, only: cal2jd, jd2cal
   implicit none
   save
+  public :: cal2jd, jd2cal  ! Make these available through the module SUFR_date_and_time
   
 contains
   
@@ -163,8 +164,8 @@ contains
   !! \retval ymdhms2jd  The Julian day number (double)
   
   function ymdhms2jd(yy,mmo,dd, h,m,s)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yy,mmo,dd,h,m
@@ -192,8 +193,8 @@ contains
   !! \param time  Time (hours)
   
   function dtm2jd(yy,mo,dd,time)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yy,mo,dd
@@ -218,7 +219,7 @@ contains
   !! \retval m   Minutes (integer)
   
   subroutine tm2hm(tm,h,m)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
     integer, intent(out) :: h,m
@@ -246,7 +247,7 @@ contains
   !! \retval s   Seconds (integer)
   
   subroutine tm2hms(tm,h,m,s)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
     integer, intent(out) :: h,m,s
@@ -278,7 +279,7 @@ contains
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
   function dow_ut(jd0)
-    use SUFR_kinds
+    use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: jd0
@@ -300,8 +301,8 @@ contains
   !! \param jd0  Julian day
   
   function doy(jd0)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd, jd2cal
     
     implicit none
     real(double), intent(in) :: jd0
@@ -325,8 +326,8 @@ contains
   !! \param dy   Day of month
   
   function ymd2doy(yr,mon,dy)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yr,mon,dy
@@ -353,8 +354,8 @@ contains
   !! \note year is input
   
   subroutine doy2md(doy,yr, mon,dy)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd, jd2cal
     
     implicit none
     integer, intent(in) :: doy,yr
@@ -377,8 +378,8 @@ contains
   !! \param yr  Year (CE)
   
   function leapyr(yr)
-    use SUFR_kinds
-    use SUFR_date_and_time_JD
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yr

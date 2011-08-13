@@ -42,7 +42,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
   function root_solver(func,x1,x2,accur, status,verbose)
-    use SUFR_kinds
+    use SUFR_kinds, only: double, dbl
     
     implicit none
     real(double), intent(in) :: x1,x2,accur
@@ -176,7 +176,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   
   function minimum_solver(func,ax,bx,cx,accur,xmin, status,verbose)
-    use SUFR_kinds
+    use SUFR_kinds, only: double, dbl
     
     implicit none
     real(double), intent(in) :: ax,bx,cx,accur
@@ -324,7 +324,7 @@ end module SUFR_solvers
 
 
 subroutine golden_section(x1,x2, a1,a2, y1,y2)
-  use SUFR_kinds
+  use SUFR_kinds, only: double, dbl
   
   implicit none
   real(double), intent(in)  :: x1,x2, a1,a2
