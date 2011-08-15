@@ -3,6 +3,20 @@
   http://libsufr.sourceforge.net/
   
   
+  0.1.8  15/08/2011  (bzr rev.51)
+    * Added source files:
+      - command_line.f90: Procedures to handle command-line options and arguments
+    * Added routines:
+      - get_command_argument_i(), get_command_argument_l(), get_command_argument_r(), 
+        get_command_argument_d(): read a command-line variable with type int, long, 
+	real, double in command_line.f90
+      - faculty_i(), faculty(), binom_coeff() and binom_prob() in statistics.f90
+      - routines for linear interpolation in interpolate.f90
+    * Cetera:
+      - use 'only' attributes with 'use' statements in modules almost everywhere, to
+        ensure that only the intended variables and functions become available.
+      - updated compile flags
+    
   0.1.7  25/04/2011  (SVN rev.44)
     * Added source files:
       - earth.f90 with routines for geography

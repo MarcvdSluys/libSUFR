@@ -3,6 +3,9 @@
   ChangeLog.txt for libSUFR
   
      
+   51: 15/08/2011:  *** SF release v0.1.8 ***
+     - 5003 lines of code
+     
    50: 13/08/2011:
      - Use 'only' attributes with 'use' statements in modules almost everywhere, to
        ensure that only the intended variables and functions become available.
