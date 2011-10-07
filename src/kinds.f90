@@ -37,8 +37,13 @@ module SUFR_kinds
   integer, parameter :: dbl = selected_real_kind(15,307)     ! Precision = 15, range = 307
   
   ! Maximum integer and real kinds:
-  integer :: intkindmax, realkindmax
-  
+  !integer :: intkindmax, realkindmax
+  integer, parameter :: intkindmax = max(selected_int_kind(9),selected_int_kind(18),selected_int_kind(38),selected_int_kind(99))
+  integer, parameter :: realkindmax = max(selected_real_kind(6),selected_real_kind(15),selected_real_kind(18), &
+       selected_real_kind(31),selected_real_kind(33),selected_real_kind(99))
+  ! Problem with g95: not all functions have been defined in the maximum accuracy yet!
+  !integer, parameter :: realmaxkind = double  ! If the above doesn't work
+
 contains
   
   
@@ -47,13 +52,21 @@ contains
   !!
   !! \retval ikindmax  Maximum integer kind
   !! \retval rkindmax  Maximum real kind
+  !! 
+  !! \param  warn      Warn if something funny happens (optional)
+  !!
+  !! \note  Problem: ikindmax,rkindmax are not parameters (defined at compile time)!
   
-  subroutine max_accuracy_kinds(ikindmax,rkindmax)
+  subroutine max_accuracy_kinds(ikindmax,rkindmax, warn)
     implicit none
     integer, intent(out) :: ikindmax,rkindmax
+    logical, intent(in), optional :: warn
     integer :: acc,rng,kind
     integer :: rkindmax2 !,accmax,rngmax
+    logical :: warning
     
+    warning = .false.
+    if(present(warn)) warning = warn
     
     ! Integer:
     do rng=1,1000000
@@ -62,8 +75,6 @@ contains
        !rngmax   = rng
        ikindmax = kind
     end do
-    !write(6,'(A30,I9,9x,I9)')'  Integer:  kind, range:',ikindmax,rngmax
-    
     
     ! Real:
     rng = 1
@@ -82,10 +93,11 @@ contains
        rkindmax2 = kind
     end do
     
-    !write(6,'(A30,3I9)')'  Real:  kind, accuracy, range:',rkindmax,accmax,rngmax
     if(rkindmax2.ne.rkindmax) then
-       write(6,'(/,A,2I6)')'  Warning:  max_accuracy_kinds found two different values for max kind: ',rkindmax,rkindmax2
-       write(6,'(A,/)')'  You should check what is going on...'
+       if(warning) then
+          write(6,'(/,A,2I6)')'  Warning:  max_accuracy_kinds found two different values for max kind: ',rkindmax,rkindmax2
+          write(6,'(A,/)')'  You should check what is going on...'
+       end if
        rkindmax = min(rkindmax,rkindmax2)  ! Play it safe
     end if
     

@@ -27,8 +27,8 @@ module SUFR_constants_math
   private
   save
   
-  real(double), public ::  pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
-  real, public ::         rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
+  real(double), public ::  one, c3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
+  real, public ::         rc3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -174,7 +174,9 @@ module SUFR_constants_environment
   private
   save
   
-  character, public :: homedir*(199), workdir*(199), program_name*(99), program_path*(199), program_args*(199)
+  integer, public :: stdErr, StdIn, StdOut
+  character, public :: homedir*(199), workdir*(199), hostname*(99), username*(99)
+  character, public :: program_name*(99), program_path*(199), program_args*(199)
   
 end module SUFR_constants_environment
 !***********************************************************************************************************************************
@@ -189,7 +191,7 @@ end module SUFR_constants_environment
 
 module SUFR_constants
   
-  use SUFR_kinds, only: double, dbl, intkindmax, realkindmax, max_accuracy_kinds
+  use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
   use SUFR_constants_math
   use SUFR_constants_astro
@@ -202,7 +204,7 @@ module SUFR_constants
   use SUFR_constants_environment
   
   implicit none
-  private :: double, dbl, intkindmax, realkindmax, max_accuracy_kinds
+  private :: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   save
   
   
@@ -217,7 +219,7 @@ contains
     implicit none
     
     ! Get the kinds of the most accurate integer and real for the current compiler/system:
-    call max_accuracy_kinds(intkindmax,realkindmax)  
+    !call max_accuracy_kinds(intkindmax,realkindmax)
     
     ! Set the mathematical constants:
     call set_SUFR_constants_math()
@@ -248,11 +250,12 @@ contains
   subroutine set_SUFR_constants_math
     use SUFR_constants_math
     implicit none
-    real(double) :: one
     
-    one = 1.0_dbl
     
     ! Double precision:
+    one = 1.0_dbl             ! 1
+    c3rd = one/3.0_dbl        ! 1/3
+    
     pio4 = atan(one)          ! pi/4
     pio2 = 2*pio4             ! pi/2
     pi   = 2*pio2             ! pi
@@ -274,6 +277,8 @@ contains
     
     
     ! Single precision:
+    rc3rd = real(c3rd)        ! 1/3
+    
     rpio4 = real(pio4)        ! pi/4
     rpio2 = real(pio2)        ! pi/2
     rpi   = real(pi)          ! pi
@@ -340,7 +345,7 @@ contains
     pc_hbar    =  pc_hp/pi2                                   ! Reduced Planck constant, erg s
     pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0  ! Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
     pc_sigma   =  pc_arad*pc_c*0.25d0                         ! Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
-
+    
   end subroutine set_SUFR_constants_astro
   !*********************************************************************************************************************************
   
@@ -522,7 +527,7 @@ contains
   end subroutine set_SUFR_constants_cursor
   !*********************************************************************************************************************************
   
-    
+  
   !*********************************************************************************************************************************
   !> \brief  Define the values of constants that describe the working environment
   
@@ -532,11 +537,21 @@ contains
     integer :: i, narg
     character :: tmpstr*(99)
     
-    !Get info from environment variables:
-    call get_environment_variable('HOME',homedir)   ! Set homedir = $HOME, will contain e.g. '/home/name'
-    call get_environment_variable('PWD',workdir)    ! Set workdir = $PWD, will contain e.g. '/home/name/foo'
+    ! Standard error, input, and output
+    stdErr = 0  ! Unit for standard error
+    stdIn  = 0  ! Unit for standard input
+    stdOut = 6  ! Unit for standard output
+    
+    
+    ! Get info from environment variables:
+    call get_environment_variable('HOME',homedir)   ! Set homedir = $HOME, will contain e.g. '/home/user'
+    call get_environment_variable('PWD',workdir)    ! Set workdir = $PWD, may contain e.g. '/home/user/foo'
+    call get_environment_variable('HOSTNAME',hostname)  ! Set hostname = $HOSTNAME  !Apparently not always exported
+    call get_environment_variable('USER',username)      ! Set username = $USER
+    
+    ! Replace '/home/name' with '~' in workdir:
     i = index(workdir,trim(homedir),back=.false.)
-    if(i.ne.0) workdir = workdir(1:i-1)//'~'//trim(workdir(i+len_trim(homedir):))  !Replace '/home/name' with '~'
+    if(i.ne.0.and.i.lt.len_trim(workdir)) workdir = workdir(1:i-1)//'~'//trim(workdir(i+len_trim(homedir):))
     
     
     ! Store the path and name of the program that is being executed in program_path and program_name:
@@ -546,7 +561,7 @@ contains
        program_path = ' '
        program_name = trim(tmpstr)
     else
-       program_path = trim(tmpstr(1:i))     ! The string before the last slash should be the program path
+       program_path = trim(tmpstr(1:i))      ! The string before the last slash should be the program path
        program_name = trim(tmpstr(i+1:))     ! The bit after the last slash should be the program name
     end if
     

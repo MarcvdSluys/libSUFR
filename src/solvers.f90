@@ -49,7 +49,8 @@ contains
     integer, intent(in), optional :: verbose
     integer, intent(out), optional :: status
     
-    real(double) :: root_solver, func
+    real(double) :: root_solver
+    real(double), external :: func
     
     integer, parameter :: max_iter = 100                            ! Maximum allowed number of iterations
     real(double), parameter :: eps = epsilon(0.0_dbl)               ! Machine precision
@@ -183,7 +184,8 @@ contains
     real(double), intent(out) :: xmin
     integer, intent(out), optional :: status
     integer, intent(in), optional :: verbose
-    real(double) :: minimum_solver,func
+    real(double) :: minimum_solver
+    real(double), external :: func
     
     integer, parameter :: max_iter = 100
     real(double), parameter :: eps = epsilon(0.0_dbl)  ! Machine precision
