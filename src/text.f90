@@ -93,6 +93,33 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Search and replace occurences of a substring in a string
+  !!
+  !! \param string   Original string to replace in
+  !! \param str_in   Search string
+  !! \param str_out  Replacement string
+  
+  subroutine replace_substring(string, str_in, str_out)
+    character, intent(inout) :: string*(*)
+    character, intent(in) :: str_in*(*),str_out*(*)
+    integer :: is,l
+    
+    l = len_trim(str_in)
+    is = huge(is)
+    do
+       is = index(string, str_in, back=.false.)
+       if(is.le.0) exit
+       string = string(1:is-1)//trim(str_out)//trim(string(is+l:))
+    end do
+    
+  end subroutine replace_substring
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
 end module SUFR_text
 !***********************************************************************************************************************************
 

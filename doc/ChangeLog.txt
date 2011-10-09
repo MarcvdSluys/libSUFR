@@ -3,6 +3,10 @@
   ChangeLog.txt for libSUFR
   
      
+   53: 10/10/2011:
+     - Added routine replace_substring() to text.f90
+     - Updated CMake: use INCLUDE_FLAGS directly, move CMAKE_VERBOSE_MAKEFILE to CMakeLists
+     
    52: 07/10/2011:
      - Added constants: one,c3rd,rc3rd, stdErr,StdIn,StdOut, hostname,username
      - Simplified definition of intkindmax, realkindmax so that they can be parameters,

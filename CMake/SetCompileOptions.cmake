@@ -1,7 +1,5 @@
 # Various compile/optimisation options that we may want to enable:
 
-option( CMAKE_VERBOSE_MAKEFILE "Verbose makefile" off )
-
 option( WANT_CHECKS       "Activate runtime checks (array bounds, NaNs)" off )
 option( WANT_WARNINGS     "Activate warnings" on )
 option( STOP_ON_WARNING   "Stop compilation on warnings" off )

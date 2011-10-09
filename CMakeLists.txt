@@ -5,7 +5,7 @@
 ##  To compile, from the directory that contains this file, do:
 ##    $ mkdir build; cd build
 ##    $ cmake ..
-##    $ make
+##    $ make install
 ##
 
 
@@ -28,9 +28,11 @@ project( libSUFR Fortran )
 #include( CPack )
 #set( CPACK_INSTALL_PREFIX_PATH ${CMAKE_INSTALL_PREFIX_PATH} )
 
-# Search in the CMake/ directory for CMake modules:
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake)
+# Increase verbosity for debugging:
+option( CMAKE_VERBOSE_MAKEFILE "Verbose makefile" on )
 
+# Search in the CMake/ directory for CMake modules:
+list( APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake )
 
 # Various compile/optimisation options that we may want to enable:
 include( SetCompileOptions )
