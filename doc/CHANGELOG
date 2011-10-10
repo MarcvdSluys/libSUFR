@@ -3,6 +3,19 @@
   http://libsufr.sourceforge.net/
   
   
+  0.1.9  10/10/2011  (bzr rev.54)
+    * Added routines:
+      - replace_substring() in text.f90
+    * Added constants:
+      - one,c3rd,rc3rd, stdErr,StdIn,StdOut, hostname,username
+    * Cetera:
+      - simplified definitions of intkindmax, realkindmax. They are now parameters,
+        as required in declarations. However, for compilers like g95, where quad
+	precision is only partly implemented, this causes problems, since the very
+	highest precision kind is used
+      - minor updates to CMake files
+      - declared func as external in root_solver() and minimum_solver()
+  
   0.1.8  15/08/2011  (bzr rev.51)
     * Added source files:
       - command_line.f90: Procedures to handle command-line options and arguments

@@ -2,6 +2,10 @@
 
   ChangeLog.txt for libSUFR
   
+
+******************************************************************************************
+   54: 10/10/2011:  *** SF release v0.1.9 ***
+     - 5059 lines of code
      
    53: 10/10/2011:
      - Added routine replace_substring() to text.f90
