@@ -40,7 +40,12 @@ include( SetCompileOptions )
 
 # Place the products in their directories:
 get_filename_component( Fortran_COMPILER_NAME ${CMAKE_Fortran_COMPILER} NAME )
-set( MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR/${Fortran_COMPILER_NAME}" )
+if( COMPILER_SPECIFIC_LIBS )
+  set( MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR/${Fortran_COMPILER_NAME}" )
+else( COMPILER_SPECIFIC_LIBS )
+  set( MODULE_DIRECTORY "${CMAKE_SOURCE_DIR}/usr/include/libSUFR" )
+endif( COMPILER_SPECIFIC_LIBS )
+
 set( LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/usr/lib" )
 
 
@@ -54,13 +59,21 @@ include( CompilerFlags )
 # Create libraries:
 if( CREATE_SHAREDLIB )
   add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
-  set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  if( COMPILER_SPECIFIC_LIBS )
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  else( COMPILER_SPECIFIC_LIBS )
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR")
+  endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_shared PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
 endif( CREATE_SHAREDLIB )
 
 if( CREATE_STATICLIB )
   add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
-  set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  if( COMPILER_SPECIFIC_LIBS )
+    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+  else( COMPILER_SPECIFIC_LIBS )
+    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR")
+  endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
 endif( CREATE_STATICLIB )
 
