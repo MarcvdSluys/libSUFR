@@ -33,10 +33,17 @@ with
 
 
 By default, files will be installed as:
+/usr/local/lib/libSUFR.*  and
+/usr/local/include/libSUFR/*.mod
+
+
+If you want to use multiple Fortran compilers, you will want to keep the different
+versions of the library separated.  In this case, use (apart from other options):
+ $ cmake -DCOMPILER_SPECIFIC_LIBS=on ..
+
+The files will then be installed as:
 /usr/local/lib/libSUFR_<NameOfFortranCompiler>.*  and
 /usr/local/include/libSUFR/<NameOfFortranCompiler>/*.mod
-
-The reason why the name of the Fortran compiler is included is that the modules
-in Fortran are (still) compiler dependent (sigh...) 
-
+If one of your Fortran compilers is your default, you can use both the default
+installation method and the compiler-specific method to install the library.
 

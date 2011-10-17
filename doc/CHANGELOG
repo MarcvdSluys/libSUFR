@@ -3,6 +3,13 @@
   http://libsufr.sourceforge.net/
   
   
+  0.2.0  17/10/2011  (bzr rev.56)
+    * Updated CMake files:
+      - compiler-specific library is now optional - by default the library and module
+        files are installed in the default location.  If you want to use multiple
+	Fortran compilers, use the option -DCOMPILER_SPECIFIC_LIBS=on for cmake.
+	See doc/INSTALL.
+      
   0.1.9  10/10/2011  (bzr rev.54)
     * Added routines:
       - replace_substring() in text.f90
