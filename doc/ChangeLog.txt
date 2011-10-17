@@ -2,7 +2,17 @@
 
   ChangeLog.txt for libSUFR
   
-
+   57: 17/10/2011:  *** SF release v0.2.1 ***
+     - added version number to Doxygen documentation
+     - 5059 lines of code
+   
+   56: 17/10/2011:
+     - SF release v0.2.0, not recognised by SF
+   
+   55: 14/10/2011:
+     - Updated CMake: make including compiler name in libs and module dir optional;
+       use the option -DCOMPILER_SPECIFIC_LIBS=on to create compiler-dependent files
+   
 ******************************************************************************************
    54: 10/10/2011:  *** SF release v0.1.9 ***
      - 5059 lines of code

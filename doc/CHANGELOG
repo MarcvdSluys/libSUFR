@@ -3,7 +3,7 @@
   http://libsufr.sourceforge.net/
   
   
-  0.2.0  17/10/2011  (bzr rev.56)
+  0.2.1  17/10/2011  (bzr rev.57)
     * Updated CMake files:
       - compiler-specific library is now optional - by default the library and module
         files are installed in the default location.  If you want to use multiple
