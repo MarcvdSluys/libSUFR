@@ -148,6 +148,28 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Find the first unused I/O unit larger than 100
+  !!
+  !! \retval unit  I/O unit; unit > 100
+  
+  subroutine find_free_io_unit(unit)
+    implicit none
+    integer, intent(out) :: unit
+    logical :: status
+    
+    do unit=101,huge(unit)
+       inquire(unit=unit, opened=status)
+       if(.not.status) exit
+    end do
+    
+  end subroutine find_free_io_unit
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
 end module SUFR_system
 !***********************************************************************************************************************************
 

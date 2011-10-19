@@ -9,13 +9,13 @@
 ##
 
 
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required( VERSION 2.8 FATAL_ERROR )
 
 # Set build type. Do this *before* we set the project name:
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo Profile."
-    FORCE)
+    FORCE )
 endif( NOT CMAKE_BUILD_TYPE )
 set( CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "internal" )
 
@@ -60,21 +60,21 @@ include( CompilerFlags )
 if( CREATE_SHAREDLIB )
   add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
   if( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}" )
   else( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR")
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR" )
   endif( COMPILER_SPECIFIC_LIBS )
-  set_target_properties( libSUFR_shared PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+  set_target_properties( libSUFR_shared PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
 endif( CREATE_SHAREDLIB )
 
 if( CREATE_STATICLIB )
   add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
   if( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}")
+    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}" )
   else( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR")
+    set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR" )
   endif( COMPILER_SPECIFIC_LIBS )
-  set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY})
+  set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
 endif( CREATE_STATICLIB )
 
 

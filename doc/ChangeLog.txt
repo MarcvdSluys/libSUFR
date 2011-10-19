@@ -2,6 +2,11 @@
 
   ChangeLog.txt for libSUFR
   
+   58: 19/10/2011:
+     - Added routine find_free_io_unit() to find first unused I/O unit > 100
+     
+   
+******************************************************************************************
    57: 17/10/2011:  *** SF release v0.2.1 ***
      - added version number to Doxygen documentation
      - 5059 lines of code
