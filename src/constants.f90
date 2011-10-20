@@ -176,7 +176,7 @@ module SUFR_constants_environment
   
   integer, public :: stdErr, StdIn, StdOut
   character, public :: homedir*(199), workdir*(199), hostname*(99), username*(99)
-  character, public :: program_name*(99), program_path*(199), program_args*(199)
+  character, public :: program_name*(199), program_path*(999), program_args*(999)
   
 end module SUFR_constants_environment
 !***********************************************************************************************************************************

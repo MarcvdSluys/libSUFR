@@ -2,6 +2,9 @@
 
   ChangeLog.txt for libSUFR
   
+   59: 20/10/2011:
+     - Increased size of program_args to allow longer strings
+     
    58: 19/10/2011:
      - Added routine find_free_io_unit() to find first unused I/O unit > 100
      
