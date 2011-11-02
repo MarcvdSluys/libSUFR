@@ -3,12 +3,22 @@
   http://libsufr.sourceforge.net/
   
   
+  0.3.0  02/11/2011  (bzr rev.60)
+    * Added routines:
+      - find_free_io_unit() to find first unused I/O unit > 100
+    * Updated code:
+      - declare longer strings for program_name, program_path and program_args
+    * Updated tarball:
+      - tar the package in a subdir: libSUFR-x.y.z/
+      - store README, INSTALL, LICENCE, etc in / rather than /doc/
+      - use gzip in stead of bzip2
+      
   0.2.1  17/10/2011  (bzr rev.57)
     * Updated CMake files:
       - compiler-specific library is now optional - by default the library and module
         files are installed in the default location.  If you want to use multiple
 	Fortran compilers, use the option -DCOMPILER_SPECIFIC_LIBS=on for cmake.
-	See doc/INSTALL.
+	See INSTALL.
       
   0.1.9  10/10/2011  (bzr rev.54)
     * Added routines:

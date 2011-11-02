@@ -2,6 +2,15 @@
 
   ChangeLog.txt for libSUFR
   
+******************************************************************************************
+   60: 02/11/2011:  *** SF release v0.3.0 ***
+     - Updated packaging scripts:
+       - tar the package in a subdir: libSUFR-x.y.z/
+       - store README, INSTALL, LICENCE, etc in / rather than /doc/
+       - use gzip iso bzip2
+       - added test script
+       - made compatible with Gentoo ebuilds
+     
    59: 20/10/2011:
      - Increased size of program_args to allow longer strings
      
