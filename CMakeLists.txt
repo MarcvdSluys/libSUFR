@@ -53,7 +53,7 @@ set( LIBRARY_OUTPUT_PATH "${CMAKE_SOURCE_DIR}/usr/lib" )
 include( FileList )
 
 # Set FORTRAN compiler flags:
-include( CompilerFlags )
+include( CompilerFlags_Fortran )
 
 
 # Create libraries:

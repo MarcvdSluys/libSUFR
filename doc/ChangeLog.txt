@@ -1,7 +1,13 @@
 
 
-  ChangeLog.txt for libSUFR
+  ChangeLog.txt for libSUFR (libsufr.sourceforge.net)
   
+  
+   61: 03/11/2011:
+     - Updated CMake files to CMakeFiles rev.10
+     - Renamed CompilerFlags -> CompilerFlags_Fortran
+          
+
 ******************************************************************************************
    60: 02/11/2011:  *** SF release v0.3.0 ***
      - Updated packaging scripts:
