@@ -1,4 +1,6 @@
-# Various compile/optimisation options that we may want to enable:
+## SetCompileOptions.cmake: 
+## Various compile/optimisation options that we may want to enable:
+
 
 option( CMAKE_VERBOSE_MAKEFILE  "Verbose makefile" off )
 option( CREATE_VERSION          "Create a code-version file with svn/bzr version and date (for developers)" off )
