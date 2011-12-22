@@ -424,7 +424,7 @@ contains
     !Days:
     endays = (/'Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ','Saturday '/)
     endys  = (/'Sun','Mon','Tue','Wed','Thu','Fri','Sat'/)
-    ends   = (/'su','mo','tu','we','th','fr','sa'/)
+    ends   = (/'Su','Mo','Tu','We','Th','Fr','Sa'/)
     
     nldays = (/'zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ','zaterdag '/)
     nlds   = (/'zo','ma','di','wo','do','vr','za'/)

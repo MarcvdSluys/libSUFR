@@ -96,21 +96,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a substring in a string
   !!
-  !! \param string   Original string to replace in
-  !! \param str_in   Search string
-  !! \param str_out  Replacement string
+  !! \param string    Original string to replace in
+  !! \param str_srch  Search string
+  !! \param str_repl  Replacement string
   
-  subroutine replace_substring(string, str_in, str_out)
+  subroutine replace_substring(string, str_srch, str_repl)
     character, intent(inout) :: string*(*)
-    character, intent(in) :: str_in*(*),str_out*(*)
-    integer :: is,l
+    character, intent(in) :: str_srch*(*),str_repl*(*)
+    integer :: is,lin
     
-    l = len_trim(str_in)
+    lin = len(str_srch)
     is = huge(is)
     do
-       is = index(string, str_in, back=.false.)
+       is = index(string, str_srch, back=.false.)
        if(is.le.0) exit
-       string = string(1:is-1)//trim(str_out)//trim(string(is+l:))
+       string = string(1:is-1)//str_repl//trim(string(is+lin:))
     end do
     
   end subroutine replace_substring
