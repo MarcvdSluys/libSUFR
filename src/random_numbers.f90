@@ -36,8 +36,6 @@ contains
   !! \retval get_ran_seed  Randon-number seed:  -1e6 < seed < 0 (int)
   
   function get_ran_seed(degree)  
-    use SUFR_kinds, only: double
-    
     implicit none
     integer, intent(in) :: degree
     integer :: get_ran_seed
@@ -46,18 +44,18 @@ contains
     character :: tmpstr*(10)
     
     
-    call date_and_time(tmpstr,tmpstr,tmpstr,dt)  !dt: 1-year, 2-month, 3-day, 5-hour, 6-minute, 7-second, 8-millisecond
+    call date_and_time(tmpstr,tmpstr,tmpstr,dt)  ! dt: 1-year, 2-month, 3-day, 5-hour, 6-minute, 7-second, 8-millisecond
     
     select case (degree)
     case(1)
-       seed = dt(1)*1000+dt(2)*10000+dt(3)*10101+dt(5)    !Constant result during a clock hour
+       seed = dt(1)*1000 + dt(2)*10000 + dt(3)*10101 + dt(5)  ! Constant result during a clock hour
     case(2)
-       seed = dt(1)*1000+dt(2)*10000+dt(3)*10101          !Constant result during a calendar day
+       seed = dt(1)*1000 + dt(2)*10000 + dt(3)*10101          ! Constant result during a calendar day
     case default
-       seed = dt(6)*1010+dt(7)*10101+dt(8)*1001           !Different result every millisecond
+       seed = dt(6)*1010 + dt(7)*10101 + dt(8)*1001           ! Different result every millisecond
     end select
     
-    get_ran_seed = -abs(mod(seed+1,999999))               !Return a negative number, -1e6 < get_ran_seed < 0
+    get_ran_seed = -abs(mod(seed+1,999999))                   ! Return a negative number, -1e6 < get_ran_seed < 0
     
   end function get_ran_seed
   !*********************************************************************************************************************************
@@ -84,45 +82,45 @@ contains
     
     integer, parameter :: im1=2147483563, ia1=40014, iq1=53668, ir1=12211 
     integer, parameter :: im2=2147483399, ia2=40692, iq2=52774, ir2= 3791
-    integer, parameter :: Ntab=32,im1m1=im1-1,ndtab=1+im1m1/Ntab
+    integer, parameter :: Ntab=32, im1m1=im1-1, ndtab=1+im1m1/Ntab
     
-    !rnmx should be the largest number <1 (and !=1)
-    real(double), parameter :: am1 = 1.0_dbl/im1
-    real(double), parameter :: eps = epsilon(0.0_dbl)
+    ! rnmx should be the largest number < 1 and != 1:
+    real(double), parameter :: am1  = 1.0_dbl/im1
+    real(double), parameter :: eps  = epsilon(0.0_dbl)
     real(double), parameter :: rnmx = 1.0_dbl - eps
     
     integer, save :: seed2=123456789, tab(Ntab)=0, iy=0
     integer :: j,k
     
     
-    if(seed1.le.0) then                                 !'Initialise' generator
-       seed1 = max(-seed1,1)                            !Don't allow seed1=0
+    if(seed1.le.0) then                                 ! 'Initialise' generator
+       seed1 = max(-seed1,1)                            ! Don't allow seed1=0
        seed2 = seed1
-       do j = Ntab+8,1,-1                               !Shuffle the table, don't save the first 8 iterations
+       do j = Ntab+8,1,-1                               ! Shuffle the table, don't save the first 8 iterations
           k = seed1/iq1
-          seed1 = ia1*(seed1-k*iq1)-k*ir1
-          if(seed1.lt.0) seed1 = seed1+im1
+          seed1 = ia1*(seed1-k*iq1) - k*ir1
+          if(seed1.lt.0) seed1 = seed1 + im1
           if(j.le.Ntab) tab(j) = seed1
        end do
        iy = tab(1)
     end if
     
-    !Produce the random number 1:
+    ! Produce the random number 1:
     k = seed1/iq1
-    seed1 = ia1*(seed1-k*iq1) - k*ir1                   !Use Schrage's method to compute mod(). Update seed for next draw
+    seed1 = ia1*(seed1-k*iq1) - k*ir1                   ! Use Schrage's method to compute mod(). Update seed for next draw
     if(seed1.lt.0) seed1 = seed1 + im1
     
-    !Produce the random number 2:
+    ! Produce the random number 2:
     k = seed2/iq2
-    seed2 = ia2*(seed2-k*iq2) - k*ir2                   !Use Schrage's method to compute mod(). Update seed for next draw
+    seed2 = ia2*(seed2-k*iq2) - k*ir2                   ! Use Schrage's method to compute mod(). Update seed for next draw
     if(seed2.lt.0) seed2 = seed2 + im2
     
-    j = 1 + iy/ndtab                                    !Result: 1 <= j <= Ntab
-    iy = tab(j) - seed2                                 !tab contains information about seed1
+    j = 1 + iy/ndtab                                    ! Result: 1 <= j <= Ntab
+    iy = tab(j) - seed2                                 ! tab contains information about seed1
     tab(j) = seed1
     if(iy.lt.1) iy = iy + im1m1
     
-    ran_unif = min(am1*iy,rnmx)                         !Make sure r<1
+    ran_unif = min(am1*iy,rnmx)                         ! Make sure r<1
     
   end function ran_unif
   !*********************************************************************************************************************************

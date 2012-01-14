@@ -168,6 +168,25 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Swap two integers
+  !!
+  !! \param int1  Integer 1
+  !! \param int2  Integer 2
+  
+  subroutine swapint(int1, int2)
+    implicit none
+    integer, intent(inout) :: int1,int2
+    integer :: int0
+    
+    int0 = int1
+    int1 = int2
+    int2 = int0
+    
+  end subroutine swapint
+  !*********************************************************************************************************************************
+  
+  
   
   
 end module SUFR_system

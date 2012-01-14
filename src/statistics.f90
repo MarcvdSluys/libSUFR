@@ -142,6 +142,37 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  
+   
+   
+ !*********************************************************************************************************************************
+ !> \brief  Roughly estimate the number of 1D bins needed, from the number of data points
+ !!
+ !! \param  npoints               Number of data points
+ !! \retval determine_nbin_1d     Number of bins
+ 
+ function determine_nbin_1d(npoints)
+   implicit none
+   integer, intent(in) :: npoints
+   integer :: determine_nbin_1d
+   
+   if(npoints.le.100) then
+      determine_nbin_1d = floor(2*sqrt(real(npoints)))
+   else
+      determine_nbin_1d = floor(10*log10(real(npoints)))
+   end if
+   determine_nbin_1d = max(determine_nbin_1d,5)
+   
+ end function determine_nbin_1d
+ !*********************************************************************************************************************************
+ 
+   
+ 
+   
+  
+  
+  
   !*********************************************************************************************************************************
   !> \brief  Compute the faculty of an integer, returning a long integer
   !!
