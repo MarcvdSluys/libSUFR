@@ -31,25 +31,24 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - double precision
   !!
-  !! \param ni    Number of data elements
-  !! \param data  Data set
+  !! \param data  1D array of data points
   
-  function compute_median(ni,data)
+  function compute_median(data)
     use SUFR_kinds, only: double
     use SUFR_sorting, only: sorted_index_list
     
     implicit none
-    integer, intent(in) :: ni
-    real(double), intent(in) :: data(ni)
+    real(double), intent(in) :: data(:)
     
-    integer :: indexx(ni)
+    integer :: indexx(size(data)), ni
     real(double) :: compute_median
     
+    ni = size(data)
     compute_median = 0.d0
     
     if(ni.gt.0) then
        ! Sort the array:
-       call sorted_index_list(ni,data,indexx)
+       call sorted_index_list(data,indexx)
        
        
        ! Determine the median:
@@ -68,21 +67,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - single precision
   !!
-  !! \param ni     Number of data elements
-  !! \param datar  Data set
+  !! \param datar  1D array of data points
   
-  function compute_median_real(ni,datar)
+  function compute_median_real(datar)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: ni
-    real, intent(in) :: datar(ni)
+    real, intent(in) :: datar(:)
     
     real :: compute_median_real
-    real(double) :: datad(ni),mediand
+    real(double) :: datad(size(datar)), mediand
     
     datad = dble(datar)
-    mediand = compute_median(ni,datad)
+    mediand = compute_median(datad)
     compute_median_real = real(mediand)
     
   end function compute_median_real
@@ -91,23 +88,22 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set data(1:ni) with mean 'mean'  (double precision)
+  !> \brief  Compute the standard deviation of a data set data with mean 'mean'  (double precision)
   !!
-  !! \param  ni    Number of data points in data set
-  !! \param  data  Data set
-  !! \param  mean  Mean of data
+  !! \param  data  1D array with data points
+  !! \param  mean  Mean of the data points
   
-  function compute_stdev(ni, data, mean)
+  function compute_stdev(data, mean)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: ni
-    real(double), intent(in) :: data(ni), mean
+    real(double), intent(in) :: data(:), mean
     
-    integer :: i
+    integer :: i, ni
     real(double) :: compute_stdev,stdev
     
     stdev = 0.d0
+    ni = size(data)
     do i=1,ni
        stdev = stdev + (data(i)-mean)**2
     end do
@@ -119,23 +115,21 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set datar(1:ni) with mean 'meanr'  (single-precision wrapper)
+  !> \brief  Compute the standard deviation of a data set datar with mean 'meanr'  (single-precision wrapper for compute_stdev)
   !!
-  !! \param  ni     Number of data points in data set
-  !! \param  datar  Data set
-  !! \param  meanr  Mean of data
+  !! \param  datar  1D array with data points
+  !! \param  meanr  Mean of the data points
   
-  function compute_stdev_real(ni, datar, meanr)
+  function compute_stdev_real(datar, meanr)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: ni
-    real, intent(in) :: datar(ni), meanr
+    real, intent(in) :: datar(:), meanr
     
     real :: compute_stdev_real
     real(double) :: stdevd
     
-    stdevd = compute_stdev(ni, dble(datar), dble(meanr))
+    stdevd = compute_stdev(dble(datar), dble(meanr))
     compute_stdev_real = real(stdevd)
     
   end function compute_stdev_real

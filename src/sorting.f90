@@ -31,34 +31,36 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Return a list of indices index_list that sorts the members of array to ascending value.
   !!
-  !! \param  n            Size of array (int).
-  !! \param  array        Array of size n with values that must be sorted (double) - use dble(array) for other variable types
+  !! \param  array        Array of size n with values that must be sorted - use dble(array) for other variable types
   !!
-  !! \retval index_list   List with indices of array values, sorted to ascending value.  
-  !!                      array(index_list) gives the sorted array (int).
+  !! \retval index_list   List with indices of array values, sorted to ascending value, same dimension and size as array.
+  !!                      array(index_list) gives the sorted array.
   !!
   !! \note  This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \see   Numerical Recipes in Fortran 77, Sect.8.4.
   
-  subroutine sorted_index_list(n, array, index_list)
+  subroutine sorted_index_list(array, index_list)
     use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
     
     implicit none
-    integer, intent(in) :: n
-    real(double), intent(in) :: array(n)
-    integer, intent(out) :: index_list(n)
+    real(double), intent(in) :: array(:)
+    integer, intent(out) :: index_list(:)
     
     integer, parameter :: m=7, nstack=50
     real(double) :: a
-    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack)
+    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack), narr
     
-    do j=1,n
+    if(size(array).ne.size(index_list)) call quit_program_error('sorted_index_list():  array and index_list must have equal size',1)
+    
+    narr = size(array)
+    do j=1,narr
        index_list(j) = j
     end do
     
     jstack = 0
     l = 1
-    ir = n
+    ir = narr
     
 1   continue
     if(ir-l.lt.m) then
@@ -168,11 +170,10 @@ contains
     real(double), intent(inout) :: array(:)
     
     real(double) :: array1(size(array))
-    integer :: index_list(size(array)), n
+    integer :: index_list(size(array))
     
-    n = size(array)
     array1 = array
-    call sorted_index_list(n,array1,index_list)
+    call sorted_index_list(array1,index_list)
     array = array1(index_list)
     
   end subroutine sort_array
@@ -194,10 +195,9 @@ contains
     real, intent(inout) :: array(:)
     
     real :: array1(size(array))
-    integer :: index_list(size(array)), n
+    integer :: index_list(size(array))
     
-    n = size(array)
-    call sorted_index_list(n, dble(array), index_list)
+    call sorted_index_list(dble(array), index_list)
     array1 = array
     array = array1(index_list)  ! CHECK: would array = array(index_list) work?
     
@@ -233,7 +233,7 @@ contains
        end do
     end do
     
-    call sorted_index_list(narr, dble(score), index_list)
+    call sorted_index_list(dble(score), index_list)
     
   end subroutine sort_string_array
   !*********************************************************************************************************************************
