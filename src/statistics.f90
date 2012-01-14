@@ -29,28 +29,6 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the median of a data set - single precision
-  !!
-  !! \param ni     Number of data elements
-  !! \param datar  Data set
-  
-  function compute_median_real(ni,datar)
-    use SUFR_kinds, only: double
-    implicit none
-    integer, intent(in) :: ni
-    real, intent(in) :: datar(ni)
-    real :: compute_median_real
-    real(double) :: datad(ni),mediand
-    
-    datad = dble(datar)
-    mediand = compute_median(ni,datad)
-    compute_median_real = real(mediand)
-    
-  end function compute_median_real
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - double precision
   !!
   !! \param ni    Number of data elements
@@ -83,6 +61,31 @@ contains
     end if
     
   end function compute_median
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the median of a data set - single precision
+  !!
+  !! \param ni     Number of data elements
+  !! \param datar  Data set
+  
+  function compute_median_real(ni,datar)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(in) :: ni
+    real, intent(in) :: datar(ni)
+    
+    real :: compute_median_real
+    real(double) :: datad(ni),mediand
+    
+    datad = dble(datar)
+    mediand = compute_median(ni,datad)
+    compute_median_real = real(mediand)
+    
+  end function compute_median_real
   !*********************************************************************************************************************************
   
   
