@@ -91,6 +91,58 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Compute the standard deviation of a data set data(1:ni) with mean 'mean'  (double precision)
+  !!
+  !! \param  ni    Number of data points in data set
+  !! \param  data  Data set
+  !! \param  mean  Mean of data
+  
+  function compute_stdev(ni, data, mean)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(in) :: ni
+    real(double), intent(in) :: data(ni), mean
+    
+    integer :: i
+    real(double) :: compute_stdev,stdev
+    
+    stdev = 0.d0
+    do i=1,ni
+       stdev = stdev + (data(i)-mean)**2
+    end do
+    
+    compute_stdev = sqrt(stdev/dble(ni-1))
+    
+  end function compute_stdev
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the standard deviation of a data set datar(1:ni) with mean 'meanr'  (single-precision wrapper)
+  !!
+  !! \param  ni     Number of data points in data set
+  !! \param  datar  Data set
+  !! \param  meanr  Mean of data
+  
+  function compute_stdev_real(ni, datar, meanr)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(in) :: ni
+    real, intent(in) :: datar(ni), meanr
+    
+    real :: compute_stdev_real
+    real(double) :: stdevd
+    
+    stdevd = compute_stdev(ni, dble(datar), dble(meanr))
+    compute_stdev_real = real(stdevd)
+    
+  end function compute_stdev_real
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Compute the faculty of an integer, returning a long integer
   !!
   !! \param  n          Number - up to 20 for long integers (up to 13 for integers)
