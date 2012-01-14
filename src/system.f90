@@ -46,7 +46,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Print a warning to StErr and stop the execution of the current program
+  !> \brief  Print a warning to StdOut and stop the execution of the current program
   !!
   !! \param message  Exit message/warning
   !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
@@ -58,12 +58,12 @@ contains
     character, intent(in) :: message*(*)
     integer, intent(in) :: status
     
-    write(0,'(//,A)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
+    write(*,'(//,A)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
     if(status.eq.0) then
-       write(0,'(A,/)') '  Exiting...'
+       write(*,'(A,/)') '  Exiting...'
        stop
     else
-       write(0,'(A)', advance='no')'  * '
+       write(*,'(A)', advance='no')'  * '
        stop 1
     end if
     

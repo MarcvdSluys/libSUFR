@@ -38,7 +38,7 @@ contains
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: ni
-    real(double), intent(in) :: datar(ni)
+    real, intent(in) :: datar(ni)
     real :: compute_median_real
     real(double) :: datad(ni),mediand
     
@@ -59,23 +59,27 @@ contains
   function compute_median(ni,data)
     use SUFR_kinds, only: double
     use SUFR_sorting, only: sorted_index_list
+    
     implicit none
     integer, intent(in) :: ni
     real(double), intent(in) :: data(ni)
+    
     integer :: indexx(ni)
     real(double) :: compute_median
     
     compute_median = 0.d0
     
     if(ni.gt.0) then
-       !Sort the array:
-       !call dindexx(ni,data,indexx)
+       ! Sort the array:
        call sorted_index_list(ni,data,indexx)
        
        
-       !Determine the median:
-       if(mod(ni,2).eq.0) compute_median = 0.5*(data(indexx(ni/2)) + data(indexx(ni/2+1)))  !ni is even
-       if(mod(ni,2).eq.1) compute_median = data(indexx((ni+1)/2))                           !ni is odd
+       ! Determine the median:
+       if(mod(ni,2).eq.0) then  ! ni is even
+          compute_median = 0.5d0*(data(indexx(ni/2)) + data(indexx(ni/2+1)))
+       else                     ! ni is odd
+          compute_median = data(indexx((ni+1)/2))
+       end if
     end if
     
   end function compute_median
