@@ -140,30 +140,91 @@ contains
   
    
    
- !*********************************************************************************************************************************
- !> \brief  Roughly estimate the number of 1D bins needed, from the number of data points
- !!
- !! \param  npoints               Number of data points
- !! \retval determine_nbin_1d     Number of bins
- 
- function determine_nbin_1d(npoints)
-   implicit none
-   integer, intent(in) :: npoints
-   integer :: determine_nbin_1d
-   
-   if(npoints.le.100) then
-      determine_nbin_1d = floor(2*sqrt(real(npoints)))
-   else
-      determine_nbin_1d = floor(10*log10(real(npoints)))
-   end if
-   determine_nbin_1d = max(determine_nbin_1d,5)
-   
- end function determine_nbin_1d
- !*********************************************************************************************************************************
- 
-   
- 
-   
+  !*********************************************************************************************************************************
+  !> \brief  Roughly estimate the number of 1D bins needed, from the number of data points
+  !!
+  !! \param  npoints               Number of data points
+  !! \retval determine_nbin_1d     Number of bins
+  
+  function determine_nbin_1d(npoints)
+    implicit none
+    integer, intent(in) :: npoints
+    integer :: determine_nbin_1d
+    
+    if(npoints.le.100) then
+       determine_nbin_1d = floor(2*sqrt(real(npoints)))
+    else
+       determine_nbin_1d = floor(10*log10(real(npoints)))
+    end if
+    determine_nbin_1d = max(determine_nbin_1d,5)
+    
+  end function determine_nbin_1d
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Bin data in 1D bins by counting the number of data points in each bin
+  !! 
+  !! \param  xdat  Data to be binned (ndat points)
+  !! \param  Nbin  Desired number of bins.  Note that the binned-data arrays xbin and ybin must have size >= Nbin+1
+  !! \param  norm  Normalise histogram (1) or not (0)
+  !! \param  mode  Mode:  -1: xbin is left of bin,  0: xbin is centre of bin,  1: xbin is right of bin
+  !! \param  xmin  Minimum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !! \param  xmax  Maximum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !!
+  !! \retval xbin  Binned data, location of the bins.  The x values are the left side of the bin!
+  !! \retval ybin  Binned data, height of the bins.    I/O so that the array size can be checked
+  
+  subroutine bin_data_1d(xdat, Nbin, norm,mode, xmin,xmax, xbin,ybin)
+    use SUFR_system, only: quit_program_error
+    implicit none
+    real, intent(in) :: xdat(:)
+    integer, intent(in) :: Nbin, mode
+    logical, intent(in) :: norm
+    real, intent(inout) :: xmin,xmax
+    real, intent(inout) :: xbin(:),ybin(:)  ! 
+    
+    integer :: i,k
+    real :: dx, dk
+    
+    
+    ! Check array size for consistency:
+    if(size(xbin).le.Nbin) call quit_program_error('bin_data_1d(): xbin must have size >= Nbin+1',1)
+    if(size(ybin).le.Nbin) call quit_program_error('bin_data_1d(): ybin must have size >= Nbin+1',1)
+    
+    if(abs((xmin-xmax)/(xmax+1.e-30)).lt.1.e-20) then  ! Autodetermine ranges
+       xmin = minval(xdat)
+       xmax = maxval(xdat)
+    end if
+    dx = abs(xmax - xmin)/real(Nbin)
+    
+    dk = real(min(max(mode,-1),1))/2.   ! mode = -1,0,1 -> dk = -0.5, 0.0, 0.5  when xbin is the left, centre, right of the bin
+    do k=1,Nbin+1
+       !xbin(k) = xmin + (real(k)-1.0)*dx   ! xbin is the left of the bin
+       xbin(k) = xmin + (real(k)-0.5+dk)*dx
+    end do
+    
+    ybin = 0.
+    do i=1,size(xdat)
+       do k=1,Nbin
+          if(xdat(i).ge.xbin(k)) then
+             if(xdat(i).lt.xbin(k+1)) then
+                ybin(k) = ybin(k) + 1.
+                exit !If point i fits in this bin, don't try the others
+             end if
+          end if
+       end do !k (bin)
+    end do
+    
+    if(norm) ybin = ybin/(sum(ybin)+1.e-30)
+    
+  end subroutine bin_data_1d
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
   
   
   
