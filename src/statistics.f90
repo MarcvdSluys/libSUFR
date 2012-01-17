@@ -182,7 +182,7 @@ contains
     integer, intent(in) :: Nbin, mode
     logical, intent(in) :: norm
     real, intent(inout) :: xmin,xmax
-    real, intent(inout) :: xbin(:),ybin(:)  ! 
+    real, intent(inout) :: xbin(:),ybin(:)
     
     integer :: i,k
     real :: dx, dk
@@ -219,6 +219,92 @@ contains
     if(norm) ybin = ybin/(sum(ybin)+1.e-30)
     
   end subroutine bin_data_1d
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Bin data in 2 dimensions - computing the bin number rather than searching for it is ~10x faster
+  !! 
+  !! \param xdat   Input data: x values - array size: ndat
+  !! \param ydat   Input data: y values - array size: ndat
+  !!
+  !! \param norm   Normalise the bins (1) or not (0)
+  !!
+  !! \param nxbin  Desired number of bins in the x direction
+  !! \param nybin  Desired number of bins in the y direction
+  !!
+  !! \param xmin   Lower limit for the binning range in the x direction - autodetermine if xmin = xmax
+  !! \param xmax   Upper limit for the binning range in the x direction - autodetermine if xmin = xmax
+  !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
+  !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
+  !!
+  !! \retval z     Binned data set z(nxbin,nybin)
+  !! \retval tr    Transformation elements for pgplot tr(6)
+  
+  subroutine bin_data_2d(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr)
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    integer, intent(in) :: nxbin,nybin, norm
+    real, intent(in) :: xdat(:),ydat(:)
+    real, intent(inout) :: xmin,xmax,ymin,ymax
+    real, intent(out) :: z(nxbin+1,nybin+1),tr(6)
+    
+    integer :: i,bx,by, ndat
+    real :: dx,dy
+    
+    ! Check data array sizes for consistency:
+    ndat = size(xdat)
+    if(size(ydat).ne.ndat) call quit_program_error('bin_data_2d(): data arrays xdat and ydat should have the same size',1)
+    
+    if(abs((xmin-xmax)/(xmax+1.e-30)).lt.1.e-20) then  ! Autodetermine x ranges
+       xmin = minval(xdat(1:ndat))
+       xmax = maxval(xdat(1:ndat))
+    end if
+    dx = abs(xmax - xmin)/real(nxbin)
+    if(abs((ymin-ymax)/(ymax+1.e-30)).lt.1.e-20) then  ! Autodetermine y ranges
+       ymin = minval(ydat(1:ndat))
+       ymax = maxval(ydat(1:ndat))
+    end if
+    dy = abs(ymax - ymin)/real(nybin)
+    
+    
+    
+    ! Determine transformation elements for pgplot (pggray, pgcont, pgimag):
+    tr(1) = xmin - dx/2.
+    tr(2) = dx
+    tr(3) = 0.
+    tr(4) = ymin - dy/2.
+    tr(5) = 0.
+    tr(6) = dy
+    
+    z = 0.
+    do i=1,ndat
+       bx = floor((xdat(i) - xmin)/dx) + 1 
+       by = floor((ydat(i) - ymin)/dy) + 1
+       !if(bx.lt.1.or.bx.gt.nxbin.or.by.lt.1.or.by.gt.nybin) then
+       !   if(bx.eq.0.or.bx.eq.nxbin+1) bx = max(min(bx,nxbin),1)  !Treat an error of 1 x bin as round-off
+       !   if(by.eq.0.or.by.eq.nybin+1) by = max(min(by,nybin),1)  !Treat an error of 1 y bin as round-off
+       !   
+       !   if(bx.lt.0.or.bx.gt.nxbin+1) then
+       !      !write(stdErr,'(A,I7,A2,F8.3,A,I4,A,I4,A1)') &
+       !'  Bindata2d:  error for X data point',i,' (',xdat(i),').  I found bin',bx,', but it should lie between 1 and',nxbin,'.'
+       !   else if(by.lt.0.or.by.gt.nybin+1) then
+       !      !write(stdErr,'(A,I7,A2,F8.3,A,I4,A,I4,A1)') &
+       !'  Bindata2d:  error for Y data point',i,' (',ydat(i),').  I found bin',by,', but it should lie between 1 and',nybin,'.'
+       !   else
+       !      z(bx,by) = z(bx,by) + 1.
+       !   end if
+       !else
+       !   z(bx,by) = z(bx,by) + 1.
+       !end if
+       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + 1.  ! Don't treat 1-bin errors as round-off
+    end do
+    
+    !if(norm.eq.1) z = z/(ztot+1.e-30)
+    if(norm.eq.1) z = z/maxval(z+1.e-30)
+    
+  end subroutine bin_data_2d
   !*********************************************************************************************************************************
   
   
