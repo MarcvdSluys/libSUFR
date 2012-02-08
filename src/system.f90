@@ -169,7 +169,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Swap two integers
+  !> \brief  Swap two integer variables
   !!
   !! \param int1  Integer 1
   !! \param int2  Integer 2
@@ -184,6 +184,47 @@ contains
     int2 = int0
     
   end subroutine swapint
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Swap two single-precision real variables
+  !!
+  !! \param rl1  real 1
+  !! \param rl2  real 2
+  
+  subroutine swapreal(rl1, rl2)
+    implicit none
+    real, intent(inout) :: rl1,rl2
+    real :: rl0
+    
+    rl0 = rl1
+    rl1 = rl2
+    rl2 = rl0
+    
+  end subroutine swapreal
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Swap two double-precision real variables
+  !!
+  !! \param dbl1  Double 1
+  !! \param dbl2  Double 2
+  
+  subroutine swapdbl(dbl1, dbl2)
+    use SUFR_kinds, only: double    
+    implicit none
+    real(double), intent(inout) :: dbl1,dbl2
+    real(double) :: dbl0
+    
+    dbl0 = dbl1
+    dbl1 = dbl2
+    dbl2 = dbl0
+    
+  end subroutine swapdbl
   !*********************************************************************************************************************************
   
   
