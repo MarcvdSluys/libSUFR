@@ -5,7 +5,7 @@ libSUFR README
 libSUFR is a LIBrary of Some Useful Fortran Routines that I wrote for my own use, 
 but that may also be useful for others.  It currently also "SUFRs" from the fact 
 that Fortran module files are compiler dependent...  To download the libSUFR 
-package, read the code documentation, or to contact the developers, see: 
+package, read the code documentation, or to contact the developer, see: 
 http://libsufr.sourceforge.net/
 
 
