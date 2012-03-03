@@ -1,7 +1,7 @@
 !> \file earth.f90  Procedures to deal with geography and the Earth
 
 
-!  Copyright 2002-2011 Marc van der Sluys - marc.vandersluys.nl
+!  Copyright 2002-2012 Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
