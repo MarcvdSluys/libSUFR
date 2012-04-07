@@ -30,6 +30,7 @@
 !  wum:       Returns time as HTML string in 11u22m, input in hours (28)
 !  wumm:      Returns time as HTML string in 11u22.3m, input in hours (30)
 !  wums:      Returns time as HTML string in 11u22m33s, input in hours (42)
+!  hm2:       Returns time as string in +/-hh:mm, input in hours, between -12 and 12
 !  hdm:       Returns time as string in hh.mm, a . iso :, input in hours
 !  tms:       Returns time as mm:ss string, input in hours
 !  tms2:      Returns time as +/-mm:ss string, input in hours
@@ -81,7 +82,7 @@ contains
     write(mm,'(i2.2)') m
     write(ss,'(i2.2)') s
     
-    write(hms,'(a2,2(a1,a2))') hh,':',mm,':',ss
+    write(hms,'(A2,2(A1,A2))') hh,':',mm,':',ss
     if(t.eq.0.d0) write(hms,'(a8)') '--:--:--'
     
   end function hms
@@ -106,7 +107,8 @@ contains
     h = int(t1)
     m = int((t1-h)*60.d0)
     s = nint((t1-h-m/60.d0)*3600.d0)
-    sign = '+'
+    !sign = '+'
+    sign = ' '
     if(rv12(t).lt.0.d0) sign = '-'
     
     if(s.ge.60) then
@@ -168,7 +170,7 @@ contains
     write(mm,'(i2.2)') m
     write(ss,'(i2.2)') s
     
-    write(ums,'(a2,2(a1,a2),a1)') hh,'u',mm,'m',ss,'s'
+    write(ums,'(A2,2(A1,A2),A1)') hh,'u',mm,'m',ss,'s'
     if(t.eq.0.d0) write(ums,'(a9)') '--u--m--s'
     
   end function ums
@@ -256,10 +258,10 @@ contains
     write(hh,'(i2.2)') h
     write(mm,'(i2.2)') m
     write(ss,'(f6.3)') s
-    if(s.lt.10) write(ss,'(a1,f5.3)') '0',s
+    if(s.lt.10) write(ss,'(A1,F5.3)') '0',s
     
-    write(hms_sss,'(2(a2,a1),a6)') hh,':',mm,':',ss
-    if(t.eq.0.d0) write(hms_sss,'(a12)') '--:--:--.---'
+    write(hms_sss,'(2(A2,A1),A6)') hh,':',mm,':',ss
+    if(t.eq.0.d0) write(hms_sss,'(A12)') '--:--:--.---'
     
   end function hms_sss
   !*********************************************************************************************************************************
@@ -293,9 +295,9 @@ contains
     end if
     if(h.eq.24) h=0
     
-    write(hmm,'(i2.2,a1,f4.1)') h,':',m
-    if(m.lt.10.) write(hmm,'(i2.2,a2,f3.1)') h,':0',m
-    if(t.eq.0.d0) write(hmm,'(a7)') '--:--.-'
+    write(hmm,'(I2.2,A1,F4.1)') h,':',m
+    if(m.lt.10.) write(hmm,'(I2.2,A2,F3.1)') h,':0',m
+    if(t.eq.0.d0) write(hmm,'(A7)') '--:--.-'
     
   end function hmm
   !*********************************************************************************************************************************
@@ -331,7 +333,7 @@ contains
     
     write(umm,'(I2.2,A1,F4.1,A1)') h,'u',m,'m'
     if(m.lt.10.) write(umm,'(I2.2,A2,F3.1,A1)') h,'u0',m,'m'
-    if(t.eq.0.d0) write(umm,'(a8)') '--u--.-m'
+    if(t.eq.0.d0) write(umm,'(A8)') '--u--.-m'
     
   end function umm
   !*********************************************************************************************************************************
@@ -367,11 +369,11 @@ contains
     
     write(hh,'(i2)') h
     write(mm,'(i2)') m
-    if(h.lt.10) write(hh,'(a1,i1)') '0',h
-    if(m.lt.10) write(mm,'(a1,i1)') '0',m
+    if(h.lt.10) write(hh,'(A1,I1)') '0',h
+    if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
-    write(hm,'(a2,2(a1,a2))') hh,':',mm
-    if(t.eq.0.d0) write(hm,'(a5)') '--:--'
+    write(hm,'(A2,2(A1,A2))') hh,':',mm
+    if(t.eq.0.d0) write(hm,'(A5)') '--:--'
     
   end function hm
   !*********************************************************************************************************************************
@@ -407,11 +409,11 @@ contains
     
     write(hh,'(i2)') h
     write(mm,'(i2)') m
-    if(h.lt.10) write(hh,'(a1,i1)') '0',h
-    if(m.lt.10) write(mm,'(a1,i1)') '0',m
+    if(h.lt.10) write(hh,'(A1,I1)') '0',h
+    if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
-    write(um,'(2(a2,a1))') hh,'u',mm,'m'
-    if(t.eq.0.d0) write(um,'(a6)') '--u--m'
+    write(um,'(2(A2,A1))') hh,'u',mm,'m'
+    if(t.eq.0.d0) write(um,'(A6)') '--u--m'
     
   end function um
   !*********************************************************************************************************************************
@@ -447,11 +449,11 @@ contains
     
     write(hh,'(i2)') h
     write(mm,'(i2)') m
-    if(h.lt.10) write(hh,'(a1,i1)') '0',h
-    if(m.lt.10) write(mm,'(a1,i1)') '0',m
+    if(h.lt.10) write(hh,'(A1,I1)') '0',h
+    if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
-    write(wum,'(2(a2,a12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>'
-    if(t.eq.0.d0) write(wum,'(a28)') '--<sup>u</sup>--<sup>m</sup>'
+    write(wum,'(2(A2,A12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>'
+    if(t.eq.0.d0) write(wum,'(A28)') '--<sup>u</sup>--<sup>m</sup>'
     
   end function wum
   !*********************************************************************************************************************************
@@ -532,7 +534,7 @@ contains
     write(mm,'(I2.2)') m
     write(ss,'(I2.2)') s
     
-    write(wums,'(3(a2,a12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>',ss,'<sup>s</sup>'
+    write(wums,'(3(A2,A12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>',ss,'<sup>s</sup>'
     if(t.eq.0.d0) write(wums,'(A42)') '--<sup>u</sup>--<sup>m</sup>--<sup>s</sup>'
     
   end function wums
@@ -546,7 +548,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print time as string in hh:mm, input in hours, between -12 and 12
+  !> \brief Print time as string in +/-hh:mm, input in hours, between -12 and 12
   !!
   !! \param t  Time (h)
   
@@ -563,7 +565,9 @@ contains
     t1 = abs(rv12(t))
     h = int(t1)
     m = nint((t1-h)*60)
-    sign = '+'
+    
+    !sign = '+'
+    sign = ' '
     if(rv12(t).lt.0.d0) sign = '-'
     
     if(m.eq.60) then
@@ -611,11 +615,11 @@ contains
     
     write(hh,'(i2)') h
     write(mm,'(i2)') m
-    if(h.lt.10) write(hh,'(a1,i1)') '0',h
-    if(m.lt.10) write(mm,'(a1,i1)') '0',m
+    if(h.lt.10) write(hh,'(A1,I1)') '0',h
+    if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
-    write(hdm,'(a2,2(a1,a2))') hh,'.',mm
-    if(t.eq.0.d0) write(hdm,'(a5)') '--.--'
+    write(hdm,'(A2,2(A1,A2))') hh,'.',mm
+    if(t.eq.0.d0) write(hdm,'(A5)') '--.--'
     
   end function hdm
   !*********************************************************************************************************************************
@@ -641,8 +645,8 @@ contains
     
     write(mm,'(i2.2)') m
     write(ss,'(f4.1)') s
-    if(nint(s*10).lt.100) write(ss,'(a1,f3.1)') '0',s
-    write(tms,'(a2,a1,a4,a1)') mm,'m',ss,'s'
+    if(nint(s*10).lt.100) write(ss,'(A1,F3.1)') '0',s
+    write(tms,'(A2,A1,A4,A1)') mm,'m',ss,'s'
     
   end function tms
   !*********************************************************************************************************************************
@@ -659,13 +663,14 @@ contains
     real(double), intent(in) :: a1
     real(double) :: a,s
     integer :: m
-    character :: tms2*(9),mm*(2),ss*(4),sig
+    character :: tms2*(9),mm*(2),ss*(4),sign
     
     a = a1
     
-    sig = '+'
+    !sign = '+'
+    sign = ' '
     if(a.lt.0.d0) then
-       sig = '-'
+       sign = '-'
        a = -1.d0*a
     end if
     
@@ -674,8 +679,8 @@ contains
     
     write(mm,'(i2.2)') m
     write(ss,'(f4.1)') s
-    if(nint(s).lt.10) write(ss,'(a1,f3.1)') '0',s
-    write(tms2,'(a1,a2,a1,a4,a1)') sig,mm,'m',ss,'s'
+    if(nint(s).lt.10) write(ss,'(A1,F3.1)') '0',s
+    write(tms2,'(A1,A2,A1,A4,A1)') sign,mm,'m',ss,'s'
     
   end function tms2
   !*********************************************************************************************************************************
