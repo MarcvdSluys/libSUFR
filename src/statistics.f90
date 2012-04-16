@@ -67,22 +67,22 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data set - single precision
   !!
-  !! \param datar  1D array of data points
+  !! \param datas  1D array of data points
   
-  function compute_median_real(datar)
+  function compute_median_sp(datas)
     use SUFR_kinds, only: double
     
     implicit none
-    real, intent(in) :: datar(:)
+    real, intent(in) :: datas(:)
     
-    real :: compute_median_real
-    real(double) :: datad(size(datar)), mediand
+    real :: compute_median_sp
+    real(double) :: datad(size(datas)), mediand
     
-    datad = dble(datar)
+    datad = dble(datas)
     mediand = compute_median(datad)
-    compute_median_real = real(mediand)
+    compute_median_sp = real(mediand)
     
-  end function compute_median_real
+  end function compute_median_sp
   !*********************************************************************************************************************************
   
   
@@ -115,24 +115,24 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set datar with mean 'meanr'  (single-precision wrapper for compute_stdev)
+  !> \brief  Compute the standard deviation of a data set datas with mean 'means'  (single-precision wrapper for compute_stdev)
   !!
-  !! \param  datar  1D array with data points
-  !! \param  meanr  Mean of the data points
+  !! \param  datas  1D array with data points
+  !! \param  means  Mean of the data points
   
-  function compute_stdev_real(datar, meanr)
+  function compute_stdev_sp(datas, means)
     use SUFR_kinds, only: double
     
     implicit none
-    real, intent(in) :: datar(:), meanr
+    real, intent(in) :: datas(:), means
     
-    real :: compute_stdev_real
+    real :: compute_stdev_sp
     real(double) :: stdevd
     
-    stdevd = compute_stdev(dble(datar), dble(meanr))
-    compute_stdev_real = real(stdevd)
+    stdevd = compute_stdev(dble(datas), dble(means))
+    compute_stdev_sp = real(stdevd)
     
-  end function compute_stdev_real
+  end function compute_stdev_sp
   !*********************************************************************************************************************************
   
   
@@ -192,10 +192,12 @@ contains
     if(size(xbin).le.Nbin) call quit_program_error('bin_data_1d(): xbin must have size >= Nbin+1',1)
     if(size(ybin).le.Nbin) call quit_program_error('bin_data_1d(): ybin must have size >= Nbin+1',1)
     
-    if(abs((xmin-xmax)/(xmax+1.e-30)).lt.1.e-20) then  ! Autodetermine ranges
+    if(abs((xmin-xmax)/(xmax+tiny(xmax))).lt.1.e-20) then  ! Autodetermine ranges
        xmin = minval(xdat)
        xmax = maxval(xdat)
     end if
+    xmin = xmin - epsilon(xmin)*xmin
+    xmax = xmax + epsilon(xmax)*xmax
     dx = abs(xmax - xmin)/real(Nbin)
     
     dk = real(min(max(mode,-1),1))/2.   ! mode = -1,0,1 -> dk = -0.5, 0.0, 0.5  when xbin is the left, centre, right of the bin
@@ -210,7 +212,7 @@ contains
           if(xdat(i).ge.xbin(k)) then
              if(xdat(i).lt.xbin(k+1)) then
                 ybin(k) = ybin(k) + 1.
-                exit !If point i fits in this bin, don't try the others
+                exit  ! If point i fits in this bin, don't try the others
              end if
           end if
        end do !k (bin)
@@ -261,11 +263,16 @@ contains
        xmin = minval(xdat(1:ndat))
        xmax = maxval(xdat(1:ndat))
     end if
+    xmin = xmin - epsilon(xmin)*xmin
+    xmax = xmax + epsilon(xmax)*xmax
     dx = abs(xmax - xmin)/real(nxbin)
+    
     if(abs((ymin-ymax)/(ymax+1.e-30)).lt.1.e-20) then  ! Autodetermine y ranges
        ymin = minval(ydat(1:ndat))
        ymax = maxval(ydat(1:ndat))
     end if
+    ymin = ymin - epsilon(ymin)*ymin
+    ymax = ymax + epsilon(ymax)*ymax
     dy = abs(ymax - ymin)/real(nybin)
     
     

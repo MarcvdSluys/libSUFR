@@ -188,7 +188,7 @@ contains
   !! 
   !! \todo  Check whether array = array(index_list) works
   
-  subroutine sort_array_real(array)
+  subroutine sort_array_sp(array)
     use SUFR_kinds, only: double
     
     implicit none
@@ -201,7 +201,7 @@ contains
     array1 = array
     array = array1(index_list)  ! CHECK: would array = array(index_list) work?
     
-  end subroutine sort_array_real
+  end subroutine sort_array_sp
   !*********************************************************************************************************************************
   
   

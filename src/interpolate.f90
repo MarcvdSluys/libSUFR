@@ -70,7 +70,8 @@ module SUFR_interpolate
 contains
   
   !*********************************************************************************************************************************
-  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x, real variables
+  !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x, 
+  !!         using single-precision variables
   !!
   !! \param x1  X value 1
   !! \param x2  X value 2
@@ -80,16 +81,16 @@ contains
   !! \param x   X value to find y value for
   !! \retval y  Y value to find
   
-  function linear_interpolation_real(x1,x2, y1,y2, x)
+  function linear_interpolation_sp(x1,x2, y1,y2, x)
     use SUFR_kinds, only: double
     use SUFR_interpolate_core, only: linear_interpolation
     implicit none
     real, intent(in)  :: x1,x2, y1,y2, x
-    real :: linear_interpolation_real
+    real :: linear_interpolation_sp
     
-    linear_interpolation_real = real(linear_interpolation( dble(x1),dble(x2), dble(y1),dble(y2), dble(x) ))
+    linear_interpolation_sp = real(linear_interpolation( dble(x1),dble(x2), dble(y1),dble(y2), dble(x) ))
     
-  end function linear_interpolation_real
+  end function linear_interpolation_sp
   !*********************************************************************************************************************************
   
   
