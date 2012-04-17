@@ -165,22 +165,25 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Bin data in 1D bins by counting the number of data points in each bin
   !! 
-  !! \param  xdat  Data to be binned (ndat points)
-  !! \param  Nbin  Desired number of bins.  Note that the binned-data arrays xbin and ybin must have size >= Nbin+1
-  !! \param  norm  Normalise histogram (1) or not (0)
-  !! \param  mode  Mode:  -1: xbin is left of bin,  0: xbin is centre of bin,  1: xbin is right of bin
-  !! \param  xmin  Minimum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
-  !! \param  xmax  Maximum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !! \param  xdat   Data to be binned (ndat points)
+  !! \param  Nbin   Desired number of bins.  Note that the binned-data arrays xbin and ybin must have size >= Nbin+1
   !!
-  !! \retval xbin  Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval ybin  Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \param  norm   Normalise histogram (1) or not (0)
+  !! \param  mode   Mode:  -1: xbin is left of bin,  0: xbin is centre of bin,  1: xbin is right of bin
+  !! \param  cumul  Make a cumulative histogram (T/F)
+  !!
+  !! \param  xmin   Minimum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !! \param  xmax   Maximum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !!
+  !! \retval xbin   Binned data, location of the bins.  The x values are the left side of the bin!
+  !! \retval ybin   Binned data, height of the bins.    I/O so that the array size can be checked
   
-  subroutine bin_data_1d(xdat, Nbin, norm,mode, xmin,xmax, xbin,ybin)
+  subroutine bin_data_1d(xdat, Nbin, norm,mode,cumul, xmin,xmax, xbin,ybin)
     use SUFR_system, only: quit_program_error
     implicit none
     real, intent(in) :: xdat(:)
     integer, intent(in) :: Nbin, mode
-    logical, intent(in) :: norm
+    logical, intent(in) :: norm, cumul
     real, intent(inout) :: xmin,xmax
     real, intent(inout) :: xbin(:),ybin(:)
     
@@ -196,6 +199,8 @@ contains
        xmin = minval(xdat)
        xmax = maxval(xdat)
     end if
+    
+    ! Make limits wider by 2 x epsilon, in order to include data points on the boundaries:
     xmin = xmin - epsilon(xmin)*xmin
     xmax = xmax + epsilon(xmax)*xmax
     dx = abs(xmax - xmin)/real(Nbin)
@@ -219,6 +224,13 @@ contains
     end do
     
     if(norm) ybin = ybin/(sum(ybin)+1.e-30)
+    
+    
+    if(cumul) then  ! Create a cumulative histogram
+       do k = 2,Nbin+1
+          ybin(k) = ybin(k-1) + ybin(k)
+       end do
+    end if
     
   end subroutine bin_data_1d
   !*********************************************************************************************************************************
