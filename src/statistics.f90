@@ -255,17 +255,18 @@ contains
   !! \retval z     Binned data set z(nxbin,nybin)
   !! \retval tr    Transformation elements for pgplot tr(6)
   
-  subroutine bin_data_2d(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr)
+  subroutine bin_data_2d(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr,   weights)
     use SUFR_system, only: quit_program_error
     
     implicit none
     integer, intent(in) :: nxbin,nybin, norm
     real, intent(in) :: xdat(:),ydat(:)
+    real, intent(in), optional :: weights(:)
     real, intent(inout) :: xmin,xmax,ymin,ymax
     real, intent(out) :: z(nxbin+1,nybin+1),tr(6)
     
     integer :: i,bx,by, ndat
-    real :: dx,dy
+    real :: dx,dy, weight
     
     ! Check data array sizes for consistency:
     ndat = size(xdat)
@@ -301,6 +302,7 @@ contains
     do i=1,ndat
        bx = floor((xdat(i) - xmin)/dx) + 1 
        by = floor((ydat(i) - ymin)/dy) + 1
+       
        !if(bx.lt.1.or.bx.gt.nxbin.or.by.lt.1.or.by.gt.nybin) then
        !   if(bx.eq.0.or.bx.eq.nxbin+1) bx = max(min(bx,nxbin),1)  !Treat an error of 1 x bin as round-off
        !   if(by.eq.0.or.by.eq.nybin+1) by = max(min(by,nybin),1)  !Treat an error of 1 y bin as round-off
@@ -317,7 +319,13 @@ contains
        !else
        !   z(bx,by) = z(bx,by) + 1.
        !end if
-       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + 1.  ! Don't treat 1-bin errors as round-off
+       
+       ! Don't treat 1-bin errors as round-off:
+       !if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + 1.
+       
+       weight = 1.
+       if(present(weights)) weight = weights(i)
+       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + weight
     end do
     
     !if(norm.eq.1) z = z/(ztot+1.e-30)
