@@ -254,6 +254,8 @@ contains
   !!
   !! \retval z     Binned data set z(nxbin,nybin)
   !! \retval tr    Transformation elements for pgplot tr(6)
+  !!
+  !! \param weights  Weights to use when binning data, same size as xdat,ydat (optional)
   
   subroutine bin_data_2d(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr,   weights)
     use SUFR_system, only: quit_program_error

@@ -173,6 +173,10 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
     set( WARN_FLAGS "-warn all -stand f03 -diag-disable 6894,8290" )   # 8290: format for F: too many decimal places (for negative numbers)
   endif( WANT_WARNINGS )
   
+  if( STOP_ON_WARNING )
+    # set( WARN_FLAGS "${WARN_FLAGS}" )  # No option found yet - remove 'unused' warning from CMake this way
+  endif( STOP_ON_WARNING )
+  
   if( WANT_LIBRARY )
     set( LIB_FLAGS "-fPIC -g" )
   endif( WANT_LIBRARY )

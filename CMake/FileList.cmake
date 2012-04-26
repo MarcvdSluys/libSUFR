@@ -7,6 +7,7 @@ set(SRC_FILES
   src/earth.f90
   src/interpolate.f90
   src/kinds.f90
+  src/numerics.f90
   src/random_numbers.f90
   src/solvers.f90
   src/sorting.f90
