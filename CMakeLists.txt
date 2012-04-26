@@ -56,6 +56,17 @@ include( FileList )
 include( CompilerFlags_Fortran )
 
 
+# Code-version generator:
+# This implies that the file libSUFR_version* is removed by 'make clean'!
+if( CREATE_VERSION )
+  add_custom_command(
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90
+    COMMAND cd $(CMAKE_SOURCE_DIR)
+    COMMAND . ${CMAKE_SOURCE_DIR}/code_version.sh ${CMAKE_SOURCE_DIR} src/libSUFR_version.f90 ${Fortran_COMPILER_NAME} ${OPT_FLAGS}
+    )
+endif( CREATE_VERSION )
+
+
 # Create libraries:
 if( CREATE_SHAREDLIB )
   add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
