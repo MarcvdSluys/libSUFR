@@ -34,6 +34,7 @@ contains
   !! \param yy  The year (int)
   !! \param mm  The month (int)
   !! \param dd  The day (double)
+  !!
   !! \retval  cal2jd  The Julian day number (double)
   
   function cal2jd(yy,mm,dd)
@@ -49,14 +50,14 @@ contains
     y = yy
     m = mm
     d = dd
-    greg = 0                 !Julian or gregorian?
+    greg = 0                 ! Julian or gregorian?
     
     if(y.gt.1582) greg = 1
     if(y.eq.1582) then
        if(m.gt.10) greg = 1
        if((m.eq.10).and.(d.ge.15)) greg = 1
     end if
-    !greg=0        !Force julian/gregorian calendar
+    !greg=0                 ! Force julian/gregorian calendar
     
     if(m.le.2) then 
        y = y-1
@@ -64,7 +65,7 @@ contains
     end if
     b = 0
     
-    if(greg.eq.1) then     !For a Gregorian date
+    if(greg.eq.1) then     ! For a Gregorian date
        a = floor(y/100.d0)
        b = 2 - a + floor(a/4.d0)
     end if
@@ -94,8 +95,8 @@ contains
     real(double) :: f
     integer(long) :: z,a,b,c,d,e,alpha
     
-    ! Some programs will JD=-huge if no solution is found - catch this
-    if(jd.lt.-huge(jd)*0.1_dbl .or. jd.gt.huge(jd)*0.1_dbl) then
+    ! Some programs may return JD=-huge if no solution is found - catch this
+    if(jd.gt.abs(huge(jd))*0.1_dbl) then
        yy = 0
        mm = 0
        dd = 0.0_dbl
@@ -373,7 +374,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculate whether year is leap (1) or not (0)
+  !> \brief  Calculate whether year is leap (1) or not (0).  The number of days in February is then given by 28 + leapyr(yr)
   !!
   !! \param yr  Year (CE)
   

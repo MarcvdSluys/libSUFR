@@ -2,11 +2,15 @@
 !!  
 !!  \mainpage libSUFR documentation
 !!  libSUFR is a LIBrary of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful for others.
-!!  It currently also "SUFRs" from the fact that Fortran module files are compiler dependent.
+!!  It currently also "SUFRs" from the fact that Fortran module files are compiler dependent.  libSUFR is available for free
+!!  under the conditions of the GPL v.3.
+!!  
+!!  \par
+!!  &copy; 2002-2012 Marc van der Sluys - marc.vandersluys.nl
 !!
 !!  \see
 !!  These pages contain the documentation for libSUFR, created by Doxygen.  
-!!  For the libSUFR home page on SourceForge, see: http://libsufr.sourceforge.net
+!!  For the libSUFR home page, see: http://libsufr.sourceforge.net
 
 
 !  Copyright 2002-2012 Marc van der Sluys - marc.vandersluys.nl
