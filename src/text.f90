@@ -101,6 +101,7 @@ contains
   !! \param str_repl  Replacement string
   
   subroutine replace_substring(string, str_srch, str_repl)
+    implicit none
     character, intent(inout) :: string*(*)
     character, intent(in) :: str_srch*(*),str_repl*(*)
     integer :: is,lin
@@ -114,6 +115,45 @@ contains
     end do
     
   end subroutine replace_substring
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Search and replace occurences of a string in a text file
+  !!
+  !! \param file_in   Name of the text file to replace in
+  !! \param file_out  Name of the text file to store the result in
+  !! \param str_srch  Search string
+  !! \param str_repl  Replacement string
+  
+  subroutine replace_string_in_textfile(file_in, file_out, str_srch, str_repl)
+    use SUFR_system, only: quit_program_error, find_free_io_unit
+    
+    implicit none
+    character, intent(in) :: file_in*(*),file_out*(*), str_srch*(*),str_repl*(*)
+    integer :: io,ip,op
+    character :: string*(999)
+    
+    call find_free_io_unit(ip)
+    open(unit=ip, file=trim(file_in), status='old', action='read', iostat=io)
+    if(io.ne.0) call quit_program_error('Could not open file: '//trim(file_in), 0)
+    
+    call find_free_io_unit(op)
+    open(unit=op, file=trim(file_out), status='replace', action='write', iostat=io)
+    if(io.ne.0) call quit_program_error('Could not open file: '//trim(file_out), 0)
+    
+    io = 0
+    do while(io.eq.0)
+       read(ip,'(A)', iostat=io) string
+       call replace_substring(string, str_srch, str_repl)
+       write(op,'(A)') trim(string)
+    end do
+    
+    close(ip)
+    close(op)
+    
+  end subroutine replace_string_in_textfile
   !*********************************************************************************************************************************
   
   
