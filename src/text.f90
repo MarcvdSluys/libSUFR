@@ -122,31 +122,61 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a string in a text file
   !!
-  !! \param file_in   Name of the text file to replace in
-  !! \param file_out  Name of the text file to store the result in
-  !! \param str_srch  Search string
-  !! \param str_repl  Replacement string
+  !! \param  file_in   Name of the text file to replace in
+  !! \param  file_out  Name of the text file to store the result in
+  !! \param  str_srch  Search string
+  !! \param  str_repl  Replacement string
+  !!
+  !! \retval status    Exit status: 0-ok, 1/2: could not open I/O file, 11/12: character array string too small
   
-  subroutine replace_string_in_textfile(file_in, file_out, str_srch, str_repl)
-    use SUFR_system, only: quit_program_error, find_free_io_unit
+  subroutine replace_string_in_textfile(file_in, file_out, str_srch, str_repl, status)
+    use SUFR_system, only: error, find_free_io_unit
     
     implicit none
     character, intent(in) :: file_in*(*),file_out*(*), str_srch*(*),str_repl*(*)
+    integer, intent(out) :: status
     integer :: io,ip,op
     character :: string*(999)
     
+    status = 0
+    
+    ! Input file:
     call find_free_io_unit(ip)
     open(unit=ip, file=trim(file_in), status='old', action='read', iostat=io)
-    if(io.ne.0) call quit_program_error('Could not open file: '//trim(file_in), 0)
+    if(io.ne.0) then
+       call error('replace_string_in_textfile():  could not open file: '//trim(file_in), 0)
+       status = 1
+       return
+    end if
     
+    ! Output file:
     call find_free_io_unit(op)
     open(unit=op, file=trim(file_out), status='replace', action='write', iostat=io)
-    if(io.ne.0) call quit_program_error('Could not open file: '//trim(file_out), 0)
+    if(io.ne.0) then
+       call error('replace_string_in_textfile():  could not open file: '//trim(file_out), 0)
+       status = 2
+       return
+    end if
+       
     
     io = 0
     do while(io.eq.0)
        read(ip,'(A)', iostat=io) string
+       
+       if(len(string).eq.len_trim(string)) then
+          call error('replace_string_in_textfile():  character array string too small', 0)
+          status = 11
+          return
+       end if
+       
        call replace_substring(string, str_srch, str_repl)
+       
+       if(len(string).eq.len_trim(string)) then
+          call error('replace_string_in_textfile():  character array string too small', 0)
+          status = 12
+          return
+       end if
+       
        write(op,'(A)') trim(string)
     end do
     
