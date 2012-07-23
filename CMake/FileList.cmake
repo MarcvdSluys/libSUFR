@@ -11,6 +11,7 @@ set(SRC_FILES
   src/random_numbers.f90
   src/solvers.f90
   src/sorting.f90
+  src/sports.f90
   src/statistics.f90
   src/system.f90
   src/text.f90
