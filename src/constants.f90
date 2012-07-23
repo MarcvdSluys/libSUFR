@@ -122,7 +122,7 @@ module SUFR_constants_datetime
   save
   
   integer, public :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentmillisecond,currentdow
-  real(double), public :: currentjd
+  real(double), public :: currentjd, currenttz
   
   character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
   character, public :: currentdowstren*(9),currentdatestren*(39)
@@ -474,6 +474,7 @@ contains
     if(dt(4).ge.0) signstr = '+'
     write(currenttimezonestr,'(A)')'UTC'//signstr//trim(tzstr)
     if(dt(4).lt.0.d0) tz = -tz
+    currenttz = tz
     
     ! JD, dow, dow strings:
     currentjd = ymdhms2jd(currentyear,currentmonth,currentday,currenthour,currentminute,dble(currentsecond))
