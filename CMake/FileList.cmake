@@ -15,5 +15,6 @@ set(SRC_FILES
   src/system.f90
   src/text.f90
   src/time2string.f90
+  src/weather.f90
   )
 
