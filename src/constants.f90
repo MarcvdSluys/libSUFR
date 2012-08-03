@@ -45,7 +45,7 @@ module SUFR_constants_astro
   
   ! Astronomical constants:
   real(double),public :: julyear,solday,siday,planr(0:9),pland(0:9),plana(0:9),earthr
-  real(double),public :: au,km,rsun,msun,jd1875,jd2000,eps2000
+  real(double),public :: au,km,rsun,msun,lsun,jd1875,jd2000,eps2000
   
   ! Satellite data for planets 4-8:
   real(double),public :: satrad(4:8,30),satdiam(4:8,30)
@@ -312,8 +312,9 @@ contains
     ! Astronomical constants:
     au = 1.4959787d13         ! A.U. in cgs
     km = 1.d5                 ! kilometer in cgs
-    rsun = 6.9599d10          ! Solar radius in cgs
-    msun = 1.9891d33          ! Solar mass in cgs
+    rsun = 6.9599d10          ! Solar radius in cgs (cm)
+    msun = 1.9891d33          ! Solar mass in cgs (gm)
+    lsun = 3.85d33            ! Solar luminosity in cgs (erg/s)
     siday = 0.997269663d0     ! Siderial day in days
     solday   = 8.64d4         ! Solar day in s
     julyear  = 3.15569d7      ! Julian year in s
