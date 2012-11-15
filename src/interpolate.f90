@@ -82,7 +82,6 @@ contains
   !! \retval y  Y value to find
   
   function linear_interpolation_sp(x1,x2, y1,y2, x)
-    use SUFR_kinds, only: double
     use SUFR_interpolate_core, only: linear_interpolation
     implicit none
     real, intent(in)  :: x1,x2, y1,y2, x

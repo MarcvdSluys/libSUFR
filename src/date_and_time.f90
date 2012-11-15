@@ -379,7 +379,6 @@ contains
   !! \param yr  Year (CE)
   
   function leapyr(yr)
-    use SUFR_kinds, only: double
     use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none

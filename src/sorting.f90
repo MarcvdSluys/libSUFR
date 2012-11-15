@@ -189,8 +189,6 @@ contains
   !! \todo  Check whether array = array(index_list) works
   
   subroutine sort_array_sp(array)
-    use SUFR_kinds, only: double
-    
     implicit none
     real, intent(inout) :: array(:)
     

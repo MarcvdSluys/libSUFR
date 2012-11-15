@@ -64,8 +64,6 @@ contains
   !! \param x2  Second number
   
   function reldiff_sp(x1,x2)
-    use SUFR_kinds, only: double
-    
     implicit none
     real, intent(in) :: x1,x2
     real :: reldiff_sp

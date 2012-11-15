@@ -69,7 +69,7 @@ contains
   !!                Set seed1<0 to initialise the generator; seed1 is updated between calls (int).
   !! \retval ran_unif  The random number, uniformely generated between 0 < r < 1  (double).
   !! 
-  !! - Use two L'Ecuyer generators, period is \f$ \sim10^{18}\f$
+  !! - Use two L'Ecuyer generators, period is \f$ \sim 10^{18}\f$
   !! - tab is a Bays-Durham shuffle table of length Ntab
   !! \see Numerical Recipes in Fortran 77, Sect.7.1.
   
