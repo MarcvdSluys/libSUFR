@@ -268,11 +268,14 @@ contains
     real, intent(out) :: z(nxbin+1,nybin+1),tr(6)
     
     integer :: i,bx,by, ndat
-    real :: dx,dy, weight
+    real :: dx,dy, myweights(size(xdat))
     
     ! Check data array sizes for consistency:
     ndat = size(xdat)
     if(size(ydat).ne.ndat) call quit_program_error('bin_data_2d(): data arrays xdat and ydat should have the same size',1)
+    
+    myweights = 1.
+    if(present(weights)) myweights = weights
     
     if(abs((xmin-xmax)/(xmax+1.e-30)).lt.1.e-20) then  ! Autodetermine x ranges
        xmin = minval(xdat(1:ndat))
@@ -325,9 +328,7 @@ contains
        ! Don't treat 1-bin errors as round-off:
        !if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + 1.
        
-       weight = 1.
-       if(present(weights)) weight = weights(i)
-       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + weight
+       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + myweights(i)
     end do
     
     !if(norm.eq.1) z = z/(ztot+1.e-30)
