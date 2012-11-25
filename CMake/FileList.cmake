@@ -5,6 +5,7 @@ set(SRC_FILES
   src/constants.f90
   src/date_and_time.f90
   src/earth.f90
+  src/fitting.f90
   src/interpolate.f90
   src/kinds.f90
   src/numerics.f90
