@@ -30,7 +30,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Fit the model coefficients using a chi^2 method
   !!
-  !! Do a chi^2-minimisation fit of ndat data points xdat and ydat, the latter with errors yerr, to function func.  The fit uses 
+  !! Do a chi^2-minimisation fit of ndat data points xdat and ydat, the latter with errors yerr, to function func.  The fit uses
   !! the ncoef coefficients stored in coef() that should be varied if the corresponding entry in varc =1, fixed if =0.
   !!
   !! The fitting function must be provided as the subroutine myFunc which returns a value y = myFunc(x, basefunc, ncoef), where
