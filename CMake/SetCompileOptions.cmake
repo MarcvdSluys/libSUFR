@@ -3,7 +3,7 @@
 
 
 option( CMAKE_VERBOSE_MAKEFILE  "Verbose makefile" off )
-option( CREATE_VERSION          "Create a code-version file with svn/bzr version and date (for developers)" off )
+option( CREATE_VERSION          "Create a code-version file with git version, hash and date (for developers)" off )
 
 option( WANT_CHECKS             "Activate runtime checks (array bounds, NaNs)" off )
 option( WANT_WARNINGS           "Activate warnings" on )

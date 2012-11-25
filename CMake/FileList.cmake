@@ -9,6 +9,7 @@ set(SRC_FILES
   src/fitting.f90
   src/interpolate.f90
   src/kinds.f90
+  src/libSUFR_version.f90
   src/numerics.f90
   src/random_numbers.f90
   src/solvers.f90
