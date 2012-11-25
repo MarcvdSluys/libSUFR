@@ -120,6 +120,51 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Remove a substring from a string
+  !!
+  !! \param sstr   Substring to remove
+  !! \param str    String to remove the substring from
+  !! \param debug  Print debug info (T/F, optional)
+  
+  subroutine remove_substring(sstr,str, debug)
+    implicit none
+    character, intent(in) :: sstr*(*)
+    character, intent(inout) :: str*(*)
+    logical, intent(in), optional :: debug
+    
+    integer :: l,ls, i1
+    character :: tstr*(len(str))
+    logical :: print_debug
+    
+    print_debug = .false.
+    if(present(debug)) print_debug = debug
+    
+    ls = len(sstr)     ! Lenth of the substring to remove
+    
+    i1 = -1
+    do while(i1.ne.0)  ! There may be multiple instances
+       l = len_trim(str)
+       
+       i1 = index(str,sstr,back=.false.)
+       if(i1.gt.0) then
+          tstr = str(1:i1-1)//str(i1+ls:l)
+          if(print_debug) then
+             print*,str(1:i1-1)
+             print*,str(i1+ls:l)
+             print*,str(i1:i1+ls),i1,l
+             print*,trim(tstr)
+          end if
+          !return
+          str = tstr
+       end if
+    end do
+    
+  end subroutine remove_substring
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a string in a text file
   !!
   !! \param  file_in   Name of the text file to replace in
