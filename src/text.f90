@@ -120,7 +120,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Remove a substring from a string
+  !> \brief  Remove a substring from a string, if present
   !!
   !! \param sstr   Substring to remove
   !! \param str    String to remove the substring from
