@@ -263,7 +263,7 @@ contains
     implicit none
     integer, intent(in) :: nxbin,nybin, norm
     real, intent(in) :: xdat(:),ydat(:)
-    real, intent(in), optional :: weights(:)
+    real, intent(in), optional :: weights(size(xdat))
     real, intent(inout) :: xmin,xmax,ymin,ymax
     real, intent(out) :: z(nxbin+1,nybin+1),tr(6)
     
