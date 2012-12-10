@@ -35,13 +35,13 @@
 !  wddms2:   Print angle as dms string, input in rad, output between -99 and +99 with &deg;  (26)
 !  wd1ms2:   Print angle as d.mm.ss string, input in rad, output between -9 and +9  -  
 !              HTML version of d1ms2  (25)
-!  wdm:      Print angle as ddd:mm string, input in rad with &deg; rather than °  (17)
+!  wdm:      Print angle as ddd:mm string, input in rad with &deg; rather than d  (17)
 !  wdm2:     Print angle as ddd.mm string, input in rad, output between -180 and +180 
-!              with &deg; rather than °  (18)
+!              with &deg; rather than d  (18)
 !  wdmm2:    Print angle as dd.mm string, input in rad, output between -99 and +99 !!! 
-!              with &deg; rather than ° (17)
+!              with &deg; rather than d (17)
 !  wdmmm2:   Print angle as dd:mm.m string, input in rad, output between -99 and +99 !!! 
-!              with &deg; rather than ° (19)
+!              with &deg; rather than d (19)
 !  wddd2:    Print angle as dd.d string, HTML version of ddd2()  (10)
 
 !  ams:      Print angle as mm:ss.s string, input in rad
@@ -100,7 +100,7 @@ contains
     write(mm,'(i2.2)') m
     write(ss,'(i2.2)') s
     
-    if(d.gt.0) write(prs,'(a3,a1,a2,a1)') ddd,'°',mm,"'"
+    if(d.gt.0) write(prs,'(a3,a1,a2,a1)') ddd,'d',mm,"'"
     if(d.eq.0) write(prs,'(a3,a1,a2,a1)') mm,"'",ss,'"'
     
   end function prs
@@ -142,7 +142,7 @@ contains
     write(mm,'(i2.2)') m
     write(ss,'(i2.2)') s
     
-    write(dms,'(a3,2(a1,a2),a1)') ddd,'°',mm,"'",ss,'"'
+    write(dms,'(a3,2(a1,a2),a1)') ddd,'d',mm,"'",ss,'"'
     
   end function dms
   !*********************************************************************************************************************************
@@ -184,7 +184,7 @@ contains
     write(ss,'(f5.2)') s
     if(s.lt.10) write(ss,'(a1,f4.2)') '0',s
     
-    write(dmss,'(a3,a1,a2,a1,a5,a1)') ddd,'°',mm,"'",ss,'"'
+    write(dmss,'(a3,a1,a2,a1,a5,a1)') ddd,'d',mm,"'",ss,'"'
     
   end function dmss
   !*********************************************************************************************************************************
@@ -231,7 +231,7 @@ contains
     write(ddd,'(a1,i3.3)') sig,d
     write(mm,'(i2.2)') m
     write(ss,'(i2.2)') s
-    write(dms2,'(a4,2(a1,a2),a1)') ddd,'°',mm,"'",ss,'"'
+    write(dms2,'(a4,2(a1,a2),a1)') ddd,'d',mm,"'",ss,'"'
     
   end function dms2
   !*********************************************************************************************************************************
@@ -275,7 +275,7 @@ contains
        m = 0
     end if
     
-    write(ddms2,'(a1,i2.2,2(a1,i2.2),a1)') sig,d,'°',m,"'",s,'"'
+    write(ddms2,'(a1,i2.2,2(a1,i2.2),a1)') sig,d,'d',m,"'",s,'"'
     
   end function ddms2
   !*********************************************************************************************************************************
@@ -319,7 +319,7 @@ contains
        m = 0
     end if
     
-    write(d1ms2,'(a1,i1.1,2(a1,i2.2),a1)') sig,d,'°',m,"'",s,'"'
+    write(d1ms2,'(a1,i1.1,2(a1,i2.2),a1)') sig,d,'d',m,"'",s,'"'
     
   end function d1ms2
   !*********************************************************************************************************************************
@@ -367,7 +367,7 @@ contains
     write(mm,'(i2.2)') m
     write(ss,'(f5.2)') s
     if(s.lt.10) write(ss,'(a1,f4.2)') '0',s
-    write(dmss2,'(a4,a1,a2,a1,a5,a1)') ddd,'°',mm,"'",ss,'"'
+    write(dmss2,'(a4,a1,a2,a1,a5,a1)') ddd,'d',mm,"'",ss,'"'
     
   end function dmss2
   !*********************************************************************************************************************************
@@ -402,7 +402,7 @@ contains
     write(ddd,'(i3)') d
     write(mm,'(i2.2)') m
     !if(m.lt.10) write(mm,'(a1,i1)') '0',m
-    write(dm,'(a3,a1,a2,a1)') ddd,'°',mm,"'"
+    write(dm,'(a3,a1,a2,a1)') ddd,'d',mm,"'"
     
   end function dm
   !*********************************************************************************************************************************
@@ -441,7 +441,7 @@ contains
     
     write(ddd,'(a1,i3.3)') sig,d
     write(mm,'(i2.2)') m
-    write(dm2,'(a4,a1,a2,a1)') ddd,'°',mm,"'"
+    write(dm2,'(a4,a1,a2,a1)') ddd,'d',mm,"'"
     
   end function dm2
   !*********************************************************************************************************************************
@@ -481,7 +481,7 @@ contains
     
     write(dd,'(a1,i2.2)') sig,d
     write(mm,'(i2.2)') m
-    write(dmm2,'(a3,a1,a2,a1)') dd,'°',mm,"'"
+    write(dmm2,'(a3,a1,a2,a1)') dd,'d',mm,"'"
     
   end function dmm2
   !*********************************************************************************************************************************
@@ -522,7 +522,7 @@ contains
     write(dd,'(a1,i2.2)') sig,d
     write(mm,'(F4.1)') m
     if(m.lt.9.95d0) write(mm,'(I1,F3.1)') 0,m
-    write(dmmm2,'(a3,a1,a4,a1)') dd,'°',mm,"'"
+    write(dmmm2,'(a3,a1,a4,a1)') dd,'d',mm,"'"
     
   end function dmmm2
   !*********************************************************************************************************************************
@@ -551,8 +551,8 @@ contains
        a = -a
     end if
     
-    write(ddd2,'(A1,F4.1,A1)') sig,a,'°'
-    if(a.lt.9.95d0) write(ddd2,'(A1,I1,F3.1,A1)') sig,0,a,'°'
+    write(ddd2,'(A1,F4.1,A1)') sig,a,'d'
+    if(a.lt.9.95d0) write(ddd2,'(A1,I1,F3.1,A1)') sig,0,a,'d'
     
   end function ddd2
   !*********************************************************************************************************************************
