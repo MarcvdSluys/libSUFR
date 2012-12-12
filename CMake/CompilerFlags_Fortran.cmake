@@ -135,7 +135,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   set( CMAKE_Fortran_FLAGS_ALL "-nogen-interfaces" )
   set( CMAKE_Fortran_FLAGS "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   if( LINUX )
-    set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -mcmodel=medium" )  # -mcmodel exists for Linux only...
+    set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -mcmodel=large" )  # -mcmodel exists for Linux only...
   endif( LINUX )
   set( CMAKE_Fortran_FLAGS_RELEASE "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g -traceback" )
