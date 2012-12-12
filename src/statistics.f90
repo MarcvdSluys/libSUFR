@@ -252,7 +252,7 @@ contains
   !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
   !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
   !!
-  !! \retval z     Binned data set z(nxbin,nybin)
+  !! \retval z     Binned data set z(nxbin+1,nybin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
   !! \retval tr    Transformation elements for pgplot tr(6)
   !!
   !! \param weights  Weights to use when binning data, same size as xdat,ydat (optional)
