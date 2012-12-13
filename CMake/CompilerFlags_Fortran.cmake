@@ -1,6 +1,7 @@
 ## CompilerFlags_Fortran.cmake
 ## Compiler flags for Fortran compilers
 ## Currently, specific flags for gfortran, g95 and ifort are provided
+## Make sure to choose the correct ~last line (printing of the compiler options)
 
 
 # Get compiler name:
@@ -132,10 +133,10 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
     COMPILER_VERSION ${_compiler_output})
   
   
-  set( CMAKE_Fortran_FLAGS_ALL "-nogen-interfaces" )
+  set( CMAKE_Fortran_FLAGS_ALL "-nogen-interfaces -heap-arrays 1024" )
   set( CMAKE_Fortran_FLAGS "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   if( LINUX )
-    set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS} -mcmodel=large" )  # -mcmodel exists for Linux only...
+    set( CMAKE_Fortran_FLAGS_ALL "${CMAKE_Fortran_FLAGS_ALL} -mcmodel=large" )  # -mcmodel exists for Linux only...
   endif( LINUX )
   set( CMAKE_Fortran_FLAGS_RELEASE "-vec-guard-write -fpconstant -funroll-loops -align all -ip" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g -traceback" )
@@ -218,8 +219,7 @@ set( USER_FLAGS "${OPT_FLAGS} ${LIB_FLAGS} ${CHECK_FLAGS} ${WARN_FLAGS} ${SSE_FL
 
 set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS} ${USER_FLAGS}" )
 set( CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS_RELEASE} ${USER_FLAGS}" )
-
-set( CMAKE_Fortran_FLAGS_RELWITHDEBINFO "${CMAKE_Fortran_FLAGS_RELEASE} -g" )
+set( CMAKE_Fortran_FLAGS_RELWITHDEBINFO "${CMAKE_Fortran_FLAGS_RELEASE} ${CMAKE_Fortran_FLAGS_DEBUG}" )
 
 
 
@@ -245,7 +245,9 @@ if( WANT_STATIC )
 endif( WANT_STATIC )
 
 
-message( STATUS "Compiler flags used:  ${CMAKE_Fortran_FLAGS}" )
+## Choose the one which is actually used: see CMAKE_BUILD_TYPE in CMakeLists.txt:
+##   (Typically, RELEASE for executable code and RELWITHDEBINFO for libraries)
+message( STATUS "Compiler flags used:  ${CMAKE_Fortran_FLAGS_RELWITHDEBINFO}" )
 message( STATUS "" )
 
 
