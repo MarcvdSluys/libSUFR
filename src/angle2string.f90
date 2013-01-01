@@ -608,6 +608,48 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief Print angle as ddd.mm.ss.ss string, input in rad with \&deg;, &rsquo; and &rdquo;  -  HTML version of dmss()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wdmss(a1)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: d,m
+    character :: wdmss*(29),mm*(2),ss*(5),ddd*(3)
+    
+    a = a1
+    a = rev(a)*r2d
+    d = int(a)
+    m = int((a-d)*60.d0)
+    s = (a-d-m/60.d0)*3600.d0
+    
+    if(s.eq.60) then
+       m = m+1
+       s = 0
+    end if
+    if(m.eq.60) then
+       d = d+1
+       m = 0
+    end if
+    
+    write(ddd,'(I3.3)') d
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
+    
+    write(wdmss,'(a3,a5,a2,a7,a5,a7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    
+  end function wdmss
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief Print angle as dms string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
   !!        HTML version of dms2()
   !!
@@ -652,6 +694,55 @@ contains
     write(wdms2,'(a4,a5,a2,a7,a2,a7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
     
   end function wdms2
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as ddd.mm.ss.ss string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
+  !!        HTML version of dmss2()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wdmss2(a1)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: d,m
+    character :: wdmss2*(30),mm*(2),ss*(5),ddd*(4),sig
+    
+    a = a1
+    a = rev2(a)*r2d
+    
+    sig = '+'
+    if(a.lt.0.d0) then
+       sig = '-'
+       a = -1.d0*a
+    end if
+    
+    d = int(a)
+    m = int((a-d)*60.d0)
+    s = (a-d-m/60.d0)*3600.d0
+    
+    if(s.eq.60) then
+       m = m+1
+       s = 0
+    end if
+    if(m.eq.60) then
+       d = d+1
+       m = 0
+    end if
+    
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
+    
+    write(wdmss2,'(A4,A5,A2,A7,A5,A7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    
+  end function wdmss2
   !*********************************************************************************************************************************
   
   
