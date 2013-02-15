@@ -161,6 +161,10 @@ contains
     call remove_substring('</b>', str)
     call remove_substring('<i>',  str)
     call remove_substring('</i>', str)
+    call remove_substring('<sub>',  str)
+    call remove_substring('</sub>', str)
+    call remove_substring('<sup>',  str)
+    call remove_substring('</sup>', str)
     
   end subroutine remove_html_bold_italics
   !*********************************************************************************************************************************
@@ -182,6 +186,10 @@ contains
     call replace_substring(str, '<p>',  ' ')
     call replace_substring(str, '</p>', ' ')
     call replace_substring(str, '<hr>', ' ')
+    
+    call replace_substring(str, '&nbsp;', ' ')
+    call replace_substring(str, '&ndash;', '-')
+    call replace_substring(str, '&mdash;', '-')
     
   end subroutine remove_html_br_p_hr
   !*********************************************************************************************************************************
