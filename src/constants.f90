@@ -536,7 +536,7 @@ contains
   subroutine set_SUFR_constants_environment()
     use SUFR_constants_environment
     implicit none
-    integer :: i, narg
+    integer :: i, narg, status
     character :: tmpstr*(99)
     
     ! Standard error, input, and output
@@ -573,7 +573,11 @@ contains
     if(narg.ge.1) then
        do i=1,narg
           call get_command_argument(i,tmpstr)
-          write(program_args,'(A)')trim(program_args)//'  '//trim(tmpstr)
+          write(program_args,'(A)', iostat=status) trim(program_args)//'  '//trim(tmpstr)
+          if(status.ne.0) then
+             write(program_args,'(A)') program_args(1:len(program_args)-13)//'  (truncated)'
+             exit  ! Too many/long arguments
+          end if
        end do
     end if
     
