@@ -27,8 +27,8 @@ module SUFR_constants_math
   private
   save
   
-  real(double), public ::  one, c3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
-  real, public ::         rc3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
+  real(double), public ::  one, c3rd,two3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
+  real, public ::         rc3rd,rtwo3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -253,8 +253,9 @@ contains
     
     
     ! Double precision:
-    one = 1.0_dbl             ! 1
-    c3rd = one/3.0_dbl        ! 1/3
+    one    = 1.0_dbl          ! 1
+    c3rd   = one/3.0_dbl      ! 1/3
+    two3rd = 2*c3rd           ! 2/3
     
     pio4 = atan(one)          ! pi/4
     pio2 = 2*pio4             ! pi/2
@@ -277,7 +278,8 @@ contains
     
     
     ! Single precision:
-    rc3rd = real(c3rd)        ! 1/3
+    rc3rd   = real(c3rd)      ! 1/3
+    rtwo3rd = real(two3rd)    ! 2/3
     
     rpio4 = real(pio4)        ! pi/4
     rpio2 = real(pio2)        ! pi/2
