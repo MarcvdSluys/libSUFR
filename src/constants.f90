@@ -95,7 +95,7 @@ module SUFR_constants_calendar
   save
   
   ! Month names:
-  character, public :: enmonths(12)*(9),enmonthsm(12)*(9),enmnts(12)*(3)
+  character, public :: enmonths(12)*(9),enmonthsm(12)*(9),enmnts(12)*(3),enmntsb(12)*(3)
   character, public :: nlmonths(12)*(9),nlmonthsb(12)*(9),nlmnts(12)*(3),nlmntsb(12)*(3)
   
   ! Day names:
@@ -415,6 +415,7 @@ contains
     enmonthsm = (/'january  ','february ','march    ','april    ','may      ','june     ','july     ','august   ','september', &
          'october  ','november ','december '/)
     enmnts    = (/'jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'/)
+    enmntsb   = (/'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'/)
     
     !nl:
     nlmonths  = (/'januari  ','februari ','maart    ','april    ','mei      ','juni     ','juli     ','augustus ','september', &
