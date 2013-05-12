@@ -140,6 +140,116 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Print run times: wall time and CPU time
+  !!
+  !! \param calltype  Type of call: 1-reset time; 2-print and reset time; 3-print time (optional)
+  !! \param sp        Number of leading spaces (optional)
+  !! \param dec       Number of decimals in the time (optional)
+  
+  subroutine print_runtimes(calltype, sp,dec)
+    use SUFR_kinds, only: double, long
+    implicit none
+    integer, intent(in), optional :: calltype, sp, dec
+    integer :: loc_calltype, loc_sp, loc_dec
+    
+    integer, save :: firstcall
+    real(double), save :: oldcputime,oldwalltime
+    
+    integer(long) :: count, count_rate, count_max
+    real(double) :: cputime, walltime
+    character :: fmt*(99)
+    
+    ! Optional dummy variables:
+    loc_calltype = 1  ! First call - reset time, don't print
+    if(firstcall.eq.213546879) loc_calltype = 3  ! >= 2nd call - print times, don't reset
+    if(present(calltype)) loc_calltype = calltype
+    
+    loc_sp = 0  ! No leading spaces by default
+    if(present(sp)) loc_sp = sp
+    
+    loc_dec = 3  ! 3 decimals in time in seconds by default
+    if(present(dec)) loc_dec = dec
+    
+    
+    ! Get CPU time:
+    call cpu_time(cputime)
+    
+    ! Get wall time:
+    call system_clock(count, count_rate, count_max)
+    if(count_rate.gt.0.d0) then
+       walltime = dble(count)/dble(count_rate)
+    else
+       walltime = 0.d0
+    end if
+    
+    ! Print times:
+    if(loc_calltype.ge.2) then
+       if(firstcall.ne.213546879) then
+          call warn('print_runtime():  loc_calltype should be 1 on the first call', 0)
+          return
+       end if
+       
+       if(loc_sp.eq.0) then  ! No leading spaces:
+          write(fmt, '(A,I0,A)') '(A,2(F0.',max(0,loc_dec),',A))'
+       else
+          write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
+       end if
+       write(*,trim(fmt)) 'Program took ',walltime-oldwalltime,'s of wall time and ',cputime-oldcputime,'s of CPU time.'
+    end if
+    
+    ! Reset times:
+    if(loc_calltype.le.2) then
+       oldcputime = cputime
+       oldwalltime = walltime
+    end if
+    firstcall = 213546879
+    
+  end subroutine print_runtimes
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print CPU time since the first execution of the program
+  !!
+  !! \param sp        Number of leading spaces (optional)
+  !! \param dec       Number of decimals in the time (optional)
+  
+  subroutine print_cputime(sp,dec)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in), optional :: sp, dec
+    integer :: loc_sp, loc_dec
+    
+    real(double) :: cputime
+    character :: fmt*(99)
+    
+    ! Optional dummy variables:
+    loc_sp = 0  ! No leading spaces by default
+    if(present(sp)) loc_sp = sp
+    
+    loc_dec = 3  ! 3 decimals in time in seconds by default
+    if(present(dec)) loc_dec = dec
+    
+    
+    ! Get CPU time:
+    call cpu_time(cputime)
+    
+    ! Print CPU time:
+    if(loc_sp.eq.0) then  ! No leading spaces:
+       write(fmt, '(A,I0,A)') '(A,2(F0.',max(0,loc_dec),',A))'
+    else
+       write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
+    end if
+    write(*,trim(fmt)) 'Program took ',cputime,'s of CPU time.'
+    
+  end subroutine print_cputime
+  !*********************************************************************************************************************************
+  
+  
+  
+  
   
   
   
