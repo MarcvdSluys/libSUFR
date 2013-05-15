@@ -29,7 +29,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the median of a data set
+  !> \brief  Compute the median of a data array
   !!
   !! \param data  1D array of data points
   !! \param mask  Mask to apply to data (optional)
@@ -87,7 +87,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the median of a data set - single precision
+  !> \brief  Compute the median of a data array - single-precision wrapper for median()
   !!
   !! \param data  1D array of data points
   !! \param mask  Mask to apply to data (optional)
@@ -106,7 +106,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('median():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('median_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -130,7 +130,72 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set data with mean 'mean'
+  !> \brief  Compute the mean of a data array
+  !!
+  !! \param data  1D array of data points
+  !! \param mask  Mask to apply to data (optional)
+  
+  function mean(data, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    real(double), intent(in) :: data(:)
+    logical, intent(in), optional :: mask(:)
+    
+    integer :: ni
+    real(double) :: mean
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('mean():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    ni = count(locmask)  ! Number of .true. elements in locmask
+    mean = sum(data, mask=locmask)/dble(ni)
+    
+  end function mean
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the mean of a data array - single-precision wrapper for mean()
+  !!
+  !! \param data  1D array of data points
+  !! \param mask  Mask to apply to data (optional)
+  
+  function mean_sp(data, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    real, intent(in) :: data(:)
+    logical, intent(in), optional :: mask(:)
+    
+    real :: mean_sp
+    real(double) :: data_d(size(data)), mean_d
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('mean_sp():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    data_d = dble(data)
+    mean_d = mean(data_d, mask=locmask)
+    mean_sp = real(mean_d)
+    
+  end function mean_sp
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the standard deviation of a data array with mean 'mean'
   !!
   !! \param data  1D array with data points
   !! \param mean  Mean of the data points
@@ -181,7 +246,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set data with mean 'mean'  (single-precision wrapper for stdev)
+  !> \brief  Compute the standard deviation of a data array with mean 'mean' - single-precision wrapper for stdev()
   !!
   !! \param data  1D array with data points
   !! \param mean  Mean of the data points
@@ -358,7 +423,7 @@ contains
     
     ! Check data array sizes for consistency:
     ndat = size(xdat)
-    if(size(ydat).ne.ndat) call quit_program_error('bin_data_2d(): data arrays xdat and ydat should have the same size',1)
+    if(size(ydat).ne.ndat) call quit_program_error('bin_data_2d(): data arrays xdat and ydat must have the same size',1)
     
     myweights = 1.
     if(present(weights)) myweights = weights
