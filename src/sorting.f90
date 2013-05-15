@@ -37,11 +37,12 @@ contains
   !!                      array(index_list) gives the sorted array.
   !! 
   !! \param  mask         Mask to apply to array. If present, index_list will have zeroes after the last meaningful entry (optional)
+  !! \retval index_n      Number of meaningful elements in index_list, after applying mask (optional)
   !!
   !! \note  This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \see   Numerical Recipes in Fortran 77, Sect.8.4.
   
-  subroutine sorted_index_list(array, index_list, mask)
+  subroutine sorted_index_list(array, index_list, mask, index_n)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -49,10 +50,11 @@ contains
     real(double), intent(in) :: array(:)
     integer, intent(out) :: index_list(:)
     logical, intent(in), optional :: mask(:)
+    integer, intent(out),optional :: index_n
     
     integer, parameter :: m=7, nstack=50
     real(double) :: a, locarray(size(array))
-    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack), narr
+    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack)
     
     if(size(array).ne.size(index_list)) &
          call quit_program_error('sorted_index_list():  array and index_list must have the same size',0)
@@ -60,28 +62,28 @@ contains
     ! Apply mask if present:
     if(present(mask)) then
        if(size(array).ne.size(mask)) call quit_program_error('sorted_index_list():  array and mask must have the same size', 0)
-       narr = 0
+       index_n = 0
        do i=1,size(array)
           if(mask(i)) then
-             narr = narr + 1
-             locarray(narr) = array(i)
+             index_n = index_n + 1
+             locarray(index_n) = array(i)
           end if
        end do
     else
        locarray = array
-       narr = size(locarray)
+       index_n = size(locarray)
     end if
     
     
     index_list = 0
-    do j=1,narr
+    do j=1,index_n
        index_list(j) = j
     end do
     
     
     jstack = 0
     l = 1
-    ir = narr
+    ir = index_n
     
 1   continue
     if(ir-l.lt.m) then
