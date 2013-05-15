@@ -35,28 +35,49 @@ contains
   !!
   !! \retval index_list   List with indices of array values, sorted to ascending value, same dimension and size as array.
   !!                      array(index_list) gives the sorted array.
+  !! 
+  !! \param  mask         Mask to apply to array. If present, index_list will have zeroes after the last meaningful entry (optional)
   !!
   !! \note  This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \see   Numerical Recipes in Fortran 77, Sect.8.4.
   
-  subroutine sorted_index_list(array, index_list)
+  subroutine sorted_index_list(array, index_list, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
     implicit none
     real(double), intent(in) :: array(:)
     integer, intent(out) :: index_list(:)
+    logical, intent(in), optional :: mask(:)
     
     integer, parameter :: m=7, nstack=50
-    real(double) :: a
+    real(double) :: a, locarray(size(array))
     integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack), narr
     
-    if(size(array).ne.size(index_list)) call quit_program_error('sorted_index_list():  array and index_list must have equal size',1)
+    if(size(array).ne.size(index_list)) &
+         call quit_program_error('sorted_index_list():  array and index_list must have the same size',0)
     
-    narr = size(array)
+    ! Apply mask if present:
+    if(present(mask)) then
+       if(size(array).ne.size(mask)) call quit_program_error('sorted_index_list():  array and mask must have the same size', 0)
+       narr = 0
+       do i=1,size(array)
+          if(mask(i)) then
+             narr = narr + 1
+             locarray(narr) = array(i)
+          end if
+       end do
+    else
+       locarray = array
+       narr = size(locarray)
+    end if
+    
+    
+    index_list = 0
     do j=1,narr
        index_list(j) = j
     end do
+    
     
     jstack = 0
     l = 1
@@ -67,9 +88,9 @@ contains
        
        do j=l+1,ir
           index_i = index_list(j)
-          a = array(index_i)
+          a = locarray(index_i)
           do i=j-1,l,-1
-             if(array(index_list(i)).le.a) goto 2
+             if(locarray(index_list(i)).le.a) goto 2
              index_list(i+1) = index_list(i)
           end do
           i = l-1
@@ -91,19 +112,19 @@ contains
        index_list(k) = index_list(l+1)
        index_list(l+1) = itemp
        
-       if(array(index_list(l)).gt.array(index_list(ir))) then
+       if(locarray(index_list(l)).gt.locarray(index_list(ir))) then
           itemp = index_list(l)
           index_list(l) = index_list(ir)
           index_list(ir) = itemp
        end if
        
-       if(array(index_list(l+1)).gt.array(index_list(ir))) then
+       if(locarray(index_list(l+1)).gt.locarray(index_list(ir))) then
           itemp = index_list(l+1)
           index_list(l+1) = index_list(ir)
           index_list(ir) = itemp
        end if
        
-       if(array(index_list(l)).gt.array(index_list(l+1))) then
+       if(locarray(index_list(l)).gt.locarray(index_list(l+1))) then
           itemp = index_list(l)
           index_list(l) = index_list(l+1)
           index_list(l+1) = itemp
@@ -112,15 +133,15 @@ contains
        i = l+1
        j = ir
        index_i = index_list(l+1)
-       a = array(index_i)
+       a = locarray(index_i)
        
 3      continue
        i = i+1
-       if(array(index_list(i)).lt.a) goto 3
+       if(locarray(index_list(i)).lt.a) goto 3
        
 4      continue
        j = j-1
-       if(array(index_list(j)).gt.a) goto 4
+       if(locarray(index_list(j)).gt.a) goto 4
        
        if(j.lt.i) goto 5
        
