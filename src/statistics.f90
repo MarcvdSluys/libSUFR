@@ -34,7 +34,7 @@ contains
   !! \param data  1D array of data points
   !! \param mask  Mask to apply to data (optional)
   
-  function compute_median(data, mask)
+  function median(data, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     use SUFR_sorting, only: sorted_index_list
@@ -44,32 +44,43 @@ contains
     logical, intent(in), optional :: mask(:)
     
     integer :: indexx(size(data)), ni
-    real(double) :: compute_median
+    real(double) :: median
     logical :: locmask(size(data))
     
     ni = size(data)
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('compute_median():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('median():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
-    compute_median = 0.d0
+    median = 0.d0
     
     ! Sort the array:
     call sorted_index_list(data,indexx, mask=locmask, index_n=ni)
     
     if(ni.eq.0) then
-       compute_median = 0.d0
+       median = 0.d0
     else
        ! Determine the median:
        if(mod(ni,2).eq.0) then  ! ni is even
-          compute_median = 0.5d0*(data(indexx(ni/2)) + data(indexx(ni/2+1)))
+          median = 0.5d0*(data(indexx(ni/2)) + data(indexx(ni/2+1)))
        else                     ! ni is odd
-          compute_median = data(indexx((ni+1)/2))
+          median = data(indexx((ni+1)/2))
        end if
     end if
     
+  end function median
+  
+  
+  !> \brief  Obsolete alias of function median().  Use median() instead.
+  function compute_median(data,mask)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: data(:)
+    logical, intent(in), optional :: mask(:)
+    real(double) :: compute_median
+    compute_median = median(data, mask)
   end function compute_median
   !*********************************************************************************************************************************
   
@@ -81,7 +92,7 @@ contains
   !! \param datas  1D array of data points
   !! \param mask   Mask to apply to data (optional)
   
-  function compute_median_sp(datas, mask)
+  function median_sp(datas, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -89,20 +100,30 @@ contains
     real, intent(in) :: datas(:)
     logical, intent(in), optional :: mask(:)
     
-    real :: compute_median_sp
+    real :: median_sp
     real(double) :: datad(size(datas)), mediand
     logical :: locmask(size(datas))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(datas).ne.size(mask)) call quit_program_error('compute_median():  datas and mask must have the same size', 0)
+       if(size(datas).ne.size(mask)) call quit_program_error('median():  datas and mask must have the same size', 0)
        locmask = mask
     end if
     
     datad = dble(datas)
-    mediand = compute_median(datad, mask=locmask)
-    compute_median_sp = real(mediand)
+    mediand = median(datad, mask=locmask)
+    median_sp = real(mediand)
     
+  end function median_sp
+  
+  
+  !> \brief  Obsolete alias of function median_sp().  Use median_sp() instead.
+  function compute_median_sp(data,mask)
+    implicit none
+    real, intent(in) :: data(:)
+    logical, intent(in), optional :: mask(:)
+    real :: compute_median_sp
+    compute_median_sp = median_sp(data, mask)
   end function compute_median_sp
   !*********************************************************************************************************************************
   
@@ -115,7 +136,7 @@ contains
   !! \param mean  Mean of the data points
   !! \param mask  Mask to apply to data (optional)
   
-  function compute_stdev(data, mean, mask)
+  function stdev(data, mean, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -124,12 +145,12 @@ contains
     logical, intent(in), optional :: mask(:)
     
     integer :: i, ni
-    real(double) :: compute_stdev,stdev
+    real(double) :: stdev
     logical :: locmask(size(data))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('compute_stdev():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('stdev():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -142,20 +163,31 @@ contains
        end if
     end do
     
-    compute_stdev = sqrt(stdev/dble(ni-1))
+    stdev = sqrt(stdev/dble(ni-1))
     
+  end function stdev
+  
+  
+  !> \brief  Obsolete alias for function compute_stdev().  Use compute_stdev() instead.
+  function compute_stdev(data,mean,mask)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: data(:),mean
+    logical, intent(in), optional :: mask(:)
+    real(double) :: compute_stdev
+    compute_stdev = stdev(data, mean, mask)
   end function compute_stdev
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data set datas with mean 'means'  (single-precision wrapper for compute_stdev)
+  !> \brief  Compute the standard deviation of a data set datas with mean 'means'  (single-precision wrapper for stdev)
   !!
   !! \param datas  1D array with data points
   !! \param means  Mean of the data points
   !! \param mask   Mask to apply to data (optional)
   
-  function compute_stdev_sp(datas, means, mask)
+  function stdev_sp(datas, means, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -163,19 +195,29 @@ contains
     real, intent(in) :: datas(:), means
     logical, intent(in), optional :: mask(:)
     
-    real :: compute_stdev_sp
+    real :: stdev_sp
     real(double) :: stdevd
     logical :: locmask(size(datas))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(datas).ne.size(mask)) call quit_program_error('compute_stdev_sp():  datas and mask must have the same size', 0)
+       if(size(datas).ne.size(mask)) call quit_program_error('stdev_sp():  datas and mask must have the same size', 0)
        locmask = mask
     end if
     
-    stdevd = compute_stdev(dble(datas), dble(means), mask=locmask)
-    compute_stdev_sp = real(stdevd)
+    stdevd = stdev(dble(datas), dble(means), mask=locmask)
+    stdev_sp = real(stdevd)
     
+  end function stdev_sp
+  
+  
+  !> \brief  Obsolete alias for function compute_stdev_sp().  Use compute_stdev_sp() instead.
+  function compute_stdev_sp(data,mean,mask)
+    implicit none
+    real, intent(in) :: data(:),mean
+    logical, intent(in), optional :: mask(:)
+    real :: compute_stdev_sp
+    compute_stdev_sp = stdev_sp(data, mean, mask)
   end function compute_stdev_sp
   !*********************************************************************************************************************************
   
