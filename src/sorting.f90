@@ -52,108 +52,113 @@ contains
     logical, intent(in), optional :: mask(:)
     integer, intent(out),optional :: index_n
     
-    integer, parameter :: m=7, nstack=50
-    real(double) :: a
-    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack), loc_list(size(index_list))
+    integer, parameter :: mm=7, nstack=50
+    real(double) :: arr_i
+    integer :: ii,index_i,ir,itemp,istack(nstack), jj,jstack, kk,ll, loc_list(size(index_list))
     logical :: loc_mask(size(array))
+    
     
     if(size(array).ne.size(index_list)) &
          call quit_program_error('sorted_index_list():  array and index_list must have the same size',0)
     
-    ir = size(array)
     loc_mask = .true.
     if(present(mask)) loc_mask = mask
     
     loc_list = 0
-    do j=1,ir
-       loc_list(j) = j
+    do jj=1,size(array)
+       loc_list(jj) = jj
     end do
     
     
+    ! Starting values:
     jstack = 0
-    l = 1
+    ll = 1
+    ir = size(array)
     
     mainloop: do
-       if(ir-l.lt.m) then
+       if(ir-ll.lt.mm) then
           
-          do j=l+1,ir
-             index_i = loc_list(j)
-             a = array(index_i)
-             subloop1: do i=j-1,l,-1
-                if(array(loc_list(i)).le.a) exit subloop1
-                loc_list(i+1) = loc_list(i)
+          do jj=ll+1,ir
+             index_i = loc_list(jj)
+             arr_i = array(index_i)
+             subloop1: do ii=jj-1,ll,-1
+                if(array(loc_list(ii)).le.arr_i) exit subloop1
+                loc_list(ii+1) = loc_list(ii)
              end do subloop1
-             if(array(loc_list(i)).gt.a) i = l-1
+             if(array(loc_list(ii)).gt.arr_i) ii = ll-1
              
-             loc_list(i+1) = index_i
+             loc_list(ii+1) = index_i
           end do
           
           
           !*************************************************
           ! Done - apply mask and return to caller routine
           if(jstack.eq.0) then
+             
              index_n = 0
-             do i=1,size(array)
-                if(loc_mask(loc_list(i))) then
+             do ii=1,size(array)
+                if(loc_mask(loc_list(ii))) then
                    index_n = index_n + 1
-                   index_list(index_n) = loc_list(i)
+                   index_list(index_n) = loc_list(ii)
                 end if
              end do
+             
              return
+             
           end if
           !*************************************************
           
           
           ir = istack(jstack)
-          l = istack(jstack-1)
+          ll = istack(jstack-1)
           jstack = jstack - 2
           
        else
           
-          k = (l+ir)/2
-          itemp = loc_list(k)
-          loc_list(k) = loc_list(l+1)
-          loc_list(l+1) = itemp
+          kk = (ll+ir)/2
+          itemp = loc_list(kk)
+          loc_list(kk) = loc_list(ll+1)
+          loc_list(ll+1) = itemp
           
-          if(array(loc_list(l)).gt.array(loc_list(ir))) then
-             itemp = loc_list(l)
-             loc_list(l) = loc_list(ir)
+          if(array(loc_list(ll)).gt.array(loc_list(ir))) then
+             itemp = loc_list(ll)
+             loc_list(ll) = loc_list(ir)
              loc_list(ir) = itemp
           end if
           
-          if(array(loc_list(l+1)).gt.array(loc_list(ir))) then
-             itemp = loc_list(l+1)
-             loc_list(l+1) = loc_list(ir)
+          if(array(loc_list(ll+1)).gt.array(loc_list(ir))) then
+             itemp = loc_list(ll+1)
+             loc_list(ll+1) = loc_list(ir)
              loc_list(ir) = itemp
           end if
           
-          if(array(loc_list(l)).gt.array(loc_list(l+1))) then
-             itemp = loc_list(l)
-             loc_list(l) = loc_list(l+1)
-             loc_list(l+1) = itemp
+          if(array(loc_list(ll)).gt.array(loc_list(ll+1))) then
+             itemp = loc_list(ll)
+             loc_list(ll) = loc_list(ll+1)
+             loc_list(ll+1) = itemp
           end if
           
-          i = l+1
-          j = ir
-          index_i = loc_list(l+1)
-          a = array(index_i)
+          ii = ll+1
+          jj = ir
+          index_i = loc_list(ll+1)
+          arr_i = array(index_i)
           
           
           subloop2: do
-             i = i+1
-             if(array(loc_list(i)).lt.a) cycle subloop2
+             ii = ii+1
+             if(array(loc_list(ii)).lt.arr_i) cycle subloop2
              
              
              subloop3: do
-                j = j-1
-                if(array(loc_list(j)).le.a) exit
+                jj = jj-1
+                if(array(loc_list(jj)).le.arr_i) exit
              end do subloop3
              
              
-             if(j.ge.i) then
-                itemp = loc_list(i)
-                loc_list(i) = loc_list(j)
-                loc_list(j) = itemp
+             if(jj.ge.ii) then
+                itemp = loc_list(ii)
+                loc_list(ii) = loc_list(jj)
+                loc_list(jj) = itemp
                 cycle subloop2
              end if
              
@@ -162,20 +167,20 @@ contains
           end do subloop2
           
           
-          loc_list(l+1) = loc_list(j)
-          loc_list(j) = index_i
+          loc_list(ll+1) = loc_list(jj)
+          loc_list(jj) = index_i
           jstack = jstack + 2
           
           if(jstack.gt.nstack) write(0,'(A)')' sorted_index_list():  nstack is too small'
           
-          if(ir-i+1.ge.j-l) then
+          if(ir-ii+1.ge.jj-ll) then
              istack(jstack) = ir
-             istack(jstack-1) = i
-             ir = j-1
+             istack(jstack-1) = ii
+             ir = jj-1
           else
-             istack(jstack) = j-1
-             istack(jstack-1) = l
-             l = i
+             istack(jstack) = jj-1
+             istack(jstack-1) = ll
+             ll = ii
           end if
           
        end if
