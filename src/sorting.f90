@@ -53,55 +53,55 @@ contains
     integer, intent(out),optional :: index_n
     
     integer, parameter :: m=7, nstack=50
-    real(double) :: a, locarray(size(array))
-    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack)
+    real(double) :: a
+    integer :: i,index_i,ir,itemp,j,jstack,k,l,istack(nstack), loc_list(size(index_list))
+    logical :: loc_mask(size(array))
     
     if(size(array).ne.size(index_list)) &
          call quit_program_error('sorted_index_list():  array and index_list must have the same size',0)
     
-    ! Apply mask if present:
-    if(present(mask)) then
-       if(size(array).ne.size(mask)) call quit_program_error('sorted_index_list():  array and mask must have the same size', 0)
-       index_n = 0
-       do i=1,size(array)
-          if(mask(i)) then
-             index_n = index_n + 1
-             locarray(index_n) = array(i)
-          end if
-       end do
-    else
-       locarray = array
-       index_n = size(locarray)
-    end if
+    ir = size(array)
+    loc_mask = .true.
+    if(present(mask)) loc_mask = mask
     
-    
-    index_list = 0
-    do j=1,index_n
-       index_list(j) = j
+    loc_list = 0
+    do j=1,ir
+       loc_list(j) = j
     end do
     
     
     jstack = 0
     l = 1
-    ir = index_n
     
 1   continue
     if(ir-l.lt.m) then
        
        do j=l+1,ir
-          index_i = index_list(j)
-          a = locarray(index_i)
+          index_i = loc_list(j)
+          a = array(index_i)
           do i=j-1,l,-1
-             if(locarray(index_list(i)).le.a) goto 2
-             index_list(i+1) = index_list(i)
+             if(array(loc_list(i)).le.a) goto 2
+             loc_list(i+1) = loc_list(i)
           end do
           i = l-1
           
 2         continue
-          index_list(i+1) = index_i
+          loc_list(i+1) = index_i
        end do
        
-       if(jstack.eq.0) return
+       !******************************************
+       if(jstack.eq.0) then  ! Done - apply mask and return to caller routine
+          index_n = 0
+          do i=1,size(array)
+             if(loc_mask(loc_list(i))) then
+                index_n = index_n + 1
+                index_list(index_n) = loc_list(i)
+             end if
+          end do
+          return
+       end if
+       !******************************************
+       
        
        ir = istack(jstack)
        l = istack(jstack-1)
@@ -110,52 +110,52 @@ contains
     else
        
        k = (l+ir)/2
-       itemp = index_list(k)
-       index_list(k) = index_list(l+1)
-       index_list(l+1) = itemp
+       itemp = loc_list(k)
+       loc_list(k) = loc_list(l+1)
+       loc_list(l+1) = itemp
        
-       if(locarray(index_list(l)).gt.locarray(index_list(ir))) then
-          itemp = index_list(l)
-          index_list(l) = index_list(ir)
-          index_list(ir) = itemp
+       if(array(loc_list(l)).gt.array(loc_list(ir))) then
+          itemp = loc_list(l)
+          loc_list(l) = loc_list(ir)
+          loc_list(ir) = itemp
        end if
        
-       if(locarray(index_list(l+1)).gt.locarray(index_list(ir))) then
-          itemp = index_list(l+1)
-          index_list(l+1) = index_list(ir)
-          index_list(ir) = itemp
+       if(array(loc_list(l+1)).gt.array(loc_list(ir))) then
+          itemp = loc_list(l+1)
+          loc_list(l+1) = loc_list(ir)
+          loc_list(ir) = itemp
        end if
        
-       if(locarray(index_list(l)).gt.locarray(index_list(l+1))) then
-          itemp = index_list(l)
-          index_list(l) = index_list(l+1)
-          index_list(l+1) = itemp
+       if(array(loc_list(l)).gt.array(loc_list(l+1))) then
+          itemp = loc_list(l)
+          loc_list(l) = loc_list(l+1)
+          loc_list(l+1) = itemp
        end if
        
        i = l+1
        j = ir
-       index_i = index_list(l+1)
-       a = locarray(index_i)
+       index_i = loc_list(l+1)
+       a = array(index_i)
        
 3      continue
        i = i+1
-       if(locarray(index_list(i)).lt.a) goto 3
+       if(array(loc_list(i)).lt.a) goto 3
        
 4      continue
        j = j-1
-       if(locarray(index_list(j)).gt.a) goto 4
+       if(array(loc_list(j)).gt.a) goto 4
        
        if(j.lt.i) goto 5
        
-       itemp = index_list(i)
-       index_list(i) = index_list(j)
-       index_list(j) = itemp
+       itemp = loc_list(i)
+       loc_list(i) = loc_list(j)
+       loc_list(j) = itemp
        
        goto 3
        
 5      continue
-       index_list(l+1) = index_list(j)
-       index_list(j) = index_i
+       loc_list(l+1) = loc_list(j)
+       loc_list(j) = index_i
        jstack = jstack + 2
        
        if(jstack.gt.nstack) write(0,'(A)')' sorted_index_list():  nstack is too small'
