@@ -287,6 +287,110 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Find a given probability range for a data array - the narrowest range that contains a given fraction of data points
+  !!
+  !! \param  data   1D array of data points
+  !! \param  range  Probability range - e.g. 0.95 = 95% probability ~ "2-sigma"
+  !!
+  !! \retval llim   Lower limit of probability range
+  !! \retval ulim   Upper limit of probability range
+  !!
+  !! \param  mask   Mask to apply to data (optional)
+  
+  subroutine prob_range(data, range, llim, ulim, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    use SUFR_sorting, only: sorted_index_list
+    
+    implicit none
+    real(double), intent(in) :: data(:), range
+    real(double), intent(out) :: llim, ulim
+    logical, intent(in), optional :: mask(:)
+    
+    real(double) :: diff, mindiff
+    integer :: indexx(size(data)), ni, i0,i1,i1max,i2,di
+    logical :: locmask(size(data))
+    
+    ni = size(data)
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('prob_range():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    ! Sort the array:
+    call sorted_index_list(data,indexx, mask=locmask, index_n=ni)
+    
+    di = nint(dble(ni)*range)
+    i1max = nint(dble(ni)*(1.d0-range))
+    i0 = 1
+    mindiff = huge(mindiff)
+    do i1 = 1,i1max
+       i2 = i1 + di
+       if(i2.gt.ni) exit
+       diff = data(indexx(i2))-data(indexx(i1))
+       
+       ! If the new range is smaller, or equal and closer to the middle (may happen when many identical values exist):
+       if(diff.lt.mindiff .or. (diff.eq.mindiff.and.i1-ni/2.lt.i0-ni/2)) then
+          mindiff = diff
+          i0 = i1
+       end if
+    end do
+    
+    llim = data(indexx(i0))
+    ulim = data(indexx(i0+di))
+    
+  end subroutine prob_range
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Find a given probability range for a data array - the narrowest range that contains a given fraction of data points -
+  !!         single-precision wrapper for prob_range()
+  !!
+  !! \param  data   1D array of data points
+  !! \param  range  Probability range - e.g. 0.95 = 95% probability ~ "2-sigma"
+  !!
+  !! \retval llim   Lower limit of probability range
+  !! \retval ulim   Upper limit of probability range
+  !!
+  !! \param  mask   Mask to apply to data (optional)
+  
+  subroutine prob_range_sp(data, range, llim, ulim, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    use SUFR_sorting, only: sorted_index_list
+    
+    implicit none
+    real, intent(in) :: data(:), range
+    real, intent(out) :: llim, ulim
+    logical, intent(in), optional :: mask(:)
+    
+    real(double) :: data_d(size(data)), range_d, llim_d,ulim_d
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('prob_range_sp():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    
+    data_d = dble(data)
+    range_d = dble(range)
+    
+    call prob_range(data_d, range_d, llim_d, ulim_d, locmask)
+    
+    llim = real(llim_d)
+    ulim = real(ulim_d)
+    
+  end subroutine prob_range_sp
+  !*********************************************************************************************************************************
+  
+  
+  
   
   
    
