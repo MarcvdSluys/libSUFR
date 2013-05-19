@@ -53,8 +53,8 @@ contains
     integer, intent(out),optional :: index_n
     
     integer, parameter :: mm=7, nstack=50
+    integer :: ii,index_i,ir,itemp,istack(nstack), jj,jstack, kk,ll, loc_list(size(index_list)), loc_index_n
     real(double) :: arr_i
-    integer :: ii,index_i,ir,itemp,istack(nstack), jj,jstack, kk,ll, loc_list(size(index_list))
     logical :: loc_mask(size(array))
     
     
@@ -95,11 +95,12 @@ contains
           ! Done - apply mask and return to caller routine
           if(jstack.eq.0) then
              
-             index_n = 0
+             loc_index_n = 0
              do ii=1,size(array)
                 if(loc_mask(loc_list(ii))) then
-                   index_n = index_n + 1
-                   index_list(index_n) = loc_list(ii)
+                   loc_index_n = loc_index_n + 1
+                   index_list(loc_index_n) = loc_list(ii)
+                   if(present(index_n)) index_n = loc_index_n
                 end if
              end do
              
