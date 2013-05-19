@@ -37,8 +37,8 @@ contains
   !! \param accur  The accuracy with which the root is to be determined
   !! \retval root_solver  The value of the root of func, between x1 and x2 and with accuracy accur.  If a root was not bracketed by
   !!                      x1 and x2, -huge is returned and status=1.
-  !! \retval status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (optional argument)
-  !! \retval verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (optional argument, default=2)
+  !! \retval status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (optional)
+  !! \retval verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (optional, default=2)
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
   function root_solver(func,x1,x2,accur, status,verbose)
