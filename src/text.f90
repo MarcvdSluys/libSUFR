@@ -122,40 +122,39 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Remove a substring from a string, if present
   !!
-  !! \param sstr   Substring to remove
-  !! \param str    String to remove the substring from
-  !! \param debug  Print debug info (T/F, optional)
+  !! \param string  String to remove the substring from
+  !! \param substr  Substring to remove
+  !! \param debug   Print debug info (T/F, optional)
   
-  subroutine remove_substring(sstr,str, debug)
+  subroutine remove_substring(string,substr, debug)
     implicit none
-    character, intent(in) :: sstr*(*)
-    character, intent(inout) :: str*(*)
+    character, intent(inout) :: string*(*)
+    character, intent(in) :: substr*(*)
     logical, intent(in), optional :: debug
     
     integer :: l,ls, i1
-    character :: tstr*(len(str))
+    character :: tstr*(len(string))
     logical :: print_debug
     
     print_debug = .false.
     if(present(debug)) print_debug = debug
     
-    ls = len(sstr)     ! Lenth of the substring to remove
+    ls = len(substr)     ! Lenth of the substring to remove
     
     i1 = -1
     do while(i1.ne.0)  ! There may be multiple instances
-       l = len_trim(str)
+       l = len_trim(string)
        
-       i1 = index(str,sstr,back=.false.)
+       i1 = index(string,substr,back=.false.)
        if(i1.gt.0) then
-          tstr = str(1:i1-1)//str(i1+ls:l)
+          tstr = string(1:i1-1)//string(i1+ls:l)
           if(print_debug) then
-             print*,str(1:i1-1)
-             print*,str(i1+ls:l)
-             print*,str(i1:i1+ls),i1,l
+             print*,string(1:i1-1)
+             print*,string(i1+ls:l)
+             print*,string(i1:i1+ls),i1,l
              print*,trim(tstr)
           end if
-          !return
-          str = tstr
+          string = tstr
        end if
     end do
     

@@ -95,7 +95,7 @@ contains
     !return
     
     ! Remove '</a>':
-    call remove_substring('</a>', str)
+    call remove_substring(str, '</a>')
     
   end subroutine remove_html_links
   !*********************************************************************************************************************************
@@ -157,14 +157,14 @@ contains
     implicit none
     character, intent(inout) :: str*(*)
     
-    call remove_substring('<b>',  str)
-    call remove_substring('</b>', str)
-    call remove_substring('<i>',  str)
-    call remove_substring('</i>', str)
-    call remove_substring('<sub>',  str)
-    call remove_substring('</sub>', str)
-    call remove_substring('<sup>',  str)
-    call remove_substring('</sup>', str)
+    call remove_substring(str, '<b>')
+    call remove_substring(str, '</b>')
+    call remove_substring(str, '<i>')
+    call remove_substring(str, '</i>')
+    call remove_substring(str, '<sub>')
+    call remove_substring(str, '</sub>')
+    call remove_substring(str, '<sup>')
+    call remove_substring(str, '</sup>')
     
   end subroutine remove_html_bold_italics
   !*********************************************************************************************************************************
@@ -177,7 +177,7 @@ contains
   !! \param str  String to remove HTML code from
   
   subroutine remove_html_br_p_hr(str)
-    use SUFR_text, only: replace_substring, remove_substring
+    use SUFR_text, only: replace_substring
     
     implicit none
     character, intent(inout) :: str*(*)
