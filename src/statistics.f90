@@ -137,7 +137,7 @@ contains
   
   function mean(data, mask)
     use SUFR_kinds, only: double
-    use SUFR_system, only: quit_program_error
+    use SUFR_system, only: quit_program_error, error
     
     implicit none
     real(double), intent(in) :: data(:)
@@ -154,7 +154,13 @@ contains
     end if
     
     ni = count(locmask)  ! Number of .true. elements in locmask
-    mean = sum(data, mask=locmask)/dble(ni)
+
+    if(ni.eq.0) then
+       call error('stdev():  data() has fewer than 2 elements', 0)
+       mean = 0.d0
+    else
+       mean = sum(data, mask=locmask)/dble(ni)
+    end if
     
   end function mean
   !*********************************************************************************************************************************
@@ -203,7 +209,7 @@ contains
   
   function stdev(data, mean, mask)
     use SUFR_kinds, only: double
-    use SUFR_system, only: quit_program_error
+    use SUFR_system, only: quit_program_error, error
     
     implicit none
     real(double), intent(in) :: data(:), mean
@@ -228,7 +234,12 @@ contains
        end if
     end do
     
-    stdev = sqrt(stdev/dble(ni-1))
+    if(ni.le.1) then
+       call error('stdev():  data() has fewer than 2 elements', 0)
+       stdev = 0.d0
+    else
+       stdev = sqrt(stdev/dble(ni-1))
+    end if
     
   end function stdev
   
@@ -300,7 +311,7 @@ contains
   
   subroutine prob_range(data, range, llim, ulim, mask)
     use SUFR_kinds, only: double
-    use SUFR_system, only: quit_program_error
+    use SUFR_system, only: quit_program_error, error
     use SUFR_sorting, only: sorted_index_list
     
     implicit none
@@ -313,6 +324,13 @@ contains
     logical :: locmask(size(data))
     
     ni = size(data)
+    if(ni.eq.0) then
+       call error('prob_range():  data() has size 0', 0)
+       llim = 0.d0
+       ulim = 0.d0
+       return
+    end if
+    
     locmask = .true.
     if(present(mask)) then
        if(size(data).ne.size(mask)) call quit_program_error('prob_range():  data and mask must have the same size', 0)
