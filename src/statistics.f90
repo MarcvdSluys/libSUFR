@@ -50,7 +50,7 @@ contains
     ni = size(data)
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('median():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR median():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -106,7 +106,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('median_sp():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR median_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -149,14 +149,14 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('mean():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
     ni = count(locmask)  ! Number of .true. elements in locmask
-
+    
     if(ni.eq.0) then
-       call error('stdev():  data() has fewer than 2 elements', 0)
+       call error('libSUFR stdev():  data() has fewer than 2 elements', 0)
        mean = 0.d0
     else
        mean = sum(data, mask=locmask)/dble(ni)
@@ -187,7 +187,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('mean_sp():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -221,7 +221,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('stdev():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stdev():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -235,7 +235,7 @@ contains
     end do
     
     if(ni.le.1) then
-       call error('stdev():  data() has fewer than 2 elements', 0)
+       call error('libSUFR stdev():  data() has fewer than 2 elements', 0)
        stdev = 0.d0
     else
        stdev = sqrt(stdev/dble(ni-1))
@@ -277,7 +277,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('stdev_sp():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stdev_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -325,7 +325,7 @@ contains
     
     ni = size(data)
     if(ni.eq.0) then
-       call error('prob_range():  data() has size 0', 0)
+       call error('libSUFR prob_range():  data() has size 0', 0)
        llim = 0.d0
        ulim = 0.d0
        return
@@ -333,7 +333,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('prob_range():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR prob_range():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -391,7 +391,7 @@ contains
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('prob_range_sp():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR prob_range_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
@@ -465,8 +465,8 @@ contains
     
     
     ! Check array size for consistency:
-    if(size(xbin).le.Nbin) call quit_program_error('bin_data_1d(): xbin must have size >= Nbin+1',1)
-    if(size(ybin).le.Nbin) call quit_program_error('bin_data_1d(): ybin must have size >= Nbin+1',1)
+    if(size(xbin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): xbin must have size >= Nbin+1',1)
+    if(size(ybin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): ybin must have size >= Nbin+1',1)
     
     if(abs((xmin-xmax)/(xmax+tiny(xmax))).lt.1.e-20) then  ! Autodetermine ranges
        xmin = minval(xdat)
@@ -545,7 +545,7 @@ contains
     
     ! Check data array sizes for consistency:
     ndat = size(xdat)
-    if(size(ydat).ne.ndat) call quit_program_error('bin_data_2d(): data arrays xdat and ydat must have the same size',1)
+    if(size(ydat).ne.ndat) call quit_program_error('libSUFR bin_data_2d(): data arrays xdat and ydat must have the same size',1)
     
     myweights = 1.
     if(present(weights)) myweights = weights

@@ -188,7 +188,7 @@ contains
     call find_free_io_unit(ip)
     open(unit=ip, file=trim(file_in), status='old', action='read', iostat=io)
     if(io.ne.0) then
-       call error('replace_string_in_textfile():  could not open file: '//trim(file_in), 0)
+       call error('libSUFR replace_string_in_textfile():  could not open file: '//trim(file_in), 0)
        status = 1
        return
     end if
@@ -197,7 +197,7 @@ contains
     call find_free_io_unit(op)
     open(unit=op, file=trim(file_out), status='replace', action='write', iostat=io)
     if(io.ne.0) then
-       call error('replace_string_in_textfile():  could not open file: '//trim(file_out), 0)
+       call error('libSUFR replace_string_in_textfile():  could not open file: '//trim(file_out), 0)
        status = 2
        return
     end if
@@ -208,7 +208,7 @@ contains
        read(ip,'(A)', iostat=io) string
        
        if(len(string).eq.len_trim(string)) then
-          call error('replace_string_in_textfile():  character array string too small', 0)
+          call error('libSUFR replace_string_in_textfile():  character array string too small', 0)
           status = 11
           return
        end if
@@ -216,7 +216,7 @@ contains
        call replace_substring(string, str_srch, str_repl)
        
        if(len(string).eq.len_trim(string)) then
-          call error('replace_string_in_textfile():  character array string too small', 0)
+          call error('libSUFR replace_string_in_textfile():  character array string too small', 0)
           status = 12
           return
        end if

@@ -76,14 +76,14 @@ contains
     real(double) :: sig2i,tot,wt,ym, basefunc(Mmax),beta(Mmax)
     external myFunc
     
-    if(minval(abs(yerr)).eq.0.d0) call quit_program_error('linear_fit_yerr(): errors cannot be zero', 0)
+    if(minval(abs(yerr)).eq.0.d0) call quit_program_error('libSUFR linear_fit_yerr(): errors cannot be zero', 0)
     
     ! Determine number of parameters that need to be fit:
     nfit = 0
     do ij=1,ncoef
        if(varc(ij).ne.0) nfit = nfit+1
     end do
-    if(nfit.eq.0) call warn('No parameters to be fit for', 0)
+    if(nfit.eq.0) call warn('libSUFR linear_fit_yerr():  No parameters to be fit for', 0)
     
     covar(1:nfit,1:nfit) = 0.d0
     beta(1:nfit) = 0.d0
@@ -243,7 +243,7 @@ contains
                       icol = ik
                    end if
                 else if(ipiv(ik).gt.1) then
-                   call warn('Singular matrix in solve_linear_equations_Gauss_Jordan()',0)
+                   call warn('libSUFR solve_linear_equations_Gauss_Jordan():  singular matrix',0)
                 end if
              end do
           end if
@@ -264,7 +264,7 @@ contains
        indxr(ii) = irow
        indxc(ii) = icol
        
-       if(matArr(icol,icol).eq.0.d0) call warn('Singular matrix in solve_linear_equations_Gauss_Jordan()', 0)
+       if(matArr(icol,icol).eq.0.d0) call warn('libSUFR solve_linear_equations_Gauss_Jordan():  singular matrix', 0)
        
        pivinv = 1.d0/matArr(icol,icol)
        matArr(icol,icol) = 1.d0

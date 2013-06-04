@@ -186,7 +186,7 @@ contains
     ! Print times:
     if(loc_calltype.ge.2) then
        if(firstcall.ne.213546879) then
-          call warn('print_runtime():  loc_calltype should be 1 on the first call', 0)
+          call warn('libSUFR print_runtime():  loc_calltype should be 1 on the first call', 0)
           return
        end if
        

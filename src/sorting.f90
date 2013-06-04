@@ -59,7 +59,7 @@ contains
     
     
     if(size(array).ne.size(index_list)) &
-         call quit_program_error('sorted_index_list():  array and index_list must have the same size',0)
+         call quit_program_error('libSUFR sorted_index_list():  array and index_list must have the same size',0)
     
     loc_mask = .true.
     if(present(mask)) loc_mask = mask
