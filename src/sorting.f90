@@ -64,6 +64,7 @@ contains
     loc_mask = .true.
     if(present(mask)) loc_mask = mask
     
+    index_list = 0
     loc_list = 0
     do jj=1,size(array)
        loc_list(jj) = jj
