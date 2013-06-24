@@ -9,20 +9,25 @@
 ##  25/11/2012, AF: bzr -> git
 
 
-if [[ ${#} -ne 4 && ${#} -ne 5 ]]; then
+if [[ ${#} -ne 2 && ${#} -ne 4 ]]; then
     
-    echo -e "\n  syntax:   code_version.sh  <CMake base dir>  <f90 output file>  <Fortran compiler name>  <Compiler flags>\n"
+    echo -e "\n  Syntax:"
+    echo -e "    code_version.sh  <CMake base dir>  <f90 output file>  <Fortran compiler name>  <Compiler flags>"
+    echo -e "    code_version.sh  <CMake base dir>  <f90 output file>  # For release versions\n"
 
 else
     
     BASEDIR=${1}                        # CMake base dir
     F90FILE=${1}/${2}                   # Fortran-90 output file
-    COMPILER=${3}                       # Compiler name
-    COMPILER_FLAGS=${4}                 # Compiler flags
     
     RELEASE='no'
-    if [[ ${#} -eq 5 ]]; then
-	RELEASE=${5}                    # RELEASE (true if "yes")
+    if [[ ${#} -eq 2 ]]; then
+	RELEASE='yes'                   # RELEASE (true if "yes")
+    fi
+    
+    if [[ ${#} -eq 4 ]]; then
+	COMPILER=${3}                   # Compiler name
+	COMPILER_FLAGS=${4}             # Compiler flags
     fi
     
     
@@ -36,7 +41,11 @@ else
 	echo "${F90FILE} already exists, no need to create it"
 	exit 0
     else
-	echo "Generating ${F90FILE}"
+	if [ ${RELEASE} == 'yes' ]; then
+	    echo "Generating release-version of ${F90FILE}"
+	else
+	    echo "Generating ${F90FILE}"
+	fi
     fi
     
     
@@ -66,7 +75,7 @@ else
 	echo "    character :: release_date*(99) = '"`date +"%F"`"'" >> ${F90FILE}
 	
 	echo "    " >> ${F90FILE}
-	echo "    write(unit,'(A)', advance='no') 'libSUFR '//trim(libSUFR_version)//' ('//trim(release_date)//')'" >> ${F90FILE}
+	echo "    write(unit,'(A)', advance='no') 'libSUFR '//trim(libSUFR_version)//' ('//trim(release_date)//') - libsufr.sf.net'" >> ${F90FILE}
     else
 	if [ -e .git/ ]; then  # Prefer revision number over release number
 	    echo "    character :: libSUFR_version*(99) = 'rev."`git rev-list --abbrev-commit HEAD | wc -l`", hash "`git log --pretty="%h (%ad)" --date=short -n1`"'" >> ${F90FILE}

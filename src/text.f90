@@ -96,7 +96,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a substring in a string
   !!
-  !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string)) 
+  !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string))
   !!                  to ignore them and speed things up.
   !! \param str_srch  Search string
   !! \param str_repl  Replacement string
@@ -129,7 +129,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Remove a substring from a string, if present
   !!
-  !! \param string  String to remove the substring from.  Trailing spaces are retained, call with string(1:len_trim(string)) 
+  !! \param string  String to remove the substring from.  Trailing spaces are retained, call with string(1:len_trim(string))
   !!                to ignore them and speed things up.
   !! \param substr  Substring to remove
   !! \param debug   Print debug info (T/F, optional)
