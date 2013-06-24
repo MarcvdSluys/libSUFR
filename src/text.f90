@@ -96,7 +96,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a substring in a string
   !!
-  !! \param string    Original string to replace in
+  !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string)) 
+  !!                  to ignore them and speed things up.
   !! \param str_srch  Search string
   !! \param str_repl  Replacement string
   
@@ -104,14 +105,20 @@ contains
     implicit none
     character, intent(inout) :: string*(*)
     character, intent(in) :: str_srch*(*),str_repl*(*)
-    integer :: is,lin
+    integer :: lstr,is,lsrch, il, maxloop
     
-    lin = len(str_srch)
+    lstr  = len(string)
+    lsrch = len(str_srch)
+    if(lsrch.gt.lstr) return  ! Search string is longer than string
+    
     is = huge(is)
-    do
+    maxloop = lstr+1-lsrch  ! Prevent infinite loops
+    do il = 1,maxloop
        is = index(string, str_srch, back=.false.)
        if(is.le.0) exit
-       string = string(1:is-1)//str_repl//trim(string(is+lin:))
+       if(is.gt.maxloop) exit
+       !print*,il,maxloop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output
+       string = string(1:is-1)//str_repl//trim(string(is+lsrch:))
     end do
     
   end subroutine replace_substring
@@ -122,7 +129,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Remove a substring from a string, if present
   !!
-  !! \param string  String to remove the substring from
+  !! \param string  String to remove the substring from.  Trailing spaces are retained, call with string(1:len_trim(string)) 
+  !!                to ignore them and speed things up.
   !! \param substr  Substring to remove
   !! \param debug   Print debug info (T/F, optional)
   
@@ -132,30 +140,34 @@ contains
     character, intent(in) :: substr*(*)
     logical, intent(in), optional :: debug
     
-    integer :: l,ls, i1
+    integer :: l,ls, i1, il,maxloop
     character :: tstr*(len(string))
     logical :: print_debug
     
     print_debug = .false.
     if(present(debug)) print_debug = debug
     
-    ls = len(substr)     ! Lenth of the substring to remove
+    ls = len(substr)     ! Length of the substring to remove
+    if(ls.lt.1) return   ! Zero-length string
     
     i1 = -1
-    do while(i1.ne.0)  ! There may be multiple instances
+    maxloop = ceiling( real(len(string))/real(ls) )  ! Prevent infinite loops
+    do il = 1,maxloop
        l = len_trim(string)
        
        i1 = index(string,substr,back=.false.)
-       if(i1.gt.0) then
-          tstr = string(1:i1-1)//string(i1+ls:l)
-          if(print_debug) then
-             print*,string(1:i1-1)
-             print*,string(i1+ls:l)
-             print*,string(i1:i1+ls),i1,l
-             print*,trim(tstr)
-          end if
-          string = tstr
+       if(i1.le.0) exit
+       
+       tstr = string(1:i1-1)//string(i1+ls:l)  ! String gets shorter by ls
+       
+       if(print_debug) then
+          print*,string(1:i1-1)
+          print*,string(i1+ls:l)
+          print*,string(i1:i1+ls),i1,l
+          print*,trim(tstr)
        end if
+       
+       string = tstr
     end do
     
   end subroutine remove_substring
