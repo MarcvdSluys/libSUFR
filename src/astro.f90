@@ -29,6 +29,30 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Calculate Greenwich Mean Siderial Time in RAD!
+  !!
+  !! \param jd         Julian day of computation
+  !! \retval calcgmst  Greenwich Mean Siderial Time in RAD!
+  
+  function calcgmst(jd)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double) :: calcgmst,t,t2,gmst
+    
+    t = (jd-2451545.d0)/36525.d0  ! Julian Centuries after 2000.0 UT
+    t2 = t*t
+    gmst = 4.894961212735793d0 + 6.300388098984957d0*(jd-2451545.d0) + 6.77070812713916d-6*t2 - 4.50872966158d-10*t2*t
+    
+    calcgmst = rev(gmst)          ! If corrected for equation of the equinoxes: = rev(gmst + dpsi*cos(eps))
+    
+  end function calcgmst
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief Compute the airmass for a celestial object with a given altitude
   !!
   !! \param alt  Altitude of object (radians)
