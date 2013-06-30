@@ -1,48 +1,60 @@
 #!/bin/bash
 
-##  Script to locally compile and install libSUFR 
-##    for ifort, gfortran and g95
-##  Install in ../usr/, clean afterwards
+##  Script to compile and install libSUFR
+##    for gfortran, g95 and ifort.
+##  Build in ../usr/, install and clean afterwards
 ##  AF, 2010
 
+make_gfortran=1
+make_g95=1
+make_ifort=1
+
+clean_at_end=0
 
 
-make clean 
+CMAKE_OPTS="-DSTOP_ON_WARNING=on -DCOMPILER_SPECIFIC_LIBS=on -DCREATE_VERSION=on -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr"
 
-if [ 1 -eq 1 ]; then
-    echo -e "\n\nMake with gfortran:"
-    rm -f CMakeCache.txt
-    FC=gfortran cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-    make install
-    make clean
-fi
+# Run-time checks:
+#CMAKE_OPTS="${CMAKE_OPTS} -DWANT_CHECKS=on"
 
-if [ 2 -eq 1 ]; then
-    echo -e "\n\nMake with gfortran-4.4:"
-    rm -f CMakeCache.txt
-    FC=gfortran-4.4 cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-    make libSUFR_shared
-    #make install
-    make clean
-fi
-
-if [ 1 -eq 1 ]; then
-    echo -e "\n\nMake with g95:"
-    rm -f CMakeCache.txt
-    FC=g95 cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-    make install
-    #make libSUFR_shared
-    make clean
-fi
-
-if [ 1 -eq 1 ]; then
-    echo -e "\n\nMake with ifort:"
-    rm -f CMakeCache.txt
-    FC=ifort cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/user/usr ..
-    make install
-    make clean
-fi
-
-
+# Clean:
 rm -rf ../usr/
+
+if [ ${make_gfortran} -eq 1 ]; then
+    echo -e "\n\n\E[1;32mMake with gfortran:\E[0m"
+    make clean
+    rm -rf CMakeCache.txt CMakeFiles/
+    FC=gfortran cmake ${CMAKE_OPTS} -DSTOP_ON_WARNING=off ..
+    make install
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+    if [ ${clean_at_end} == 1 ]; then rm -rf ../usr/; fi
+fi
+
+if [ ${make_g95}  -eq 1 ]; then
+    echo -e "\n\n\E[1;32mMake with g95:\E[0m"
+    make clean
+    rm -rf CMakeCache.txt CMakeFiles/
+    FC=g95 cmake ${CMAKE_OPTS} ..
+    make install
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+    if [ ${clean_at_end} == 1 ]; then rm -rf ../usr/; fi
+fi
+
+if [ ${make_ifort}  -eq 1 ]; then
+    echo -e "\n\n\E[1;32mMake with ifort:\E[0m"
+    make clean
+    rm -rf CMakeCache.txt CMakeFiles/
+    FC=ifort cmake ${CMAKE_OPTS} ..
+    make install
+    if [ $? -ne 0 ]; then
+	exit 1
+    fi
+    if [ ${clean_at_end} == 1 ]; then rm -rf ../usr/; fi
+fi
+
+
 
