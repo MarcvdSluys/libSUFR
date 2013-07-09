@@ -73,7 +73,7 @@ contains
     e =  2.0_dbl
     
     if( fa*fb.gt.0.0_dbl ) then                                     ! func(a) and func(b) have the same sign
-       if(verbosity.gt.0) write(0,'(A,2ES12.3)')' root_solver():  root is not bracketed by x1 and x2: ',x1,x2
+       if(verbosity.gt.0) write(0,'(A,2ES12.3)') ' libSUFR - root_solver():  root is not bracketed by x1 and x2: ',x1,x2
        root_solver = -huge(0.0_dbl)                                 ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return
@@ -148,7 +148,7 @@ contains
     end do
     
     
-    if(verbosity.gt.0) write(0,'(A)')' root_solver():  maximum number of iterations exceeded'
+    if(verbosity.gt.0) write(0,'(A)') ' libSUFR - root_solver():  maximum number of iterations exceeded'
     if(present(status)) status = 1
     
     root_solver = b
@@ -296,7 +296,7 @@ contains
     end do
     
     
-    if(verbosity.gt.0) write(0,'(A)')' minimum_solver():  maximum number of iterations exceeded'
+    if(verbosity.gt.0) write(0,'(A)') ' libSUFR - minimum_solver():  maximum number of iterations exceeded'
     if(present(status)) status = 1
     
     ! Return the best we have anyway:
