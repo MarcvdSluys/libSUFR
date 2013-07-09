@@ -333,6 +333,26 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Swap two strings
+  !!
+  !! \param str1  String 1 (I/O)
+  !! \param str2  String 2 (I/O)
+  
+  subroutine swapstr(str1,str2)
+    implicit none
+    character, intent(inout) :: str1*(*),str2*(*)
+    character :: str0*(max(len(str1),len(str2)))
+    
+    if(len_trim(str1).gt.len(str2) .or. len_trim(str2).gt.len(str1)) &
+         call warn('libSUFR - swapstr(): partial loss of characters when swapping strings', 0)
+    
+    str0 = trim(str1)
+    str1 = trim(str2)
+    str2 = trim(str0)
+    
+  end subroutine swapstr
+  !*********************************************************************************************************************************
   
   
 end module SUFR_system
