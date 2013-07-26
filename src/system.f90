@@ -69,14 +69,11 @@ contains
   !*********************************************************************************************************************************
   
   
-  
-  
-  
   !*********************************************************************************************************************************
   !> \brief  Print an error message to StdErr and stop the execution of the current program
   !!
   !! \param message  Exit/error message
-  !! \param status   Exit code: 0-ok, 1-not ok.  This makes the stop command appear on screen
+  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
   
   subroutine quit_program_error(message, status)
     use SUFR_constants, only: program_name
@@ -94,6 +91,30 @@ contains
     end if
     
   end subroutine quit_program_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a syntax message to StdErr and stop the execution of the current program
+  !!
+  !! \param syntax  Description of syntax
+  !! \param status  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine syntax_quit(syntax, status)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: syntax*(*)
+    integer, intent(in) :: status
+    
+    write(0,'(/,A,/)') '  Syntax:  '//trim(program_name)//'  '//trim(syntax)
+    if(status.eq.0) then
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine syntax_quit
   !*********************************************************************************************************************************
   
   
