@@ -119,6 +119,71 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file open error, and stop the execution of the current program
+  !!
+  !! \param filename  Filename
+  !! \param filetype  File type: 0: (0)utput, 1: (1)nput
+  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine file_open_error_quit(filename, filetype, status)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: filetype, status
+    
+    select case(filetype)
+    case(0)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error opening output file  '//trim(filename)//', aborting  ***'
+    case(1)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error opening input file  '//trim(filename)//', aborting  ***'
+    case default
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//', file_open_quit():  filetype must be 0 or 1, aborting  ***'
+    end select
+    
+    if(status.eq.0) then
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine file_open_error_quit
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file read error, and stop the execution of the current program
+  !!
+  !! \param filename  Filename
+  !! \param line      Line number where read error occurred - 0: no line
+  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine file_read_error_quit(filename, line, status)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: line, status
+    
+    select case(line)
+    case(0)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', aborting  ***'
+    case default
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', line ',line, &
+            ', aborting  ***'
+    end select
+    
+    if(status.eq.0) then
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine file_read_error_quit
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a warning to StdOut or StErr
   !!
   !! \param message  Warning message
