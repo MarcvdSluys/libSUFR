@@ -175,7 +175,7 @@ module SUFR_constants_environment
   save
   
   integer, public :: stdErr, StdIn, StdOut
-  character, public :: homedir*(199), workdir*(199), hostname*(99), username*(99)
+  character, public :: homedir*(199), workdir*(199), hostname*(99), username*(99), userID*(99)
   character, public :: program_name*(199), program_path*(999), program_args*(999)
   
 end module SUFR_constants_environment
@@ -524,10 +524,10 @@ contains
     implicit none
     
     ! Cursor movement:
-    cursorup = char(27)//'[2A' !Print this to go up one line (on screen) (need 2 lines, since print gives a hard return by default)
-    cursordown = char(27)//'[1B' !Print this to go down one line (on screen)
-    cursorright = char(27)//'[1C' !Makes the cursor move right one space
-    cursorleft = char(27)//'[1D' !Makes the cursor move left one space
+    cursorup    = char(27)//'[2A'  ! Print this to go up one line on screen (need 2 lines since print gives a hard return)
+    cursordown  = char(27)//'[1B'  ! Print this to go down one line (on screen)
+    cursorright = char(27)//'[1C'  ! Makes the cursor move right one space
+    cursorleft  = char(27)//'[1D'  ! Makes the cursor move left one space
     
   end subroutine set_SUFR_constants_cursor
   !*********************************************************************************************************************************
@@ -549,10 +549,11 @@ contains
     
     
     ! Get info from environment variables:
-    call get_environment_variable('HOME',homedir)   ! Set homedir = $HOME, will contain e.g. '/home/user'
-    call get_environment_variable('PWD',workdir)    ! Set workdir = $PWD, may contain e.g. '/home/user/foo'
-    call get_environment_variable('HOSTNAME',hostname)  ! Set hostname = $HOSTNAME  !Apparently not always exported
-    call get_environment_variable('USER',username)      ! Set username = $USER
+    call get_environment_variable('HOME', homedir)       ! Set homedir  = $HOME, will contain e.g. '/home/user'
+    call get_environment_variable('PWD', workdir)        ! Set workdir  = $PWD, may contain e.g. '/home/user/foo'
+    call get_environment_variable('HOSTNAME', hostname)  ! Set hostname = $HOSTNAME - not always exported
+    call get_environment_variable('USER', username)      ! Set username = $USER
+    call get_environment_variable('UID', userID)         ! Set userid   = $UID
     
     ! Replace '/home/name' with '~' in workdir:
     i = index(workdir,trim(homedir),back=.false.)
