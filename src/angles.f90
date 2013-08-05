@@ -337,9 +337,9 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Converts an azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
+  !> \brief  Converts an wind direction/azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
   !!
-  !! \param  az  Azimuth (radians, S=0)
+  !! \param  az  Azimuth/wind direction (radians, N=0)
   
   function wdstr_ens(az)
     use SUFR_kinds, only: double
@@ -349,7 +349,7 @@ contains
     real(double), intent(in) :: az
     character :: wdstr_ens*(3),wds(0:15)*(3)
     
-    wds = (/'S  ','SSW','SW ','WSW','W  ','WNW','NW ','NNW','N  ','NNE','NE ','ENE','E  ','ESE','SE ','SSE'/)
+    wds = (/'N  ','NNE','NE ','ENE','E  ','ESE','SE ','SSE','S  ','SSW','SW ','WSW','W  ','WNW','NW ','NNW'/)
     wdstr_ens = wds(mod( nint(az*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
     
   end function wdstr_ens
