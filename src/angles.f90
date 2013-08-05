@@ -337,20 +337,20 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Converts an wind direction/azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
+  !> \brief  Converts a wind direction/azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
   !!
-  !! \param  az  Azimuth/wind direction (radians, N=0)
+  !! \param  wd  Wind direction/azimuth (radians, N=0)
   
-  function wdstr_ens(az)
+  function wdstr_ens(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: az
+    real(double), intent(in) :: wd
     character :: wdstr_ens*(3),wds(0:15)*(3)
     
     wds = (/'N  ','NNE','NE ','ENE','E  ','ESE','SE ','SSE','S  ','SSW','SW ','WSW','W  ','WNW','NW ','NNW'/)
-    wdstr_ens = wds(mod( nint(az*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
+    wdstr_ens = wds(mod( nint(wd*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
     
   end function wdstr_ens
   !*********************************************************************************************************************************
@@ -361,20 +361,20 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Converts an azimuth to one of 16 three-letter Dutch wind-direction abbreviations (NNO, WZW)
+  !> \brief  Converts a wind direction/azimuth to one of 16 three-letter Dutch wind-direction abbreviations (NNO, WZW)
   !!
-  !! \param  az  Azimuth (radians, S=0)
+  !! \param  wd  Wind direction/azimuth (radians, N=0)
   
-  function wdstr_nls(az)
+  function wdstr_nls(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: az
+    real(double), intent(in) :: wd
     character :: wdstr_nls*(3),wds(0:15)*(3)
     
-    wds = (/'Z  ','ZZW','ZW ','WZW','W  ','WNW','NW ','NNW','N  ','NNO','NO ','ONO','O  ','OZO','ZO ','ZZO'/)
-    wdstr_nls = wds(mod( nint( az*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
+    wds = (/''N  ','NNO','NO ','ONO','O  ','OZO','ZO ','ZZO',Z  ','ZZW','ZW ','WZW','W  ','WNW','NW ','NNW'/)
+    wdstr_nls = wds(mod( nint( wd*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
     
   end function wdstr_nls
   !*********************************************************************************************************************************
