@@ -373,7 +373,7 @@ contains
     real(double), intent(in) :: wd
     character :: wdstr_nls*(3),wds(0:15)*(3)
     
-    wds = (/''N  ','NNO','NO ','ONO','O  ','OZO','ZO ','ZZO',Z  ','ZZW','ZW ','WZW','W  ','WNW','NW ','NNW'/)
+    wds = (/'N  ','NNO','NO ','ONO','O  ','OZO','ZO ','ZZO','Z  ','ZZW','ZW ','WZW','W  ','WNW','NW ','NNW'/)
     wdstr_nls = wds(mod( nint( wd*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
     
   end function wdstr_nls
@@ -385,25 +385,25 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Converts an azimuth to one of 16 full Dutch wind-direction strings (noordnoordoost, zuidwest)
+  !> \brief  Converts a wind direction/azimuth to one of 16 full Dutch wind-direction strings (noordnoordoost, zuidwest)
   !!
-  !! \param  az  Azimuth (radians, S=0)
+  !! \param wd  Wind direction (radians, N=0)
   
-  function wdstr_nl(az)
+  function wdstr_nl(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: az
+    real(double), intent(in) :: wd
     character :: wdstr_nl*(14),wds(0:15)*(14)
     
     wds = (/ &
-         'zuid          ', 'zuidzuidwest  ', 'zuidwest      ', 'westzuidwest  ', &
-         'west          ', 'westnoordwest ', 'noordwest     ', 'noordnoordwest', &
          'noord         ', 'noordnoordoost', 'noordoost     ', 'oostnoordoost ', &
-         'oost          ', 'oostzuidoost  ', 'zuidoost      ', 'zuidzuidoost  '/)
+         'oost          ', 'oostzuidoost  ', 'zuidoost      ', 'zuidzuidoost  ', &
+         'zuid          ', 'zuidzuidwest  ', 'zuidwest      ', 'westzuidwest  ', &
+         'west          ', 'westnoordwest ', 'noordwest     ', 'noordnoordwest'/)
     
-    wdstr_nl = wds(mod( nint( az*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
+    wdstr_nl = wds(mod( nint( wd*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
     
   end function wdstr_nl
   !*********************************************************************************************************************************
