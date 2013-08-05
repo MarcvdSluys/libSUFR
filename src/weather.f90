@@ -73,6 +73,56 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Derive wind "force" on Beaufort scale from wind speed in m/s
+  !!
+  !! \param  speed             Wind speed (m/s)
+  !! \retval wind_speed_2_bft  Wind "force" on the Beaufort scale
+  !!
+  !! \see http://en.wikipedia.org/wiki/Beaufort_scale#Modern_scale
+  
+  function beaufort(speed)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: speed
+    integer :: beaufort, speed_kmh
+    
+    speed_kmh = ceiling(abs(speed)*3.6d0)  ! Speed in km/h
+    select case(speed_kmh)
+    case(1)  ! v <= 1 km/h
+       beaufort = 0
+    case(2:11)  ! 1 km/h < v <= 11 km/h
+       if(abs(speed)*3.6d0.le.5.5d0) then  ! 1 km/h < v <= 5.5 km/h
+          beaufort = 1
+       else  ! 5.5 km/h < v <= 11 km/h
+          beaufort = 2
+       end if
+    case(12:19)    !  11 km/h < v <=  19 km/h
+       beaufort = 3
+    case(20:28)    !  19 km/h < v <=  28 km/h
+       beaufort = 4
+    case(29:38)    !  28 km/h < v <=  38 km/h
+       beaufort = 5
+    case(39:49)    !  38 km/h < v <=  49 km/h
+       beaufort = 6
+    case(50:61)    !  49 km/h < v <=  61 km/h
+       beaufort = 7
+    case(62:74)    !  61 km/h < v <=  74 km/h
+       beaufort = 8
+    case(75:88)    !  74 km/h < v <=  88 km/h
+       beaufort = 9
+    case(89:102)   !  88 km/h < v <= 102 km/h
+       beaufort = 10
+    case(103:117)  ! 102 km/h < v <= 117 km/h
+       beaufort = 11
+    case default   !            v >  117 km/h
+       beaufort = 12
+    end select
+    
+  end function beaufort
+  !*********************************************************************************************************************************
+  
+  
 end module SUFR_weather
 !***********************************************************************************************************************************
 
