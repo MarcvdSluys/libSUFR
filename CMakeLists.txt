@@ -1,12 +1,25 @@
-##
 ##  CMakeFile for libSUFR
-##  AF, 12/07/2010
+##  AF, 2010-12-07
+##  
+##  Copyright 2010-2013 Marc van der Sluys - marc.vandersluys.nl
+##   
+##  This file is part of the libSUFR package, 
+##  see: http://libsufr.sf.net/
+##   
+##  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+##  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+##  
+##  This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##  
+##  You should have received a copy of the GNU General Public License along with this code.  If not, see 
+##  <http://www.gnu.org/licenses/>.
+##
 ##
 ##  To compile, from the directory that contains this file, do:
 ##    $ mkdir build; cd build
 ##    $ cmake ..
 ##    $ make install
-##
 
 
 cmake_minimum_required( VERSION 2.8 FATAL_ERROR )

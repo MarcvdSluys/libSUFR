@@ -2,13 +2,26 @@
 
 ##  code_version.sh:
 ##  Write the git hash or release-version number of the code and the compiler name to a Fortran source file
-##  Copyright (c) 2010-2013 Marc van der Sluys, marc.vandersluys.nl
 ##  
-##  24/07/2010, AF: initial version for AnalyseMCMC, svn
-##  06/10/2011, AF: svn -> bzr
-##  09/11/2011, AF: generate 2 files: PG/PLplot; use bzr rev.no or release version
-##  26/04/2012, AF: ported to libSUFR
-##  25/11/2012, AF: bzr -> git
+##  2010-07-24, AF: initial version for AnalyseMCMC, svn
+##  2011-10-06, AF: svn -> bzr
+##  2011-11-09, AF: generate 2 files: PG/PLplot; use bzr rev.no or release version
+##  2012-04-26, AF: ported to libSUFR
+##  2012-11-25, AF: bzr -> git
+##  
+##  Copyright (c) 2010-2013 Marc van der Sluys - marc.vandersluys.nl
+##  
+##  This file is part of the libSUFR package, 
+##  see: http://libsufr.sf.net/
+##   
+##  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+##  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+##  
+##  This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##  
+##  You should have received a copy of the GNU General Public License along with this code.  If not, see 
+##  <http://www.gnu.org/licenses/>.
 
 
 if [[ ${#} -ne 2 && ${#} -ne 4 ]]; then
