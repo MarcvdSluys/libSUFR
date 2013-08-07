@@ -5,6 +5,7 @@ set(SRC_FILES
   src/command_line.f90
   src/constants.f90
   src/date_and_time.f90
+  src/dummy_variables.f90
   src/earth.f90
   src/fitting.f90
   src/interpolate.f90
