@@ -152,6 +152,30 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file read error
+  !!
+  !! \param filename  Filename
+  !! \param line      Line number where read error occurred - 0: no line
+  
+  subroutine file_read_error(filename, line)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: line
+    
+    select case(line)
+    case(0)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//'  ***'
+    case default
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', line ',line, &
+            '  ***'
+    end select
+    
+  end subroutine file_read_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a message to StdErr on file read error, and stop the execution of the current program
   !!
   !! \param filename  Filename
@@ -181,6 +205,55 @@ contains
     
   end subroutine file_read_error_quit
   !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on reaching the end of a file while reading
+  !!
+  !! \param filename  Filename
+  
+  subroutine file_end_error(filename)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    
+    write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error while reading input file  '//trim(filename)// &
+         ': reached the end of the file  ***'
+    
+  end subroutine file_end_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on reaching the end of a file while reading, and stop the code
+  !!
+  !! \param filename  Filename
+  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine file_end_quit(filename, status)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: status
+    
+    write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error while reading input file  '//trim(filename)// &
+         ': reached the end of the file  ***'
+    
+    if(status.eq.0) then
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine file_end_quit
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
+  
   
   
   !*********************************************************************************************************************************
