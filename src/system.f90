@@ -242,13 +242,46 @@ contains
     if(status.eq.0) then
        stop
     else
-       write(0,'(A)', advance='no')'  ***  '
+       write(0,'(A)', advance='no') '  ***  '
        stop 1
     end if
     
   end subroutine file_end_quit
   !*********************************************************************************************************************************
   
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on read error or reaching the end of a file while reading, and optionally stop the code
+  !!
+  !! \param filename    Filename
+  !! \param line        Line number where read error occurred - 0: no line
+  !! \param readstatus  Read status provided by iostat
+  !! \param stopcode    Stop the execution of the code: 0-no, 1-yes
+  !! \param exitstatus  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine file_read_end_error(filename, line, readstatus, stopcode, exitstatus)
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: line, readstatus, stopcode, exitstatus
+    
+    select case(readstatus)
+    case(:-1)  ! End of file reached (<0)
+       if(stopcode.eq.0) then
+          call file_end_error(trim(filename))
+       else
+          call file_end_quit(trim(filename), exitstatus)
+       end if
+    case(1:)   ! Read error (>0)
+       if(stopcode.eq.0) then
+          call file_read_error(trim(filename), line)
+       else
+          call file_read_error_quit(trim(filename), line, exitstatus)
+       end if
+    end select
+    
+  end subroutine file_read_end_error
+  !*********************************************************************************************************************************
   
   
   
