@@ -332,6 +332,65 @@ contains
   !*********************************************************************************************************************************
   
   
+
+
+
+  !*********************************************************************************************************************************
+  !> \brief  Return the time stamp in seconds since 1970-01-01 00:00:00 UTC
+  !!
+  !! \retval timestamp  Unix timestamp:  number of seconds since 1970-01-01 00:00:00 UTC, accuracy: 1ms
+  
+  function timestamp()
+    use SUFR_kinds, only: double
+    use SUFR_date_and_time, only: ymdhms2jd
+    use SUFR_dummy, only: dumstr99
+    
+    implicit none
+    integer :: dt(8)
+    real(double) :: timestamp, jd,djd
+    
+    call date_and_time(dumstr99,dumstr99,dumstr99, dt)  ! dt: y,m,d, tz (min), h,m,s, ms
+    jd = ymdhms2jd( dt(1), dt(2), dt(3),   dt(5), dt(6)-dt(4), dble(dt(7))+dble(dt(8))/1.d3 )  ! y,m,d,  h, m-tz, s+ms
+    djd = jd - ymdhms2jd(1970, 1, 1, 0, 0, 0.d0)
+    timestamp = djd * 86400  ! Day -> s
+    
+  end function timestamp
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print a text progress bar and estimated time left to the screen
+  !!
+  !! \param timestamp0  Timestamp of start of loop
+  !! \param frac        Fraction of the iterations completed
+  
+  subroutine printProgressBar(timestamp0, frac)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: cursorup
+    use SUFR_time2string, only: tms
+    
+    implicit none
+    integer, parameter :: nsteps = 100
+    real(double), intent(in) :: timestamp0, frac
+    
+    integer :: st, perc
+    
+    write(*,*) cursorup
+    perc = nint(frac*nsteps)
+    write(*,'(A,I3,A)',advance='no')'  Progress:  ',perc,'% ['
+    do st=1,nsteps
+       if(st.le.perc) then
+          write(*,'(A1)',advance='no')'#'
+       else
+          write(*,'(A1)',advance='no')' '
+       end if
+    end do
+    write(*,'(A,A9)')']  Est.time left:',tms((timestamp()-timestamp0)*(1.d0-frac)/frac/3600.d0)
+    
+  end subroutine printProgressBar
+  !*********************************************************************************************************************************
+  
+  
   !*********************************************************************************************************************************
   !> \brief  Print run times: wall time and CPU time
   !!
