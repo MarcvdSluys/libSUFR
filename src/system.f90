@@ -359,33 +359,39 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print a text progress bar and estimated time left to the screen
+  !> \brief  Print a text progress bar to the screen, optionally with estimated time left
   !!
-  !! \param timestamp0  Timestamp of start of loop
-  !! \param frac        Fraction of the iterations completed
+  !! \param frac        Fraction of the task completed
+  !! \param timestamp0  Timestamp of start of task
   
-  subroutine printProgressBar(timestamp0, frac)
+  subroutine printProgressBar(frac, timestamp0)
     use SUFR_kinds, only: double
     use SUFR_constants, only: cursorup
     use SUFR_time2string, only: tms
     
     implicit none
     integer, parameter :: nsteps = 100
-    real(double), intent(in) :: timestamp0, frac
+    real(double), intent(in) :: frac
+    real(double), intent(in), optional :: timestamp0
     
     integer :: st, perc
     
     write(*,*) cursorup
     perc = nint(frac*nsteps)
-    write(*,'(A,I3,A)',advance='no')'  Progress:  ',perc,'% ['
+    write(*,'(A,I3,A)',advance='no') '  Progress:  ',perc,'% ['
     do st=1,nsteps
        if(st.le.perc) then
-          write(*,'(A1)',advance='no')'#'
+          write(*,'(A1)',advance='no') '#'
        else
-          write(*,'(A1)',advance='no')' '
+          write(*,'(A1)',advance='no') ' '
        end if
     end do
-    write(*,'(A,A9)')']  Est.time left:',tms((timestamp()-timestamp0)*(1.d0-frac)/frac/3600.d0)
+    
+    if(present(timestamp0)) then
+       write(*,'(A,A9)') ']  Est.time left:',tms((timestamp()-timestamp0)*(1.d0-frac)/frac/3600.d0)
+    else
+       write(*,'(A)') ']'
+    end if
     
   end subroutine printProgressBar
   !*********************************************************************************************************************************
