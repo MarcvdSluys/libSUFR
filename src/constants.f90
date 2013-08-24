@@ -125,8 +125,8 @@ module SUFR_constants_datetime
   real(double), public :: currentjd, currenttz
   
   character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
-  character, public :: currentdowstren*(9),currentdatestren*(39)
-  character, public :: currentdowstrnl*(9),currentdatestrnl*(39)
+  character, public :: currentdatestren*(10), currentdowstren*(9),currentdatestrenl*(39)
+  character, public :: currentdatestrnl*(10), currentdowstrnl*(9),currentdatestrnll*(39)
   
 end module SUFR_constants_datetime
 !***********************************************************************************************************************************
@@ -486,11 +486,13 @@ contains
     currentdowstren = endays(currentdow)  ! English
     currentdowstrnl = nldays(currentdow)  ! Dutch
     
-    write(currentyearstr,'(I4)')currentyear
-    write(currentdatestr,'(I2.2,A1,I2.2,A1,I4.4)')currentday,'/',currentmonth,'/',currentyear
-    write(currentdatestren,'(A,I3,1x,A,I5)')trim(currentdowstren),currentday,trim(enmonths(currentmonth)),currentyear  ! English
-    write(currentdatestrnl,'(A,I3,1x,A,I5)')trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear  ! Dutch
-    write(currenttimestr,'(I2.2,A1,I2.2,A1,I2.2)')currenthour,':',currentminute,':',currentsecond
+    write(currentyearstr,'(I4)') currentyear
+    write(currentdatestr,'(I4.4,A1,I2.2,A1,I2.2)') currentyear,'-',currentmonth,'-',currentday    ! Unambiguous
+    write(currentdatestren,'(I2.2,A1,I2.2,A1,I4.4)') currentmonth,'/',currentday,'/',currentyear  ! US
+    write(currentdatestrnl,'(I2.2,A1,I2.2,A1,I4.4)') currentday,'/',currentmonth,'/',currentyear  ! EU
+    write(currentdatestrenl,'(A,1x,A,I3,I5)') trim(currentdowstren),trim(enmonths(currentmonth)),currentday,currentyear  ! English
+    write(currentdatestrnll,'(A,I3,1x,A,I5)') trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear  ! Dutch
+    write(currenttimestr,'(I2.2,A1,I2.2,A1,I2.2)') currenthour,':',currentminute,':',currentsecond
     
   end subroutine set_SUFR_constants_currentdate
   !*********************************************************************************************************************************
