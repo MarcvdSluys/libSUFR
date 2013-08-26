@@ -6,14 +6,14 @@
 !!  under the conditions of the GPL v.3.
 !!  
 !!  \par
-!!  &copy; 2002-2013 Marc van der Sluys - marc.vandersluys.nl
+!!  Copyright &copy; 2002-2013  Marc van der Sluys - marc.vandersluys.nl
 !!
 !!  \see
 !!  These pages contain the documentation for libSUFR, created by Doxygen.  
 !!  For the libSUFR home page, see: http://libsufr.sourceforge.net
 
 
-!  Copyright 2002-2013 Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2013  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/

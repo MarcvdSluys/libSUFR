@@ -1,7 +1,7 @@
 !> \file fitting.f90  Procedures to fit functions to data
 
 
-!  Copyright 2002-2013 Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2013  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
