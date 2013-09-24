@@ -45,7 +45,7 @@ module SUFR_constants_astro
   
   ! Astronomical constants:
   real(double),public :: julyear,solday,siday,planr(0:9),pland(0:9),plana(0:9),earthr
-  real(double),public :: au,km,rsun,msun,lsun,jd1875,jd2000,eps2000
+  real(double),public :: au,km,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000
   
   ! Satellite data for planets 4-8:
   real(double),public :: satrad(4:8,30),satdiam(4:8,30)
@@ -321,8 +321,11 @@ contains
     solday   = 8.64d4         ! Solar day in s
     julyear  = 3.15569d7      ! Julian year in s
     
-    jd1875 = 2405890.d0       ! JD at 1875.0 (when constellation boundaries were defined)
-    jd2000 = 2451545.d0       ! JD at J2000.0
+    jd1875 = 2405890.d0       ! JD at J1875.0 (when constellation boundaries were defined)
+    jd1900 = 2415021.d0       ! JD at J1900.0
+    jd1950 = 2433283.d0       ! JD at J1950.0
+    jd2000 = 2451545.d0       ! JD at J2000.0 (2000-01-01 12:00 UT)
+    
     eps2000 = 0.409092804d0   ! Obliquity of the ecliptic at J2000.0
     
     pland = (/3476.206d5, 4879.d5, 12198.d5, 1.39198d11, 6794.d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
