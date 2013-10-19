@@ -74,6 +74,54 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Test whether two double-precision variables are equal to better than twice the machine precision
+  !!
+  !! \param x1    First number
+  !! \param x2    Second number
+  
+  function deq(x1,x2)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: x1,x2
+    real(double) :: eps
+    logical :: deq
+    
+    eps = 2*tiny(x1)
+    if(abs(x1-x2).le.eps) then
+       deq = .true.
+    else
+       deq = .false.
+    end if
+    
+  end function deq
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether two single-precision variables are equal to better than twice the machine precision
+  !!
+  !! \param x1    First number
+  !! \param x2    Second number
+  
+  function seq(x1,x2)
+    implicit none
+    real, intent(in) :: x1,x2
+    real :: eps
+    logical :: seq
+    
+    eps = 2*tiny(x1)
+    if(abs(x1-x2).le.eps) then
+       seq = .true.
+    else
+       seq = .false.
+    end if
+    
+  end function seq
+  !*********************************************************************************************************************************
+  
+  
 end module SUFR_numerics
 !***********************************************************************************************************************************
 

@@ -313,6 +313,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error, error
     use SUFR_sorting, only: sorted_index_list
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: data(:), range
@@ -350,7 +351,7 @@ contains
        diff = data(indexx(i2))-data(indexx(i1))
        
        ! If the new range is smaller, or equal and closer to the middle (may happen when many identical values exist):
-       if(diff.lt.mindiff .or. (diff.eq.mindiff.and.i1-ni/2.lt.i0-ni/2)) then
+       if(diff.lt.mindiff .or. (deq(diff,mindiff).and.i1-ni/2.lt.i0-ni/2)) then
           mindiff = diff
           i0 = i1
        end if

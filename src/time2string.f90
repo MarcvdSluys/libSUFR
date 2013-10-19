@@ -56,6 +56,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -83,7 +84,7 @@ contains
     write(ss,'(i2.2)') s
     
     write(hms,'(A2,2(A1,A2))') hh,':',mm,':',ss
-    if(t.eq.0.d0) write(hms,'(a8)') '--:--:--'
+    if(deq(t,0.d0)) write(hms,'(a8)') '--:--:--'
     
   end function hms
   !*********************************************************************************************************************************
@@ -96,6 +97,7 @@ contains
   function hms2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -125,7 +127,7 @@ contains
     write(ss,'(I2.2)') s
     
     write(hms2,'(A1,A2,2(A1,A2))') sign,hh,':',mm,':',ss
-    if(t.eq.0.d0) write(hms2,'(A9)') '---:--:--'
+    if(deq(t,0.d0)) write(hms2,'(A9)') '---:--:--'
     
   end function hms2
   !*********************************************************************************************************************************
@@ -144,6 +146,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -171,7 +174,7 @@ contains
     write(ss,'(i2.2)') s
     
     write(ums,'(A2,2(A1,A2),A1)') hh,'u',mm,'m',ss,'s'
-    if(t.eq.0.d0) write(ums,'(a9)') '--u--m--s'
+    if(deq(t,0.d0)) write(ums,'(a9)') '--u--m--s'
     
   end function ums
   !*********************************************************************************************************************************
@@ -188,6 +191,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -216,7 +220,7 @@ contains
     if(s.lt.10) write(ss,'(A1,F3.1)') '0',s
     
     write(hms_s,'(2(A2,A1),A4)') hh,':',mm,':',ss
-    if(t.eq.0.d0) write(hms_s,'(A10)') '--:--:--.-'
+    if(deq(t,0.d0)) write(hms_s,'(A10)') '--:--:--.-'
     
   end function hms_s
   !*********************************************************************************************************************************
@@ -233,6 +237,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -261,7 +266,7 @@ contains
     if(s.lt.10) write(ss,'(A1,F5.3)') '0',s
     
     write(hms_sss,'(2(A2,A1),A6)') hh,':',mm,':',ss
-    if(t.eq.0.d0) write(hms_sss,'(A12)') '--:--:--.---'
+    if(deq(t,0.d0)) write(hms_sss,'(A12)') '--:--:--.---'
     
   end function hms_sss
   !*********************************************************************************************************************************
@@ -278,6 +283,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -289,15 +295,15 @@ contains
     h = int(t1)
     m = (t1-h)*60.d0
     
-    if(m.eq.60) then
-       m=0
-       h=h+1
+    if(m.ge.59.95d0) then
+       m = 0.d0
+       h = h+1
     end if
     if(h.eq.24) h=0
     
     write(hmm,'(I2.2,A1,F4.1)') h,':',m
     if(m.lt.10.) write(hmm,'(I2.2,A2,F3.1)') h,':0',m
-    if(t.eq.0.d0) write(hmm,'(A7)') '--:--.-'
+    if(deq(t,0.d0)) write(hmm,'(A7)') '--:--.-'
     
   end function hmm
   !*********************************************************************************************************************************
@@ -314,6 +320,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -325,15 +332,15 @@ contains
     h = int(t1)
     m = (t1-h)*60.d0
     
-    if(m.eq.60) then
-       m=0
-       h=h+1
+    if(m.ge.59.95d0) then
+       m = 0.d0
+       h = h+1
     end if
     if(h.eq.24) h=0
     
     write(umm,'(I2.2,A1,F4.1,A1)') h,'u',m,'m'
     if(m.lt.10.) write(umm,'(I2.2,A2,F3.1,A1)') h,'u0',m,'m'
-    if(t.eq.0.d0) write(umm,'(A8)') '--u--.-m'
+    if(deq(t,0.d0)) write(umm,'(A8)') '--u--.-m'
     
   end function umm
   !*********************************************************************************************************************************
@@ -350,6 +357,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -373,7 +381,7 @@ contains
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
     write(hm,'(A2,2(A1,A2))') hh,':',mm
-    if(t.eq.0.d0) write(hm,'(A5)') '--:--'
+    if(deq(t,0.d0)) write(hm,'(A5)') '--:--'
     
   end function hm
   !*********************************************************************************************************************************
@@ -390,6 +398,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -413,7 +422,7 @@ contains
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
     write(um,'(2(A2,A1))') hh,'u',mm,'m'
-    if(t.eq.0.d0) write(um,'(A6)') '--u--m'
+    if(deq(t,0.d0)) write(um,'(A6)') '--u--m'
     
   end function um
   !*********************************************************************************************************************************
@@ -430,6 +439,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -453,7 +463,7 @@ contains
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
     write(wum,'(2(A2,A12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>'
-    if(t.eq.0.d0) write(wum,'(A28)') '--<sup>u</sup>--<sup>m</sup>'
+    if(deq(t,0.d0)) write(wum,'(A28)') '--<sup>u</sup>--<sup>m</sup>'
     
   end function wum
   !*********************************************************************************************************************************
@@ -469,6 +479,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -481,9 +492,9 @@ contains
     h = int(t1)
     m = real(t1-h)*60.
     
-    if(m.ge.59.95) then
-       m=0.0
-       h=h+1
+    if(m.ge.59.95d0) then
+       m = 0.d0
+       h = h+1
     end if
     if(h.eq.24) h=0
     
@@ -492,7 +503,7 @@ contains
     if(m.lt.9.95) write(mm,'(A1,F3.1)') '0',m
     
     write(wumm,'(A2,A12,A4,A12)') hh,'<sup>u</sup>',mm,'<sup>m</sup>'
-    if(t.eq.0.d0) write(wumm,'(A30)') '--<sup>u</sup>--.-<sup>m</sup>'
+    if(deq(t,0.d0)) write(wumm,'(A30)') '--<sup>u</sup>--.-<sup>m</sup>'
     
   end function wumm
   !*********************************************************************************************************************************
@@ -508,6 +519,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -535,7 +547,7 @@ contains
     write(ss,'(I2.2)') s
     
     write(wums,'(3(A2,A12))') hh,'<sup>u</sup>',mm,'<sup>m</sup>',ss,'<sup>s</sup>'
-    if(t.eq.0.d0) write(wums,'(A42)') '--<sup>u</sup>--<sup>m</sup>--<sup>s</sup>'
+    if(deq(t,0.d0)) write(wums,'(A42)') '--<sup>u</sup>--<sup>m</sup>--<sup>s</sup>'
     
   end function wums
   !*********************************************************************************************************************************
@@ -555,6 +567,7 @@ contains
   function hm2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -579,7 +592,7 @@ contains
     write(mm,'(I2.2)')m
     
     write(hm2,'(A1,A2,A1,A2)') sign,hh,':',mm
-    if(t.eq.0.d0) write(hm2,'(A6)') '---:--'
+    if(deq(t,0.d0)) write(hm2,'(A6)') '---:--'
     
   end function hm2
   !*********************************************************************************************************************************
@@ -596,6 +609,7 @@ contains
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2h,h2r
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: t
@@ -619,7 +633,7 @@ contains
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
     write(hdm,'(A2,2(A1,A2))') hh,'.',mm
-    if(t.eq.0.d0) write(hdm,'(A5)') '--.--'
+    if(deq(t,0.d0)) write(hdm,'(A5)') '--.--'
     
   end function hdm
   !*********************************************************************************************************************************

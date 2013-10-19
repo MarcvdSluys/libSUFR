@@ -170,9 +170,9 @@ contains
     m = int((a-d)*60.d0)
     s = (a-d-m/60.d0)*3600.d0
     
-    if(s.eq.60) then
+    if(s.ge.59.995d0) then
        m = m+1
-       s = 0
+       s = 0.d0
     end if
     if(m.eq.60) then
        d = d+1
@@ -354,7 +354,7 @@ contains
     m = int((a-d)*60.d0)
     s = (a-d-m/60.d0)*3600.d0
     
-    if(s.eq.60) then
+    if(s.ge.59.995d0) then
        m = m+1
        s = 0
     end if
@@ -629,7 +629,7 @@ contains
     m = int((a-d)*60.d0)
     s = (a-d-m/60.d0)*3600.d0
     
-    if(s.eq.60) then
+    if(s.ge.59.995d0) then
        m = m+1
        s = 0
     end if
@@ -726,7 +726,7 @@ contains
     m = int((a-d)*60.d0)
     s = (a-d-m/60.d0)*3600.d0
     
-    if(s.eq.60) then
+    if(s.ge.59.995d0) then
        m = m+1
        s = 0
     end if

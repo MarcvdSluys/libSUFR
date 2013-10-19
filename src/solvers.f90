@@ -43,6 +43,7 @@ contains
   
   function root_solver(func,x1,x2,accur, status,verbose)
     use SUFR_kinds, only: double, dbl
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: x1,x2,accur
@@ -102,14 +103,14 @@ contains
        accur1 = 2*eps*abs(b) + 0.5_dbl*accur
        xm = 0.5_dbl*(c-b)
        
-       if(abs(xm).le.accur1 .or. fb.eq.0.0_dbl) then                ! Then we have a sufficiently accurate solution
+       if(abs(xm).le.accur1 .or. deq(fb,0.0_dbl)) then          ! Then we have a sufficiently accurate solution
           root_solver = b
           return
        end if
        
        if(abs(e).ge.accur1 .and. abs(fa).gt.abs(fb)) then
           s = fb/fa
-          if(a.eq.c) then
+          if(deq(a,c)) then
              p = 2*xm*s
              q = 1.0_dbl - s
           else
@@ -178,6 +179,7 @@ contains
   
   function minimum_solver(func,ax,bx,cx,accur,xmin, status,verbose)
     use SUFR_kinds, only: double, dbl
+    use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: ax,bx,cx,accur
@@ -281,12 +283,12 @@ contains
              b = u
           end if
           
-          if(fu.le.fw .or. w.eq.x) then
+          if(fu.le.fw .or. deq(w,x)) then
              v = w
              fv = fw
              w = u
              fw = fu
-          else if(fu.le.fv .or. v.eq.x .or. v.eq.w) then
+          else if(fu.le.fv .or. deq(v,x) .or. deq(v,w)) then
              v = u
              fv = fu
           end if
