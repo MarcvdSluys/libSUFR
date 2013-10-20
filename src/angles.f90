@@ -19,16 +19,18 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Procedures to handle periodic angles
+!> \brief  Procedures to handle angles
 
-module SUFR_angles_periodic
+module SUFR_angles
   use SUFR_kinds, only: double
+  
   implicit none
   save
   private :: double
-  
+  public :: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180  ! make these functions available through the module SUFR_angles
   
 contains
+  
   
   
   !*********************************************************************************************************************************
@@ -193,29 +195,6 @@ contains
   !*********************************************************************************************************************************
   
   
-end module SUFR_angles_periodic
-!***********************************************************************************************************************************
-
-
-
-
-
-
-
-!***********************************************************************************************************************************
-!> \brief  Procedures to handle angles
-
-module SUFR_angles
-  use SUFR_kinds, only: double
-  use SUFR_angles_periodic, only: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180
-  
-  implicit none
-  save
-  private :: double
-  public :: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180  ! make these functions available through the module SUFR_angles
-  
-contains
-  
   
   
   !*********************************************************************************************************************************
@@ -228,7 +207,6 @@ contains
   
   function asep(l1,l2, b1,b2)
     use SUFR_kinds, only: double
-    use SUFR_angles_periodic, only: rev2
     
     implicit none
     real(double), intent(in) :: l1,l2, b1,b2
@@ -277,7 +255,6 @@ contains
   function pastr_en(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
-    use SUFR_angles_periodic, only: rev
     
     implicit none
     real(double), intent(in) :: pa
@@ -300,7 +277,6 @@ contains
   function pastr_nl(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
-    use SUFR_angles_periodic, only: rev
     
     implicit none
     real(double), intent(in) :: pa
@@ -322,7 +298,6 @@ contains
   function pastr_nls(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
-    use SUFR_angles_periodic, only: rev
     
     implicit none
     real(double), intent(in) :: pa
