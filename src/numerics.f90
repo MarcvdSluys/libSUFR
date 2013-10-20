@@ -77,8 +77,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two double-precision variables are equal to better than twice the machine precision
   !!
-  !! \param x1    First number
-  !! \param x2    Second number
+  !! \param x1  First number
+  !! \param x2  Second number
   
   function deq(x1,x2)
     use SUFR_kinds, only: double
@@ -102,8 +102,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two single-precision variables are equal to better than twice the machine precision
   !!
-  !! \param x1    First number
-  !! \param x2    Second number
+  !! \param x1  First number
+  !! \param x2  Second number
   
   function seq(x1,x2)
     implicit none
@@ -119,6 +119,41 @@ contains
     end if
     
   end function seq
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether two double-precision variables are unequal to better than twice the machine precision
+  !!
+  !! \param x1  First number
+  !! \param x2  Second number
+  
+  function dne(x1,x2)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x1,x2
+    logical :: dne
+    
+    dne = .not. deq(x1,x2)
+    
+  end function dne
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether two single-precision variables are unequal to better than twice the machine precision
+  !!
+  !! \param x1  First number
+  !! \param x2  Second number
+  
+  function sne(x1,x2)
+    implicit none
+    real, intent(in) :: x1,x2
+    logical :: sne
+    
+    sne = .not. seq(x1,x2)
+    
+  end function sne
   !*********************************************************************************************************************************
   
   
