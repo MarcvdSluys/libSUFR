@@ -71,17 +71,6 @@ contains
     end if
     
   end function median
-  
-  
-  !> \brief  Obsolete alias of function median().  Use median() instead.
-  function compute_median(data,mask)
-    use SUFR_kinds, only: double
-    implicit none
-    real(double), intent(in) :: data(:)
-    logical, intent(in), optional :: mask(:)
-    real(double) :: compute_median
-    compute_median = median(data, mask)
-  end function compute_median
   !*********************************************************************************************************************************
   
   
@@ -115,16 +104,6 @@ contains
     median_sp = real(median_d)
     
   end function median_sp
-  
-  
-  !> \brief  Obsolete alias of function median_sp().  Use median_sp() instead.
-  function compute_median_sp(data,mask)
-    implicit none
-    real, intent(in) :: data(:)
-    logical, intent(in), optional :: mask(:)
-    real :: compute_median_sp
-    compute_median_sp = median_sp(data, mask)
-  end function compute_median_sp
   !*********************************************************************************************************************************
   
   
@@ -242,17 +221,6 @@ contains
     end if
     
   end function stdev
-  
-  
-  !> \brief  Obsolete alias for function compute_stdev().  Use stdev() instead.
-  function compute_stdev(data,mean,mask)
-    use SUFR_kinds, only: double
-    implicit none
-    real(double), intent(in) :: data(:),mean
-    logical, intent(in), optional :: mask(:)
-    real(double) :: compute_stdev
-    compute_stdev = stdev(data, mean, mask)
-  end function compute_stdev
   !*********************************************************************************************************************************
   
   
@@ -285,16 +253,6 @@ contains
     stdev_sp = real(stdevd)
     
   end function stdev_sp
-  
-  
-  !> \brief  Obsolete alias for function compute_stdev_sp().  Use stdev_sp() instead.
-  function compute_stdev_sp(data,mean,mask)
-    implicit none
-    real, intent(in) :: data(:),mean
-    logical, intent(in), optional :: mask(:)
-    real :: compute_stdev_sp
-    compute_stdev_sp = stdev_sp(data, mean, mask)
-  end function compute_stdev_sp
   !*********************************************************************************************************************************
   
   
