@@ -19,9 +19,9 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Procedures for manipulation of date and time: core JD routines (needed by other routines)
+!> \brief  Procedures for manipulation of date and time
 
-module SUFR_date_and_time_JD
+module SUFR_date_and_time
   implicit none
   save
   
@@ -134,22 +134,6 @@ contains
   end subroutine jd2cal
   !*********************************************************************************************************************************
   
-end module SUFR_date_and_time_JD
-!***********************************************************************************************************************************
-
-
-
-
-!***********************************************************************************************************************************
-!> \brief  Procedures for manipulation of date and time
-
-module SUFR_date_and_time
-  use SUFR_date_and_time_JD, only: cal2jd, jd2cal
-  implicit none
-  save
-  public :: cal2jd, jd2cal  ! Make these available through the module SUFR_date_and_time
-  
-contains
   
   
   
@@ -166,7 +150,6 @@ contains
   
   function ymdhms2jd(yy,mmo,dd, h,m,s)
     use SUFR_kinds, only: double
-    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yy,mmo,dd,h,m
@@ -195,7 +178,6 @@ contains
   
   function dtm2jd(yy,mo,dd,time)
     use SUFR_kinds, only: double
-    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yy,mo,dd
@@ -303,7 +285,6 @@ contains
   
   function doy(jd0)
     use SUFR_kinds, only: double
-    use SUFR_date_and_time_JD, only: cal2jd, jd2cal
     
     implicit none
     real(double), intent(in) :: jd0
@@ -328,7 +309,6 @@ contains
   
   function ymd2doy(yr,mon,dy)
     use SUFR_kinds, only: double
-    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yr,mon,dy
@@ -356,7 +336,6 @@ contains
   
   subroutine doy2md(doy,yr, mon,dy)
     use SUFR_kinds, only: double
-    use SUFR_date_and_time_JD, only: cal2jd, jd2cal
     
     implicit none
     integer, intent(in) :: doy,yr
@@ -379,7 +358,6 @@ contains
   !! \param yr  Year (CE)
   
   function leapyr(yr)
-    use SUFR_date_and_time_JD, only: cal2jd
     
     implicit none
     integer, intent(in) :: yr
@@ -389,9 +367,6 @@ contains
     
   end function leapyr
   !*********************************************************************************************************************************
-  
-  
-  
   
   
   

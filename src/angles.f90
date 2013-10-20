@@ -27,7 +27,6 @@ module SUFR_angles
   implicit none
   save
   private :: double
-  public :: rev,rrev,rev2,rrev2,revc,rv,rv12,rv180  ! make these functions available through the module SUFR_angles
   
 contains
   
