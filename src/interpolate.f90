@@ -19,9 +19,9 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Procedures to do interpolation (and fitting?): core routines (needed by others)
+!> \brief  Procedures to do interpolation (and fitting?)
 
-module SUFR_interpolate_core
+module SUFR_interpolate
   implicit none
   save
   
@@ -54,21 +54,6 @@ contains
   !*********************************************************************************************************************************
   
   
-end module SUFR_interpolate_core
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
-!> \brief  Procedures to do interpolation (and fitting?)
-
-module SUFR_interpolate
-  use SUFR_interpolate_core, only: linear_interpolation
-  implicit none
-  save
-  public :: linear_interpolation  ! Make these available through the module SUFR_interpolate
-  
-contains
-  
   !*********************************************************************************************************************************
   !> \brief  Do linear interpolation using the data points x1,x2, and y1,y2 to find the value y corresponding to x, 
   !!         using single-precision variables
@@ -82,7 +67,6 @@ contains
   !! \retval y  Y value to find
   
   function linear_interpolation_sp(x1,x2, y1,y2, x)
-    use SUFR_interpolate_core, only: linear_interpolation
     implicit none
     real, intent(in)  :: x1,x2, y1,y2, x
     real :: linear_interpolation_sp
@@ -104,7 +88,6 @@ contains
   
   function linear_interpolate_array(narr, xarr, yarr, x)
     use SUFR_kinds, only: double
-    use SUFR_interpolate_core, only: linear_interpolation
     implicit none
     integer, intent(in)  :: narr
     real(double), intent(in)  :: xarr(narr), yarr(narr), x
