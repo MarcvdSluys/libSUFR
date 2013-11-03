@@ -44,14 +44,14 @@
 !              with &deg; rather than d (19)
 !  wddd2:    Print angle as dd.d string, HTML version of ddd2()  (10)
 
-!  ams:      Print angle as mm:ss.s string, input in rad
-!  ams2:     Print angle as +-mm:ss.s string, input in rad
-!  amss:     Print angle as mm:ss.ss string, input in rad
-!  ass:      Print angle as ss.s string, input in rad
+!  ams:      Print angle as mm'ss.s" string, input in rad  (8)
+!  ams2:     Print angle as +-mm'ss.s" string, input in rad  (9)
+!  amss:     Print angle as mm'ss.ss" string, input in rad  (9)
+!  ass:      Print angle as ss.s string, input in rad (5)
 
-!  wams:     Print angle as mm:ss.s string, input in rad;  HTML version of ams() (20)
-
-
+!  wams:     Print angle as mm'ss.s" string, input in rad;  HTML version of ams() (20)
+!  wams2:    Print angle as +-mm'ss.s" string, input in rad - html version of ams2() (21)
+!  wass:     Print angle as a string of ss.s", input in rad - HTML version of ass()  (11)
 
 
 
@@ -1146,11 +1146,84 @@ contains
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(ass,'(f4.1,a1)') s,'"'
+    write(ass,'(F4.1,A1)') s,'"'
     
   end function ass
   !*********************************************************************************************************************************
   
+  
+  
+  
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as mm'ss.s" string, input in rad;  HTML version of ams()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wams(a1)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: m
+    character :: wams*(20),mm*(2),ss*(4)
+    
+    a = a1
+    a = rev(a)*r2d
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
+    !if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
+    if(nint(s*10).lt.100) write(ss,'(A1,F3.1)') '0',s
+    write(wams,'(A2,A7,A4,A7)') mm,'&rsquo;',ss,'&rdquo;'
+    
+  end function wams
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print angle as mm'ss.s" string, input in rad - html version of ams2()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wams2(a1)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev2
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: m
+    character :: wams2*(21),mm*(2),ss*(4),sig
+    
+    a = a1
+    a = rev2(a)*r2d
+    
+    sig = '+'
+    if(a.lt.0.d0) then
+       sig = '-'
+       a = -1.d0*a
+    end if
+    
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
+    if(s.lt.9.95) write(ss,'(A1,F3.1)') '0',s
+    write(wams2,'(A1,A2,A7,A4,A7)') sig,mm,"&rsquo;",ss,'&rdquo;'
+    
+  end function wams2
+  !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
@@ -1174,45 +1247,9 @@ contains
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(wass,'(f4.1,a7)') s,'&rdquo;'
+    write(wass,'(F4.1,A7)') s,'&rdquo;'
     
   end function wass
-  !*********************************************************************************************************************************
-  
-  
-  
-  
-  
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief Print angle as mm:ss.s string, input in rad;  HTML version of ams()
-  !!
-  !! \param a1  Angle (rad)
-  
-  function wams(a1)
-    use SUFR_kinds, only: double
-    use SUFR_angles, only: rev
-    use SUFR_constants, only: r2d
-    
-    implicit none
-    real(double), intent(in) :: a1
-    real(double) :: a,s
-    integer :: m
-    character :: wams*(20),mm*(2),ss*(4)
-    
-    a = a1
-    a = rev(a)*r2d
-    m = int((a)*60.d0)
-    s = (a-m/60.d0)*3600.d0
-    
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
-    !if(s.lt.9.95d0) write(ss,'(a1,f3.1)') '0',s
-    if(nint(s*10).lt.100) write(ss,'(a1,f3.1)') '0',s
-    write(wams,'(a2,a7,a4,a7)') mm,'&rsquo;',ss,'&rdquo;'
-    
-  end function wams
   !*********************************************************************************************************************************
   
   
