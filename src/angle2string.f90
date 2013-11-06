@@ -49,9 +49,10 @@
 !  amss:     Print angle as mm'ss.ss" string, input in rad  (9)
 !  ass:      Print angle as ss.s string, input in rad (5)
 
-!  wams:     Print angle as mm'ss.s" string, input in rad;  HTML version of ams() (20)
-!  wams2:    Print angle as +-mm'ss.s" string, input in rad - html version of ams2() (21)
-!  wass:     Print angle as a string of ss.s", input in rad - HTML version of ass()  (11)
+!  wams:     Print angle as mm'ss.s" string, input in rad;  HTML version of ams()     (20)
+!  wams2:    Print angle as +-mm'ss.s" string, input in rad - html version of ams2()  (21)
+!  wamss:    Print angle as mm'ss.ss" string, input in rad  - html version of amss    (21)
+!  wass:     Print angle as a string of ss.s", input in rad - HTML version of ass()   (11)
 
 
 
@@ -1223,6 +1224,36 @@ contains
     write(wams2,'(A1,A2,A7,A4,A7)') sig,mm,"&rsquo;",ss,'&rdquo;'
     
   end function wams2
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as HTML mm:ss.ss string, input in rad - HTML version of amss()
+  !!
+  !! \param a1  Angle (rad)
+  
+  function wamss(a1)
+    use SUFR_kinds, only: double
+    use SUFR_angles, only: rev
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,s
+    integer :: m
+    character :: wamss*(21),mm*(2),ss*(5)
+    
+    a = a1
+    a = rev(a)*r2d
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.9.995d0) write(ss,'(A1,F4.2)') '0',s
+    write(wamss,'(A2,A,A5,A)') mm,"&rsquo;",ss,'&rdquo;'
+    
+  end function wamss
   !*********************************************************************************************************************************
   
   
