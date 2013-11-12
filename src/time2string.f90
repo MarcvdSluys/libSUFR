@@ -26,10 +26,12 @@
 !  hmm:       Print time as string in hm.m, input in hours
 !  umm:       Print time as string in 00u11.2m, input in hours
 !  hm:        Returns time as string in hh:mm, input in hours (5)
+!
 !  um:        Returns time as string in 11u22m, input in hours (6)
 !  wum:       Returns time as HTML string in 11u22m, input in hours (28)
 !  wumm:      Returns time as HTML string in 11u22.3m, input in hours (30)
 !  wums:      Returns time as HTML string in 11u22m33s, input in hours (42)
+!  wums_s:    Returns time as HTML string in 11u22m33.4s, input in hours  (44)
 !  hm2:       Returns time as string in +/-hh:mm, input in hours, between -12 and 12
 !  hdm:       Returns time as string in hh.mm, a . iso :, input in hours
 !  tms:       Returns time as mm:ss string, input in hours
@@ -551,6 +553,52 @@ contains
     
   end function wums
   !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print time as a Dutch HTML string in 11u22m33.4s, input in hours.  HTML equivalent of hms_s()
+  !!
+  !! \param t  Time (h)
+  
+  function wums_s(t)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
+    
+    implicit none
+    real(double), intent(in) :: t
+    real(double) :: t1,s
+    integer :: h,m
+    character :: wums_s*(44),hh*(2),mm*(2),ss*(4)
+    
+    t1 = rev((t+1.d-10)*h2r)*r2h
+    h = int(t1)
+    m = int((t1-h)*60.d0)
+    s = (t1-h-m/60.d0)*3600.d0
+    
+    if(s.gt.59.999d0) then
+       s = s-60.d0
+       m = m+1
+    end if
+    if(m.ge.60) then
+       m = m - 60
+       h = h+1
+    end if
+    if(h.ge.24) h = h-24
+    
+    write(hh,'(I2.2)') h
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
+    if(s.lt.10) write(ss,'(A1,F3.1)') '0',s
+    
+    write(wums_s,'(2(A2,A12),A4,A12)') hh,'<sup>u</sup>',mm,'<sup>m</sup>',ss,'<sup>s</sup>'
+    if(deq(t,0.d0)) write(wums_s,'(A44)') '--<sup>u</sup>--<sup>m</sup>--.-<sup>s</sup>'
+    
+  end function wums_s
+  !*********************************************************************************************************************************
+  
   
   
   

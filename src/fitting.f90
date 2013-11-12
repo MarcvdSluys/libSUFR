@@ -41,16 +41,16 @@ contains
   !!   in chi2.
   !!
   !!
-  !! \param  xdat    X values of the data
-  !! \param  ydat    Y values of the data
-  !! \param  yerr    Standard deviations of the y values
+  !! \param  xdat    X values of the data (ndat)
+  !! \param  ydat    Y values of the data (ndat)
+  !! \param  yerr    Standard deviations of the y values (ndat)
   !! \param  ndat    Number of data points
   !!
-  !! \retval coef    Coefficients of the fitting function
-  !! \param  varc    Fix coefficient coef(i) if varc(i)=0, otherwise fit it
+  !! \retval coef    Coefficients of the fitting function (ncoef)
+  !! \param  varc    Fix coefficient coef(i) if varc(i)=0, otherwise fit it (ncoef)
   !! \param  ncoef   Number of coefficients of the fitting function
   !!
-  !! \retval covar   Covariance matrix
+  !! \retval covar   Covariance matrix (ncov,ncov)
   !! \param  ncov    Size of both dimensions of covar()
   !! \retval chi2    Chi^2
   !!
@@ -62,7 +62,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.15.4
   !!
   
-  subroutine linear_fit_yerr(xdat,ydat,yerr,ndat,coef,varc,ncoef,covar,ncov,chi2, myFunc)
+  subroutine linear_fit_yerr(xdat,ydat,yerr,ndat,  coef,varc,ncoef,  covar,ncov, chi2, myFunc)
     use SUFR_kinds, only: double
     use SUFR_system, only: warn, quit_program_error
     implicit none
