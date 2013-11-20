@@ -54,7 +54,7 @@ contains
   !! \param  ncov    Size of both dimensions of covar()
   !! \retval chi2    Chi^2
   !!
-  !! \param  myFunc  External function that describes the model value of Y for given value X
+  !! \param  myFunc  External subroutine that describes the model value of Y for given value X
   !!
   !! \note
   !! - Needs lfit_sort_var_covar() and solve_linear_equations_Gauss_Jordan()

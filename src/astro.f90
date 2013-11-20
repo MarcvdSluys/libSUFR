@@ -70,7 +70,8 @@ contains
     real(double) :: airmass,z,zdeg
     
     if(alt.lt.0.d0) then
-       airmass = 1.d99
+       airmass = 1000.d0 * (0.15d0 + abs(alt))  ! Very bad (adds at least ~30 magnitudes due to extinction), 
+       !                                          but still worse when farther below the horizon
     else
        z = min(pio2 - alt, pio2)  ! Zenith angle
        zdeg = z*r2d
@@ -78,6 +79,33 @@ contains
     end if
     
   end function airmass
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the extinction in magnitdes per unit airmass for an observer with given elevation
+  !!
+  !! \param ele  Evelation of the observer above sea level (metres)
+  !!
+  !! \note  The magnitude of an object corrected for airmass should be  m' = m + airmass_ext(ele) * airmass(alt)
+  !!
+  !! \see  Green, ICQ 14, 55 (1992),  http://www.icq.eps.harvard.edu/ICQExtinct.html
+  !!
+  
+  function airmass_ext(ele)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: ele
+    real(double):: airmass_ext, Aoz,Aray,Aaer
+    
+    Aoz  = 0.016d0                       ! Ozone  (Schaefer 1992)
+    Aray = 0.1451d0 * exp(-ele/7996.d0)  ! Rayleigh scattering, Eq.2
+    Aaer = 0.120d0  * exp(-ele/1500.d0)  ! Aerosol scattering, Eq.4
+    
+    airmass_ext = Aoz + Aray + Aaer      ! Total extinction in magnitudes per unit air mass
+    
+  end function airmass_ext
   !*********************************************************************************************************************************
   
   
