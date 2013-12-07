@@ -99,14 +99,20 @@ contains
   !!
   !! \param syntax  Description of syntax
   !! \param status  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  !! \param descr   Program description (optional)
   
-  subroutine syntax_quit(syntax, status)
+  subroutine syntax_quit(syntax, status, descr)
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: syntax*(*)
     integer, intent(in) :: status
+    character, intent(in), optional :: descr*(*)
     
-    write(0,'(/,A,/)') '  Syntax:  '//trim(program_name)//'  '//trim(syntax)
+    write(0,*) ''
+    if(present(descr)) write(0,'(2x,A)') trim(descr)
+    
+    write(0,'(A,/)') '  Syntax:  '//trim(program_name)//'  '//trim(syntax)
+    
     if(status.eq.0) then
        stop
     else
