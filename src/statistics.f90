@@ -664,6 +664,43 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Compute the normalised correlation between two data sets
+  !!
+  !! \param   data1        Data set 1
+  !! \param   data2        Data set 2 - should have the same length as data1
+  !! \retval  correlation  Normalised correlation [-1,1] between the two data sets
+  
+  function correlation(data1, data2)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: warn
+    
+    implicit none
+    integer :: nn, ii
+    real(double), intent(in) :: data1(:), data2(:)
+    real(double) :: correlation, mean1,mean2, sum12, sum21,sum22
+    
+    if(size(data1).ne.size(data2)) &
+         call warn('correlation(): data arrays are of unequal size; using the size of the smalles array',0)
+    nn = min(size(data1), size(data2))
+    
+    mean1 = mean(data1)
+    mean2 = mean(data2)
+    
+    sum12 = 0.d0
+    sum21 = 0.d0
+    sum22 = 0.d0
+    
+    do ii=1,nn
+       sum12 = sum12 + (data1(ii)-mean1) * (data2(ii)-mean2)  ! Denominator
+       sum21 = sum21 + (data1(ii)-mean1)**2                   ! Numerator pt.1
+       sum22 = sum22 + (data2(ii)-mean2)**2                   ! Numerator pt.2
+    end do
+    
+    correlation = sum12/sqrt(sum21*sum22)
+    
+  end function correlation
+  !*********************************************************************************************************************************
   
 end module SUFR_statistics
 !***********************************************************************************************************************************
