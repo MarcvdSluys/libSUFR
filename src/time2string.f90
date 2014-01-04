@@ -219,7 +219,7 @@ contains
     write(hh,'(i2.2)') h
     write(mm,'(i2.2)') m
     write(ss,'(f4.1)') s
-    if(s.lt.10) write(ss,'(A1,F3.1)') '0',s
+    if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
     
     write(hms_s,'(2(A2,A1),A4)') hh,':',mm,':',ss
     if(deq(t,0.d0)) write(hms_s,'(A10)') '--:--:--.-'
@@ -265,7 +265,7 @@ contains
     write(hh,'(i2.2)') h
     write(mm,'(i2.2)') m
     write(ss,'(f6.3)') s
-    if(s.lt.10) write(ss,'(A1,F5.3)') '0',s
+    if(s.lt.9.9995d0) write(ss,'(A1,F5.3)') '0',s
     
     write(hms_sss,'(2(A2,A1),A6)') hh,':',mm,':',ss
     if(deq(t,0.d0)) write(hms_sss,'(A12)') '--:--:--.---'
@@ -304,7 +304,7 @@ contains
     if(h.eq.24) h=0
     
     write(hmm,'(I2.2,A1,F4.1)') h,':',m
-    if(m.lt.10.) write(hmm,'(I2.2,A2,F3.1)') h,':0',m
+    if(m.lt.9.95d0) write(hmm,'(I2.2,A2,F3.1)') h,':0',m
     if(deq(t,0.d0)) write(hmm,'(A7)') '--:--.-'
     
   end function hmm
@@ -341,7 +341,7 @@ contains
     if(h.eq.24) h=0
     
     write(umm,'(I2.2,A1,F4.1,A1)') h,'u',m,'m'
-    if(m.lt.10.) write(umm,'(I2.2,A2,F3.1,A1)') h,'u0',m,'m'
+    if(m.lt.9.95d0) write(umm,'(I2.2,A2,F3.1,A1)') h,'u0',m,'m'
     if(deq(t,0.d0)) write(umm,'(A8)') '--u--.-m'
     
   end function umm
@@ -591,7 +591,7 @@ contains
     write(hh,'(I2.2)') h
     write(mm,'(I2.2)') m
     write(ss,'(F4.1)') s
-    if(s.lt.10) write(ss,'(A1,F3.1)') '0',s
+    if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
     
     write(wums_s,'(2(A2,A12),A4,A12)') hh,'<sup>u</sup>',mm,'<sup>m</sup>',ss,'<sup>s</sup>'
     if(deq(t,0.d0)) write(wums_s,'(A44)') '--<sup>u</sup>--<sup>m</sup>--.-<sup>s</sup>'
@@ -741,7 +741,7 @@ contains
     
     write(mm,'(i2.2)') m
     write(ss,'(f4.1)') s
-    if(nint(s).lt.10) write(ss,'(A1,F3.1)') '0',s
+    if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
     write(tms2,'(A1,A2,A1,A4,A1)') sign,mm,'m',ss,'s'
     
   end function tms2

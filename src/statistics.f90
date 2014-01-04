@@ -665,11 +665,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the normalised correlation between two data sets
+  !> \brief  Compute the normalised correlation between two data series
   !!
-  !! \param   data1        Data set 1
-  !! \param   data2        Data set 2 - should have the same length as data1
-  !! \retval  correlation  Normalised correlation [-1,1] between the two data sets
+  !! \param   data1        Data series 1
+  !! \param   data2        Data series 2 - should have the same length as data1
+  !! \retval  correlation  Normalised correlation [-1,1] between the two data series
   
   function correlation(data1, data2)
     use SUFR_kinds, only: double
