@@ -157,6 +157,56 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Determine plot ranges from data arrays in x and y, and relative margins
+  !!
+  !! \param plx    Array contaiting x values
+  !! \param ply    Array contaiting y values
+  !! \param ddx    Relative margin in x
+  !! \param ddy    Relative margin in y
+  !!
+  !! \retval xmin  Minimum of plot range in x
+  !! \retval xmax  Maximum of plot range in x
+  !! \retval ymin  Minimum of plot range in y
+  !! \retval ymax  Maximum of plot range in y
+  
+  subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: plx(:),ply(:), ddx,ddy
+    real(double), intent(out) :: xmin,xmax, ymin,ymax
+    real(double):: dx,dy
+    
+    xmin = minval(plx)
+    xmax = maxval(plx)
+    
+    if(deq(xmin,xmax)) then
+       xmin = xmin * (1.d0-ddx)
+       xmax = xmax * (1.d0+ddx)
+    else
+       dx   = xmax-xmin
+       xmin = xmin - dx*ddx
+       xmax = xmax + dx*ddx
+    end if
+    
+    
+    ymin = minval(ply)
+    ymax = maxval(ply)
+    
+    if(deq(ymin,ymax)) then
+       ymin = ymin * (1.d0-ddy)
+       ymax = ymax * (1.d0+ddy)
+    else
+       dy   = ymax-ymin
+       ymin = ymin - dy*ddy
+       ymax = ymax + dy*ddy
+    end if
+    
+  end subroutine plot_ranges
+  !*********************************************************************************************************************************
+  
+  
 end module SUFR_numerics
 !***********************************************************************************************************************************
 
