@@ -249,7 +249,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight English two-letter abbreviations (NE, SW)
   !!
-  !! \param pa  Position angle (radians)
+  !! \param pa  Position angle (radians, N=0)
   
   function pastr_en(pa)
     use SUFR_kinds, only: double
@@ -266,12 +266,10 @@ contains
   !*********************************************************************************************************************************
   
   
-  
-  
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight full Dutch strings (noordoosten, noorden)
   !!
-  !! \param pa  Position angle (radians)
+  !! \param pa  Position angle (radians, N=0)
   
   function pastr_nl(pa)
     use SUFR_kinds, only: double
@@ -292,7 +290,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight Dutch abbreviations (NO,ZW)
   !!
-  !! \param pa  Position angle (radians)
+  !! \param pa  Position angle (radians, N=0)
   
   function pastr_nls(pa)
     use SUFR_kinds, only: double
@@ -307,6 +305,9 @@ contains
     
   end function pastr_nls
   !*********************************************************************************************************************************
+  
+  
+  
   
   
   
@@ -330,10 +331,6 @@ contains
   !*********************************************************************************************************************************
   
   
-  
-  
-  
-  
   !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 three-letter Dutch wind-direction abbreviations (NNO, WZW)
   !!
@@ -352,10 +349,6 @@ contains
     
   end function wdstr_nls
   !*********************************************************************************************************************************
-  
-  
-  
-  
   
   
   !*********************************************************************************************************************************
@@ -383,8 +376,23 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Converts a wind direction/azimuth to one of 8 two-letter Dutch secondary wind-direction abbreviations (NO, Z).
+  !!         Wrapper for pastr_nls().
+  !!
+  !! \param wd  Wind direction (radians, N=0)
   
-  
+  function wdstr_nls2(wd)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: wd
+    character :: wdstr_nls2*(2)
+    
+    wdstr_nls2 = pastr_nls(wd)
+    
+  end function wdstr_nls2
+  !*********************************************************************************************************************************
   
   
   
