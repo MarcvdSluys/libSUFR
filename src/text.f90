@@ -31,64 +31,73 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Make a string lower case
   !!
-  !! \param str  String (I/O)
+  !! \param str  String
   
-  subroutine lowercase(str)
+  function lowercase(str)
     implicit none
-    character, intent(inout) :: str*(*)
+    character, intent(in) :: str*(*)
+    character :: lowercase*(len(str))
     integer :: i,ch
-    do i=1,len_trim(str)
-       ch = ichar(str(i:i))
+    
+    lowercase = str
+    do i=1,len_trim(lowercase)
+       ch = ichar(lowercase(i:i))
        if(ch.ge.65.and.ch.le.91) ch = ch + 32
-       str(i:i) = char(ch)
+       lowercase(i:i) = char(ch)
     end do
-  end subroutine lowercase
+    
+  end function lowercase
   !*********************************************************************************************************************************
   
   
   
   !*********************************************************************************************************************************
-  !> \brief Make a string upper case
+  !> \brief  Make a string upper case
   !!
-  !! \param str  String (I/O)
+  !! \param str  String
   
-  subroutine uppercase(str)
+  function uppercase(str)
     implicit none
-    character, intent(inout) :: str*(*)
+    character, intent(in) :: str*(*)
+    character :: uppercase*(len(str))
     integer :: i,ch
     
-    do i=1,len_trim(str)
-       ch = ichar(str(i:i))
+    uppercase = str
+    do i=1,len_trim(uppercase)
+       ch = ichar(uppercase(i:i))
        if(ch.ge.97.and.ch.le.123) ch = ch - 32
-       str(i:i) = char(ch)
+       uppercase(i:i) = char(ch)
     end do
     
-  end subroutine uppercase
+  end function uppercase
   !*********************************************************************************************************************************
   
   
   
   !*********************************************************************************************************************************
-  !> \brief Make a string lower case with an upper-case initial
+  !> \brief  Make a string lower case with an upper-case initial
   !!
-  !! \param str  String (I/O)
+  !! \param str  String
   
-  subroutine uppercaseinitial(str)
+  function uppercaseinitial(str)
     implicit none
-    character, intent(inout) :: str*(*)
+    character, intent(in) :: str*(*)
+    character :: uppercaseinitial*(len(str))
     integer :: i,ic
     
+    uppercaseinitial = str
+    
     ! Capitalise first letter:
-    ic = ichar(str(1:1))
-    if(ic.ge.97.and.ic.le.122) str(1:1) = char(ic-32)
+    ic = ichar(uppercaseinitial(1:1))
+    if(ic.ge.97.and.ic.le.122) uppercaseinitial(1:1) = char(ic-32)
     
     ! Make the rest of the letters lower case:
-    do i=2,len_trim(str)
-       ic = ichar(str(i:i))
-       if(ic.ge.65.and.ic.le.90) str(i:i) = char(ic+32)
+    do i=2,len_trim(uppercaseinitial)
+       ic = ichar(uppercaseinitial(i:i))
+       if(ic.ge.65.and.ic.le.90) uppercaseinitial(i:i) = char(ic+32)
     end do
     
-  end subroutine uppercaseinitial
+  end function uppercaseinitial
   !*********************************************************************************************************************************
   
   
