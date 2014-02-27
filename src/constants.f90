@@ -122,7 +122,7 @@ module SUFR_constants_datetime
   save
   
   integer, public :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentmillisecond,currentdow
-  real(double), public :: currentjd, currenttz
+  real(double), public :: currentjd, currenttz, currenttime
   
   character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
   character, public :: currentdatestren*(10), currentdowstren*(9),currentdatestrenl*(39)
@@ -471,6 +471,7 @@ contains
     currentminute = dt(6)
     currentsecond = dt(7)
     currentmillisecond = dt(8)  ! Not useful for timekeeping, but useful for random-number seeds
+    currenttime = dble(currenthour) + dble(currentminute)/60.d0 + dble(currentsecond)/3.6d3 + dble(currentmillisecond)/3.6d6 ! in hr
     
     ! Time zone:
     tz = abs(dble(dt(4))/60.d0)
