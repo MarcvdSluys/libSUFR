@@ -396,6 +396,29 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Converts a wind direction/azimuth to one of 8 full Dutch secondary wind-direction (noordoost, zuid).
+  !!         Derived from pastr_nl().
+  !!
+  !! \param wd  Wind direction (radians, N=0)
+  
+  function wdstr_nl8(wd)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: pi2
+    
+    implicit none
+    real(double), intent(in) :: wd
+    character :: wdstr_nl8*(9),wds(9)*(9)
+    
+    wds = (/'noord    ','noordoost','oost     ','zuidoost ','zuid     ','zuidwest ','west     ','noordwest', 'noord    '/)
+    wdstr_nl8 = wds(ceiling( rev(wd)/pi2 * 8 + 0.5d0 ))  ! 1-9
+    
+  end function wdstr_nl8
+  !*********************************************************************************************************************************
+  
+  
+  
+  
   
   
 end module SUFR_angles
