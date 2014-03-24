@@ -143,7 +143,7 @@ module SUFR_constants_characters
   private
   save
   
-  character, public :: engrchar(24)*(7),htmlgrchar(24)*(9)
+  character, public :: tab,  engrchar(24)*(7),htmlgrchar(24)*(9)
   
 end module SUFR_constants_characters
 !***********************************************************************************************************************************
@@ -510,7 +510,10 @@ contains
     implicit none
     integer :: i
     
-    !Characters:
+    ! Tab character:
+    tab = char(9)
+    
+    ! Greek characters:
     engrchar = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta','theta','iota','kappa','lambda','mu', &
          'nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
     
