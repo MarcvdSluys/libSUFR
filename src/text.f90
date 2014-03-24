@@ -255,6 +255,29 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Print multiple tab characters
+  !!
+  !! \param str  String
+  
+  function tabs(number)
+    implicit none
+    integer, intent(in) :: number
+    character :: tabs*(max(number,1))
+    integer :: count
+    
+    tabs = ''
+    if(number.gt.0) then
+       do count=1,number
+          tabs(count:count) = char(9)
+       end do
+    end if
+    
+  end function tabs
+  !*********************************************************************************************************************************
+  
+  
+  
 end module SUFR_text
 !***********************************************************************************************************************************
 
