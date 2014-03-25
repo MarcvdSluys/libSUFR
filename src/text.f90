@@ -294,6 +294,30 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert a double-precision real to a nice character string
+  !!
+  !! \param number  Value to convert
+  !! \param decim   Number of decimals to use
+  
+  function dbl2str(number, decim)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: number
+    integer, intent(in) :: decim
+    character :: dbl2str*(max(ceiling(log10(abs(number)+1.d0)),1) - (sign(1,floor(number))-1)/2 + decim + 1), fmt*(9)
+    
+    write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
+    write(dbl2str, trim(fmt)) number
+    
+    ! Remove ugly leading decimal points:
+    if(dbl2str(1:1).eq.'.') dbl2str = '0'//trim(dbl2str)
+    if(dbl2str(1:2).eq.'-.') call replace_substring(dbl2str, '-.', '-0.')
+    
+  end function dbl2str
+  !*********************************************************************************************************************************
+  
+  
   
 end module SUFR_text
 !***********************************************************************************************************************************
