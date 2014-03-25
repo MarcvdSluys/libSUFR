@@ -258,7 +258,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print multiple tab characters
   !!
-  !! \param str  String
+  !! \param number  Desired number of tab characters
   
   function tabs(number)
     implicit none
@@ -274,6 +274,23 @@ contains
     end if
     
   end function tabs
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert an integer to a character string
+  !!
+  !! \param number  Integer number to convert
+  
+  function int2str(number)
+    implicit none
+    integer, intent(in) :: number
+    character :: int2str*(max(ceiling(log10(dble(abs(number)+1))),1) - (sign(1,number)-1)/2)  ! 0-9 -> 1; 10-99 -> 2; +1 if <0
+    
+    write(int2str,'(I0)') number
+    
+  end function int2str
   !*********************************************************************************************************************************
   
   
