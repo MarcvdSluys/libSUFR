@@ -214,6 +214,62 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file write error
+  !!
+  !! \param filename  Filename
+  !! \param line      Line number where write error occurred - 0: no line
+  
+  subroutine file_write_error(filename, line)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: line
+    
+    select case(line)
+    case(0)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error writing input file  '//trim(filename)//'  ***'
+    case default
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error writing input file  '//trim(filename)//', line ',line, &
+            '  ***'
+    end select
+    
+  end subroutine file_write_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file write error, and stop the execution of the current program
+  !!
+  !! \param filename  Filename
+  !! \param line      Line number where write error occurred - 0: no line
+  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  
+  subroutine file_write_error_quit(filename, line, status)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: line, status
+    
+    select case(line)
+    case(0)
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error writing input file  '//trim(filename)//', aborting  ***'
+    case default
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error writing input file  '//trim(filename)//', line ',line, &
+            ', aborting  ***'
+    end select
+    
+    if(status.eq.0) then
+       stop
+    else
+       write(0,'(A)', advance='no')'  ***  '
+       stop 1
+    end if
+    
+  end subroutine file_write_error_quit
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a message to StdErr on reaching the end of a file while reading
   !!
   !! \param filename  Filename
