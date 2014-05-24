@@ -374,6 +374,7 @@ contains
   !> \brief  Return JD as date and time in ISO_8601 format (e.g. 2014-03-24T20:48:01+00:00)
   !!
   !! \param jd  Julian day
+  !! \param tz  Time zone
   
   function jd2iso8601(jd, tz)
     use SUFR_kinds, only: double
