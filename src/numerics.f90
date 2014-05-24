@@ -74,6 +74,8 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  
   !*********************************************************************************************************************************
   !> \brief  Test whether two double-precision variables are equal to better than twice the machine precision
   !!
@@ -96,6 +98,29 @@ contains
     end if
     
   end function deq
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is equal to zero better than twice the machine precision
+  !!
+  !! \param x0  Number to check
+  
+  function deq0(x0)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: x0
+    real(double) :: eps
+    logical :: deq0
+    
+    eps = 2*tiny(x0)
+    if(abs(x0).le.eps) then
+       deq0 = .true.
+    else
+       deq0 = .false.
+    end if
+    
+  end function deq0
   !*********************************************************************************************************************************
   
   
@@ -121,6 +146,27 @@ contains
   end function seq
   !*********************************************************************************************************************************
   
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable ais equal to zero better than twice the machine precision
+  !!
+  !! \param x0  Number to check
+  
+  function seq0(x0)
+    implicit none
+    real, intent(in) :: x0
+    real :: eps
+    logical :: seq0
+    
+    eps = 2*tiny(x0)
+    if(abs(x0).le.eps) then
+       seq0 = .true.
+    else
+       seq0 = .false.
+    end if
+    
+  end function seq0
+  !*********************************************************************************************************************************
+  
   
   !*********************************************************************************************************************************
   !> \brief  Test whether two double-precision variables are unequal to better than twice the machine precision
@@ -139,6 +185,22 @@ contains
   end function dne
   !*********************************************************************************************************************************
   
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is unequal to zero better than twice the machine precision
+  !!
+  !! \param x0  Number to check
+  
+  function dne0(x0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x0
+    logical :: dne0
+    
+    dne0 = .not. deq0(x0)
+    
+  end function dne0
+  !*********************************************************************************************************************************
+  
   
   !*********************************************************************************************************************************
   !> \brief  Test whether two single-precision variables are unequal to better than twice the machine precision
@@ -155,6 +217,24 @@ contains
     
   end function sne
   !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable is unequal to zero better than twice the machine precision
+  !!
+  !! \param x0  Number to check
+  
+  function sne0(x0)
+    implicit none
+    real, intent(in) :: x0
+    logical :: sne0
+    
+    sne0 = .not. seq0(x0)
+    
+  end function sne0
+  !*********************************************************************************************************************************
+  
+  
+  
   
   
   !*********************************************************************************************************************************
