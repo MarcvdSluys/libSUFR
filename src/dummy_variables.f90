@@ -32,7 +32,7 @@ module SUFR_dummy
   integer :: dumint
   integer(long) :: dumlong
   real :: dumreal
-  real(double) :: dumdbl
+  real(double) :: dumdbl, dumdbl1,dumdbl2,dumdbl3,dumdbl4,dumdbl5,dumdbl6,dumdbl7,dumdbl8,dumdbl9
   character :: dumstr, dumstr9*(9), dumstr99*(99)
   logical :: dumlog
   
