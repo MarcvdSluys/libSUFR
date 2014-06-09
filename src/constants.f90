@@ -44,7 +44,8 @@ module SUFR_constants_astro
   save
   
   ! Astronomical constants:
-  real(double),public :: julyear,solday,siday,planr(0:9),pland(0:9),plana(0:9),earthr
+  real(double),public :: solday,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
+  real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
   real(double),public :: au,km,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000
   
   ! Satellite data for planets 4-8:
@@ -312,21 +313,35 @@ contains
     implicit none
     
     ! Astronomical constants:
-    au = 1.4959787d13         ! A.U. in cgs
-    km = 1.d5                 ! kilometer in cgs
-    rsun = 6.9599d10          ! Solar radius in cgs (cm)
-    msun = 1.9891d33          ! Solar mass in cgs (gm)
-    lsun = 3.85d33            ! Solar luminosity in cgs (erg/s)
-    siday = 0.997269663d0     ! Siderial day in days
-    solday   = 8.64d4         ! Solar day in s
-    julyear  = 3.15569d7      ! Julian year in s
+    au = 1.4959787d13                    ! A.U. in cgs
+    km = 1.d5                            ! kilometer in cgs
+    rsun = 6.9599d10                     ! Solar radius in cgs (cm)
+    msun = 1.9891d33                     ! Solar mass in cgs (gm)
+    lsun = 3.85d33                       ! Solar luminosity in cgs (erg/s)
     
-    jd1875 = 2405890.d0       ! JD at J1875.0 (when constellation boundaries were defined)
-    jd1900 = 2415021.d0       ! JD at J1900.0
-    jd1950 = 2433283.d0       ! JD at J1950.0
-    jd2000 = 2451545.d0       ! JD at J2000.0 (2000-01-01 12:00 UT)
+    siday = 0.997269663d0                ! Siderial day in days
+    solday   = 8.64d4                    ! Solar day = 86400 s
     
-    eps2000 = 0.409092804d0   ! Obliquity of the ecliptic at J2000.0
+    ! True for J2000.0:
+    gregmonth = 30.4369d0      * solday  ! Gregorian month in s:    average calendar month length of 4800 months over 400 years
+    sidmonth  = 27.321661547d0 * solday  ! Sidereal month in s:     fixed star to fixed star
+    tropmonth = 27.321582241d0 * solday  ! Tropical month in s:     equinox to equinox, influenced by precession
+    anomonth  = 27.554549878d0 * solday  ! Anomalistic month in s:  apside to apside
+    dracmonth = 27.212220817d0 * solday  ! Draconic month in s:     node to node
+    synmonth  = 29.530588853d0 * solday  ! Synodic month in s:      phase to phase
+    
+    julyear  = 365.25d0        * solday  ! Julian year in s:        assumes 100 leap years in 400 years
+    gregyear = 365.2425d0      * solday  ! Gregorian year in s:     assumes 97 leap years in 400 years
+    sidyear  = 365.256363051d0 * solday  ! Siderial year in s:      fixed star to fixed star
+    tropyear = 365.24218967d0  * solday  ! Tropical year in s:      equinox to equinox, influenced by precession
+    anomyear = 365.259635864d0 * solday  ! Anomalistic year in s:   apside to apside
+    
+    jd1875 = 2405890.d0                  ! JD at J1875.0 (when constellation boundaries were defined)
+    jd1900 = 2415021.d0                  ! JD at J1900.0
+    jd1950 = 2433283.d0                  ! JD at J1950.0
+    jd2000 = 2451545.d0                  ! JD at J2000.0 (2000-01-01 12:00 UT)
+    
+    eps2000 = 0.409092804d0              ! Obliquity of the ecliptic at J2000.0
     
     pland = (/3476.206d5, 4879.d5, 12198.d5, 1.39198d11, 6794.d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
          2390.d5/)      ! Equatorial diameters (cm)
