@@ -65,19 +65,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Generate a pseudo-random number from a uniform distribution 0 < r < 1.
   !!
-  !! \param seed1   The seed to generate the random number from.  
-  !!                Set seed1<0 to initialise the generator; seed1 is updated between calls (int).
+  !! \param seed    The seed to generate the random number from.  
+  !!                Set seed<0 to initialise the generator; seed is updated between calls (int).
   !! \retval ran_unif  The random number, uniformely generated between 0 < r < 1  (double).
   !! 
   !! - Use two L'Ecuyer generators, period is \f$ \sim 10^{18}\f$
   !! - tab is a Bays-Durham shuffle table of length Ntab
   !! \see Numerical Recipes in Fortran 77, Sect.7.1.
   
-  function ran_unif(seed1)
+  function ran_unif(seed)
     use SUFR_kinds, only: double, dbl
     
     implicit none
-    integer, intent(inout) :: seed1
+    integer, intent(inout) :: seed
     real(double) :: ran_unif
     
     integer, parameter :: im1=2147483563, ia1=40014, iq1=53668, ir1=12211 
@@ -93,22 +93,22 @@ contains
     integer :: j,k
     
     
-    if(seed1.le.0) then                                 ! 'Initialise' generator
-       seed1 = max(-seed1,1)                            ! Don't allow seed1=0
-       seed2 = seed1
+    if(seed.le.0) then                                  ! 'Initialise' generator
+       seed = max(-seed,1)                              ! Don't allow seed=0
+       seed2 = seed
        do j = Ntab+8,1,-1                               ! Shuffle the table, don't save the first 8 iterations
-          k = seed1/iq1
-          seed1 = ia1*(seed1-k*iq1) - k*ir1
-          if(seed1.lt.0) seed1 = seed1 + im1
-          if(j.le.Ntab) tab(j) = seed1
+          k = seed/iq1
+          seed = ia1*(seed-k*iq1) - k*ir1
+          if(seed.lt.0) seed = seed + im1
+          if(j.le.Ntab) tab(j) = seed
        end do
        iy = tab(1)
     end if
     
     ! Produce the random number 1:
-    k = seed1/iq1
-    seed1 = ia1*(seed1-k*iq1) - k*ir1                   ! Use Schrage's method to compute mod(). Update seed for next draw
-    if(seed1.lt.0) seed1 = seed1 + im1
+    k = seed/iq1
+    seed = ia1*(seed-k*iq1) - k*ir1                     ! Use Schrage's method to compute mod(). Update seed for next draw
+    if(seed.lt.0) seed = seed + im1
     
     ! Produce the random number 2:
     k = seed2/iq2
@@ -116,13 +116,62 @@ contains
     if(seed2.lt.0) seed2 = seed2 + im2
     
     j = 1 + iy/ndtab                                    ! Result: 1 <= j <= Ntab
-    iy = tab(j) - seed2                                 ! tab contains information about seed1
-    tab(j) = seed1
+    iy = tab(j) - seed2                                 ! tab contains information about seed
+    tab(j) = seed
     if(iy.lt.1) iy = iy + im1m1
     
     ran_unif = min(am1*iy,rnmx)                         ! Make sure r<1
     
   end function ran_unif
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Generate a pseudo-random number from a Gaussian distribution with mean 0 and standard deviation 1
+  !!
+  !! \param seed        The seed to generate the random number from
+  !! \retval ran_gauss  The random number, using a Gaussian distribution
+  !! 
+  !! - Two pseudo-random numbers are drawn from a uniform distribution, using ran_unif().
+  !! - These are converted into two pseudo-random numbers from a Gaussian distribution using the Box-Muller transform
+  !! - Odd-numbered calls return the first, even-numbered calls the second number
+  !!   - using the polar form is ~38% faster than using the basic form
+  !!
+  !! \see e.g.:
+  !! - Numerical Recipes in Fortran 77, Sect.7.2.
+  !! - http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform
+  
+  function ran_gauss(seed)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(inout) :: seed
+    real(double) :: ran_gauss, ru1,ru2, rusq, fac, rg1,rg2
+    logical :: saved = .false.
+    save :: rg2, saved
+    
+    if(.not.saved) then  ! Compute
+       rusq = -1.d0
+       do while(rusq.le.0.d0 .or. rusq.ge.1.d0)
+          ru1 = ran_unif(seed)*2 - 1.d0
+          ru2 = ran_unif(seed)*2 - 1.d0
+          
+          rusq = ru1**2 + ru2**2
+       end do
+       
+       fac = sqrt(-2*log(rusq)/rusq)
+       rg1 = fac * ru1
+       rg2 = fac * ru2
+       
+       ran_gauss = rg1
+       saved = .true.
+    else
+       ran_gauss = rg2
+       saved = .false.
+    end if
+    
+  end function ran_gauss
   !*********************************************************************************************************************************
   
   

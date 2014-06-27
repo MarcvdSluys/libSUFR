@@ -514,7 +514,8 @@ contains
        else
           write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
        end if
-       write(*,trim(fmt)) 'Program took ',walltime-oldwalltime,'s of wall time and ',cputime-oldcputime,'s of CPU time.'
+       write(*,trim(fmt)) 'Program took ',walltime-oldwalltime,' seconds of wall time and ',cputime-oldcputime, &
+            ' seconds of CPU time.'
     end if
     
     ! Reset times:
@@ -561,7 +562,7 @@ contains
     else
        write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
     end if
-    write(*,trim(fmt)) 'Program took ',cputime,'s of CPU time.'
+    write(*,trim(fmt)) 'Program took ',cputime,' seconds of CPU time.'
     
   end subroutine print_cputime
   !*********************************************************************************************************************************
