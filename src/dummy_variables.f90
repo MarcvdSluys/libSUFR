@@ -22,17 +22,21 @@
 !> \brief  Module containing dummy variables for all kinds
 !!
 !! \note
-!!   Use e.g. when reading an intermediate, unused column from a file, where the compiler may complain that the variable is set, 
-!!   but not used.
+!!   Use e.g. when reading an intermediate, unused column from a file, or when calling a routine where not all return values are 
+!!       needed.  In these cases a compiler may warn that the variable is set, but not used.
 
 module SUFR_dummy
   use SUFR_kinds, only: double, long
   implicit none
   
-  integer :: dumint
-  integer(long) :: dumlong
-  real :: dumreal
+  integer :: dumint, dumint1,dumint2,dumint3,dumint4,dumint5,dumint6,dumint7,dumint8,dumint9
+  integer :: dmi, dmi1,dmi2,dmi3,dmi4,dmi5,dmi6,dmi7,dmi8,dmi9
+  integer(long) :: dumlong, dumlong1,dumlong2,dumlong3,dumlong4,dumlong5,dumlong6,dumlong7,dumlong8,dumlong9
+  integer(long) :: dml, dml1,dml2,dml3,dml4,dml5,dml6,dml7,dml8,dml9
+  real :: dumreal, dumreal1,dumreal2,dumreal3,dumreal4,dumreal5,dumreal6,dumreal7,dumreal8,dumreal9
+  real :: dmr, dmr1,dmr2,dmr3,dmr4,dmr5,dmr6,dmr7,dmr8,dmr9
   real(double) :: dumdbl, dumdbl1,dumdbl2,dumdbl3,dumdbl4,dumdbl5,dumdbl6,dumdbl7,dumdbl8,dumdbl9
+  real(double) :: dmd, dmd1,dmd2,dmd3,dmd4,dmd5,dmd6,dmd7,dmd8,dmd9
   character :: dumstr, dumstr9*(9), dumstr99*(99)
   logical :: dumlog
   
