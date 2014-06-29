@@ -164,14 +164,14 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( WANT_STATIC )
   
   if( WANT_CHECKS )
-    set( CHECK_FLAGS "-ftrapuv -check all -check noarg_temp_created -traceback" )
+    set( CHECK_FLAGS "-ftrapuv -check all -check noarg_temp_created -check nostack -traceback" )  #  -check stack doesn't link in ifort 2013.3.174 14.0.3
     set( OPT_FLAGS "-O0" )
   else( WANT_CHECKS )
     set( OPT_FLAGS "-O2" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-warn all -stand f03 -diag-disable 6894,8290,8291" )   # 8290,8291: format for F,ES: too many decimal places (for negative numbers)
+    set( WARN_FLAGS "-warn all -std08 -diag-disable 6894,8290,8291" )   # 8290,8291: format for F,ES: too many decimal places (for negative numbers)
   endif( WANT_WARNINGS )
   
   if( STOP_ON_WARNING )
@@ -219,7 +219,7 @@ set( USER_FLAGS "${OPT_FLAGS} ${LIB_FLAGS} ${CHECK_FLAGS} ${WARN_FLAGS} ${SSE_FL
 
 set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS} ${USER_FLAGS}" )
 set( CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS_RELEASE} ${USER_FLAGS}" )
-set( CMAKE_Fortran_FLAGS_RELWITHDEBINFO "${CMAKE_Fortran_FLAGS_RELEASE} ${CMAKE_Fortran_FLAGS_DEBUG}" )
+set( CMAKE_Fortran_FLAGS_RELWITHDEBINFO "${CMAKE_Fortran_FLAGS_DEBUG}" )  # These are added to the RELEASE flags when releasing with debug info
 
 
 
@@ -246,8 +246,8 @@ endif( WANT_STATIC )
 
 
 ## Choose the one which is actually used: see CMAKE_BUILD_TYPE in CMakeLists.txt:
-##   (Typically, RELEASE for executable code and RELWITHDEBINFO for libraries)
-message( STATUS "Compiler flags used:  ${CMAKE_Fortran_FLAGS_RELWITHDEBINFO}" )
+##   (Typically, RELEASE for executable code and RELEASE + RELWITHDEBINFO for libraries)
+message( STATUS "Compiler flags used:  ${CMAKE_Fortran_FLAGS_RELEASE} ${CMAKE_Fortran_FLAGS_RELWITHDEBINFO}" )
 message( STATUS "" )
 
 
