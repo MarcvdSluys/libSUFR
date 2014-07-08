@@ -185,7 +185,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Search and replace occurences of a string in a text file
+  !> \brief  Search and replace occurences of a string in a text file.  Lines up to 9999 characters only, otherwise a warning 
+  !!         is given
   !!
   !! \param  file_in   Name of the text file to replace in
   !! \param  file_out  Name of the text file to store the result in
@@ -201,7 +202,7 @@ contains
     character, intent(in) :: file_in*(*),file_out*(*), str_srch*(*),str_repl*(*)
     integer, intent(out) :: status
     integer :: io,ip,op
-    character :: string*(999)
+    character :: string*(9999)
     
     status = 0
     
@@ -250,6 +251,36 @@ contains
     
   end subroutine replace_string_in_textfile
   !*********************************************************************************************************************************
+
+  
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Verify whether a string contains any of a given list of characters
+  !!
+  !! \param string      String to verify
+  !! \param characters  List of characters
+  !!
+  !! \retval string_contains_one_of  True if the string contains one of the specified characters, otherwise false
+  
+  function string_contains_one_of(string, characters)
+    implicit none
+    character, intent(in) :: string*(*), characters*(*)
+    logical :: string_contains_one_of
+    integer :: ci
+    
+    string_contains_one_of = .true.
+    do ci=1,len_trim(characters)
+       if(index(trim(string),characters(ci:ci)).gt.0) return  ! Match found
+    end do
+    
+    string_contains_one_of = .false.
+    
+  end function string_contains_one_of
+  !*********************************************************************************************************************************
+  
   
   
   
