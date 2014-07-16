@@ -1,7 +1,7 @@
 !> \file sports.f90  Procedures related to sports
 
 
-!  Copyright (c) 2002-2013  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2014  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
@@ -56,7 +56,7 @@ contains
     
     ! Compute the air density for the given temperature and pressure:
     temp  = 15.d0 + 273.15d0  ! Temperature in deg C -> K
-    press = 1015.d0 * 100.d0  ! Pressure in mbar -> Pa
+    press = 1015.d0 * 100.d0  ! Pressure in mbar/hPa -> Pa
     rho = air_density(press, temp)  ! SI, kg/m^3
     
     surf = 0.4d0  ! Typical surface of a rider, m^2
