@@ -365,7 +365,7 @@ contains
     real(double), intent(in) :: t
     real(double) :: t1
     integer :: h,m
-    character :: hm*(5),hh*(2),mm*(2)
+    character :: hm*(5)
     
     t1 = rev(t*h2r)*r2h
     h = int(t1)
@@ -377,15 +377,49 @@ contains
     end if
     if(h.eq.24) h=0
     
-    write(hh,'(i2)') h
-    write(mm,'(i2)') m
-    if(h.lt.10) write(hh,'(A1,I1)') '0',h
-    if(m.lt.10) write(mm,'(A1,I1)') '0',m
-    
-    write(hm,'(A2,2(A1,A2))') hh,':',mm
+    write(hm,'(I2.2,A1,I2.2)') h,':',m
     if(deq(t,0.d0)) write(hm,'(A5)') '--:--'
     
   end function hm
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print time as string in h:mm or hh:mm, input in hours; no special output for h=0
+  !!
+  !! \param t  Time (h)
+  
+  function hhm(t)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq
+    
+    implicit none
+    real(double), intent(in) :: t
+    real(double) :: t1
+    integer :: h,m
+    character :: hhm*(5)
+    
+    t1 = rev(t*h2r)*r2h
+    h = int(t1)
+    m = nint((t1-h)*60.d0)
+    
+    if(m.eq.60) then
+       m=0
+       h=h+1
+    end if
+    if(h.eq.24) h=0
+    
+    if(h.lt.10) then
+       write(hhm,'(I1,A1,I2.2,A)') h,':',m,' '
+    else
+       write(hhm,'(I2.2,A1,I2.2)') h,':',m
+    end if
+    
+  end function hhm
   !*********************************************************************************************************************************
   
   
