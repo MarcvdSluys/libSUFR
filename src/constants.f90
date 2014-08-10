@@ -347,6 +347,7 @@ contains
          2390.d5/)      ! Equatorial diameters (cm)
     planr = pland/2.d0  ! Equatorial radii (cm)
     plana = (/0.d0, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, 19.191d0, 30.061d0, 39.529d0/)*au  !Semi-major axes (cm)
+    plana(0) = 384400.d0*km  ! Semi-major axis Moon orbit
     
     earthr = 6378.14d5  ! Eq. radius of the Earth in cm
     
