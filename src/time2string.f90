@@ -36,7 +36,7 @@
 !  hdm:       Returns time as string in hh.mm, a . iso :, input in hours
 !  tms:       Returns time as mm:ss string, input in hours
 !  tms2:      Returns time as +/-mm:ss.s string, input in hours (9)
-
+!  tmsss2:    Returns time as m:ss.s string, input in hours (8)
 
 
 
@@ -777,6 +777,40 @@ contains
     write(tms2,'(A1,I2.2,A1,A4,A1)') sign,m,'m',ss,'s'
     
   end function tms2
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print time as m:ss.s string, input in hours, like tms2, but t<10 min(!)
+  !!
+  !! \param t  Time (h)
+  
+  function tmsss2(t)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: t
+    real(double) :: a,s
+    integer :: m
+    character :: tmsss2*(8),ss*(4),sign
+    
+    a = t
+    
+    !sign = '+'
+    sign = ' '
+    if(a.lt.0.d0) then
+       sign = '-'
+       a = -a
+    end if
+    
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(ss,'(F4.1)') s
+    if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
+    write(tmsss2,'(A1,I1,A1,A4,A1)') sign,m,'m',ss,'s'
+    
+  end function tmsss2
   !*********************************************************************************************************************************
   
   
