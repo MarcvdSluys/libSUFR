@@ -44,9 +44,9 @@ module SUFR_constants_astro
   save
   
   ! Astronomical constants:
-  real(double),public :: solday,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
+  real(double),public :: solDay,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
   real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
-  real(double),public :: au,km,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000
+  real(double),public :: au,km,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
   
   ! Satellite data for planets 4-8:
   real(double),public :: satrad(4:8,30),satdiam(4:8,30)
@@ -320,7 +320,8 @@ contains
     lsun = 3.85d33                       ! Solar luminosity in cgs (erg/s)
     
     siday = 0.997269663d0                ! Siderial day in days
-    solday   = 8.64d4                    ! Solar day = 86400 s
+    solDay   = 8.64d4                    ! Solar day = 86400 s
+    solConst = 1361.5d0                  ! Solar constant in W/m^2
     
     ! True for J2000.0:
     gregmonth = 30.4369d0      * solday  ! Gregorian month in s:    average calendar month length of 4800 months over 400 years
