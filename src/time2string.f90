@@ -35,7 +35,7 @@
 !  hm2:       Returns time as string in +/-hh:mm, input in hours, between -12 and 12
 !  hdm:       Returns time as string in hh.mm, a . iso :, input in hours
 !  tms:       Returns time as mm:ss string, input in hours
-!  tms2:      Returns time as +/-mm:ss string, input in hours
+!  tms2:      Returns time as +/-mm:ss.s string, input in hours (9)
 
 
 
@@ -81,9 +81,9 @@ contains
     end if
     if(h.ge.24) h = h-24
     
-    write(hh,'(i2.2)') h
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
+    write(hh,'(I2.2)') h
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
     
     write(hms,'(A2,2(A1,A2))') hh,':',mm,':',ss
     if(deq(t,0.d0)) write(hms,'(a8)') '--:--:--'
@@ -171,9 +171,9 @@ contains
     end if
     if(h.ge.24) h = h-24
     
-    write(hh,'(i2.2)') h
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
+    write(hh,'(I2.2)') h
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
     
     write(ums,'(A2,2(A1,A2),A1)') hh,'u',mm,'m',ss,'s'
     if(deq(t,0.d0)) write(ums,'(a9)') '--u--m--s'
@@ -216,9 +216,9 @@ contains
     end if
     if(h.ge.24) h = h-24
     
-    write(hh,'(i2.2)') h
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
+    write(hh,'(I2.2)') h
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
     if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
     
     write(hms_s,'(2(A2,A1),A4)') hh,':',mm,':',ss
@@ -262,9 +262,9 @@ contains
     end if
     if(h.ge.24) h = h-24
     
-    write(hh,'(i2.2)') h
-    write(mm,'(i2.2)') m
-    write(ss,'(f6.3)') s
+    write(hh,'(I2.2)') h
+    write(mm,'(I2.2)') m
+    write(ss,'(F6.3)') s
     if(s.lt.9.9995d0) write(ss,'(A1,F5.3)') '0',s
     
     write(hms_sss,'(2(A2,A1),A6)') hh,':',mm,':',ss
@@ -452,8 +452,8 @@ contains
     end if
     if(h.eq.24) h=0
     
-    write(hh,'(i2)') h
-    write(mm,'(i2)') m
+    write(hh,'(I2)') h
+    write(mm,'(I2)') m
     if(h.lt.10) write(hh,'(A1,I1)') '0',h
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
@@ -493,8 +493,8 @@ contains
     end if
     if(h.eq.24) h=0
     
-    write(hh,'(i2)') h
-    write(mm,'(i2)') m
+    write(hh,'(I2)') h
+    write(mm,'(I2)') m
     if(h.lt.10) write(hh,'(A1,I1)') '0',h
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
@@ -709,8 +709,8 @@ contains
     end if
     if(h.eq.24) h=0
     
-    write(hh,'(i2)') h
-    write(mm,'(i2)') m
+    write(hh,'(I2)') h
+    write(mm,'(I2)') m
     if(h.lt.10) write(hh,'(A1,I1)') '0',h
     if(m.lt.10) write(mm,'(A1,I1)') '0',m
     
@@ -725,24 +725,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.s string, input in hours
   !!
-  !! \param a1  Angle (h)
+  !! \param t  Time (h)
   
-  function tms(a1)
+  function tms(t)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: t
     real(double) :: a,s
     integer :: m
-    character :: tms*(8),mm*(2),ss*(4)
+    character :: tms*(8),ss*(4)
     
-    a = a1
+    a = t
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
+    write(ss,'(F4.1)') s
     if(nint(s*10).lt.100) write(ss,'(A1,F3.1)') '0',s
-    write(tms,'(A2,A1,A4,A1)') mm,'m',ss,'s'
+    write(tms,'(I2.2,A1,A4,A1)') m,'m',ss,'s'
     
   end function tms
   !*********************************************************************************************************************************
@@ -751,32 +750,31 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as mm:ss.s string, input in hours
   !!
-  !! \param a1  Angle (h)
+  !! \param t  Time (h)
   
-  function tms2(a1)
+  function tms2(t)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: t
     real(double) :: a,s
     integer :: m
-    character :: tms2*(9),mm*(2),ss*(4),sign
+    character :: tms2*(9),ss*(4),sign
     
-    a = a1
+    a = t
     
     !sign = '+'
     sign = ' '
     if(a.lt.0.d0) then
        sign = '-'
-       a = -1.d0*a
+       a = -a
     end if
     
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
+    write(ss,'(F4.1)') s
     if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
-    write(tms2,'(A1,A2,A1,A4,A1)') sign,mm,'m',ss,'s'
+    write(tms2,'(A1,I2.2,A1,A4,A1)') sign,m,'m',ss,'s'
     
   end function tms2
   !*********************************************************************************************************************************
