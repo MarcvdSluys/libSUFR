@@ -209,15 +209,15 @@ contains
     
     implicit none
     real(double), intent(in) :: l1,l2, b1,b2
-    real(double) :: asep,dl,db,b
+    real(double) :: asep,dl,db,bb
     
     dl = rev2(l2-l1)
-    b  = rev2((b1+b2)/2.d0)
-    
     asep = acos(sin(b1)*sin(b2) + cos(b1)*cos(b2)*cos(dl))
-    if(asep.lt.3.d-3) then
+    
+    if(asep.lt.3.d-3) then  ! for angles < 10'
+       bb = rev2((b1+b2)/2.d0)
        db = rev2(b2-b1)
-       asep = sqrt((dl*cos(b))**2 + db**2)
+       asep = sqrt((dl*cos(bb))**2 + db**2)
     end if
     
   end function asep
