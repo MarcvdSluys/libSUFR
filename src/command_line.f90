@@ -41,7 +41,7 @@ contains
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,'(I199)') arg
+    read(str,*) arg
     
   end subroutine get_command_argument_i
   !*********************************************************************************************************************************
@@ -61,7 +61,7 @@ contains
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,'(I199)') arg
+    read(str,*) arg
     
   end subroutine get_command_argument_l
   !*********************************************************************************************************************************
@@ -81,7 +81,7 @@ contains
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,'(F199.99)') arg
+    read(str,*) arg
     
   end subroutine get_command_argument_d
   !*********************************************************************************************************************************
@@ -100,7 +100,7 @@ contains
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,'(F199.99)') arg
+    read(str,*) arg
     
   end subroutine get_command_argument_r
   !*********************************************************************************************************************************
