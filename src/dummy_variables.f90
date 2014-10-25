@@ -36,7 +36,7 @@ module SUFR_dummy
   real :: dumreal, dumreal1,dumreal2,dumreal3,dumreal4,dumreal5,dumreal6,dumreal7,dumreal8,dumreal9
   real :: dmr, dmr1,dmr2,dmr3,dmr4,dmr5,dmr6,dmr7,dmr8,dmr9
   real(double) :: dumdbl, dumdbl1,dumdbl2,dumdbl3,dumdbl4,dumdbl5,dumdbl6,dumdbl7,dumdbl8,dumdbl9
-  real(double) :: dmd, dmd1,dmd2,dmd3,dmd4,dmd5,dmd6,dmd7,dmd8,dmd9
+  real(double) :: dmd, dmd1,dmd2,dmd3,dmd4,dmd5,dmd6,dmd7,dmd8,dmd9, dmd10,dmd11,dmd12,dmd13,dmd14,dmd15,dmd16,dmd17,dmd18,dmd19
   character :: dumstr, dumstr9*(9), dumstr99*(99)
   logical :: dumlog
   
