@@ -665,6 +665,30 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Compute the Poisson probability of k events occurring in a fixed interval for a known average rate lambda,
+  !!         and independently of the time since the last event:  P = λ^k e^-λ / k!
+  !!
+  !! \param  k             Number of events
+  !! \param  lambda        Average event rate
+  !! \retval poisson_prob  Poisson probability  P = λ^k e^-λ / k!
+  
+  
+  function poisson_prob(k, lambda)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: k
+    real(double), intent(in) :: lambda
+    real(double) :: poisson_prob
+    
+    poisson_prob = lambda**k * exp(-lambda) / faculty(k)  ! λ^k e^-λ / k!
+    
+  end function poisson_prob
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Compute the normalised correlation between two data series
   !!
   !! \param   data1        Data series 1
