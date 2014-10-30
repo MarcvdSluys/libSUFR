@@ -39,15 +39,15 @@ contains
   
   function distance(ll1,bb1, ll2,bb2, miles)
     use SUFR_kinds, only: double
-    use SUFR_constants, only: d2r
+    use SUFR_constants, only: d2r, earthr
     implicit none
     real(double), intent(in) :: ll1,bb1, ll2,bb2
     logical, intent(in) :: miles
     real(double) :: a,fl,l1,l2,b1,b2,distance
     real(double) :: f,g,l,s,c,o,r,d,h1,h2
     
-    a   = 6378.14d0                         ! Earth's radius in km
-    fl  = 1.d0/298.257d0                    ! Earth's flattening
+    a   = earthr*1.d-5                      ! Earth's radius in km
+    fl  = 0.003352810665d0                  ! Earth's flattening
     
     l1 = ll1*d2r
     b1 = bb1*d2r

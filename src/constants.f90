@@ -344,13 +344,14 @@ contains
     
     eps2000 = 0.409092804d0              ! Obliquity of the ecliptic at J2000.0
     
-    pland = (/3476.206d5, 4879.d5, 12198.d5, 1.39198d11, 6794.d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
-         2390.d5/)      ! Equatorial diameters (cm)
+    earthr = 6378137.0d2  ! Equatorial radius of the Earth in cm, WGS84
+    
+    pland = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
+         2390.d5/)      ! Equatorial diameters (cm) - Venus = 12103.6 + clouds? - e.g., Wikipedia
     planr = pland/2.d0  ! Equatorial radii (cm)
     plana = (/0.d0, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, 19.191d0, 30.061d0, 39.529d0/)*au  !Semi-major axes (cm)
     plana(0) = 384400.d0*km  ! Semi-major axis Moon orbit
     
-    earthr = 6378.14d5  ! Eq. radius of the Earth in cm
     
     ! Satellites:
     satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  ! Galilean moons (cm)
