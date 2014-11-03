@@ -313,7 +313,8 @@ contains
     implicit none
     
     ! Astronomical constants:
-    au = 1.4959787d13                    ! A.U. in cgs
+    au = 1.49597870700d13                ! A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
+    
     km = 1.d5                            ! kilometer in cgs
     rsun = 6.9599d10                     ! Solar radius in cgs (cm)
     msun = 1.9891d33                     ! Solar mass in cgs (gm)
