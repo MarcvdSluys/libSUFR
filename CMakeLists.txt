@@ -84,9 +84,9 @@ endif( CREATE_VERSION )
 if( CREATE_SHAREDLIB )
   add_library( "libSUFR_shared"  SHARED  ${SRC_FILES} )
   if( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}" )
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR_${Fortran_COMPILER_NAME}" )  # Sets the file name and soname to libSUFR_<FC>.so
   else( COMPILER_SPECIFIC_LIBS )
-    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR" )
+    set_target_properties( libSUFR_shared PROPERTIES OUTPUT_NAME "SUFR" )  # Sets the file name and soname to libSUFR.so
   endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_shared PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
 endif( CREATE_SHAREDLIB )

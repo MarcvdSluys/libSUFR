@@ -257,6 +257,45 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Compute a running mean and variance by adding a data point and the data point number to existing values.  If num=1,
+  !!         initialise.  Note that mean and var are I/O variables and cannot be dummy variables or values.  Num must be accurate,
+  !!         and increased by one between calls by the user.  As a bonus, return the standard deviation.
+  !!
+  !! \param  mean   Running mean (I/O)
+  !! \param  var    Running variance (I/O)
+  !! \param  data   New/current data point
+  !! \param  num    Number of the current data point
+  !! \retval stdev  Current standard deviation
+  
+  subroutine mean_var_running(mean, var, data, num, stdev)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(inout) :: mean, var
+    real(double), intent(in) :: data
+    integer, intent(in) :: num
+    real(double), intent(out) :: stdev
+    real(double) :: oldmean, var1,oldvar
+    
+    if(num.eq.1) then  ! Initialise
+       mean    = data                                       ! initial mean = first data point
+       var     = 0.d0                                       ! initial variance = 0 for a single data point
+       stdev   = 0.d0                                       ! initial standard deviation = 0 for a single data point
+    else
+       oldmean = mean                                       ! save old mean for the variance
+       mean    = mean + (data - mean)/dble(num)             ! add new data point -> new mean
+       
+       oldvar  = var*(num-2)                                ! since var = va1/(num-1) in the previous iteration
+       var1    = oldvar + (data - oldmean) * (data - mean)  ! add the new data point
+       var     = var1/dble(num-1)                           ! new variance
+       
+       stdev   = sqrt(var1/dble(num))                       ! new standard deviation
+    end if
+    
+  end subroutine mean_var_running
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Find a given probability range for a data array - the narrowest range that contains a given fraction of data points
   !!
   !! \param  data   1D array of data points
