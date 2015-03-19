@@ -32,14 +32,16 @@ contains
   !!
   !! \param mass        Mass of the rider + bike (kg)
   !! \param slope       Slope of the road, fraction
-  !! \param vair        Air speed of the rider
-  !! \param vgr         Ground speed of the rider
+  !! \param vair        Air speed of the rider (m/s)
+  !! \param vgr         Ground speed of the rider (m/s)
   !!
-  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike)
-  !! \retval pwr_air    Power to overcome air resistance
-  !! \retval pwr_climb  Power to climb a given slope
+  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike, W)
+  !! \retval pwr_air    Power to overcome air resistance (W)
+  !! \retval pwr_climb  Power to climb a given slope (W)
   !!
-  !! \see https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
+  !! \see
+  !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
+  !! - https://en.wikipedia.org/wiki/Bicycle_performance#Power_required
   
   subroutine cycling_power(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
     use SUFR_kinds, only: double
@@ -79,14 +81,16 @@ contains
   !!
   !! \param mass        Mass of the rider + bike (kg)
   !! \param slope       Slope of the road, fraction
-  !! \param vair        Air speed of the rider
-  !! \param vgr         Ground speed of the rider
+  !! \param vair        Air speed of the rider (m/s)
+  !! \param vgr         Ground speed of the rider (m/s)
   !!
-  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike)
-  !! \retval pwr_air    Power to overcome air resistance
-  !! \retval pwr_climb  Power to climb a given slope
+  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike, W)
+  !! \retval pwr_air    Power to overcome air resistance (W)
+  !! \retval pwr_climb  Power to climb a given slope (W)
   !!
-  !! \see https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
+  !! \see 
+  !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
+  !! - https://en.wikipedia.org/wiki/Bicycle_performance#Power_required
   
   subroutine cycling_power_sp(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
     use SUFR_kinds, only: double
