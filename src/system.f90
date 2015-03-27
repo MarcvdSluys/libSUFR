@@ -359,17 +359,18 @@ contains
   !> \brief  Print a warning to StdOut or StErr
   !!
   !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr, 1-StdOut
+  !! \param unit     Output unit: 0-StdErr, 1-StdOut (default) - optional variable
   
   subroutine warn(message, unit)
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)
-    integer, intent(in) :: unit
+    integer, intent(in), optional :: unit
     integer :: u
     
-    u = 0
-    if(unit.ne.0) u = 6  ! If not StdErr, then StdOut: 6
+    u = 6                       ! Default: stdOut
+    if(present(unit)) u = unit  ! Optional variable
+    if(u.ne.6) u = 0            ! If not stdOut, then stdErr: 0
     write(u,'(/,A,/)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
     
   end subroutine warn
@@ -381,17 +382,18 @@ contains
   !> \brief  Print an error to StdOut or StErr
   !!
   !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr, 1-StdOut
+  !! \param unit     Output unit: 0-StdErr (default), 1-StdOut - optional variable
   
   subroutine error(message, unit)
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: message*(*)
-    integer, intent(in) :: unit
+    integer, intent(in), optional :: unit
     integer :: u
     
-    u = 0
-    if(unit.ne.0) u = 6  ! If not StdErr, then StdOut: 6
+    u = 0                      ! Default: stdErr
+    if(present(unit)) u = unit  ! Optional variable
+    if(u.ne.0) u = 6           ! If not StdErr, then StdOut: 6
     write(u,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ****'
     
   end subroutine error
