@@ -1,7 +1,21 @@
-## CompilerFlags_Fortran.cmake
-## Compiler flags for Fortran compilers
-## Currently, specific flags for gfortran, g95 and ifort are provided
-## Make sure to choose the correct ~last line (printing of the compiler options)
+##  CompilerFlags_Fortran.cmake
+##  Compiler flags for Fortran compilers
+##  Currently, specific flags for gfortran, g95 and ifort are provided
+##  Make sure to choose the correct ~last line (printing of the compiler options)
+##  
+##  Copyright 2010-2015 Marc van der Sluys - marc.vandersluys.nl
+##   
+##  This file is part of the CMakeFiles package, 
+##  see: http://cmakefiles.sf.net/
+##   
+##  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+##  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+##  
+##  This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+##  
+##  You should have received a copy of the GNU General Public License along with this code.  If not, see 
+##  <http://www.gnu.org/licenses/>.
 
 
 # Get compiler name:
