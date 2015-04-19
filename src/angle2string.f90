@@ -520,12 +520,53 @@ contains
        m = abs(m-60d0)
     end if
     
-    write(dd,'(a1,i2.2)') sig,d
+    write(dd,'(A1,I2.2)') sig,d
     write(mm,'(F4.1)') m
     if(m.lt.9.95d0) write(mm,'(I1,F3.1)') 0,m
-    write(dmmm2,'(a3,a1,a4,a1)') dd,'d',mm,"'"
+    write(dmmm2,'(A3,A1,A4,A1)') dd,'d',mm,"'"
     
   end function dmmm2
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as dd:mm.mmm string (for gps), input in rad, output between -180 and +180 !!!
+  !!
+  !! \param a1  Angle (rad)
+  
+  function dmmmmm2(a1)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2d
+    use SUFR_angles, only: rev2
+    
+    implicit none
+    real(double), intent(in) :: a1
+    real(double) :: a,m
+    integer :: d
+    character :: dmmmmm2*(12),mm*(6),dd*(4),sig
+    
+    a = a1
+    a = rev2(a)*r2d
+    sig = '+'
+    if(a.lt.0.d0) then
+       sig = '-'
+       a = -1.d0*a
+    end if
+    
+    d = int(a)
+    m = (a-d)*60.d0
+    if(m.ge.59.95d0) then
+       d = d+1
+       m = abs(m-60d0)
+    end if
+    
+    write(dd,'(A1,I3.3)') sig,d
+    write(mm,'(F6.3)') m
+    if(m.lt.9.9995d0) write(mm,'(I1,F5.3)') 0,m
+    write(dmmmmm2,'(A4,A1,A6,A1)') dd,'d',mm,"'"
+    
+  end function dmmmmm2
   !*********************************************************************************************************************************
   
   
