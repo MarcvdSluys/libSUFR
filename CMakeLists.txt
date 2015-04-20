@@ -103,7 +103,7 @@ if( CREATE_STATICLIB )
     set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR" )
   endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
-  add_dependencies( libSUFR_static libSUFR_shared )  # Ensure it is build after the shared lib
+  add_dependencies( libSUFR_static libSUFR_shared )  # Ensure it is built after the shared lib
 endif( CREATE_STATICLIB )
 
 
