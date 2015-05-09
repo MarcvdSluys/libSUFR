@@ -354,6 +354,24 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert a single-precision real to a nice character string.  Single-precision wrapper for dbl2str.
+  !!
+  !! \param number  Value to convert
+  !! \param decim   Number of decimals to use
+  
+  function real2str(number, decim)
+    implicit none
+    real, intent(in) :: number
+    integer, intent(in) :: decim
+    character :: real2str*(max(ceiling(log10(abs(number)+sqrt(epsilon(number)))),1) - (sign(1,floor(number))-1)/2 + decim + 1)
+    
+    real2str = dbl2str(dble(number), decim)
+    
+  end function real2str
+  !*********************************************************************************************************************************
+  
+  
   
 end module SUFR_text
 !***********************************************************************************************************************************
