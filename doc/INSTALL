@@ -17,16 +17,16 @@ UNPACKING:
 After downloading from libsufr.sf.net, you can unpack the tarball and cd into its
 directory by doing e.g.:
 
-  $ tar xfz libsufr-0.5.0.tar.gz
-  $ cd libsufr-0.5.0/
+  $ tar xfz libsufr-0.0.1.tar.gz
+  $ cd libsufr-0.0.1/
 
-(replace you 0.5.0 with the correct version number).
+(replace you 0.0.1 with the correct version number).
 
 
 
 CONFIGURING, COMPILING AND INSTALLING:
 
-To configure, compile and install the code (in the default system directories
+To configure, compile and install the code (into CMake's default system directories
 /usr/local/...), from the main package directory (the one that contains the file
 CMakeLists.txt), do:
 
@@ -40,19 +40,20 @@ third step compiles and links the code, and the last step installs it on your sy
 for which you need root priveliges, hence the 'sudo' command.
 
 
-To install the package in a specific system directory, do e.g.:
+To install the package in a specific system directory, e.g. the Linux default /usr/...
+(recommended), do:
 
  $ mkdir build && cd build/
- $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/libSUFR/ ..
+ $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
  $ make
  $ sudo make install
 
 
-To install the package in your own user directory, you won't need root priveliges,
+To install the package in your own user directory, you don't need root priveliges,
 can omit the 'sudo' command and combine the last two commands, e.g.:
 
  $ mkdir build && cd build/
- $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/me/libSUFR/ ..
+ $ cmake -DCMAKE_INSTALL_PREFIX:PATH=/home/me/usr ..
  $ make install
 
 
@@ -72,9 +73,9 @@ The compiled libraries and modules can then be found in the usr/ subdirectory of
 package dir.
 
 
-By default, library and module files will be installed as:
-/usr/local/lib/libSUFR.*
-/usr/local/include/libSUFR/*.mod
+On a Linux system, the library and module files will be installed as:
+/usr/lib/libSUFR.*
+/usr/include/libSUFR/*.mod
 
 
 If you want to use the libraries with multiple Fortran compilers, you will want to 
@@ -83,8 +84,8 @@ to any other options):
  $ cmake -DCOMPILER_SPECIFIC_LIBS=on ..
 
 The library files will then be installed as:
-/usr/local/lib/libSUFR_<NameOfFortranCompiler>.*
-/usr/local/include/libSUFR/<NameOfFortranCompiler>/*.mod
+/usr/lib/libSUFR_<NameOfFortranCompiler>.*
+/usr/include/libSUFR/<NameOfFortranCompiler>/*.mod
 
 If one of your Fortran compilers is your default, you can use both the default
 installation method and the compiler-specific method to install the library.
@@ -93,7 +94,7 @@ installation method and the compiler-specific method to install the library.
 
 CETERA:
 
-If you run into problems or have questions, please feel free to contact the developer
-(preferably by email) through libsufr.sf.net or marc.vandersluys.nl
+If you run into problems or have questions, please feel free to contact Marc van der Sluys
+(preferably by email) through marc.vandersluys.nl or libsufr.sf.net.
 
 
