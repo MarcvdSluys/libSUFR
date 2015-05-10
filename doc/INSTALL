@@ -63,6 +63,13 @@ FC=gfortran:
  $ FC=gfortran cmake ..
 
 
+If you have multiple cores or processors, you can speed up the make step by specifying
+the number of parallel build jobs using the -j option.  E.g., for four cores, you can
+have four parallel jobs and use:
+
+ $ make -j4
+
+
 To compile the code without installing it anywhere, leave out the install step
  
  $ mkdir build && cd build/

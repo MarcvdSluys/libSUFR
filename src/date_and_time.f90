@@ -400,6 +400,44 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day (UT) to a GPS time (seconds since 1980-01-06 - 2000-01-01 = 630720013.0)
+  !!
+  !! \param jd0  Julian day (UT)
+  
+  function jd2gps(jd)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double) :: jd2gps
+    
+    jd2gps = (jd - 2451544.5d0)*86400.d0 + 630720013.d0
+    
+    if(jd.lt.2444239.5d0) call warn('Leap seconds are not taken into account when computing GPS time before 1/1/1980!')
+    
+    if(jd.lt.2444786.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1981
+    if(jd.lt.2445151.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1982
+    if(jd.lt.2445516.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1983
+    if(jd.lt.2446247.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1985
+    if(jd.lt.2447161.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/1/1988
+    if(jd.lt.2447892.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/1/1990
+    if(jd.lt.2448257.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/1/1991
+    if(jd.lt.2448804.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1992
+    if(jd.lt.2449169.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1993
+    if(jd.lt.2449534.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1994
+    if(jd.lt.2450083.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/1/1996
+    if(jd.lt.2450630.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/7/1997
+    if(jd.lt.2451179.5d0) jd2gps = jd2gps - 1  ! Leap second on 1/1/1999
+    if(jd.ge.2453736.5d0) jd2gps = jd2gps + 1  ! Leap second on 1/1/2006
+    if(jd.ge.2454832.5d0) jd2gps = jd2gps + 1  ! Leap second on 1/1/2009
+    !if(jd.lt..5d0) jd2gps = jd2gps - 1  ! Leap second on 1//19
+    
+  end function jd2gps
+  !*********************************************************************************************************************************
+  
+  
 
 end module SUFR_date_and_time
 !***********************************************************************************************************************************
