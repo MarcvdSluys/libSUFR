@@ -404,7 +404,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a Julian day (UT) to a GPS time (seconds since 1980-01-06 - 2000-01-01 = 630720013.0)
   !!
-  !! \param jd0  Julian day (UT)
+  !! \param jd  Julian day (UT)
   !!
   !! \todo Check leap seconds sicne 2009
   
@@ -437,6 +437,25 @@ contains
     !if(jd.ge..5d0) jd2gps = jd2gps + 1  ! Leap second on 1//19
     
   end function jd2gps
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day (UT) to Unix time (seconds since 1970-01-01)
+  !!
+  !! \param jd  Julian day (UT)
+  
+  function jd2unix(jd)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double) :: jd2unix
+    
+    jd2unix = (jd - 2440587.5d0)*86400  ! jd since 1970-01-01, converted to seconds
+    
+  end function jd2unix
   !*********************************************************************************************************************************
   
   
