@@ -11,6 +11,7 @@ set(SRC_FILES
   src/kinds.f90
   src/libSUFR_version.f90
   src/numerics.f90
+  src/pgplot.f90
   src/random_numbers.f90
   src/solvers.f90
   src/sorting.f90
