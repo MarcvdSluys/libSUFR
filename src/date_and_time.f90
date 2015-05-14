@@ -136,6 +136,51 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day to date and time (h,m,s, UT)
+  !!
+  !! \param  jd  Julian day (UT)
+  !!
+  !! \retval yy  Year (CE, UT)
+  !! \retval mm  Month (UT)
+  !! \retval d   Day (UT)
+  !! \retval h   Hour (UT)
+  !! \retval m   Minute (UT)
+  !! \retval s   Second (+ fraction, UT)
+  
+  subroutine jd2dtm(jd,  yy,mm,d, h,m,s)
+    use SUFR_kinds, only: double, dbl
+    use SUFR_constants, only: mlen
+    
+    implicit none
+    real(double), intent(in) :: jd
+    integer, intent(out) :: yy,mm,d,h,m
+    real(double), intent(out) :: s
+    real(double) :: dd,tm
+    
+    call jd2cal(jd,  yy,mm,dd)
+    mlen(2) = 28 + leapyr(yy)
+    
+    ! jd2cal returns zeroes if JD not defined (i.e., JD=-huge), and mlen(mm) is not defined - catch this:
+    if(yy.eq.0.and.mm.eq.0) then
+       d = 0
+       h = 0
+       m = 0
+       s = 0.0_dbl
+       return
+    end if
+    
+    d  = int(dd)
+    tm = (dd - dble(d))*24.d0
+    h  = int(tm)
+    m  = int((tm-h)*60.d0)
+    s  = (tm-h-m/60.d0)*3600.d0
+    
+  end subroutine jd2dtm
+  !*********************************************************************************************************************************
+  
+  
+  
   
   !*********************************************************************************************************************************
   !> \brief  Convert date and time (y,m,d, h,m,s) to JD.  Input and output in UT.
@@ -291,8 +336,8 @@ contains
     integer :: doy,yr,mon
     real(double) :: jd1,dy
     
-    call jd2cal(jd0,yr,mon,dy)
-    jd1 = cal2jd(yr,1,0.d0)
+    call jd2cal(jd0, yr,mon,dy)
+    jd1 = cal2jd(yr,1,0.5d0)
     doy = nint(jd0-jd1)
     
   end function doy
@@ -316,7 +361,7 @@ contains
     integer :: ymd2doy
     
     jd0 = cal2jd(yr,mon,dble(dy))
-    jd1 = cal2jd(yr,1,0.d0)
+    jd1 = cal2jd(yr,1,0.5d0)
     ymd2doy = nint(jd0-jd1)
     
   end function ymd2doy

@@ -400,9 +400,51 @@ contains
   !*********************************************************************************************************************************
   
   
-
-
-
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Get date and time from the system clock
+  !!
+  !! \retval year    Current year CE
+  !! \retval month   Current month
+  !! \retval day     Current day of month
+  !!
+  !! \retval hour    Current hour of day
+  !! \retval minute  Current minute of time
+  !! \retval second  Current second of time
+  !!
+  !! \retval tz      Time zone in hours (optional)
+  
+  subroutine system_time(year,month,day, hour,minute,second, tz)
+    use SUFR_kinds, only: double
+    use SUFR_dummy, only: dumstr99
+    
+    implicit none
+    integer, intent(out) :: year,month,day, hour,minute
+    real(double), intent(out) :: second
+    real(double), intent(out), optional :: tz
+    integer :: dt(8)
+    
+    call date_and_time(dumstr99,dumstr99,dumstr99, dt)
+    
+    year  = dt(1)
+    month = dt(2)
+    day   = dt(3)
+    
+    if(present(tz)) tz = dble(dt(4))/60.d0
+    
+    hour = dt(5)
+    minute = dt(6)
+    second = dble(dt(7)) + dble(dt(8))*1.d-3
+    
+  end subroutine system_time
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
+  
   !*********************************************************************************************************************************
   !> \brief  Return the time stamp in seconds since 1970-01-01 00:00:00 UTC
   !!
