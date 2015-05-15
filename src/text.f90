@@ -333,11 +333,12 @@ contains
   !! \param decim   Number of decimals to use
   
   function dbl2str(number, decim)
-    use SUFR_kinds, only: double
+    use SUFR_kinds, only: double, long
     implicit none
     real(double), intent(in) :: number
     integer, intent(in) :: decim
-    character :: dbl2str*(max(ceiling(log10(abs(number)+sqrt(epsilon(number)))),1) - (sign(1,floor(number))-1)/2 + decim + 1)
+    real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
+    character :: dbl2str*(max(ceiling(log10(abs(number)+eps)),1) - (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     character :: fmt*(9)
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
