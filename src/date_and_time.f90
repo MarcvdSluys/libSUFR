@@ -148,9 +148,8 @@ contains
   !! \retval m   Minute (UT)
   !! \retval s   Second (+ fraction, UT)
   
-  subroutine jd2dtm(jd,  yy,mm,d, h,m,s)
+  subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
     use SUFR_kinds, only: double, dbl
-    use SUFR_constants, only: mlen
     
     implicit none
     real(double), intent(in) :: jd
@@ -159,9 +158,8 @@ contains
     real(double) :: dd,tm
     
     call jd2cal(jd,  yy,mm,dd)
-    mlen(2) = 28 + leapyr(yy)
     
-    ! jd2cal returns zeroes if JD not defined (i.e., JD=-huge), and mlen(mm) is not defined - catch this:
+    ! jd2cal returns zeroes if JD not defined (i.e., JD=-huge) - catch this:
     if(yy.eq.0.and.mm.eq.0) then
        d = 0
        h = 0
@@ -176,7 +174,7 @@ contains
     m  = int((tm-h)*60.d0)
     s  = (tm-h-m/60.d0)*3600.d0
     
-  end subroutine jd2dtm
+  end subroutine jd2ymdhms
   !*********************************************************************************************************************************
   
   
@@ -199,6 +197,34 @@ contains
     jd2time = (dd - floor(dd))*24.d0
     
   end function jd2time
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day to a date (y,m,d) and time (UT, h)
+  !!
+  !! \param  jd     Julian day (UT).  In order to obtain a local date and time, add TZ/24 to the JD.
+  !! 
+  !! \retval year   Year CE
+  !! \retval month  Month of year
+  !! \retval day    Day of the month
+  !! \retval time   Time of day (hours)
+  
+  subroutine jd2datetime(jd, year,month,day, time)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double), intent(out) :: time
+    integer, intent(out) :: year,month,day
+    real(double) :: dd
+    
+    call jd2cal(jd, year,month,dd)
+    day = floor(dd)
+    time = (dd - dble(day))*24.d0
+    
+  end subroutine jd2datetime
   !*********************************************************************************************************************************
   
   
