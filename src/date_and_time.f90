@@ -183,6 +183,27 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day to time (UT, h)
+  !!
+  !! \param jd  Julian day (UT)
+  
+  function jd2time(jd)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double) :: jd2time,dd
+    integer :: mm,yy
+    
+    call jd2cal(jd, yy,mm,dd)
+    jd2time = (dd - floor(dd))*24.d0
+    
+  end function jd2time
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Convert date and time (y,m,d, h,m,s) to JD.  Input and output in UT.
   !! 
   !! \param yy          The year (int)
