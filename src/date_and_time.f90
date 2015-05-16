@@ -599,6 +599,23 @@ contains
   
   
   
+  !***********************************************************************************************************************************
+  !> \brief  Convert UNIX time stamp to Julian day
+  !!
+  !! \param  unixTime  Unix time: 0 = JD 2440587.5 = 1970-01-01
+  
+  function unix2jd(unixTime)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: unixTime
+    real(double) :: unix2jd
+    
+    unix2jd = unixTime/86400.d0 + 2440587.5d0
+    
+  end function unix2jd
+  !***********************************************************************************************************************************
+  
+  
 end module SUFR_date_and_time
 !***********************************************************************************************************************************
 
