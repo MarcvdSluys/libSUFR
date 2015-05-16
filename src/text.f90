@@ -338,7 +338,7 @@ contains
     real(double), intent(in) :: number
     integer, intent(in) :: decim
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
-    character :: dbl2str*(max(ceiling(log10(abs(number)+eps)),1) - (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    character :: dbl2str*(max(ceiling(log10(abs(number*(1.d0+eps)))),1) - (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     character :: fmt*(9)
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
