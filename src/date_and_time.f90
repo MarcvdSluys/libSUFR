@@ -466,25 +466,29 @@ contains
   !> \brief  Return JD as date and time in ISO_8601 format (e.g. 2014-03-24T20:48:01+00:00)
   !!
   !! \param jd  Julian day
-  !! \param tz  Time zone
+  !! \param tz  Time zone (optional - default: 0 = UT)
   
   function jd2iso8601(jd, tz)
     use SUFR_kinds, only: double
     
     implicit none
-    real(double), intent(in) :: jd,tz
+    real(double), intent(in) :: jd
+    real(double), intent(in), optional :: tz
     character :: jd2iso8601*(30), tzsign  ! Need 25 for -999 <= year <= 9999
     integer :: dy,yr,mon, hr,mn,se, tzhr,tzmn
-    real(double) :: day, time
+    real(double) :: day, time, ltz
     
-    call jd2cal(jd + tz/24.d0, yr,mon,day)
+    ltz = 0.d0
+    if(present(tz)) ltz = tz
+    
+    call jd2cal(jd + ltz/24.d0, yr,mon,day)
     dy = floor(day)
     time = (day - dble(dy)) * 24.d0
     call tm2hms(time, hr,mn,se)
-    call tm2hm(abs(tz), tzhr,tzmn)
+    call tm2hm(abs(ltz), tzhr,tzmn)
     
     tzsign = '+'
-    if(tz.lt.0.d0) tzsign = '-'
+    if(ltz.lt.0.d0) tzsign = '-'
     
     write(jd2iso8601,'(I0, 7(A1,I2.2) )') yr,'-',mon,'-',dy,'T',hr,':',mn,':',se, tzsign,tzhr,':',tzmn
     
