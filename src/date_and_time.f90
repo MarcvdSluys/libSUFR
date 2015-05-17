@@ -137,6 +137,37 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Convert a year (with decimals) to a JD.  Input and output in UT.
+  !!
+  !! \param year  The year
+  !!
+  !! \retval  year2jd  The Julian day number
+  
+  function year2jd(year)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: year
+    
+    real(double) :: year2jd,y
+    integer :: a,b
+    
+    y = year - 1.d0
+    
+    b = 0
+    if(year .gt. 1582.d0+278.d0/365.25d0) then  ! Gregorian calendar starts on 1582-10-15 in this code
+       a = floor(y/100.d0)
+       b = 2 - a + floor(a/4.d0)
+    end if
+    
+    year2jd = floor(365.25d0*(y+4716)) + floor(30.6001d0*14) + b - 1523.5d0
+    
+  end function year2jd
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Convert a Julian day to date and time (h,m,s, UT)
   !!
   !! \param  jd  Julian day (UT)
