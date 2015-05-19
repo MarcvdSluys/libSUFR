@@ -292,6 +292,24 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Correct time after manipulation, i.e. ensure a correct date and time is returned (0<month<13, 0<=minute<60, etc.)
+  
+  subroutine correct_time(year,month,day, hour,minute,second)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(inout) :: year,month,day, hour,minute
+    real(double), intent(inout) :: second
+    real(double) :: jd
+    
+    jd = ymdhms2jd(year,month,day, hour,minute,second)
+    call jd2ymdhms(jd, year,month,day, hour,minute,second)
+    
+  end subroutine correct_time
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief Convert date and time (h) to a Julian day -  input in UT
   !!
   !! \param yy    Year (CE)
