@@ -329,18 +329,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dms.ss string, input in rad, output between -180 and +180
   !!
-  !! \param angle  Angle (rad)
+  !! \param angle      Angle (rad)
+  !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
   
-  function dmss2(angle)
+  function dmss2(angle, noSymbols)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
     real(double), intent(in) :: angle
+    logical, intent(in), optional :: noSymbols
     real(double) :: a,s
     integer :: d,m
     character :: dmss2*(14),mm*(2),ss*(5),ddd*(4),sig
+    logical :: useSymbols
     
     a = angle
     a = rev2(a)*r2d
@@ -368,7 +371,15 @@ contains
     write(mm,'(I2.2)') m
     write(ss,'(F5.2)') s
     if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
-    write(dmss2,'(A4,A1,A2,A1,A5,A1)') ddd,'d',mm,"'",ss,'"'
+    
+    useSymbols = .true.
+    if(present(noSymbols)) useSymbols = .not. noSymbols
+    
+    if(useSymbols) then
+       write(dmss2,'(A4,A1,A2,A1,A5,A1)') ddd,'d',mm,"'",ss,'"'
+    else
+       write(dmss2,'(A4,A1,A2,A1,A5,A1)') ddd,' ',mm,' ',ss,' '
+    end if
     
   end function dmss2
   !*********************************************************************************************************************************
@@ -533,18 +544,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.mmm string (for gps), input in rad, output between -180 and +180 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param angle      Angle (rad)
+  !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
   
-  function dmmmmm2(angle)
+  function dmmmmm2(angle, noSymbols)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     use SUFR_angles, only: rev2
     
     implicit none
     real(double), intent(in) :: angle
+    logical, intent(in), optional :: noSymbols
     real(double) :: a,m
     integer :: d
     character :: dmmmmm2*(12),mm*(6),dd*(4),sig
+    logical :: useSymbols
     
     a = angle
     a = rev2(a)*r2d
@@ -564,7 +578,15 @@ contains
     write(dd,'(A1,I3.3)') sig,d
     write(mm,'(F6.3)') m
     if(m.lt.9.9995d0) write(mm,'(I1,F5.3)') 0,m
-    write(dmmmmm2,'(A4,A1,A6,A1)') dd,'d',mm,"'"
+    
+    useSymbols = .true.
+    if(present(noSymbols)) useSymbols = .not. noSymbols
+    
+    if(useSymbols) then
+       write(dmmmmm2,'(A4,A1,A6,A1)') dd,'d',mm,"'"
+    else
+       write(dmmmmm2,'(A4,A1,A6,A1)') dd,' ',mm,' '
+    end if
     
   end function dmmmmm2
   !*********************************************************************************************************************************
