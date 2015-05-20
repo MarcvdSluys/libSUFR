@@ -31,17 +31,22 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get an integer from the command line
   !! 
-  !! \param n     Number of command-line argument (1,2,...)
-  !! \retval arg  Value of the argument
+  !! \param n        Number of command-line argument (1,2,...)
+  !! \retval arg     Value of the argument
+  !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_i(n,arg)
+  subroutine get_command_argument_i(n,arg, status)
     implicit none
     integer, intent(in) :: n
     integer, intent(out) :: arg
+    integer, intent(out), optional :: status
+    integer :: lstatus
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,*) arg
+    read(str,*, iostat=lstatus) arg
+    
+    if(present(status)) status = lstatus
     
   end subroutine get_command_argument_i
   !*********************************************************************************************************************************
@@ -50,18 +55,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a long integer from the command line
   !! 
-  !! \param n     Number of command-line argument (1,2,...)
-  !! \retval arg  Value of the argument
+  !! \param n        Number of command-line argument (1,2,...)
+  !! \retval arg     Value of the argument
+  !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_l(n,arg)
+  subroutine get_command_argument_l(n,arg, status)
     use SUFR_kinds, only: long
     implicit none
     integer, intent(in) :: n
     integer(long), intent(out) :: arg
+    integer, intent(out), optional :: status
+    integer :: lstatus
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,*) arg
+    read(str,*, iostat=lstatus) arg
+    
+    if(present(status)) status = lstatus
     
   end subroutine get_command_argument_l
   !*********************************************************************************************************************************
@@ -70,18 +80,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a double-precision real from the command line
   !! 
-  !! \param n     Number of command-line argument (1,2,...)
-  !! \retval arg  Value of the argument
+  !! \param n        Number of command-line argument (1,2,...)
+  !! \retval arg     Value of the argument
+  !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_d(n,arg)
+  subroutine get_command_argument_d(n, arg, status)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: n
     real(double), intent(out) :: arg
+    integer, intent(out), optional :: status
+    integer :: lstatus
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,*) arg
+    read(str,*, iostat=lstatus) arg
+    
+    if(present(status)) status = lstatus
     
   end subroutine get_command_argument_d
   !*********************************************************************************************************************************
@@ -90,17 +105,22 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a single-precision real from the command line
   !! 
-  !! \param n     Number of command-line argument (1,2,...)
-  !! \retval arg  Value of the argument
+  !! \param n        Number of command-line argument (1,2,...)
+  !! \retval arg     Value of the argument
+  !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_r(n,arg)
+  subroutine get_command_argument_r(n,arg, status)
     implicit none
     integer, intent(in) :: n
     real, intent(out) :: arg
+    integer, intent(out), optional :: status
+    integer :: lstatus
     character :: str*(199)
     
     call get_command_argument(n,str)
-    read(str,*) arg
+    read(str,*, iostat=lstatus) arg
+    
+    if(present(status)) status = lstatus
     
   end subroutine get_command_argument_r
   !*********************************************************************************************************************************
