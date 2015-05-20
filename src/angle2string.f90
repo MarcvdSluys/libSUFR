@@ -97,12 +97,12 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3.3)') d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
+    write(ddd,'(I3.3)') d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
     
-    if(d.gt.0) write(prs,'(a3,a1,a2,a1)') ddd,'d',mm,"'"
-    if(d.eq.0) write(prs,'(a3,a1,a2,a1)') mm,"'",ss,'"'
+    if(d.gt.0) write(prs,'(A3,A1,A2,A1)') ddd,'d',mm,"'"
+    if(d.eq.0) write(prs,'(A3,A1,A2,A1)') mm,"'",ss,'"'
     
   end function prs
   !*********************************************************************************************************************************
@@ -139,11 +139,11 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3.3)') d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
+    write(ddd,'(I3.3)') d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
     
-    write(dms,'(a3,2(a1,a2),a1)') ddd,'d',mm,"'",ss,'"'
+    write(dms,'(A3,2(A1,A2),A1)') ddd,'d',mm,"'",ss,'"'
     
   end function dms
   !*********************************************************************************************************************************
@@ -180,12 +180,12 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3.3)') d
-    write(mm,'(i2.2)') m
-    write(ss,'(f5.2)') s
-    if(s.lt.10) write(ss,'(a1,f4.2)') '0',s
+    write(ddd,'(I3.3)') d
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
     
-    write(dmss,'(a3,a1,a2,a1,a5,a1)') ddd,'d',mm,"'",ss,'"'
+    write(dmss,'(A3,A1,A2,A1,A5,A1)') ddd,'d',mm,"'",ss,'"'
     
   end function dmss
   !*********************************************************************************************************************************
@@ -229,10 +229,10 @@ contains
        m = 0
     end if
     
-    write(ddd,'(a1,i3.3)') sig,d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
-    write(dms2,'(a4,2(a1,a2),a1)') ddd,'d',mm,"'",ss,'"'
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
+    write(dms2,'(A4,2(A1,A2),A1)') ddd,'d',mm,"'",ss,'"'
     
   end function dms2
   !*********************************************************************************************************************************
@@ -276,7 +276,7 @@ contains
        m = 0
     end if
     
-    write(ddms2,'(a1,i2.2,2(a1,i2.2),a1)') sig,d,'d',m,"'",s,'"'
+    write(ddms2,'(A1,I2.2,2(A1,I2.2),A1)') sig,d,'d',m,"'",s,'"'
     
   end function ddms2
   !*********************************************************************************************************************************
@@ -320,7 +320,7 @@ contains
        m = 0
     end if
     
-    write(d1ms2,'(a1,i1.1,2(a1,i2.2),a1)') sig,d,'d',m,"'",s,'"'
+    write(d1ms2,'(A1,I1.1,2(A1,I2.2),A1)') sig,d,'d',m,"'",s,'"'
     
   end function d1ms2
   !*********************************************************************************************************************************
@@ -364,11 +364,11 @@ contains
        m = 0
     end if
     
-    write(ddd,'(a1,i3.3)') sig,d
-    write(mm,'(i2.2)') m
-    write(ss,'(f5.2)') s
-    if(s.lt.10) write(ss,'(a1,f4.2)') '0',s
-    write(dmss2,'(a4,a1,a2,a1,a5,a1)') ddd,'d',mm,"'",ss,'"'
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
+    write(dmss2,'(A4,A1,A2,A1,A5,A1)') ddd,'d',mm,"'",ss,'"'
     
   end function dmss2
   !*********************************************************************************************************************************
@@ -400,10 +400,10 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3)') d
-    write(mm,'(i2.2)') m
-    !if(m.lt.10) write(mm,'(a1,i1)') '0',m
-    write(dm,'(a3,a1,a2,a1)') ddd,'d',mm,"'"
+    write(ddd,'(I3)') d
+    write(mm,'(I2.2)') m
+    !if(m.lt.10) write(mm,'(A1,I1)') '0',m
+    write(dm,'(A3,A1,A2,A1)') ddd,'d',mm,"'"
     
   end function dm
   !*********************************************************************************************************************************
@@ -440,9 +440,9 @@ contains
        m = 0
     end if
     
-    write(ddd,'(a1,i3.3)') sig,d
-    write(mm,'(i2.2)') m
-    write(dm2,'(a4,a1,a2,a1)') ddd,'d',mm,"'"
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(dm2,'(A4,A1,A2,A1)') ddd,'d',mm,"'"
     
   end function dm2
   !*********************************************************************************************************************************
@@ -480,9 +480,9 @@ contains
        m = 0
     end if
     
-    write(dd,'(a1,i2.2)') sig,d
-    write(mm,'(i2.2)') m
-    write(dmm2,'(a3,a1,a2,a1)') dd,'d',mm,"'"
+    write(dd,'(A1,I2.2)') sig,d
+    write(mm,'(I2.2)') m
+    write(dmm2,'(A3,A1,A2,A1)') dd,'d',mm,"'"
     
   end function dmm2
   !*********************************************************************************************************************************
@@ -639,11 +639,11 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3.3)') d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
+    write(ddd,'(I3.3)') d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
     
-    write(wdms,'(a3,a5,a2,a7,a2,a7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    write(wdms,'(A3,A5,A2,A7,A2,A7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
     
   end function wdms
   !*********************************************************************************************************************************
@@ -685,7 +685,7 @@ contains
     write(ss,'(F5.2)') s
     if(s.lt.10) write(ss,'(A1,F4.2)') '0',s
     
-    write(wdmss,'(a3,a5,a2,a7,a5,a7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    write(wdmss,'(A3,A5,A2,A7,A5,A7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
     
   end function wdmss
   !*********************************************************************************************************************************
@@ -730,10 +730,10 @@ contains
        m = 0
     end if
     
-    write(ddd,'(a1,i3.3)') sig,d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
-    write(wdms2,'(a4,a5,a2,a7,a2,a7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
+    write(wdms2,'(A4,A5,A2,A7,A2,A7)') ddd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
     
   end function wdms2
   !*********************************************************************************************************************************
@@ -827,10 +827,10 @@ contains
        m = 0
     end if
     
-    write(dd,'(a1,i2.2)') sig,d
-    write(mm,'(i2.2)') m
-    write(ss,'(i2.2)') s
-    write(wddms2,'(a3,a5,a2,a7,a2,a7)') dd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
+    write(dd,'(A1,I2.2)') sig,d
+    write(mm,'(I2.2)') m
+    write(ss,'(I2.2)') s
+    write(wddms2,'(A3,A5,A2,A7,A2,A7)') dd,'&deg;',mm,'&rsquo;',ss,'&rdquo;'
     
   end function wddms2
   !*********************************************************************************************************************************
@@ -874,7 +874,7 @@ contains
        m = 0
     end if
     
-    write(wd1ms2,'(a1,i1.1,a5,i2.2,a7,i2.2,a7)') sig,d,'&deg;',m,'&rsquo;',s,'&rdquo;'
+    write(wd1ms2,'(A1,I1.1,A5,I2.2,A7,I2.2,A7)') sig,d,'&deg;',m,'&rsquo;',s,'&rdquo;'
     
   end function wd1ms2
   !*********************************************************************************************************************************
@@ -906,9 +906,9 @@ contains
        m = 0
     end if
     
-    write(ddd,'(i3)') d
-    write(mm,'(i2.2)') m
-    write(wdm,'(a3,a5,a2,a7)') ddd,'&deg;',mm,'&rsquo;'
+    write(ddd,'(I3)') d
+    write(mm,'(I2.2)') m
+    write(wdm,'(A3,A5,A2,A7)') ddd,'&deg;',mm,'&rsquo;'
     
   end function wdm
   !*********************************************************************************************************************************
@@ -945,9 +945,9 @@ contains
        m = 0
     end if
     
-    write(ddd,'(a1,i3.3)') sig,d
-    write(mm,'(i2.2)') m
-    write(wdm2,'(a4,a5,a2,a7)') ddd,'&deg;',mm,'&rsquo;'
+    write(ddd,'(A1,I3.3)') sig,d
+    write(mm,'(I2.2)') m
+    write(wdm2,'(A4,A5,A2,A7)') ddd,'&deg;',mm,'&rsquo;'
     
   end function wdm2
   !*********************************************************************************************************************************
@@ -986,9 +986,9 @@ contains
        m = 0
     end if
     
-    write(dd,'(a1,i2.2)') sig,d
-    write(mm,'(i2.2)') m
-    write(wdmm2,'(a3,a5,a2,a7)') dd,'&deg;',mm,'&rsquo;'
+    write(dd,'(A1,I2.2)') sig,d
+    write(mm,'(I2.2)') m
+    write(wdmm2,'(A3,A5,A2,A7)') dd,'&deg;',mm,'&rsquo;'
     
   end function wdmm2
   !*********************************************************************************************************************************
@@ -1025,10 +1025,10 @@ contains
        m = abs(m-60d0)
     end if
     
-    write(dd,'(a1,i2.2)') sig,d
+    write(dd,'(A1,I2.2)') sig,d
     write(mm,'(F4.1)') m
     if(m.lt.9.95d0) write(mm,'(I1,F3.1)') 0,m
-    write(wdmmm2,'(a3,a5,a4,a7)') dd,'&deg;',mm,'&rsquo;'
+    write(wdmmm2,'(A3,A5,A4,A7)') dd,'&deg;',mm,'&rsquo;'
     
   end function wdmmm2
   !*********************************************************************************************************************************
@@ -1090,11 +1090,11 @@ contains
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
-    !if(s.lt.9.95d0) write(ss,'(a1,f3.1)') '0',s
-    if(nint(s*10).lt.100) write(ss,'(a1,f3.1)') '0',s
-    write(ams,'(a2,a1,a4,a1)') mm,"'",ss,'"'
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
+    !if(s.lt.9.95d0) write(ss,'(A1,F3.1)') '0',s
+    if(nint(s*10).lt.100) write(ss,'(A1,F3.1)') '0',s
+    write(ams,'(A2,A1,A4,A1)') mm,"'",ss,'"'
     
   end function ams
   !*********************************************************************************************************************************
@@ -1128,10 +1128,10 @@ contains
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(mm,'(i2.2)') m
-    write(ss,'(f4.1)') s
-    if(s.lt.9.95) write(ss,'(a1,f3.1)') '0',s
-    write(ams2,'(a1,a2,a1,a4,a1)') sig,mm,"'",ss,'"'
+    write(mm,'(I2.2)') m
+    write(ss,'(F4.1)') s
+    if(s.lt.9.95) write(ss,'(A1,F3.1)') '0',s
+    write(ams2,'(A1,A2,A1,A4,A1)') sig,mm,"'",ss,'"'
     
   end function ams2
   !*********************************************************************************************************************************
@@ -1158,10 +1158,10 @@ contains
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
     
-    write(mm,'(i2.2)') m
-    write(ss,'(f5.2)') s
-    if(s.lt.9.995d0) write(ss,'(a1,f4.2)') '0',s
-    write(amss,'(a2,a1,a5,a1)') mm,"'",ss,'"'
+    write(mm,'(I2.2)') m
+    write(ss,'(F5.2)') s
+    if(s.lt.9.995d0) write(ss,'(A1,F4.2)') '0',s
+    write(amss,'(A2,A1,A5,A1)') mm,"'",ss,'"'
     
   end function amss
   !*********************************************************************************************************************************
