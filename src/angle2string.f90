@@ -69,20 +69,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print separation angle (>0) as ddd.mm or mm.ss string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function prs(a1)
+  function prs(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: prs*(7),mm*(2),ss*(2),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = int((a-d)*60.d0)
@@ -111,20 +111,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss string, input in rad  -  See wdms() for HTML version
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dms(a1)
+  function dms(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: dms*(10),mm*(2),ss*(2),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = int((a-d)*60.d0)
@@ -152,20 +152,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a ddd.mm.ss.ss string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dmss(a1)
+  function dmss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: d,m
     character :: dmss*(13),mm*(2),ss*(5),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = int((a-d)*60.d0)
@@ -194,20 +194,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dms string, input in rad, output between -180 and +180  -  See wdms2() for HTML version
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dms2(a1)
+  function dms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: dms2*(11),mm*(2),ss*(2),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -241,20 +241,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm.ss string, input in rad, output between -99 and +99  -  See wddms2() for HTML version
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function ddms2(a1)
+  function ddms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: ddms2*(10),sig!,mm*(2),ss*(2),dd*(4)
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -285,20 +285,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as d.mm.ss string, input in rad, output between -9 and +9 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function d1ms2(a1)
+  function d1ms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: d1ms2*(9),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -329,20 +329,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dms.ss string, input in rad, output between -180 and +180
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dmss2(a1)
+  function dmss2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: d,m
     character :: dmss2*(14),mm*(2),ss*(5),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -377,20 +377,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd:mm string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dm(a1)
+  function dm(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: dm*(7),mm*(2),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = nint((a-d)*60.d0)
@@ -412,20 +412,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm string, input in rad, output between -180 and +180
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dm2(a1)
+  function dm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: dm2*(8),mm*(2),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -452,20 +452,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm string, input in rad, output between -99 and +99 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dmm2(a1)
+  function dmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: dmm2*(7),mm*(2),dd*(3),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -492,20 +492,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.m string, input in rad, output between -99 and +99 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dmmm2(a1)
+  function dmmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,m
     integer :: d
     character :: dmmm2*(9),mm*(4),dd*(3),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -533,20 +533,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.mmm string (for gps), input in rad, output between -180 and +180 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function dmmmmm2(a1)
+  function dmmmmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     use SUFR_angles, only: rev2
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,m
     integer :: d
     character :: dmmmmm2*(12),mm*(6),dd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -574,19 +574,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.d string, input in rad, output between -99.9 and +99.9 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function ddd2(a1)
+  function ddd2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     character :: ddd2*(6),sig
     
-    a = rev2(a1)*r2d
+    a = rev2(angle)*r2d
     sig = '+'
     if(a.lt.0.d0) then
        sig = '-'
@@ -611,20 +611,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss string, input in rad with \&deg;, &rsquo; and &rdquo;  -  HTML version of dms()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdms(a1)
+  function wdms(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: wdms*(26),mm*(2),ss*(2),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = int((a-d)*60.d0)
@@ -652,20 +652,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss.ss string, input in rad with \&deg;, &rsquo; and &rdquo;  -  HTML version of dmss()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdmss(a1)
+  function wdmss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: d,m
     character :: wdmss*(29),mm*(2),ss*(5),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = int((a-d)*60.d0)
@@ -695,20 +695,20 @@ contains
   !> \brief Print angle as dms string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
   !!        HTML version of dms2()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdms2(a1)
+  function wdms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: wdms2*(27),mm*(2),ss*(2),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -742,20 +742,20 @@ contains
   !> \brief Print angle as ddd.mm.ss.ss string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
   !!        HTML version of dmss2()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdmss2(a1)
+  function wdmss2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: d,m
     character :: wdmss2*(30),mm*(2),ss*(5),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -792,20 +792,20 @@ contains
   !> \brief Print angle as dd.mm'ss" string, input in rad, output between -99 and +99 with \&deg;, \&rsquo; and \&rdquo;  -
   !!        HTML version of ddms2()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wddms2(a1)
+  function wddms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: wddms2*(26),mm*(2),ss*(2),dd*(3),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -839,20 +839,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as d.mm.ss string, input in rad, output between -9 and +9  -  HTML version of d1ms2
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wd1ms2(a1)
+  function wd1ms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m,s
     character :: wd1ms2*(25),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -883,20 +883,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd:mm string, input in rad with \&deg; and \&rsquo;  -  HTML version of dm()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdm(a1)
+  function wdm(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: wdm*(17),mm*(2),ddd*(3)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     d = int(a)
     m = nint((a-d)*60.d0)
@@ -917,20 +917,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm string, input in rad, output between -180 and +180 with \&deg; and \&rsquo;
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdm2(a1)
+  function wdm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: wdm2*(18),mm*(2),ddd*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -958,20 +958,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm string, HTML version input in rad, output between -99 and +99 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdmm2(a1)
+  function wdmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     integer :: d,m
     character :: wdmm2*(17),mm*(2),dd*(3),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -997,20 +997,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.m string, HTML version. Input in rad, output between -99 and +99 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wdmmm2(a1)
+  function wdmmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,m
     integer :: d
     character :: wdmmm2*(19),mm*(4),dd*(3),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     sig = '+'
     if(a.lt.0.d0) then
@@ -1037,19 +1037,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.d string, HTML version input in rad, output between -99.9 and +99.9 !!!
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wddd2(a1)
+  function wddd2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a
     character :: wddd2*(10),sig
     
-    a = rev2(a1)*r2d
+    a = rev2(angle)*r2d
     sig = '+'
     if(a.lt.0.d0) then
        sig = '-'
@@ -1072,20 +1072,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.s string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function ams(a1)
+  function ams(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: ams*(8),mm*(2),ss*(4)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
@@ -1103,20 +1103,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.s string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function ams2(a1)
+  function ams2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: ams2*(9),mm*(2),ss*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -1140,20 +1140,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.ss string, input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function amss(a1)
+  function amss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: amss*(9),mm*(2),ss*(5)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
@@ -1170,20 +1170,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a string of ss.s", input in rad
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function ass(a1)
+  function ass(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: ass*(5)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
@@ -1203,20 +1203,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm'ss.s" string, input in rad;  HTML version of ams()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wams(a1)
+  function wams(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: wams*(20),mm*(2),ss*(4)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
@@ -1234,20 +1234,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print angle as mm'ss.s" string, input in rad - html version of ams2()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wams2(a1)
+  function wams2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: wams2*(21),mm*(2),ss*(4),sig
     
-    a = a1
+    a = angle
     a = rev2(a)*r2d
     
     sig = '+'
@@ -1271,20 +1271,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as HTML mm:ss.ss string, input in rad - HTML version of amss()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wamss(a1)
+  function wamss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: wamss*(21),mm*(2),ss*(5)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
@@ -1301,20 +1301,20 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a string of ss.s", input in rad - HTML version of ass()
   !!
-  !! \param a1  Angle (rad)
+  !! \param angle  Angle (rad)
   
-  function wass(a1)
+  function wass(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
     
     implicit none
-    real(double), intent(in) :: a1
+    real(double), intent(in) :: angle
     real(double) :: a,s
     integer :: m
     character :: wass*(11)
     
-    a = a1
+    a = angle
     a = rev(a)*r2d
     m = int((a)*60.d0)
     s = (a-m/60.d0)*3600.d0
