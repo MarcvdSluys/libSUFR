@@ -108,7 +108,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert PGPlot horiz,vert dimensions to paper size and ratio for bitmap
+  !> \brief  Convert PGPlot horizontal and vertical dimensions to paper size and ratio for bitmap
   !!
   !! \param  horiz  Horizontal plot size in pixels
   !! \param  vert   Vertical plot size in pixels
@@ -128,7 +128,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert PGPlot horiz,vert dimensions to paper size and ratio for bitmap
+  !> \brief  Convert PGPlot bitmap size and ratio to horizontal and vertical dimensions in pixels
   !!
   !! \param  size   PGPlot plot size
   !! \param  ratio  PGPlot plot ratio
