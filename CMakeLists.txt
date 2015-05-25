@@ -37,10 +37,6 @@ set( CMAKE_CONFIGURATION_TYPES "${CMAKE_BUILD_TYPE}" CACHE INTERNAL "internal" )
 project( libSUFR Fortran )
 
 
-# Use CPack for packaging:
-#include( CPack )
-#set( CPACK_INSTALL_PREFIX_PATH ${CMAKE_INSTALL_PREFIX_PATH} )
-
 # Increase verbosity for debugging:
 option( CMAKE_VERBOSE_MAKEFILE "Verbose makefile" on )
 
@@ -69,15 +65,17 @@ include( FileList )
 include( CompilerFlags_Fortran )
 
 
-# Code-version generator:
-# This implies that the file libSUFR_version* is removed by 'make clean'!
-if( CREATE_VERSION )
+# Create the file code_version.f90, which contains the code version number/hash and date:
+if( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/code_version.f90 OR CREATE_VERSION )
   add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90
     COMMAND cd $(CMAKE_SOURCE_DIR)
     COMMAND . ${CMAKE_SOURCE_DIR}/code_version.sh ${CMAKE_SOURCE_DIR} src/libSUFR_version.f90 ${Fortran_COMPILER_NAME} ${OPT_FLAGS}
     )
-endif( CREATE_VERSION )
+  
+  # Tell CMake the source won't be available until build time:
+  set_source_files_properties( ${CMAKE_SOURCE_DIR}/src/code_version.f90 PROPERTIES GENERATED 1 )
+endif( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/code_version.f90 OR CREATE_VERSION )
 
 
 # Create libraries:
@@ -103,11 +101,42 @@ if( CREATE_STATICLIB )
     set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR" )
   endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
-  add_dependencies( libSUFR_static libSUFR_shared )  # Ensure it is built after the shared lib
+  add_dependencies( libSUFR_static libSUFR_shared PKG_VERSION )  # Ensure it is built after the shared lib
 endif( CREATE_STATICLIB )
 
+
+# Find the package version from the VERSION file and stick it into PKG_VERSION:
+# The file VERSION is either in the root directory of the package, or in doc/:
+set( VERSION_FILE ${CMAKE_SOURCE_DIR}/VERSION )
+if( NOT EXISTS ${VERSION_FILE} )
+  set( VERSION_FILE ${CMAKE_SOURCE_DIR}/doc/VERSION )
+endif( NOT EXISTS ${VERSION_FILE} )
+
+set( PKG_VERSION "0.0.0" )   # Indicates that the version number was not found
+file(STRINGS ${VERSION_FILE} Lines )
+foreach( Line ${Lines} )
+  string(REGEX MATCH "Release version:.+" Line ${Line} )  # Returns the matching string
+  string(COMPARE NOTEQUAL "${Line}" "" Matches )          # If the string is not empty, we have a match
+  if( Matches )
+    string(REPLACE "Release version:" "" Line ${Line})    # Remove text
+    string(STRIP ${Line} Line)                            # Strip leading and trailing spaces
+    set( PKG_VERSION ${Line} )
+  endif( Matches )
+endforeach()
+message( STATUS "libSUFR version in the current package: ${PKG_VERSION}" )
+message( STATUS "" )
 
 # Install to destination:
 #   use DIRECTORY rather than TARGETS to allow include/<fortrancompiler>/
 install( DIRECTORY usr/ DESTINATION ${CMAKE_INSTALL_PREFIX} )
+
+# Install man pages:
+install( DIRECTORY man/ DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man )
+
+# Install documents:
+if( NOT EXISTS VERSION )
+  install( FILES doc/CHANGELOG doc/LICENCE doc/README doc/VERSION DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/libsufr-${PKG_VERSION} )
+else( NOT EXISTS VERSION )
+  install( FILES CHANGELOG LICENCE README VERSION DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/libsufr-${PKG_VERSION} )
+endif( NOT EXISTS VERSION )
 
