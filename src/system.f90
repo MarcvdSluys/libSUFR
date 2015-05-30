@@ -583,12 +583,13 @@ contains
   !!
   !! \param sp        Number of leading spaces (optional)
   !! \param dec       Number of decimals in the time (optional)
+  !! \param unit      Output unit (0: stdErr, 6: stdOut)
   
-  subroutine print_cputime(sp,dec)
+  subroutine print_cputime(sp,dec,unit)
     use SUFR_kinds, only: double
     implicit none
-    integer, intent(in), optional :: sp, dec
-    integer :: loc_sp, loc_dec
+    integer, intent(in), optional :: sp, dec, unit
+    integer :: loc_sp, loc_dec, loc_unit
     
     real(double) :: cputime
     character :: fmt*(99)
@@ -600,6 +601,8 @@ contains
     loc_dec = 3  ! 3 decimals in time in seconds by default
     if(present(dec)) loc_dec = dec
     
+    loc_unit = 6
+    if(present(unit)) loc_unit = max(unit, 0)  ! Don't use a negative unit number
     
     ! Get CPU time:
     call cpu_time(cputime)
@@ -610,7 +613,12 @@ contains
     else
        write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
     end if
-    write(*,trim(fmt)) 'Program took ',cputime,' seconds of CPU time.'
+    
+    if(loc_unit.eq.6) then     ! Use stdOut
+       write(*,trim(fmt))    'Program took ',cputime,' seconds of CPU time.'
+    else                       ! Use specified unit
+       write(unit,trim(fmt)) 'Program took ',cputime,' seconds of CPU time.'
+    end if
     
   end subroutine print_cputime
   !*********************************************************************************************************************************
