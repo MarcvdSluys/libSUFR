@@ -331,12 +331,14 @@ contains
   !!
   !! \param number  Value to convert
   !! \param decim   Number of decimals to use
+  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   
-  function dbl2str(number, decim)
+  function dbl2str(number, decim, mark)
     use SUFR_kinds, only: double, long
     implicit none
     real(double), intent(in) :: number
     integer, intent(in) :: decim
+    character, intent(in), optional :: mark*(*)
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
     character :: dbl2str*(max(ceiling(log10(abs(number*(1.d0+eps)))),1) - (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     character :: fmt*(9)
@@ -351,6 +353,8 @@ contains
        call replace_substring(dbl2str, '-.', '-0.')
     end if
     
+    if(present(mark)) call replace_substring(dbl2str, '.', mark(1:1))  ! Replace default decimal point with a specified mark
+    
   end function dbl2str
   !*********************************************************************************************************************************
   
@@ -360,14 +364,20 @@ contains
   !!
   !! \param number  Value to convert
   !! \param decim   Number of decimals to use
+  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   
-  function real2str(number, decim)
+  function real2str(number, decim, mark)
     implicit none
     real, intent(in) :: number
     integer, intent(in) :: decim
+    character, intent(in), optional :: mark*(*)
     character :: real2str*(max(ceiling(log10(abs(number)+sqrt(epsilon(number)))),1) - (sign(1,floor(number))-1)/2 + decim + 1)
     
-    real2str = dbl2str(dble(number), decim)
+    if(present(mark)) then
+       real2str = dbl2str(dble(number), decim, mark)
+    else
+       real2str = dbl2str(dble(number), decim)
+    end if
     
   end function real2str
   !*********************************************************************************************************************************
