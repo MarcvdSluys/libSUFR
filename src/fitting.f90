@@ -57,7 +57,7 @@ contains
   !! \param  myFunc  External subroutine that describes the model value of Y for given value X
   !!
   !! \note
-  !! - Needs lfit_sort_var_covar() and solve_linear_equations_Gauss_Jordan()
+  !! - Needs sort_var_covar() and solve_linear_equations_Gauss_Jordan()
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.15.4
   !!
@@ -141,11 +141,182 @@ contains
     end do
     
     ! Sort the resulting variance-covariance matrix:
-    call lfit_sort_var_covar(covar,ncov,ncoef,varc,nfit)
+    call sort_var_covar(covar,ncov,ncoef,varc,nfit)
     
   end subroutine linear_fit_yerr
   !*********************************************************************************************************************************
   
+  
+  
+  
+  !*********************************************************************************************************************************
+  !! \note  Uses sort_var_covar,solve_linear_equations_Gauss_Jordan,mrqcof
+  subroutine mrqmin(x,y, sig, ndata, a,ia,ma, covar, alpha, nca, chisq, funcs, alamda)
+    use SUFR_kinds, only: double
+    use SUFR_numerics, only: deq0
+    implicit none
+    integer, intent(in) :: ma,nca,ndata,ia(ma)
+    real(double), intent(in) :: sig(ndata), x(ndata), y(ndata)
+    real(double), intent(inout) :: a(ma), alamda
+    real(double), intent(out) :: alpha(nca,nca), covar(nca,nca), chisq
+    
+    integer, parameter :: Mmax=20
+    integer :: j,k,l,mfit
+    real(double) :: ochisq,atry(Mmax),beta(Mmax),da(Mmax)
+    
+    external funcs
+    save ochisq,atry,beta,da,mfit
+    
+    
+    if(alamda.lt.0.d0) then
+       mfit = 0
+       do j=1,ma
+          if (ia(j).ne.0) mfit = mfit+1
+       end do
+       
+       alamda = 0.001d0
+       
+       call mrqcof(x,y, sig, ndata, a,ia,ma, alpha,beta, nca, chisq, funcs)
+       
+       ochisq=chisq
+       do j=1,ma
+          atry(j) = a(j)
+       end do
+    end if
+    
+    do j=1,mfit
+       do k=1,mfit
+          covar(j,k) = alpha(j,k)
+       end do
+       covar(j,j) = alpha(j,j) * (1.d0+alamda)
+       da(j) = beta(j)
+    end do
+    
+    call solve_linear_equations_Gauss_Jordan(covar,mfit,nca,da,1,1)
+    
+    if(deq0(alamda)) then
+       call sort_var_covar(covar,nca,ma,ia,mfit)
+       call sort_var_covar(alpha,nca,ma,ia,mfit)
+       return
+    end if
+    
+    j=0
+    do l=1,ma
+       if(ia(l).ne.0) then
+          j = j+1
+          atry(l) = a(l) + da(j)
+       end if
+    end do
+    
+    call mrqcof(x,y, sig, ndata, atry,ia,ma, covar, da,nca, chisq, funcs)
+    
+    if(chisq.lt.ochisq) then
+       alamda = 0.1d0*alamda
+       ochisq = chisq
+       do j=1,mfit
+          do k=1,mfit
+             alpha(j,k) = covar(j,k)
+          end do
+          beta(j) = da(j)
+       end do
+       
+       do l=1,ma
+          a(l) = atry(l)
+       end do
+    else
+       alamda = 10*alamda
+       chisq = ochisq
+    end if
+    
+  end subroutine mrqmin
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  subroutine mrqcof(x,y, sig, ndata, a,ia,ma, alpha,beta, nalp, chisq, funcs)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: ma,nalp,ndata,ia(ma)
+    real(double), intent(in) :: x(ndata),y(ndata),sig(ndata), a(ma)
+    real(double), intent(out) :: chisq,alpha(nalp,nalp),beta(ma)
+    
+    integer, parameter :: Mmax=20
+    integer :: mfit,i,j,k,l,m
+    real(double) :: dy,sig2i,wt,ymod,dyda(Mmax)
+    external funcs
+    
+    mfit = 0
+    
+    do j=1,ma
+       if (ia(j).ne.0) mfit = mfit+1
+    end do
+    
+    do j=1,mfit
+       do k=1,j
+          alpha(j,k) = 0.d0
+       end do
+       beta(j)=0.d0
+    end do
+    
+    chisq=0.d0
+    do i=1,ndata
+       call funcs(x(i), a, ymod, dyda, ma)
+       sig2i = 1.d0/(sig(i)**2)
+       dy = y(i)-ymod
+       j = 0
+       
+       do l=1,ma
+          if(ia(l).ne.0) then
+             j = j+1
+             wt = dyda(l)*sig2i
+             k = 0
+             
+             do m=1,l
+                if(ia(m).ne.0) then
+                   k = k+1
+                   alpha(j,k) = alpha(j,k) + wt*dyda(m)
+                end if
+             end do
+             
+             beta(j) = beta(j) + dy*wt
+          end if
+       end do
+       
+       chisq = chisq + dy**2 * sig2i
+    end do
+    
+    do j=2,mfit
+       do k=1,j-1
+          alpha(k,j)=alpha(j,k)
+       end do
+    end do
+    
+  end subroutine mrqcof
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  subroutine fgauss(na, x,a,  y,dyda)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: na
+    real(double), intent(in) :: x,a(na)
+    real(double), intent(out) :: y,dyda(na)
+    integer :: i
+    real(double) :: arg,ex,fac
+    
+    y = 0.d0
+    do i=1,na-1,3
+       arg = (x - a(i+1)) / a(i+2)
+       ex  = exp(-arg**2)
+       fac = a(i) * ex * 2 * arg
+       
+       y         = y + a(i)*ex
+       dyda(i)   = ex
+       dyda(i+1) = fac / a(i+2)
+       dyda(i+2) = fac * arg / a(i+2)
+    end do
+    
+  end subroutine fgauss
+  !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
@@ -160,7 +331,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.15.4
   !!
   
-  subroutine lfit_sort_var_covar(covar,ncov,ncoef,varc,nfit)
+  subroutine sort_var_covar(covar,ncov,ncoef,varc,nfit)
     use SUFR_kinds, only: double
     use SUFR_system, only: swapdbl
     
@@ -193,7 +364,7 @@ contains
        end if
     end do
     
-  end subroutine lfit_sort_var_covar
+  end subroutine sort_var_covar
   !*********************************************************************************************************************************
   
   
