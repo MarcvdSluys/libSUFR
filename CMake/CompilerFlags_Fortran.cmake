@@ -52,6 +52,13 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   set( CMAKE_Fortran_FLAGS_PROFILE "-g -gp" )
   
   
+  if(WANT_32BIT )
+    set( BIT_FLAGS "-m32" )
+  endif(WANT_32BIT )
+  if(WANT_64BIT )
+    set( BIT_FLAGS "-m64" )
+  endif(WANT_64BIT )
+  
   if(WANT_SSE42 )
     set( SSE_FLAGS "-msse4.2" )
   endif(WANT_SSE42 )
@@ -229,7 +236,7 @@ endif( Fortran_COMPILER_NAME MATCHES "gfortran" )
 #  Put everything together:
 ######################################################################################################################################################
 
-set( USER_FLAGS "${OPT_FLAGS} ${LIB_FLAGS} ${CHECK_FLAGS} ${WARN_FLAGS} ${SSE_FLAGS} ${IPO_FLAGS} ${OPENMP_FLAGS} ${STATIC_FLAGS} ${INCLUDE_FLAGS} ${PACKAGE_FLAGS}" )
+set( USER_FLAGS "${OPT_FLAGS} ${LIB_FLAGS} ${CHECK_FLAGS} ${WARN_FLAGS} ${BIT_FLAGS} ${SSE_FLAGS} ${IPO_FLAGS} ${OPENMP_FLAGS} ${STATIC_FLAGS} ${INCLUDE_FLAGS} ${PACKAGE_FLAGS}" )
 
 set( CMAKE_Fortran_FLAGS "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS} ${USER_FLAGS}" )
 set( CMAKE_Fortran_FLAGS_RELEASE "${CMAKE_Fortran_FLAGS_ALL} ${CMAKE_Fortran_FLAGS_RELEASE} ${USER_FLAGS}" )

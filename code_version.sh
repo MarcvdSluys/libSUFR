@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ##  code_version.sh:
 ##  Write the git hash or release-version number of the code and the compiler name to a Fortran source file
@@ -51,7 +51,7 @@ else
     
     cd ${BASEDIR}
     
-    if [[ ! -e .git/  && -e ${F90FILE} ]]
+    if [[ ! -e .git/ && -e ${F90FILE} ]]
     then
 	echo "${F90FILE} already exists, no need to create it"
 	exit 0

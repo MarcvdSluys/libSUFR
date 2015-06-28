@@ -65,8 +65,8 @@ include( FileList )
 include( CompilerFlags_Fortran )
 
 
-# Create the file code_version.f90, which contains the code version number/hash and date:
-if( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/code_version.f90 OR CREATE_VERSION )
+# Create the file libSUFR_version.f90, which contains the code version number/hash and date (and which will be removed at make clean):
+if( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90 OR CREATE_VERSION )
   add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90
     COMMAND cd $(CMAKE_SOURCE_DIR)
@@ -74,8 +74,8 @@ if( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/code_version.f90 OR CREATE_VERSION )
     )
   
   # Tell CMake the source won't be available until build time:
-  set_source_files_properties( ${CMAKE_SOURCE_DIR}/src/code_version.f90 PROPERTIES GENERATED 1 )
-endif( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/code_version.f90 OR CREATE_VERSION )
+  set_source_files_properties( ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90 PROPERTIES GENERATED 1 )
+endif( NOT EXISTS ${CMAKE_SOURCE_DIR}/src/libSUFR_version.f90 OR CREATE_VERSION )
 
 
 # Create libraries:
@@ -91,7 +91,7 @@ endif( CREATE_SHAREDLIB )
 
 # Use add_dependencies below in order to pretend the static lib depends on the shared.  This
 #   seems to be necessary to ensure that it is built *after* shared.  If this doesn't
-#   happen, multiple threads will be pouring data into the code_version file simultaneously.
+#   happen, multiple threads will be pouring data into the libSUFR_version file simultaneously.
 
 if( CREATE_STATICLIB )
   add_library( "libSUFR_static"  STATIC  ${SRC_FILES} )
@@ -101,7 +101,7 @@ if( CREATE_STATICLIB )
     set_target_properties( libSUFR_static PROPERTIES OUTPUT_NAME "SUFR" )
   endif( COMPILER_SPECIFIC_LIBS )
   set_target_properties( libSUFR_static PROPERTIES Fortran_MODULE_DIRECTORY ${MODULE_DIRECTORY} )
-  add_dependencies( libSUFR_static libSUFR_shared PKG_VERSION )  # Ensure it is built after the shared lib
+  add_dependencies( libSUFR_static libSUFR_shared )  # Ensure it is built after the shared lib
 endif( CREATE_STATICLIB )
 
 
@@ -112,7 +112,7 @@ if( NOT EXISTS ${VERSION_FILE} )
   set( VERSION_FILE ${CMAKE_SOURCE_DIR}/doc/VERSION )
 endif( NOT EXISTS ${VERSION_FILE} )
 
-set( PKG_VERSION "0.0.0" )   # Indicates that the version number was not found
+set( PKG_VERSION "Unknown" )   # Indicates that the version number was not found
 file(STRINGS ${VERSION_FILE} Lines )
 foreach( Line ${Lines} )
   string(REGEX MATCH "Release version:.+" Line ${Line} )  # Returns the matching string
@@ -123,7 +123,8 @@ foreach( Line ${Lines} )
     set( PKG_VERSION ${Line} )
   endif( Matches )
 endforeach()
-message( STATUS "libSUFR version in the current package: ${PKG_VERSION}" )
+message( STATUS "libSUFR version reported by the package: ${PKG_VERSION}" )
+message( STATUS "Compiling for an ${CMAKE_SYSTEM_PROCESSOR} architecture" )
 message( STATUS "" )
 
 # Install to destination:
@@ -139,4 +140,10 @@ if( NOT EXISTS VERSION )
 else( NOT EXISTS VERSION )
   install( FILES CHANGELOG LICENCE README VERSION DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/libsufr-${PKG_VERSION} )
 endif( NOT EXISTS VERSION )
+
+
+# Create Linux-distribution binary package:
+if( WANT_PACKAGE )
+  include( CPack_package )
+endif( WANT_PACKAGE )
 
