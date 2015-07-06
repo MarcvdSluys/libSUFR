@@ -150,130 +150,179 @@ contains
   
   
   !*********************************************************************************************************************************
-  !! \note  Uses sort_var_covar,solve_linear_equations_Gauss_Jordan,mrqcof
-  subroutine mrqmin(x,y, sig, ndata, a,ia,ma, covar, alpha, nca, chisq, funcs, alamda)
+  !> \brief  Levenberg-Marquardt method to reduce the value of chi-squared of a fit of a set of data points with errors in Y to a
+  !!         non-linear function
+  !!
+  !! \param xDat    X data points to fit
+  !! \param yDat    Y data points to fit
+  !! \param ySig    Standard deviations for yDat
+  !! \param Ndat    Number of data points in X and Y
+  !!
+  !! \param fCoef   Coefficients for the non-linear function funcs, updated after each call
+  !! \param iCoef   Initial coefficients for the non-linear function funcs.  Set to 0.d0 in order to keep fCoef fixed
+  !!                  (not fitted for)
+  !! \param nCoef   Number of coefficients used to describe the non-linear function funcs
+  !!
+  !! \param covar   Variance-covariance matrix - returned on last call with lambda.  Fixed parameters return zero (co)variances
+  !! \param curve   Curvature matrix
+  !! \param nMat    Size of the matrices; > nCoef
+  !! \param chiSq   Chi squared
+  !! \param funcs   Non-linear function to fit: funcs(xDat,fCoef,yFit,dyda,nCoef)
+  !! \param lambda  Set to <0 for initialisation in the first call.  Set to ==0 to return the variance-covariance and curvature
+  !!                  matrices on the last call.  Lambda decreases if chiSq becomes smaller, and increases otherwise.
+  !!
+  !!
+  !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
+  !! 
+  !! \note  Uses sort_var_covar(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
+  
+  subroutine nonlin_fit_yerr(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, covar, curve, nMat, chiSq, funcs, lambda)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq0
-    implicit none
-    integer, intent(in) :: ma,nca,ndata,ia(ma)
-    real(double), intent(in) :: sig(ndata), x(ndata), y(ndata)
-    real(double), intent(inout) :: a(ma), alamda
-    real(double), intent(out) :: alpha(nca,nca), covar(nca,nca), chisq
     
-    integer, parameter :: Mmax=20
+    implicit none
+    integer, intent(in) :: nCoef,nMat,Ndat,iCoef(nCoef)
+    real(double), intent(in) :: ySig(Ndat), xDat(Ndat), yDat(Ndat)
+    real(double), intent(inout) :: fCoef(nCoef), lambda
+    real(double), intent(out) :: curve(nMat,nMat), covar(nMat,nMat), chiSq
+    
+    integer, parameter :: mMax=20
     integer :: j,k,l,mfit
-    real(double) :: ochisq,atry(Mmax),beta(Mmax),da(Mmax)
+    real(double) :: oChiSq,atry(mMax),beta(mMax),dfCoef(mMax)
     
     external funcs
-    save ochisq,atry,beta,da,mfit
+    save oChiSq,atry,beta,dfCoef,mfit
     
     
-    if(alamda.lt.0.d0) then
+    if(lambda.lt.0.d0) then
        mfit = 0
-       do j=1,ma
-          if (ia(j).ne.0) mfit = mfit+1
+       do j=1,nCoef
+          if(iCoef(j).ne.0) mfit = mfit + 1
        end do
        
-       alamda = 0.001d0
+       lambda = 0.001d0
        
-       call mrqcof(x,y, sig, ndata, a,ia,ma, alpha,beta, nca, chisq, funcs)
+       call nonlin_fit_eval(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, curve,beta, nMat, chiSq, funcs)
        
-       ochisq=chisq
-       do j=1,ma
-          atry(j) = a(j)
+       oChiSq=chiSq
+       do j=1,nCoef
+          atry(j) = fCoef(j)
        end do
     end if
     
     do j=1,mfit
        do k=1,mfit
-          covar(j,k) = alpha(j,k)
+          covar(j,k) = curve(j,k)
        end do
-       covar(j,j) = alpha(j,j) * (1.d0+alamda)
-       da(j) = beta(j)
+       covar(j,j) = curve(j,j) * (1.d0+lambda)
+       dfCoef(j) = beta(j)
     end do
     
-    call solve_linear_equations_Gauss_Jordan(covar,mfit,nca,da,1,1)
+    call solve_linear_equations_Gauss_Jordan(covar,mfit,nMat,dfCoef,1,1)
     
-    if(deq0(alamda)) then
-       call sort_var_covar(covar,nca,ma,ia,mfit)
-       call sort_var_covar(alpha,nca,ma,ia,mfit)
+    if(deq0(lambda)) then
+       call sort_var_covar(covar,nMat,nCoef,iCoef,mfit)
+       call sort_var_covar(curve,nMat,nCoef,iCoef,mfit)
        return
     end if
     
     j=0
-    do l=1,ma
-       if(ia(l).ne.0) then
+    do l=1,nCoef
+       if(iCoef(l).ne.0) then
           j = j+1
-          atry(l) = a(l) + da(j)
+          atry(l) = fCoef(l) + dfCoef(j)
        end if
     end do
     
-    call mrqcof(x,y, sig, ndata, atry,ia,ma, covar, da,nca, chisq, funcs)
+    call nonlin_fit_eval(xDat,yDat, ySig, Ndat, atry,iCoef,nCoef, covar, dfCoef,nMat, chiSq, funcs)
     
-    if(chisq.lt.ochisq) then
-       alamda = 0.1d0*alamda
-       ochisq = chisq
+    if(chiSq.lt.oChiSq) then
+       lambda = 0.1d0*lambda
+       oChiSq = chiSq
        do j=1,mfit
           do k=1,mfit
-             alpha(j,k) = covar(j,k)
+             curve(j,k) = covar(j,k)
           end do
-          beta(j) = da(j)
+          beta(j) = dfCoef(j)
        end do
        
-       do l=1,ma
-          a(l) = atry(l)
+       do l=1,nCoef
+          fCoef(l) = atry(l)
        end do
     else
-       alamda = 10*alamda
-       chisq = ochisq
+       lambda = 10*lambda
+       chiSq = oChiSq
     end if
     
-  end subroutine mrqmin
+  end subroutine nonlin_fit_yerr
   !*********************************************************************************************************************************
   
+  
   !*********************************************************************************************************************************
-  subroutine mrqcof(x,y, sig, ndata, a,ia,ma, alpha,beta, nalp, chisq, funcs)
+  !> \brief  Evaluate the linearized fitting matrix curve, and vector beta, and calculate chi squared
+  !!
+  !! \param xDat    X data points to fit
+  !! \param yDat    Y data points to fit
+  !! \param ySig    Standard deviations for yDat
+  !! \param Ndat    Number of data points in X and Y
+  !!
+  !! \param fCoef   Coefficients for the non-linear function funcs, updated after each call
+  !! \param iCoef   Initial coefficients for the non-linear function funcs.  Set to 0.d0 in order to keep fCoef fixed
+  !!                  (not fitted for)
+  !! \param nCoef   Number of coefficients used to describe the non-linear function funcs
+  !!
+  !! \param curve   Curvature matrix
+  !! \param beta    Vector that describes the linear equations to be solved (together with curve)
+  !! \param nMat    Size of the matrices; > nCoef
+  !! \param chiSq   Chi squared
+  !! \param funcs   Non-linear function to fit: funcs(xDat,fCoef,yFit,dyda,nCoef)
+  !!
+  !!
+  !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
+
+  subroutine nonlin_fit_eval(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, curve,beta, nMat, chiSq, funcs)
+    
     use SUFR_kinds, only: double
     implicit none
-    integer, intent(in) :: ma,nalp,ndata,ia(ma)
-    real(double), intent(in) :: x(ndata),y(ndata),sig(ndata), a(ma)
-    real(double), intent(out) :: chisq,alpha(nalp,nalp),beta(ma)
+    integer, intent(in) :: nCoef,nMat,Ndat,iCoef(nCoef)
+    real(double), intent(in) :: xDat(Ndat),yDat(Ndat),ySig(Ndat), fCoef(nCoef)
+    real(double), intent(out) :: chiSq,curve(nMat,nMat),beta(nCoef)
     
-    integer, parameter :: Mmax=20
+    integer, parameter :: mMax=20
     integer :: mfit,i,j,k,l,m
-    real(double) :: dy,sig2i,wt,ymod,dyda(Mmax)
+    real(double) :: dy,sig2i,wt,ymod,dyda(mMax)
     external funcs
     
     mfit = 0
     
-    do j=1,ma
-       if (ia(j).ne.0) mfit = mfit+1
+    do j=1,nCoef
+       if(iCoef(j).ne.0) mfit = mfit + 1
     end do
     
     do j=1,mfit
        do k=1,j
-          alpha(j,k) = 0.d0
+          curve(j,k) = 0.d0
        end do
        beta(j)=0.d0
     end do
     
-    chisq=0.d0
-    do i=1,ndata
-       call funcs(x(i), a, ymod, dyda, ma)
-       sig2i = 1.d0/(sig(i)**2)
-       dy = y(i)-ymod
+    chiSq=0.d0
+    do i=1,Ndat
+       call funcs(xDat(i), fCoef, ymod, dyda, nCoef)
+       sig2i = 1.d0/(ySig(i)**2)
+       dy = yDat(i) - ymod
        j = 0
        
-       do l=1,ma
-          if(ia(l).ne.0) then
+       do l=1,nCoef
+          if(iCoef(l).ne.0) then
              j = j+1
              wt = dyda(l)*sig2i
              k = 0
              
              do m=1,l
-                if(ia(m).ne.0) then
+                if(iCoef(m).ne.0) then
                    k = k+1
-                   alpha(j,k) = alpha(j,k) + wt*dyda(m)
+                   curve(j,k) = curve(j,k) + wt*dyda(m)
                 end if
              end do
              
@@ -281,38 +330,38 @@ contains
           end if
        end do
        
-       chisq = chisq + dy**2 * sig2i
+       chiSq = chiSq + dy**2 * sig2i
     end do
     
     do j=2,mfit
        do k=1,j-1
-          alpha(k,j)=alpha(j,k)
+          curve(k,j) = curve(j,k)
        end do
     end do
     
-  end subroutine mrqcof
+  end subroutine nonlin_fit_eval
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  subroutine fgauss(na, x,a,  y,dyda)
+  subroutine fgauss(na, xDat,fCoef,  yDat,dyda)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: na
-    real(double), intent(in) :: x,a(na)
-    real(double), intent(out) :: y,dyda(na)
+    real(double), intent(in) :: xDat,fCoef(na)
+    real(double), intent(out) :: yDat,dyda(na)
     integer :: i
     real(double) :: arg,ex,fac
     
-    y = 0.d0
+    yDat = 0.d0
     do i=1,na-1,3
-       arg = (x - a(i+1)) / a(i+2)
+       arg = (xDat - fCoef(i+1)) / fCoef(i+2)
        ex  = exp(-arg**2)
-       fac = a(i) * ex * 2 * arg
+       fac = fCoef(i) * ex * 2 * arg
        
-       y         = y + a(i)*ex
+       yDat      = yDat + fCoef(i)*ex
        dyda(i)   = ex
-       dyda(i+1) = fac / a(i+2)
-       dyda(i+2) = fac * arg / a(i+2)
+       dyda(i+1) = fac / fCoef(i+2)
+       dyda(i+2) = fac * arg / fCoef(i+2)
     end do
     
   end subroutine fgauss
