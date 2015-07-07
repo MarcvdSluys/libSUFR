@@ -66,14 +66,14 @@ contains
     use SUFR_kinds, only: double
     use SUFR_system, only: warn, quit_program_error
     implicit none
-    integer, parameter :: Mmax=50
+    integer, parameter :: mMax = 50
     integer, intent(in) :: ncoef,varc(ncoef),ncov,ndat
     real(double), intent(in) :: xdat(ndat),ydat(ndat), yerr(ndat)
     real(double), intent(inout) :: coef(ncoef)
     real(double), intent(out) :: chi2,covar(ncov,ncov)
     
     integer :: ii,ij,ik,il,im, nfit
-    real(double) :: sig2i,tot,wt,ym, basefunc(Mmax),beta(Mmax)
+    real(double) :: sig2i,tot,wt,ym, basefunc(mMax),beta(mMax)
     external myFunc
     
     if(minval(abs(yerr)).lt.10*tiny(yerr)) call quit_program_error('libSUFR linear_fit_yerr(): errors cannot be zero', 0)
@@ -122,6 +122,7 @@ contains
        end do
     end do
     
+    ! Solve the linear algebraic equations using Gauss-Jordan elimination:
     call solve_linear_equations_Gauss_Jordan(covar,nfit,ncov, beta,1,1)
     
     ij = 0
@@ -153,105 +154,125 @@ contains
   !> \brief  Levenberg-Marquardt method to reduce the value of chi-squared of a fit of a set of data points with errors in Y to a
   !!         non-linear function
   !!
-  !! \param xDat    X data points to fit
-  !! \param yDat    Y data points to fit
-  !! \param ySig    Standard deviations for yDat
-  !! \param Ndat    Number of data points in X and Y
+  !! \param xDat     X data points to fit
+  !! \param yDat     Y data points to fit
+  !! \param ySig     Standard deviations for yDat
+  !! \param nDat     Number of data points in X and Y
   !!
-  !! \param fCoef   Coefficients for the non-linear function funcs, updated after each call
-  !! \param iCoef   Initial coefficients for the non-linear function funcs.  Set to 0.d0 in order to keep fCoef fixed
-  !!                  (not fitted for)
-  !! \param nCoef   Number of coefficients used to describe the non-linear function funcs
+  !! \param fCoef    Coefficients for the non-linear function myFunc, updated after each call
+  !! \param iCoef    Determines which coefficients for the non-linear function myFunc should be fitted for.  Set iCoef(i) = 0 in 
+  !!                   order to keep fCoef(i) fixed
+  !! \param nCoef    Number of coefficients used to describe the non-linear function myFunc
   !!
-  !! \param covar   Variance-covariance matrix - returned on last call with lambda.  Fixed parameters return zero (co)variances
-  !! \param curve   Curvature matrix
-  !! \param nMat    Size of the matrices; > nCoef
-  !! \param chiSq   Chi squared
-  !! \param funcs   Non-linear function to fit: funcs(xDat,fCoef,yFit,dyda,nCoef)
-  !! \param lambda  Set to <0 for initialisation in the first call.  Set to ==0 to return the variance-covariance and curvature
-  !!                  matrices on the last call.  Lambda decreases if chiSq becomes smaller, and increases otherwise.
+  !! \param covar    Variance-covariance matrix - returned on last call with lambda.  Fixed parameters return zero (co)variances
+  !! \param curvMat  Hessian/curvature matrix - double partial derivative of chi squared to two coefficients fCoef
+  !! \param nMat     Size of the matrices; > nCoef
+  !!
+  !! \param chiSq    Chi squared
+  !! \param myFunc   External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
+  !!                   function coefficients fCoef
+  !! \param lambda   Set to <0 for initialisation in the first call.  Set to ==0 to return the variance-covariance and curvature
+  !!                   matrices on the last call.  Lambda decreases 10x if chiSq becomes smaller, and increases 10x otherwise.
   !!
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   !! 
   !! \note  Uses sort_var_covar(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
   
-  subroutine nonlin_fit_yerr(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, covar, curve, nMat, chiSq, funcs, lambda)
+  subroutine nonlin_fit_yerr(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, covar, curvMat, nMat, chiSq, myFunc, lambda)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq0
     
     implicit none
-    integer, intent(in) :: nCoef,nMat,Ndat,iCoef(nCoef)
-    real(double), intent(in) :: ySig(Ndat), xDat(Ndat), yDat(Ndat)
+    integer, intent(in) :: nCoef,nMat,nDat,iCoef(nCoef)
+    real(double), intent(in) :: ySig(nDat), xDat(nDat), yDat(nDat)
     real(double), intent(inout) :: fCoef(nCoef), lambda
-    real(double), intent(out) :: curve(nMat,nMat), covar(nMat,nMat), chiSq
+    real(double), intent(out) :: curvMat(nMat,nMat), covar(nMat,nMat), chiSq
     
-    integer, parameter :: mMax=20
-    integer :: j,k,l,mfit
-    real(double) :: oChiSq,atry(mMax),beta(mMax),dfCoef(mMax)
+    integer, parameter :: mMax = 20
+    integer :: j,k,l,mFit
+    real(double) :: oChiSq,tryCoef(mMax),dChiSq(mMax),dfCoef(mMax)
     
-    external funcs
-    save oChiSq,atry,beta,dfCoef,mfit
+    save oChiSq,tryCoef,dChiSq,dfCoef,mFit
+    external myFunc
     
     
+    ! Initialisation on the first call:
     if(lambda.lt.0.d0) then
-       mfit = 0
+       mFit = 0
        do j=1,nCoef
-          if(iCoef(j).ne.0) mfit = mfit + 1
+          if(iCoef(j).ne.0) mFit = mFit + 1
        end do
        
        lambda = 0.001d0
        
-       call nonlin_fit_eval(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, curve,beta, nMat, chiSq, funcs)
+       ! Evaluate the linearized curvature matrix and vector dChiSq/dfCoef, and compute chi squared:
+       call nonlin_fit_eval(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, curvMat,dChiSq, nMat, chiSq, myFunc)
        
-       oChiSq=chiSq
+       oChiSq = chiSq
        do j=1,nCoef
-          atry(j) = fCoef(j)
+          tryCoef(j) = fCoef(j)
        end do
     end if
     
-    do j=1,mfit
-       do k=1,mfit
-          covar(j,k) = curve(j,k)
+    
+    ! Augment the diagonal elements of the variance-covariance matrix:
+    do j=1,mFit
+       do k=1,mFit
+          covar(j,k) = curvMat(j,k)
        end do
-       covar(j,j) = curve(j,j) * (1.d0+lambda)
-       dfCoef(j) = beta(j)
+       
+       covar(j,j) = curvMat(j,j) * (1.d0+lambda)
+       dfCoef(j)  = dChiSq(j)
     end do
     
-    call solve_linear_equations_Gauss_Jordan(covar,mfit,nMat,dfCoef,1,1)
     
+    ! Solve the linear algebraic equations using Gauss-Jordan elimination:
+    call solve_linear_equations_Gauss_Jordan(covar,mFit,nMat,dfCoef,1,1)
+    
+    
+    ! Compute the variance-covariance and curvature matrices on the last call, and return:
     if(deq0(lambda)) then
-       call sort_var_covar(covar,nMat,nCoef,iCoef,mfit)
-       call sort_var_covar(curve,nMat,nCoef,iCoef,mfit)
+       call sort_var_covar(covar,  nMat, nCoef,iCoef, mFit)
+       call sort_var_covar(curvMat,nMat, nCoef,iCoef, mFit)
        return
     end if
     
-    j=0
+    
+    ! Update the trial coefficients:
+    j = 0
     do l=1,nCoef
        if(iCoef(l).ne.0) then
           j = j+1
-          atry(l) = fCoef(l) + dfCoef(j)
+          tryCoef(l) = fCoef(l) + dfCoef(j)
        end if
     end do
     
-    call nonlin_fit_eval(xDat,yDat, ySig, Ndat, atry,iCoef,nCoef, covar, dfCoef,nMat, chiSq, funcs)
     
+    ! Evaluate the linearized curvature matrix and vector dChiSq/dfCoef, and compute chi squared:
+    call nonlin_fit_eval(xDat,yDat, ySig, nDat, tryCoef,iCoef,nCoef, covar, dfCoef,nMat, chiSq, myFunc)
+    
+    
+    ! If the new chi squared is better (smaller) than the old value, accept this solution and decrease lambda...
     if(chiSq.lt.oChiSq) then
        lambda = 0.1d0*lambda
        oChiSq = chiSq
-       do j=1,mfit
-          do k=1,mfit
-             curve(j,k) = covar(j,k)
+       do j=1,mFit
+          do k=1,mFit
+             curvMat(j,k) = covar(j,k)
           end do
-          beta(j) = dfCoef(j)
+          dChiSq(j) = dfCoef(j)
        end do
        
        do l=1,nCoef
-          fCoef(l) = atry(l)
+          fCoef(l) = tryCoef(l)
        end do
-    else
+       
+    else                                          !  ...otherwise keep the old chi squared and increase lambda:
+       
        lambda = 10*lambda
        chiSq = oChiSq
+       
     end if
     
   end subroutine nonlin_fit_yerr
@@ -259,60 +280,67 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Evaluate the linearized fitting matrix curve, and vector beta, and calculate chi squared
+  !> \brief  Evaluate the linearized fitting matrix curvMat, and vector dChiSq, and calculate the chi squared (chiSq)
   !!
-  !! \param xDat    X data points to fit
-  !! \param yDat    Y data points to fit
-  !! \param ySig    Standard deviations for yDat
-  !! \param Ndat    Number of data points in X and Y
+  !! \param xDat     X data points to fit
+  !! \param yDat     Y data points to fit
+  !! \param ySig     Standard deviations for yDat
+  !! \param nDat     Number of data points in X and Y
   !!
-  !! \param fCoef   Coefficients for the non-linear function funcs, updated after each call
-  !! \param iCoef   Initial coefficients for the non-linear function funcs.  Set to 0.d0 in order to keep fCoef fixed
-  !!                  (not fitted for)
-  !! \param nCoef   Number of coefficients used to describe the non-linear function funcs
+  !! \param fCoef    Coefficients for the non-linear function myFunc, updated after each call
+  !! \param iCoef    Determines which coefficients for the non-linear function myFunc should be fitted for.  Set iCoef(i) = 0 in 
+  !!                   order to keep fCoef(i) fixed
+  !! \param nCoef    Number of coefficients used to describe the non-linear function myFunc
   !!
-  !! \param curve   Curvature matrix
-  !! \param beta    Vector that describes the linear equations to be solved (together with curve)
-  !! \param nMat    Size of the matrices; > nCoef
-  !! \param chiSq   Chi squared
-  !! \param funcs   Non-linear function to fit: funcs(xDat,fCoef,yFit,dyda,nCoef)
+  !! \param curvMat  Hessian/curvature matrix - double partial derivative of chi squared to two coefficients fCoef
+  !! \param dChiSq   Vector containing the partial derivatives of chiSq to each coefficient in fCoef
+  !! \param nMat     Size of the matrices; > nCoef
+  !!
+  !! \param chiSq    Chi squared
+  !! \param myFunc   External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
+  !!                   function coefficients fCoef
   !!
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
-
-  subroutine nonlin_fit_eval(xDat,yDat, ySig, Ndat, fCoef,iCoef,nCoef, curve,beta, nMat, chiSq, funcs)
-    
+  
+  subroutine nonlin_fit_eval(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, curvMat,dChiSq, nMat, chiSq, myFunc)
     use SUFR_kinds, only: double
     implicit none
-    integer, intent(in) :: nCoef,nMat,Ndat,iCoef(nCoef)
-    real(double), intent(in) :: xDat(Ndat),yDat(Ndat),ySig(Ndat), fCoef(nCoef)
-    real(double), intent(out) :: chiSq,curve(nMat,nMat),beta(nCoef)
+    integer, intent(in) :: nCoef,nMat,nDat,iCoef(nCoef)
+    real(double), intent(in) :: xDat(nDat),yDat(nDat),ySig(nDat), fCoef(nCoef)
+    real(double), intent(out) :: chiSq,curvMat(nMat,nMat),dChiSq(nCoef)
     
-    integer, parameter :: mMax=20
-    integer :: mfit,i,j,k,l,m
+    integer, parameter :: mMax = 20
+    integer :: mFit,i,j,k,l,m
     real(double) :: dy,sig2i,wt,ymod,dyda(mMax)
-    external funcs
+    external myFunc
     
-    mfit = 0
     
+    ! Determine the number of non-fixed parameters:
+    mFit = 0
     do j=1,nCoef
-       if(iCoef(j).ne.0) mfit = mfit + 1
+       if(iCoef(j).ne.0) mFit = mFit + 1
     end do
     
-    do j=1,mfit
+    
+    ! Initialise the curvature matrix and chiSq-derivative vector:
+    do j=1,mFit
        do k=1,j
-          curve(j,k) = 0.d0
+          curvMat(j,k) = 0.d0
        end do
-       beta(j)=0.d0
+       dChiSq(j) = 0.d0
     end do
     
-    chiSq=0.d0
-    do i=1,Ndat
-       call funcs(xDat(i), fCoef, ymod, dyda, nCoef)
-       sig2i = 1.d0/(ySig(i)**2)
-       dy = yDat(i) - ymod
-       j = 0
+    
+    ! Sum over all data points:
+    chiSq = 0.d0
+    do i=1,nDat
+       call myFunc(xDat(i), fCoef, ymod, dyda, nCoef)
        
+       sig2i = 1.d0/(ySig(i)**2)  ! 1/sigma^2
+       dy = yDat(i) - ymod
+       
+       j = 0
        do l=1,nCoef
           if(iCoef(l).ne.0) then
              j = j+1
@@ -322,20 +350,22 @@ contains
              do m=1,l
                 if(iCoef(m).ne.0) then
                    k = k+1
-                   curve(j,k) = curve(j,k) + wt*dyda(m)
+                   curvMat(j,k) = curvMat(j,k) + wt*dyda(m)
                 end if
              end do
              
-             beta(j) = beta(j) + dy*wt
+             dChiSq(j) = dChiSq(j) + dy*wt
           end if
        end do
        
-       chiSq = chiSq + dy**2 * sig2i
+       chiSq = chiSq + dy**2 * sig2i  ! Compute chi squared
     end do
     
-    do j=2,mfit
+    
+    ! Fill in the symmetric side of the curvature matrix:
+    do j=2,mFit
        do k=1,j-1
-          curve(k,j) = curve(j,k)
+          curvMat(k,j) = curvMat(j,k)
        end do
     end do
     
@@ -343,28 +373,48 @@ contains
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  subroutine fgauss(na, xDat,fCoef,  yDat,dyda)
+  !> \brief  Example function of nonlin_fit_yerr() from Numerical Recipes: return the value and partial derivatives
+  !!
+  !! \param Na     Number of coefficients (3) * number of Gaussians
+  !! \param xDat   Input X values for the data points
+  !! \param fCoef  Vector of coefficients that describe the function.  Here: 1: B_k, 2: E_k, 3: G_k
+  !!
+  !! \retval yDat  Y values for the data points
+  !! \retval dyda  Partial derivatives for yDat:  1: dy/dB_k, 2: dy/dE_k, 3: dy/dG_k
+  !!
+  !! \note
+  !! - This example represents the sum of a number of K=Na/3 Gaussians, described by the function:
+  !!     y(x)  =  Sum_k=1,K  B_k  exp[ - ( (x-E_k)/G_k )^2 ],
+  !!     where B_k is the height, E_k the centre and G_k the width of the k-th Gaussian.
+  !!
+  !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
+  
+  subroutine nonlin_fit_eval_ex_Gauss(Na, xDat,fCoef,  yDat,dyda)
     use SUFR_kinds, only: double
+    
     implicit none
-    integer, intent(in) :: na
-    real(double), intent(in) :: xDat,fCoef(na)
-    real(double), intent(out) :: yDat,dyda(na)
-    integer :: i
+    integer, intent(in) :: Na
+    real(double), intent(in) :: xDat,fCoef(Na)
+    real(double), intent(out) :: yDat,dyda(Na)
+    
+    integer :: k
     real(double) :: arg,ex,fac
     
+    
     yDat = 0.d0
-    do i=1,na-1,3
-       arg = (xDat - fCoef(i+1)) / fCoef(i+2)
-       ex  = exp(-arg**2)
-       fac = fCoef(i) * ex * 2 * arg
+    do k=1,Na-1,3
+       arg = (xDat - fCoef(k+1)) / fCoef(k+2)  ! (x-E_k)/G_k
+       ex  = exp(-arg**2)                      ! exp[ - ( (x-E_k)/G_k )^2 ]
+       fac = fCoef(k) * ex * 2 * arg           ! 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)/G_k
        
-       yDat      = yDat + fCoef(i)*ex
-       dyda(i)   = ex
-       dyda(i+1) = fac / fCoef(i+2)
-       dyda(i+2) = fac * arg / fCoef(i+2)
+       yDat      = yDat + fCoef(k)*ex          ! y = y  +  B_k * exp[ - ( (x-E_k)/G_k )^2 ]  - add up the different Gaussians
+       
+       dyda(k)   = ex                          ! dy/dB = exp[]
+       dyda(k+1) = fac / fCoef(k+2)            ! dy/dE = 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)/G_k^2
+       dyda(k+2) = fac * arg / fCoef(k+2)      ! dy/dG = 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)^2/G_k^3
     end do
     
-  end subroutine fgauss
+  end subroutine nonlin_fit_eval_ex_Gauss
   !*********************************************************************************************************************************
   
   
@@ -440,7 +490,7 @@ contains
     integer, intent(in) :: Nmat,NmatArr, Nvec,NvecArr
     real(double), intent(inout) :: matArr(NmatArr,NmatArr),vecArr(NmatArr,NvecArr)
     
-    integer, parameter :: Nmax=50  ! Maximum allowed value for Nmat
+    integer, parameter :: Nmax = 50  ! Maximum allowed value for Nmat
     integer :: ii,icol,irow,ij,ik,il,ll,indxc(Nmax),indxr(Nmax),ipiv(Nmax)
     real(double) :: arrmax,tmpdbl,pivinv
     
