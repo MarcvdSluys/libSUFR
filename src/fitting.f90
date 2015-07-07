@@ -169,17 +169,17 @@ contains
   !! \param nMat     Size of the matrices; > nCoef
   !!
   !! \param chiSq    Chi squared
-  !! \param myFunc   External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
-  !!                   function coefficients fCoef
   !! \param lambda   Set to <0 for initialisation in the first call.  Set to ==0 to return the variance-covariance and curvature
   !!                   matrices on the last call.  Lambda decreases 10x if chiSq becomes smaller, and increases 10x otherwise.
+  !! \param myFunc   External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
+  !!                   function coefficients fCoef
   !!
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   !! 
   !! \note  Uses sort_var_covar(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
   
-  subroutine nonlin_fit_yerr(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, covar, curvMat, nMat, chiSq, myFunc, lambda)
+  subroutine nonlin_fit_yerr(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, covar, curvMat, nMat, chiSq, lambda, myFunc)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq0
     
@@ -196,6 +196,7 @@ contains
     save oChiSq,tryCoef,dChiSq,dfCoef,mFit
     external myFunc
     
+    if(.false.) call myFunc()  ! An EXTERNAL subroutine must be CALLed
     
     ! Initialisation on the first call:
     if(lambda.lt.0.d0) then
@@ -375,7 +376,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Example function of nonlin_fit_yerr() from Numerical Recipes: return the value and partial derivatives
   !!
-  !! \param Na     Number of coefficients (3) * number of Gaussians
+  !! \param Ncg    Number of coefficients (3) * number of Gaussians
   !! \param xDat   Input X values for the data points
   !! \param fCoef  Vector of coefficients that describe the function.  Here: 1: B_k, 2: E_k, 3: G_k
   !!
@@ -383,26 +384,26 @@ contains
   !! \retval dyda  Partial derivatives for yDat:  1: dy/dB_k, 2: dy/dE_k, 3: dy/dG_k
   !!
   !! \note
-  !! - This example represents the sum of a number of K=Na/3 Gaussians, described by the function:
+  !! - This example represents the sum of a number of K=Ncg/3 Gaussians, described by the function:
   !!     y(x)  =  Sum_k=1,K  B_k  exp[ - ( (x-E_k)/G_k )^2 ],
   !!     where B_k is the height, E_k the centre and G_k the width of the k-th Gaussian.
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   
-  subroutine nonlin_fit_eval_ex_Gauss(Na, xDat,fCoef,  yDat,dyda)
+  subroutine nonlin_fit_eval_ex_Gauss(Ncg, xDat,fCoef,  yDat,dyda)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: Na
-    real(double), intent(in) :: xDat,fCoef(Na)
-    real(double), intent(out) :: yDat,dyda(Na)
+    integer, intent(in) :: Ncg
+    real(double), intent(in) :: xDat,fCoef(Ncg)
+    real(double), intent(out) :: yDat,dyda(Ncg)
     
     integer :: k
     real(double) :: arg,ex,fac
     
     
     yDat = 0.d0
-    do k=1,Na-1,3
+    do k=1,Ncg-1,3
        arg = (xDat - fCoef(k+1)) / fCoef(k+2)  ! (x-E_k)/G_k
        ex  = exp(-arg**2)                      ! exp[ - ( (x-E_k)/G_k )^2 ]
        fac = fCoef(k) * ex * 2 * arg           ! 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)/G_k
