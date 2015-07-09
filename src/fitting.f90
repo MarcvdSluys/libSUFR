@@ -190,7 +190,7 @@ contains
     real(double), intent(out) :: curvMat(nMat,nMat), covar(nMat,nMat), chiSq
     
     integer, parameter :: mMax = 20
-    integer :: j,k,l,mFit
+    integer :: j,l,mFit
     real(double) :: oChiSq,tryCoef(mMax),dChiSq(mMax),dfCoef(mMax)
     
     save oChiSq,tryCoef,dChiSq,dfCoef,mFit
@@ -211,20 +211,15 @@ contains
        call nonlin_fit_eval(xDat,yDat, ySig, nDat, fCoef,iCoef,nCoef, curvMat,dChiSq, nMat, chiSq, myFunc)
        
        oChiSq = chiSq
-       do j=1,nCoef
-          tryCoef(j) = fCoef(j)
-       end do
+       tryCoef(1:nCoef) = fCoef(1:nCoef)
     end if
     
     
     ! Augment the diagonal elements of the variance-covariance matrix:
+    covar(1:mFit,1:mFit) = curvMat(1:mFit,1:mFit)
+    dfCoef(1:mFit)  = dChiSq(1:mFit)
     do j=1,mFit
-       do k=1,mFit
-          covar(j,k) = curvMat(j,k)
-       end do
-       
        covar(j,j) = curvMat(j,j) * (1.d0+lambda)
-       dfCoef(j)  = dChiSq(j)
     end do
     
     
@@ -258,18 +253,13 @@ contains
     if(chiSq.lt.oChiSq) then
        lambda = 0.1d0*lambda
        oChiSq = chiSq
-       do j=1,mFit
-          do k=1,mFit
-             curvMat(j,k) = covar(j,k)
-          end do
-          dChiSq(j) = dfCoef(j)
-       end do
        
-       do l=1,nCoef
-          fCoef(l) = tryCoef(l)
-       end do
+       curvMat(1:mFit,1:mFit) = covar(1:mFit,1:mFit)
+       dChiSq(1:mFit) = dfCoef(1:mFit)
        
-    else                                          !  ...otherwise keep the old chi squared and increase lambda:
+       fCoef(1:nCoef) = tryCoef(1:nCoef)
+       
+    else                                        !  ...otherwise keep the old chi squared, and, if larger, increase lambda:
        
        if(chiSq.gt.oChiSq) lambda = 10*lambda
        chiSq = oChiSq
@@ -325,12 +315,8 @@ contains
     
     
     ! Initialise the curvature matrix and chiSq-derivative vector:
-    do j=1,mFit
-       do k=1,j
-          curvMat(j,k) = 0.d0
-       end do
-       dChiSq(j) = 0.d0
-    end do
+    curvMat = 0.d0
+    dChiSq = 0.d0
     
     
     ! Sum over all data points:
@@ -385,7 +371,7 @@ contains
   !! \retval dyda  Partial derivatives for yDat:  1: dy/dfCoef(1),  ...,  n: dy/dfCoef(n)
   !!
   !!
-  !! \note  Write a subroutine with the same interface to use nonlin_fit_yerr()
+  !! \note  Write a subroutine with the same interface to use with nonlin_fit_yerr()
   
   subroutine nonlin_fit_example_myFunc(xDat, fCoef,nCoef, yDat,dyda)
     use SUFR_kinds, only: double
@@ -395,10 +381,10 @@ contains
     real(double), intent(in) :: xDat,fCoef(nCoef)
     real(double), intent(out) :: yDat,dyda(nCoef)
     
-    yDat = xDat**2             ! Replace with desired function
-    dyda(1) = fCoef(2) * xDat  ! Replace with partial derivative w.r.t. first variable
+    yDat    = fCoef(1)*xDat**2 + fCoef(2)   ! Replace with desired function
+    dyda(1) = fCoef(2) * xDat               ! Replace with partial derivative w.r.t. first variable - dyDat/dfCoef(1)
     ! ...
-    dyda(nCoef) = fCoef(1)  ! Replace with partial derivative w.r.t. n-th variable
+    dyda(nCoef) = fCoef(1)                  ! Replace with partial derivative w.r.t. n-th variable - dyDat/dfCoef(nCoef)
     
   end subroutine nonlin_fit_example_myFunc
   !*********************************************************************************************************************************
