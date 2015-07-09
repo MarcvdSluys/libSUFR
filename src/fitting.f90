@@ -271,7 +271,7 @@ contains
        
     else                                          !  ...otherwise keep the old chi squared and increase lambda:
        
-       lambda = 10*lambda
+       if(chiSq.gt.oChiSq) lambda = 10*lambda
        chiSq = oChiSq
        
     end if
@@ -313,7 +313,7 @@ contains
     
     integer, parameter :: mMax = 20
     integer :: mFit,i,j,k,l,m
-    real(double) :: dy,sig2i,wt,ymod,dyda(mMax)
+    real(double) :: dy,sig2i,wt,yMod,dyda(mMax)
     external myFunc
     
     
@@ -336,10 +336,10 @@ contains
     ! Sum over all data points:
     chiSq = 0.d0
     do i=1,nDat
-       call myFunc(xDat(i), fCoef, ymod, dyda, nCoef)
+       call myFunc(xDat(i), fCoef,nCoef, yMod, dyda)
        
        sig2i = 1.d0/(ySig(i)**2)  ! 1/sigma^2
-       dy = yDat(i) - ymod
+       dy = yDat(i) - yMod
        
        j = 0
        do l=1,nCoef
@@ -373,49 +373,34 @@ contains
   end subroutine nonlin_fit_eval
   !*********************************************************************************************************************************
   
+  
   !*********************************************************************************************************************************
-  !> \brief  Example function of nonlin_fit_yerr() from Numerical Recipes: return the value and partial derivatives
+  !> \brief  Dummy example function myFunc for nonlin_fit_yerr(): return the value and partial derivatives
   !!
-  !! \param Ncg    Number of coefficients (3) * number of Gaussians
   !! \param xDat   Input X values for the data points
-  !! \param fCoef  Vector of coefficients that describe the function.  Here: 1: B_k, 2: E_k, 3: G_k
+  !! \param fCoef  Vector of coefficients that describe the function
+  !! \param nCoef  Number of coefficients
   !!
   !! \retval yDat  Y values for the data points
-  !! \retval dyda  Partial derivatives for yDat:  1: dy/dB_k, 2: dy/dE_k, 3: dy/dG_k
+  !! \retval dyda  Partial derivatives for yDat:  1: dy/dfCoef(1),  ...,  n: dy/dfCoef(n)
   !!
-  !! \note
-  !! - This example represents the sum of a number of K=Ncg/3 Gaussians, described by the function:
-  !!     y(x)  =  Sum_k=1,K  B_k  exp[ - ( (x-E_k)/G_k )^2 ],
-  !!     where B_k is the height, E_k the centre and G_k the width of the k-th Gaussian.
   !!
-  !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
+  !! \note  Write a subroutine with the same interface to use nonlin_fit_yerr()
   
-  subroutine nonlin_fit_eval_ex_Gauss(Ncg, xDat,fCoef,  yDat,dyda)
+  subroutine nonlin_fit_example_myFunc(xDat, fCoef,nCoef, yDat,dyda)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: Ncg
-    real(double), intent(in) :: xDat,fCoef(Ncg)
-    real(double), intent(out) :: yDat,dyda(Ncg)
+    integer, intent(in) :: nCoef
+    real(double), intent(in) :: xDat,fCoef(nCoef)
+    real(double), intent(out) :: yDat,dyda(nCoef)
     
-    integer :: k
-    real(double) :: arg,ex,fac
+    yDat = xDat**2             ! Replace with desired function
+    dyda(1) = fCoef(2) * xDat  ! Replace with partial derivative w.r.t. first variable
+    ! ...
+    dyda(nCoef) = fCoef(1)  ! Replace with partial derivative w.r.t. n-th variable
     
-    
-    yDat = 0.d0
-    do k=1,Ncg-1,3
-       arg = (xDat - fCoef(k+1)) / fCoef(k+2)  ! (x-E_k)/G_k
-       ex  = exp(-arg**2)                      ! exp[ - ( (x-E_k)/G_k )^2 ]
-       fac = fCoef(k) * ex * 2 * arg           ! 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)/G_k
-       
-       yDat      = yDat + fCoef(k)*ex          ! y = y  +  B_k * exp[ - ( (x-E_k)/G_k )^2 ]  - add up the different Gaussians
-       
-       dyda(k)   = ex                          ! dy/dB = exp[]
-       dyda(k+1) = fac / fCoef(k+2)            ! dy/dE = 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)/G_k^2
-       dyda(k+2) = fac * arg / fCoef(k+2)      ! dy/dG = 2 * B_k * exp[ - ( (x-E_k)/G_k )^2 ] * (x-E_k)^2/G_k^3
-    end do
-    
-  end subroutine nonlin_fit_eval_ex_Gauss
+  end subroutine nonlin_fit_example_myFunc
   !*********************************************************************************************************************************
   
   
