@@ -41,17 +41,18 @@ contains
   !!   value in chiSq.
   !!
   !!
+  !! \param  nDat      Number of data points
   !! \param  xDat      X values of the data (nDat)
   !! \param  yDat      Y values of the data (nDat)
   !! \param  yErr      Errors (standard deviations) of the y values (nDat)
-  !! \param  nDat      Number of data points
   !!
+  !! \param  nCoef     Number of coefficients of the fitting function
   !! \retval fCoef     Coefficients of the fitting function (nCoef)
   !! \param  freeCoef  Fix coefficient coef(i) if varc(i)=0, otherwise let if vary freely and fit it (nCoef)
-  !! \param  nCoef     Number of coefficients of the fitting function
   !!
-  !! \retval covMat    Covariance matrix (nCov,nCov)
   !! \param  nCov      Size of both dimensions of covMat()
+  !! \retval covMat    Covariance matrix (nCov,nCov)
+  !!
   !! \retval chiSq     Chi^2 - chi squared
   !!
   !! \param  myFunc    External subroutine that describes the model value of Y for given value X
@@ -62,15 +63,15 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.15.4
   !!
   
- subroutine linear_fit_yerr(xDat,yDat, yErr, nDat,  fCoef,freeCoef,nCoef,  covMat,nCov, chiSq, myFunc)
+ subroutine linear_fit_yerr(nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef,  nCov,covMat, chiSq, myFunc)
     use SUFR_kinds, only: double
     use SUFR_system, only: warn, quit_program_error
     implicit none
     integer, parameter :: mMax = 50
-    integer, intent(in) :: nCoef,freeCoef(nCoef),nCov,nDat
+    integer, intent(in) :: nDat, nCoef,freeCoef(nCoef), nCov
     real(double), intent(in) :: xDat(nDat),yDat(nDat), yErr(nDat)
     real(double), intent(inout) :: fCoef(nCoef)
-    real(double), intent(out) :: chiSq,covMat(nCov,nCov)
+    real(double), intent(out) :: chiSq, covMat(nCov,nCov)
     
     integer :: ii,ij,ik,il,im, nfit
     real(double) :: err2i,tot,wt,ym, basefunc(mMax),beta(mMax)
@@ -154,19 +155,22 @@ contains
   !> \brief  Levenberg-Marquardt method to reduce the value of chi-squared of a fit of a set of data points with errors in Y to a
   !!         non-linear function
   !!
+  !! You will need to call this routine repeatedly, with different values for iterStat, until chiSq no longer decreases
+  !!   (significantly)
+  !!
+  !! \param nDat      Number of data points in X and Y
   !! \param xDat      X data points to fit
   !! \param yDat      Y data points to fit
   !! \param yErr      Errors (standard deviations) for yDat
-  !! \param nDat      Number of data points in X and Y
   !!
+  !! \param nCoef     Number of coefficients used to describe the non-linear function myFunc
   !! \param fCoef     Coefficients for the non-linear function myFunc, updated after each call
   !! \param freeCoef  Determines which coefficients for the non-linear function myFunc should be fitted for.  Set freeCoef(i) = 0 
   !!                    in order to keep fCoef(i) fixed
-  !! \param nCoef     Number of coefficients used to describe the non-linear function myFunc
   !!
+  !! \param nMat      Size of the matrices; > nCoef
   !! \param covMat    Variance-covariance matrix - returned on last call with iterStat.  Fixed parameters return zero (co)variances
   !! \param curvMat   Hessian/curvature matrix - double partial derivative of chi squared to two coefficients fCoef
-  !! \param nMat      Size of the matrices; > nCoef
   !!
   !! \param chiSq     Chi squared
   !! \param iterStat  Iteration status;  Set to <0 for initialisation in the first call.  Set to 0 to return the 
@@ -180,12 +184,12 @@ contains
   !! 
   !! \note  Uses sort_var_covar(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
   
-  subroutine nonlin_fit_yerr(xDat,yDat, yErr, nDat, fCoef,freeCoef,nCoef, covMat, curvMat, nMat, chiSq, iterStat, myFunc)
+  subroutine nonlin_fit_yerr(nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef,  nMat,covMat,curvMat,  chiSq, iterStat, myFunc)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq0
     
     implicit none
-    integer, intent(in) :: nCoef,nMat,nDat,freeCoef(nCoef)
+    integer, intent(in) :: nDat, nCoef,freeCoef(nCoef), nMat
     real(double), intent(in) :: yErr(nDat), xDat(nDat), yDat(nDat)
     real(double), intent(inout) :: fCoef(nCoef), iterStat
     real(double), intent(out) :: curvMat(nMat,nMat), covMat(nMat,nMat), chiSq
@@ -396,7 +400,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Sort covariance matrix returned by linear_fit_yerr() to true order of fitting coefficients
+  !> \brief  Sort covariance matrix returned by linear_fit_yerr() and nonlin_fit_yerr() to true order of fitting coefficients
   !!
   !! \param  covMat    Variance-covariance matrix
   !! \param  nCov      Size of both dimensions of covMat()
