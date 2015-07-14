@@ -353,14 +353,15 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Obtain command-line arguments and reduce them to options, values and types
   !!
-  !! \param   verbose   Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
-  !! \param   narg_max  Maximum number of command-line arguments
+  !! \param   verbose    Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
+  !! \param   narg_max   Maximum number of command-line arguments
   !!
-  !! \retval  nopts     Number of options found (without counting their variables)
-  !! \retval  options   Array of command-line options found
-  !! \retval  values    Array of command-line values found (i.e., the parameters that belong to an option)
-  !! \retval  optypes   Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value,
-  !!                    30/31: long option (two dashes) without/with value
+  !! \retval  nopts      Number of options found (without counting their variables)
+  !! \retval  options    Array of command-line options found
+  !! \retval  values     Array of command-line values found (i.e., the parameters that belong to an option)
+  !! \retval  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value,
+  !!                     30/31: long option (two dashes) without/with value
+  !! \retval  cl_option  Struct containing command-line option names, values, has_val, short and long
   
   
   subroutine get_commandline_options_values(verbose,narg_max, nopts,options,values,optypes, cl_option)
@@ -474,7 +475,7 @@ contains
     integer, parameter :: narg_max = 99
     type(cl_options) :: cl_option(Narg_max)
     integer :: i, lverbose, nopts, optypes(narg_max)
-    character :: options(narg_max)*(len(option)+2), values(narg_max)*(len(option)+2)  ! longer t option to disting. "--foo" & "--foos"
+    character :: options(narg_max)*(len(option)+2), values(narg_max)*(len(option)+2)  ! longer string to disting. "--foo" & "--foos"
     
     lverbose = 0
     if(present(verbose)) lverbose = verbose
