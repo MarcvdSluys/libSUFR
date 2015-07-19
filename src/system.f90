@@ -120,8 +120,8 @@ contains
     if(lstatus.eq.0) then
        stop
     else
-       write(0,'(A)', advance='no')'  ***  '
-       stop 1
+       write(0,'(A)', advance='no') '  ***  '
+       stop 1  ! This will print "STOP 1" or "1" to screen, as well as use exit code 1
     end if
     
   end subroutine syntax_quit

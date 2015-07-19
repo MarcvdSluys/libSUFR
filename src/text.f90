@@ -340,8 +340,16 @@ contains
     integer, intent(in) :: decim
     character, intent(in), optional :: mark*(*)
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
-    character :: dbl2str*(max(ceiling(log10(abs(number*(1.d0+eps)))),1) - (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     character :: fmt*(9)
+    
+    !> -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
+    !! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
+    !!      but we need 3 since 100.0 must be printed
+    !! -  - (sign(1_long,floor(number,long))-1)/2: space for negative sign
+    !! -  + decim: add the decimals to the total string length
+    !! -  + 1:     add the decimal separator
+    character :: dbl2str*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
     write(dbl2str, trim(fmt)) number
