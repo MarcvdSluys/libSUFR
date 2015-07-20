@@ -185,7 +185,6 @@ contains
   !! \param myFunc    External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
   !!                    function coefficients fCoef
   !!
-  !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   !! 
   !! \note  Uses sort_var_covar_matrix(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
@@ -308,6 +307,13 @@ contains
   !! \param myFunc   External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
   !!                   function coefficients fCoef
   !!
+  !!    Since the 1D chi squared is the sum of the squares of the weighted differences,
+  !!    \f$\chi^2 = \sum_j d_j^2\f$,  and the nY-D distance \f$d_j\f$ is defined as \f$d_j = \sqrt{\sum_i d_{ij}^2}\f$,
+  !!    where \f$d_i\f$ is the distance in each dimension, the nY-D chi squared is the sum of
+  !!    the squares of these distances, i.e.
+  !!    \f$\chi^2 = \sum_j d_j^2  =  \sum_j \sum_i d_{ij}^2 = \sum_i \sum_j d_{ij}^2 = \sum_i \chi^2_i\f$,
+  !!    simply the sum of the 1D chi squared values.  The same holds for the derivatives of
+  !!    \f$\chi^2\f$, where the multidimensional derivative is the sum of the 1D values.
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   
@@ -387,12 +393,12 @@ contains
   !> \brief  Dummy example function myFunc for nonlin_fit_yerr(): return the value and partial derivatives
   !!
   !! \param nY     Number of Y values for each X value (normally 1, but e.g. 2 for a sky position with two coordinates)
-  !! \param xDat   Input X values for the data points
+  !! \param xDat   Input X value for the current data point
   !!
   !! \param nCoef  Number of coefficients
   !! \param fCoef  Vector of coefficients that describe the function
   !!
-  !! \retval yDat  Y values for the data points
+  !! \retval yDat  Y values for the current data point
   !! \retval dyda  Partial derivatives for yDat:  1: dy/dfCoef(1),  ...,  n: dy/dfCoef(n)
   !!
   !!
@@ -400,12 +406,15 @@ contains
   
   subroutine nonlin_fit_example_myFunc(nY, xDat,  nCoef,fCoef,  yDat,dyda)
     use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
     
     implicit none
     integer, intent(in) :: nY, nCoef
-    real(double), intent(in) :: xDat,fCoef(nCoef)
-    real(double), intent(out) :: yDat(nY),dyda(nY,nCoef)
+    real(double), intent(in) :: xDat, fCoef(nCoef)
+    real(double), intent(out) :: yDat(nY), dyda(nY,nCoef)
     
+    if(nY.ne.1) call quit_program_error('nonlin_fit_eval_example_myFunc():  nY must be equal to 1 ',1)
+  
     yDat(1)   = fCoef(1)*xDat**2 + fCoef(2)   ! Replace with desired function
     dyda(1,1) = fCoef(2) * xDat               ! Replace with partial derivative w.r.t. first variable - dyDat/dfCoef(1)
     ! ...
