@@ -344,7 +344,7 @@ contains
     
     !> -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
     !! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
-    !!      but we need 3 since 100.0 must be printed
+    !!      but we need 3 since 100.0 must be printed - eps no longer needed?
     !! -  - (sign(1_long,floor(number,long))-1)/2: space for negative sign
     !! -  + decim: add the decimals to the total string length
     !! -  + 1:     add the decimal separator

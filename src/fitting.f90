@@ -78,7 +78,7 @@ contains
     real(double), intent(out) :: chiSq, covMat(nCov,nCov)
     
     integer :: ii,ij,ik,il,im, nFit
-    real(double) :: err2i,tot,wt,ym, basefunc(mMax),beta(mMax)
+    real(double) :: err2i,bf_e2i, tot,ym, basefunc(mMax),beta(mMax)
     external myFunc
     
     if(minval(abs(yErr)).lt.10*tiny(yErr)) call quit_program_error('libSUFR linear_fit_yerr(): errors cannot be zero', 0)
@@ -107,16 +107,16 @@ contains
        do il=1,nCoef
           if(freeCoef(il).ne.0) then
              ij = ij + 1
-             wt = basefunc(il)*err2i
+             bf_e2i = basefunc(il)*err2i
              
              ik = 0
              do im=1,il
                 if(freeCoef(im).ne.0) then
                    ik = ik + 1
-                   covMat(ij,ik) = covMat(ij,ik)+wt*basefunc(im)
+                   covMat(ij,ik) = covMat(ij,ik) + bf_e2i*basefunc(im)
                 end if
              end do
-             beta(ij) = beta(ij)+ym*wt
+             beta(ij) = beta(ij) + ym*bf_e2i
           end if
        end do
     end do
@@ -162,7 +162,9 @@ contains
   !! You will need to call this routine repeatedly, with different values for iterStat, until chiSq no longer decreases
   !!   (significantly)
   !!
+  !! \param nY        Number of Y values for each X value (normally 1, but e.g. 2 for a sky position with two coordinates)
   !! \param nDat      Number of data points in X and Y
+  !!
   !! \param xDat      X data points to fit
   !! \param yDat      Y data points to fit
   !! \param yErr      Errors (standard deviations) for yDat
@@ -188,13 +190,13 @@ contains
   !! 
   !! \note  Uses sort_var_covar_matrix(), solve_linear_equations_Gauss_Jordan() and nonlin_fit_eval()
   
-  subroutine nonlin_fit_yerr(nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef,  nMat,covMat,curvMat,  chiSq, iterStat, myFunc)
+  subroutine nonlin_fit_yerr(nY,nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef,  nMat,covMat,curvMat,  chiSq, iterStat, myFunc)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq0
     
     implicit none
-    integer, intent(in) :: nDat, nCoef,freeCoef(nCoef), nMat
-    real(double), intent(in) :: yErr(nDat), xDat(nDat), yDat(nDat)
+    integer, intent(in) :: nY,nDat, nCoef,freeCoef(nCoef), nMat
+    real(double), intent(in) :: xDat(nDat), yDat(nY,nDat), yErr(nDat)
     real(double), intent(inout) :: fCoef(nCoef), iterStat
     real(double), intent(out) :: curvMat(nMat,nMat), covMat(nMat,nMat), chiSq
     
@@ -207,7 +209,7 @@ contains
     
     
     ! An EXTERNAL subroutine must be CALLed - use a dummy call here, since the subroutine name is only passed on:
-    if(.false.) call myFunc()
+    if(.false.) call myFunc()  ! myFunc(nY, xDat(iDat), nCoef,fCoef, yMod,dyda)
     
     
     ! Initialisation on the first call:
@@ -220,7 +222,7 @@ contains
        iterStat = 0.001d0
        
        ! Evaluate the linearized curvature matrix and vector dChiSq/dfCoef, and compute chi squared:
-       call nonlin_fit_eval(nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef, nMat,curvMat,  dChiSq,chiSq, myFunc)
+       call nonlin_fit_eval(nY,nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef, nMat,curvMat,  dChiSq,chiSq, myFunc)
        
        oChiSq = chiSq
        tryCoef(1:nCoef) = fCoef(1:nCoef)
@@ -259,7 +261,7 @@ contains
     
     
     ! Evaluate the linearized curvature matrix and vector dChiSq/dfCoef, and compute chi squared:
-    call nonlin_fit_eval(nDat, xDat,yDat, yErr,  nCoef,tryCoef,freeCoef,  nMat,covMat,  dfCoef, chiSq,  myFunc)
+    call nonlin_fit_eval(nY,nDat, xDat,yDat, yErr,  nCoef,tryCoef,freeCoef,  nMat,covMat,  dfCoef, chiSq,  myFunc)
     
     
     ! If the new chi squared is better (smaller) than the old value, accept this solution and decrease iterStat...
@@ -286,7 +288,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Evaluate the linearized fitting matrix curvMat and vector dChiSq, and calculate the chi squared (chiSq)
   !!
+  !! \param nY       Number of Y values for each X value (normally 1, but e.g. 2 for a sky position with two coordinates)
   !! \param nDat     Number of data points in X and Y
+  !!
   !! \param xDat     X data points to fit
   !! \param yDat     Y data points to fit
   !! \param yErr     Errors (standard deviations) for yDat
@@ -307,16 +311,16 @@ contains
   !!
   !! \see  Numerical Recipes in Fortran, 15.5: Modelling of Data / Non-linear models
   
-  subroutine nonlin_fit_eval(nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef, nMat,curvMat,  dChiSq,chiSq, myFunc)
+  subroutine nonlin_fit_eval(nY,nDat, xDat,yDat, yErr,  nCoef,fCoef,freeCoef, nMat,curvMat,  dChiSq,chiSq, myFunc)
     use SUFR_kinds, only: double
     implicit none
-    integer, intent(in) :: nCoef,nMat,nDat,freeCoef(nCoef)
-    real(double), intent(in) :: xDat(nDat),yDat(nDat),yErr(nDat), fCoef(nCoef)
+    integer, intent(in) :: nY,nDat, nCoef,freeCoef(nCoef), nMat
+    real(double), intent(in) :: xDat(nDat),yDat(nY,nDat),yErr(nDat), fCoef(nCoef)
     real(double), intent(out) :: chiSq,curvMat(nMat,nMat),dChiSq(nCoef)
     
     integer, parameter :: mMax = 20
-    integer :: iFit,jFit,mFit, iDat, iCoef,jCoef, cntCoefi,cntCoefj
-    real(double) :: dy,err2i,wt,yMod,dyda(mMax)
+    integer :: iFit,jFit,mFit, iY,iDat, iCoef,jCoef, cntCoefi,cntCoefj
+    real(double) :: err2i,dyda_e2i, dy,yMod(nY),dyda(nY,mMax)
     external myFunc
     
     
@@ -327,38 +331,44 @@ contains
     end do
     
     
-    ! Initialise the curvature matrix and chiSq-derivative vector:
+    ! Initialise the chi squared, the chiSq-derivative vector and the curvature matrix:
+    chiSq   = 0.d0
+    dChiSq  = 0.d0
     curvMat = 0.d0
-    dChiSq = 0.d0
     
     
     ! Sum over all data points:
-    chiSq = 0.d0
     do iDat=1,nDat
-       call myFunc(xDat(iDat), nCoef,fCoef, yMod, dyda)
+       call myFunc(nY, xDat(iDat),  nCoef,fCoef,  yMod,dyda)
        
        err2i = 1.d0/(yErr(iDat)**2)  ! 1/sigma^2
-       dy = yDat(iDat) - yMod
        
-       cntCoefi = 0
-       do iCoef=1,nCoef
-          if(freeCoef(iCoef).ne.0) then
-             cntCoefi = cntCoefi + 1
-             wt = dyda(iCoef)*err2i  ! dy/dfCoef_i / sigma^2
-             
-             cntCoefj = 0
-             do jCoef=1,iCoef
-                if(freeCoef(jCoef).ne.0) then
-                   cntCoefj = cntCoefj + 1
-                   curvMat(cntCoefi,cntCoefj) = curvMat(cntCoefi,cntCoefj) + wt*dyda(jCoef)  ! dy/dfCoef_i dy/dfCoef_j / sigma^2
-                end if
-             end do  ! jCoef
-             
-             dChiSq(cntCoefi) = dChiSq(cntCoefi) + dy*wt
-          end if
-       end do  ! iCoef
+       do iY=1,nY  ! Loop over multiple Y variables (if nY>1)
+          dy = yDat(iY,iDat) - yMod(iY)
+          
+          cntCoefi = 0
+          do iCoef=1,nCoef
+             if(freeCoef(iCoef).ne.0) then
+                cntCoefi = cntCoefi + 1
+                dyda_e2i = dyda(iY,iCoef)*err2i  ! dy/dfCoef_i / sigma^2
+                
+                cntCoefj = 0
+                do jCoef=1,iCoef
+                   if(freeCoef(jCoef).ne.0) then
+                      cntCoefj = cntCoefj + 1
+                      curvMat(cntCoefi,cntCoefj) = curvMat(cntCoefi,cntCoefj) + &
+                           dyda_e2i*dyda(iY,jCoef) ! Sum dy/dfCoef_i dy/dfCoef_j / sig^2
+                   end if
+                end do  ! jCoef
+                
+                dChiSq(cntCoefi) = dChiSq(cntCoefi) + dy*dyda_e2i
+             end if
+          end do  ! iCoef
+          
+          chiSq = chiSq + dy**2 * err2i  ! Compute chi squared
+          
+       end do  ! iY
        
-       chiSq = chiSq + dy**2 * err2i  ! Compute chi squared
     end do  ! iDat
     
     
@@ -376,6 +386,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Dummy example function myFunc for nonlin_fit_yerr(): return the value and partial derivatives
   !!
+  !! \param nY     Number of Y values for each X value (normally 1, but e.g. 2 for a sky position with two coordinates)
   !! \param xDat   Input X values for the data points
   !!
   !! \param nCoef  Number of coefficients
@@ -387,18 +398,18 @@ contains
   !!
   !! \note  Write a subroutine with the same interface to use with nonlin_fit_yerr()
   
-  subroutine nonlin_fit_example_myFunc(xDat, nCoef,fCoef, yDat,dyda)
+  subroutine nonlin_fit_example_myFunc(nY, xDat,  nCoef,fCoef,  yDat,dyda)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: nCoef
+    integer, intent(in) :: nY, nCoef
     real(double), intent(in) :: xDat,fCoef(nCoef)
-    real(double), intent(out) :: yDat,dyda(nCoef)
+    real(double), intent(out) :: yDat(nY),dyda(nY,nCoef)
     
-    yDat    = fCoef(1)*xDat**2 + fCoef(2)   ! Replace with desired function
-    dyda(1) = fCoef(2) * xDat               ! Replace with partial derivative w.r.t. first variable - dyDat/dfCoef(1)
+    yDat(1)   = fCoef(1)*xDat**2 + fCoef(2)   ! Replace with desired function
+    dyda(1,1) = fCoef(2) * xDat               ! Replace with partial derivative w.r.t. first variable - dyDat/dfCoef(1)
     ! ...
-    dyda(nCoef) = fCoef(1)                  ! Replace with partial derivative w.r.t. n-th variable - dyDat/dfCoef(nCoef)
+    dyda(1,nCoef) = fCoef(1)                  ! Replace with partial derivative w.r.t. n-th variable - dyDat/dfCoef(nCoef)
     
   end subroutine nonlin_fit_example_myFunc
   !*********************************************************************************************************************************
