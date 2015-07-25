@@ -147,7 +147,7 @@ contains
     case(1)
        write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error opening input file  '//trim(filename)//', aborting  ***'
     case default
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//', file_open_quit():  filetype must be 0 or 1, aborting  ***'
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//', file_open_error_quit():  filetype must be 0 or 1, aborting  ***'
     end select
     
     if(status.eq.0) then
@@ -164,21 +164,30 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print a message to StdErr on file read error
   !!
-  !! \param filename  Filename
-  !! \param line      Line number where read error occurred - 0: no line
+  !! \param filename   Filename
+  !! \param line       Line number where read error occurred - 0: no line
+  !! \param prodedure  Name of the procedure this subroutine is called from
   
-  subroutine file_read_error(filename, line)
+  subroutine file_read_error(filename, line, procedure)
     use SUFR_constants, only: program_name
+    use SUFR_text, only: replace_substring
+    
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line
+    character, intent(in), optional :: procedure*(*)
+    character :: lproc*(99)
+    
+    lproc = ''
+    if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
+    call replace_substring(lproc, '()()', '()')  ! Remove a second pair of brackets
     
     select case(line)
     case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//'  ***'
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)//'  ***'
     case default
-       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', line ',line, &
-            '  ***'
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
+            ', line ',line, '  ***'
     end select
     
   end subroutine file_read_error
@@ -188,22 +197,32 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print a message to StdErr on file read error, and stop the execution of the current program
   !!
-  !! \param filename  Filename
-  !! \param line      Line number where read error occurred - 0: no line
-  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  !! \param filename   Filename
+  !! \param line       Line number where read error occurred - 0: no line
+  !! \param status     Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  !! \param prodedure  Name of the procedure this subroutine is called from
   
-  subroutine file_read_error_quit(filename, line, status)
+  subroutine file_read_error_quit(filename, line, status, procedure)
     use SUFR_constants, only: program_name
+    use SUFR_text, only: replace_substring
+    
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line, status
+    character, intent(in), optional :: procedure*(*)
+    character :: lproc*(99)
+    
+    lproc = ''
+    if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
+    call replace_substring(lproc, '()()', '()')  ! Remove a second pair of brackets
     
     select case(line)
     case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', aborting  ***'
-    case default
-       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//':  Error reading input file  '//trim(filename)//', line ',line, &
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
             ', aborting  ***'
+    case default
+       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
+            ', line ',line,', aborting  ***'
     end select
     
     if(status.eq.0) then

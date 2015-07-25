@@ -179,9 +179,9 @@ contains
   !! \param curvMat   Hessian/curvature matrix - double partial derivative of chi squared to two coefficients fCoef
   !!
   !! \param chiSq     Chi squared
-  !! \param iterStat  Iteration status;  Set to <0 for initialisation in the first call.  Set to 0 to return the 
-  !!                    variance-covariance and curvature matrices on the last call.  IterStat decreases 10x if chiSq becomes 
-  !!                    smaller, and increases 10x otherwise.
+  !! \param iterStat  Iteration status;  Set to <0 for initialisation in the first call, and let it vary in subsequent calls,
+  !!                    until the fit converges.  After that, set to 0 to return the variance-covariance and curvature matrices
+  !!                    on the final call.  IterStat decreases 10x if chiSq becomes smaller, and increases 10x otherwise.
   !! \param myFunc    External subroutine that describes the model value of Y and partial derivatives dY/dXi for given value X and
   !!                    function coefficients fCoef
   !!
@@ -413,8 +413,9 @@ contains
     real(double), intent(in) :: xDat, fCoef(nCoef)
     real(double), intent(out) :: yDat(nY), dyda(nY,nCoef)
     
-    if(nY.ne.1) call quit_program_error('nonlin_fit_eval_example_myFunc():  nY must be equal to 1 ',1)
-  
+    if(nY.ne.1)    call quit_program_error('nonlin_fit_eval_example_myFunc():  nY must be equal to 1 ',    1)
+    if(nCoef.ne.3) call quit_program_error('nonlin_fit_eval_example_myFunc():  nCoef must be equal to 3 ', 1)
+    
     yDat(1)   = fCoef(1)*xDat**2 + fCoef(2)   ! Replace with desired function
     dyda(1,1) = fCoef(2) * xDat               ! Replace with partial derivative w.r.t. first variable - dyDat/dfCoef(1)
     ! ...
