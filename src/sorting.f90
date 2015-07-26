@@ -29,7 +29,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Return a list of indices index_list that sorts the members of array to ascending value.
+  !> \brief  Return a list of indices index_list that sorts the members of array to ascending value, using a Quicksort algorithm.
   !!
   !! \param  array        Array of size n with values that must be sorted - use dble(array) for other variable types
   !!
@@ -40,7 +40,7 @@ contains
   !! \retval index_n      Number of meaningful elements in index_list, after applying mask (optional)
   !!
   !! \note  This routine does not need to be called directly, but is implicitly called by sort_array().
-  !! \see   Numerical Recipes in Fortran 77, Sect.8.4.
+  !! \see   Numerical Recipes in Fortran 77, Sect. 8.2, 8.4.
   
   subroutine sorted_index_list(array, index_list, mask, index_n)
     use SUFR_kinds, only: double
@@ -86,7 +86,7 @@ contains
                 if(array(loc_list(ii)).le.arr_i) exit subloop1
                 loc_list(ii+1) = loc_list(ii)
              end do subloop1
-             if(array(loc_list(ii)).gt.arr_i) ii = ll-1
+             if(ii.eq.0) ii = ll-1  ! if subloop1 completes without match for arr_i
              
              loc_list(ii+1) = index_i
           end do
