@@ -166,7 +166,7 @@ contains
   !!
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
-  !! \param prodedure  Name of the procedure this subroutine is called from (without "()")
+  !! \param procedure  Name of the procedure this subroutine is called from (without "()")
   
   subroutine file_read_error(filename, line, procedure)
     use SUFR_constants, only: program_name
@@ -198,7 +198,7 @@ contains
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
   !! \param status     Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
-  !! \param prodedure  Name of the procedure this subroutine is called from (without "()")
+  !! \param procedure  Name of the procedure this subroutine is called from (without "()")
   
   subroutine file_read_error_quit(filename, line, status, procedure)
     use SUFR_constants, only: program_name

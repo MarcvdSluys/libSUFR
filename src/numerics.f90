@@ -77,21 +77,25 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether two double-precision variables are equal to better than twice the machine precision
+  !> \brief  Test whether two double-precision variables are equal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param x1   First number
+  !! \param x2   Second number
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function deq(x1,x2)
+  function deq(x1,x2, eps)
     use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: x1,x2
-    real(double) :: eps
+    real(double), intent(in), optional :: eps
+    real(double) :: leps
     logical :: deq
     
-    eps = 2*tiny(x1)
-    if(abs(x1-x2).le.eps) then
+    leps = 2*tiny(x1)
+    if(present(eps)) leps = max(leps, abs(eps))
+    
+    if(abs(x1-x2).le.leps) then
        deq = .true.
     else
        deq = .false.
@@ -101,20 +105,24 @@ contains
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether a double-precision variable is equal to zero better than twice the machine precision
+  !> \brief  Test whether a double-precision variable is equal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0  Number to check
+  !! \param x0   Number to check
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function deq0(x0)
+  function deq0(x0, eps)
     use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: x0
-    real(double) :: eps
+    real(double), intent(in), optional :: eps
+    real(double) :: leps
     logical :: deq0
     
-    eps = 2*tiny(x0)
-    if(abs(x0).le.eps) then
+    leps = 2*tiny(x0)
+    if(present(eps)) leps = max(leps, abs(eps))
+    
+    if(abs(x0).le.leps) then
        deq0 = .true.
     else
        deq0 = .false.
@@ -125,19 +133,23 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether two single-precision variables are equal to better than twice the machine precision
+  !> \brief  Test whether two single-precision variables are equal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param x1   First number
+  !! \param x2   Second number
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function seq(x1,x2)
+  function seq(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
-    real :: eps
+    real, intent(in), optional :: eps
+    real :: leps
     logical :: seq
     
-    eps = 2*tiny(x1)
-    if(abs(x1-x2).le.eps) then
+    leps = 2*tiny(x1)
+    if(present(eps)) leps = max(leps, abs(eps))
+    
+    if(abs(x1-x2).le.leps) then
        seq = .true.
     else
        seq = .false.
@@ -147,18 +159,22 @@ contains
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether a single-precision variable ais equal to zero better than twice the machine precision
+  !> \brief  Test whether a single-precision variable ais equal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0  Number to check
+  !! \param x0   Number to check
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function seq0(x0)
+  function seq0(x0, eps)
     implicit none
     real, intent(in) :: x0
-    real :: eps
+    real, intent(in), optional :: eps
+    real :: leps
     logical :: seq0
     
-    eps = 2*tiny(x0)
-    if(abs(x0).le.eps) then
+    leps = 2*tiny(x0)
+    if(present(eps)) leps = max(leps, abs(eps))
+    
+    if(abs(x0).le.leps) then
        seq0 = .true.
     else
        seq0 = .false.
@@ -169,66 +185,89 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether two double-precision variables are unequal to better than twice the machine precision
+  !> \brief  Test whether two double-precision variables are unequal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param x1   First number
+  !! \param x2   Second number
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function dne(x1,x2)
+  function dne(x1,x2, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x1,x2
+    real(double), intent(in), optional :: eps
     logical :: dne
     
-    dne = .not. deq(x1,x2)
-    
+    if(present(eps)) then
+       dne = .not. deq(x1,x2, eps)
+    else
+       dne = .not. deq(x1,x2)
+    end if
   end function dne
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether a double-precision variable is unequal to zero better than twice the machine precision
+  !> \brief  Test whether a double-precision variable is unequal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0  Number to check
+  !! \param x0   Number to check
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function dne0(x0)
+  function dne0(x0, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x0
+    real(double), intent(in), optional :: eps
     logical :: dne0
     
-    dne0 = .not. deq0(x0)
+    if(present(eps)) then
+       dne0 = .not. deq0(x0, eps)
+    else
+       dne0 = .not. deq0(x0)
+    end if
     
   end function dne0
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether two single-precision variables are unequal to better than twice the machine precision
+  !> \brief  Test whether two single-precision variables are unequal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param x1   First number
+  !! \param x2   Second number
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function sne(x1,x2)
+  function sne(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
+    real, intent(in), optional :: eps
     logical :: sne
     
-    sne = .not. seq(x1,x2)
+    if(present(eps)) then
+       sne = .not. seq(x1,x2, eps)
+    else
+       sne = .not. seq(x1,x2)
+    end if
     
   end function sne
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  !> \brief  Test whether a single-precision variable is unequal to zero better than twice the machine precision
+  !> \brief  Test whether a single-precision variable is unequal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0  Number to check
+  !! \param x0   Number to check
+  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function sne0(x0)
+  function sne0(x0, eps)
     implicit none
     real, intent(in) :: x0
+    real, intent(in), optional :: eps
     logical :: sne0
     
-    sne0 = .not. seq0(x0)
+    if(present(eps)) then
+       sne0 = .not. seq0(x0, eps)
+    else
+       sne0 = .not. seq0(x0)
+    end if
     
   end function sne0
   !*********************************************************************************************************************************
