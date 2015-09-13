@@ -33,11 +33,15 @@ contains
   !!
   !! \param degree         Degree of randomness: 0-completely (same result for a ms), 1-same result during a clock hour, 
   !!                       2-same result during a calendar day (int)
+  !! \param date_array     Provide a date/time array as provided by date_and_time() to generate a non-random seed, e.g. for
+  !!                       reproduction purposes ([year,month,day, (tz), hour,minute,second,millisecond]; optional)
+  !!
   !! \retval get_ran_seed  Randon-number seed:  -1e6 < seed < 0 (int)
   
-  function get_ran_seed(degree)  
+  function get_ran_seed(degree, date_array)
     implicit none
     integer, intent(in) :: degree
+    integer, intent(in), optional :: date_array(8)
     integer :: get_ran_seed
     
     integer :: seed,dt(8)
@@ -45,6 +49,7 @@ contains
     
     
     call date_and_time(tmpstr,tmpstr,tmpstr,dt)  ! dt: 1-year, 2-month, 3-day, 5-hour, 6-minute, 7-second, 8-millisecond
+    if(present(date_array)) dt = date_array      ! Use a user-provided date/time, rather than the system clock
     
     select case (degree)
     case(1)

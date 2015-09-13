@@ -230,7 +230,7 @@ contains
     
     ! Augment the diagonal elements of the variance-covariance matrix:
     covMat(1:mFit,1:mFit) = curvMat(1:mFit,1:mFit)
-    dfCoef(1:mFit)       = dChiSq(1:mFit)
+    dfCoef(1:mFit)        = dChiSq(1:mFit)
     
     do iFit=1,mFit
        covMat(iFit,iFit) = curvMat(iFit,iFit) * (1.d0+iterStat)
