@@ -46,13 +46,14 @@ module SUFR_constants_astro
   ! Astronomical constants:
   real(double),public :: solDay,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
   real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
-  real(double),public :: au,km,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
+  real(double),public :: au,km,nm,mm,mum,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
   
   ! Satellite data for planets 4-8:
   real(double),public :: satrad(4:8,30),satdiam(4:8,30)
   
   ! Physical constants:
   real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
+  real(double), public :: eV
   
 end module SUFR_constants_astro
 !***********************************************************************************************************************************
@@ -315,7 +316,10 @@ contains
     ! Astronomical constants:
     au = 1.49597870700d13                ! A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
     
-    km = 1.d5                            ! kilometer in cgs
+    nm = 1.d-7                           ! nanometer in cgs (cm)
+    mum = 1.d-4                          ! micrometer in cgs (cm)
+    mm = 1.d-1                           ! millimeter in cgs (cm)
+    km = 1.d5                            ! kilometer in cgs (cm)
     rsun = 6.9599d10                     ! Solar radius in cgs (cm)
     msun = 1.9891d33                     ! Solar mass in cgs (gm)
     lsun = 3.85d33                       ! Solar luminosity in cgs (erg/s)
@@ -370,6 +374,9 @@ contains
     pc_hbar    =  pc_hp/pi2                                   ! Reduced Planck constant, erg s
     pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0  ! Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
     pc_sigma   =  pc_arad*pc_c*0.25d0                         ! Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
+    
+    
+    eV = 1.6021766e-12  ! ElectronVolt in erg (cgs)
     
   end subroutine set_SUFR_constants_astro
   !*********************************************************************************************************************************
