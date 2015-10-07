@@ -51,7 +51,7 @@ module SUFR_time2string
 contains
   
   !*********************************************************************************************************************************
-  !> \brief Print time as hh:mm:ss string, input in hours
+  !> \brief Print time as hh:mm:ss string, input in hours;  Display '--:--:--' for t=0
   !!
   !! \param t  Time (h)
   
@@ -65,7 +65,7 @@ contains
     real(double), intent(in) :: t
     real(double) :: t1
     integer :: h,m,s
-    character :: hms*(8),hh*(2),mm*(2),ss*(2)
+    character :: hms*(8)
     
     t1 = rev(t*h2r)*r2h
     h = int(t1)
@@ -82,14 +82,51 @@ contains
     end if
     if(h.ge.24) h = h-24
     
-    write(hh,'(I2.2)') h
-    write(mm,'(I2.2)') m
-    write(ss,'(I2.2)') s
-    
-    write(hms,'(A2,2(A1,A2))') hh,':',mm,':',ss
-    if(deq0(t)) write(hms,'(a8)') '--:--:--'
+    write(hms,'(I2.2,2(A1,I2.2))') h,':',m,':',s
+    if(deq0(t)) write(hms,'(A8)') '--:--:--'
     
   end function hms
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief Print time as hh:mm:ss string, input in hours;  No special output for t=0
+  !!
+  !! \param t  Time (h)
+  
+  function hhms(t)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
+    use SUFR_numerics, only: deq0
+    
+    implicit none
+    real(double), intent(in) :: t
+    real(double) :: t1
+    integer :: h,m,s
+    character :: hhms*(8)
+    
+    t1 = rev(t*h2r)*r2h
+    h = int(t1)
+    m = int((t1-h)*60.d0)
+    s = nint((t1-h-m/60.d0)*3600.d0)
+    
+    if(s.ge.60) then
+       s = s-60
+       m = m+1
+    end if
+    if(m.ge.60) then
+       m = m-60
+       h = h+1
+    end if
+    if(h.ge.24) h = h-24
+    
+    if(h.lt.10) then
+       write(hhms,'(I1,  2(A1,I2.2))') h,':',m,':',s
+    else
+       write(hhms,'(I2.2,2(A1,I2.2))') h,':',m,':',s
+    end if
+    
+  end function hhms
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
