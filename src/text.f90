@@ -368,6 +368,57 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Convert a double-precision real to a nice character string. Short alias for dbl2str().
+  !!
+  !! \param number  Value to convert
+  !! \param decim   Number of decimals to use
+  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  
+  function d2s(number, decim, mark)
+    use SUFR_kinds, only: double, long
+    implicit none
+    real(double), intent(in) :: number
+    integer, intent(in) :: decim
+    character, intent(in), optional :: mark*(*)
+    
+    real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
+    character :: d2s*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    
+    if(present(mark)) then
+       d2s = dbl2str(number, decim, mark)
+    else
+       d2s = dbl2str(number, decim)
+    end if
+    
+  end function d2s
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a double-precision real to a nice character string using a comma as decimal mark.
+  !!         Alias for dbl2str(number, decim, ',').
+  !!
+  !! \param number  Value to convert
+  !! \param decim   Number of decimals to use
+  
+  function d2sc(number, decim)
+    use SUFR_kinds, only: double, long
+    implicit none
+    real(double), intent(in) :: number
+    integer, intent(in) :: decim
+    
+    real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
+    character :: d2sc*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    
+    d2sc = dbl2str(number, decim, ',')
+    
+  end function d2sc
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Convert a single-precision real to a nice character string.  Single-precision wrapper for dbl2str.
   !!
   !! \param number  Value to convert
