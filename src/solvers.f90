@@ -73,8 +73,9 @@ contains
     d =  1.0_dbl
     e =  2.0_dbl
     
-    if( fa*fb.gt.0.0_dbl ) then                                     ! func(a) and func(b) have the same sign
-       if(verbosity.gt.0) write(0,'(A,2ES12.3)') ' libSUFR - root_solver():  root is not bracketed by x1 and x2: ',x1,x2
+    if(fa*fb .gt. 0.0_dbl) then                                     ! func(a) and func(b) have the same sign
+       if(verbosity.gt.0) write(0,'(2(A,2ES12.3))') ' libSUFR - root_solver():  root is not bracketed by x1 and x2: ', &
+            x1,x2,' - ',fa,fb
        root_solver = -huge(0.0_dbl)                                 ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return
