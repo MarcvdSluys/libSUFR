@@ -123,12 +123,12 @@ module SUFR_constants_datetime
   private
   save
   
-  integer, public :: currentyear,currentmonth,currentday,currenthour,currentminute,currentsecond,currentmillisecond,currentdow
-  real(double), public :: currentjd, currenttz, currenttime
+  integer, public :: currentYear,currentMonth,currentDay,currentHour,currentMinute,currentSecond,currentMillisecond,currentDoW
+  real(double), public :: currentJD, currentTZ, currentTime
   
-  character, public :: currentyearstr*(4),currentdatestr*(10),currenttimestr*(8),currenttimezonestr*(9)
-  character, public :: currentdatestren*(10), currentdowstren*(9),currentdatestrenl*(39)
-  character, public :: currentdatestrnl*(10), currentdowstrnl*(9),currentdatestrnll*(39)
+  character, public :: currentYearStr*(4),currentDateStr*(10),currentTimeStr*(8),currentTimezoneStr*(9),currentDateTimeStr*(29)
+  character, public :: currentDateStrEn*(10), currentDowStrEn*(9),currentDateStrEnl*(39)
+  character, public :: currentDateStrNl*(10), currentDowStrNl*(9),currentDateStrNll*(39)
   
 end module SUFR_constants_datetime
 !***********************************************************************************************************************************
@@ -177,7 +177,7 @@ module SUFR_constants_environment
   save
   
   integer, public :: stdErr, StdIn, StdOut
-  character, public :: homedir*(199), workdir*(199), hostname*(99), username*(99), userID*(99)
+  character, public :: homeDir*(199), workDir*(199), hostName*(99), userName*(99), userID*(99)
   character, public :: program_name*(199), program_path*(999), program_args*(999)
   
 end module SUFR_constants_environment
@@ -233,7 +233,7 @@ contains
     
     ! Set calendar stuff:
     call set_SUFR_constants_calendar()
-    call set_SUFR_constants_currentdate()
+    call set_SUFR_constants_currentDate()
     
     ! Characters:
     call set_SUFR_constants_characters()  ! Greek characters
@@ -478,7 +478,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Define the values of variables that describe the current date and time
   
-  subroutine set_SUFR_constants_currentdate()
+  subroutine set_SUFR_constants_currentDate()
     use SUFR_constants_datetime
     use SUFR_constants_calendar
     use SUFR_date_and_time
@@ -486,45 +486,50 @@ contains
     implicit none
     integer :: dt(8)
     real(double) :: tz
-    character :: tmpstr*(99),tzstr*(9),signstr
+    character :: tmpStr*(99),tzStr*(9),signStr
     
     ! Date/time variables:
-    call date_and_time(tmpstr,tmpstr,tmpstr,dt)
-    currentyear = dt(1)
-    currentmonth = dt(2)
-    currentday = dt(3)
-    currenthour = dt(5)
-    currentminute = dt(6)
-    currentsecond = dt(7)
-    currentmillisecond = dt(8)  ! Not useful for timekeeping, but useful for random-number seeds
-    currenttime = dble(currenthour) + dble(currentminute)/60.d0 + dble(currentsecond)/3.6d3 + dble(currentmillisecond)/3.6d6 ! in hr
+    call date_and_time(tmpStr,tmpStr,tmpStr,dt)
+    currentYear = dt(1)
+    currentMonth = dt(2)
+    currentDay = dt(3)
+    currentHour = dt(5)
+    currentMinute = dt(6)
+    currentSecond = dt(7)
+    currentMillisecond = dt(8)  ! Not useful for timekeeping, but useful for random-number seeds
+    currentTime = dble(currentHour) + dble(currentMinute)/60.d0 + dble(currentSecond)/3.6d3 + dble(currentMillisecond)/3.6d6 ! in hr
     
     ! Time zone:
     tz = abs(dble(dt(4))/60.d0)
-    write(tzstr,'(F5.2)')tz
-    !if(nint(tz).lt.10) write(tzstr,'(A1,F4.2)')'0',tz
-    if(nint(tz).lt.10) write(tzstr(1:1),'(A1)')'0'
-    signstr = '-'
-    if(dt(4).ge.0) signstr = '+'
-    write(currenttimezonestr,'(A)')'UTC'//signstr//trim(tzstr)
+    write(tzStr,'(F5.2)')tz
+    !if(nint(tz).lt.10) write(tzStr,'(A1,F4.2)')'0',tz
+    if(nint(tz).lt.10) write(tzStr(1:1),'(A1)')'0'
+    signStr = '-'
+    if(dt(4).ge.0) signStr = '+'
+    write(currentTimezoneStr,'(A)')'UTC'//signStr//trim(tzStr)
     if(dt(4).lt.0.d0) tz = -tz
-    currenttz = tz
+    currentTZ = tz
     
     ! JD, dow, dow strings:
-    currentjd = ymdhms2jd(currentyear,currentmonth,currentday,currenthour,currentminute,dble(currentsecond))
-    currentdow = dow_ut(currentjd)
-    currentdowstren = endays(currentdow)  ! English
-    currentdowstrnl = nldays(currentdow)  ! Dutch
+    currentJD = ymdhms2jd(currentYear,currentMonth,currentDay,currentHour,currentMinute,dble(currentSecond))
+    currentDoW = dow_ut(currentJD)
+    currentDoWstren = endays(currentDoW)  ! English
+    currentDoWstrnl = nldays(currentDoW)  ! Dutch
     
-    write(currentyearstr,'(I4)') currentyear
-    write(currentdatestr,'(I4.4,A1,I2.2,A1,I2.2)') currentyear,'-',currentmonth,'-',currentday    ! Unambiguous
-    write(currentdatestren,'(I2.2,A1,I2.2,A1,I4.4)') currentmonth,'/',currentday,'/',currentyear  ! US
-    write(currentdatestrnl,'(I2.2,A1,I2.2,A1,I4.4)') currentday,'/',currentmonth,'/',currentyear  ! EU
-    write(currentdatestrenl,'(A,1x,A,I3,I5)') trim(currentdowstren),trim(enmonths(currentmonth)),currentday,currentyear  ! English
-    write(currentdatestrnll,'(A,I3,1x,A,I5)') trim(currentdowstrnl),currentday,trim(nlmonths(currentmonth)),currentyear  ! Dutch
-    write(currenttimestr,'(I2.2,A1,I2.2,A1,I2.2)') currenthour,':',currentminute,':',currentsecond
+    write(currentYearStr,'(I4)') currentYear
+    write(currentDateStr,'(I4.4,A1,I2.2,A1,I2.2)') currentYear,'-',currentMonth,'-',currentDay    ! Unambiguous
+    write(currentDateStrEn,'(I2.2,A1,I2.2,A1,I4.4)') currentMonth,'/',currentDay,'/',currentYear  ! US
+    write(currentDateStrNl,'(I2.2,A1,I2.2,A1,I4.4)') currentDay,'/',currentMonth,'/',currentYear  ! EU
+    write(currentDateStrEnl,'(A,1x,A,I3,I5)') trim(currentDoWStrEn),trim(enmonths(currentMonth)),currentDay,currentYear  ! English
+    write(currentDateStrNll,'(A,I3,1x,A,I5)') trim(currentDoWStrNl),currentDay,trim(nlmonths(currentMonth)),currentYear  ! Dutch
     
-  end subroutine set_SUFR_constants_currentdate
+    write(currentTimeStr,'(I2.2,A1,I2.2,A1,I2.2)') currentHour,':',currentMinute,':',currentSecond
+    
+    write(currentDateTimeStr,'(A)') trim(currentDateStr)//' '//trim(currentTimeStr)//' '//trim(currentTimezoneStr)
+    
+    
+    
+  end subroutine set_SUFR_constants_currentDate
   !*********************************************************************************************************************************
   
   
@@ -575,7 +580,7 @@ contains
     use SUFR_constants_environment
     implicit none
     integer :: i, narg, status
-    character :: tmpstr*(99)
+    character :: tmpStr*(99)
     
     ! Standard error, input, and output
     stdErr = 0  ! Unit for standard error
@@ -584,26 +589,26 @@ contains
     
     
     ! Get info from environment variables:
-    call get_environment_variable('HOME', homedir)       ! Set homedir  = $HOME, will contain e.g. '/home/user'
-    call get_environment_variable('PWD', workdir)        ! Set workdir  = $PWD, may contain e.g. '/home/user/foo'
-    call get_environment_variable('HOSTNAME', hostname)  ! Set hostname = $HOSTNAME - not always exported
-    call get_environment_variable('USER', username)      ! Set username = $USER
+    call get_environment_variable('HOME', homeDir)       ! Set homeDir  = $HOME, will contain e.g. '/home/user'
+    call get_environment_variable('PWD', workDir)        ! Set workDir  = $PWD, may contain e.g. '/home/user/foo'
+    call get_environment_variable('HOSTNAME', hostName)  ! Set hostName = $HOSTNAME - not always exported
+    call get_environment_variable('USER', userName)      ! Set userName = $USER
     call get_environment_variable('UID', userID)         ! Set userid   = $UID
     
-    ! Replace '/home/name' with '~' in workdir:
-    i = index(workdir,trim(homedir),back=.false.)
-    if(i.ne.0.and.i.lt.len_trim(workdir)) workdir = workdir(1:i-1)//'~'//trim(workdir(i+len_trim(homedir):))
+    ! Replace '/home/name' with '~' in workDir:
+    i = index(workDir,trim(homeDir),back=.false.)
+    if(i.ne.0.and.i.lt.len_trim(workDir)) workDir = workDir(1:i-1)//'~'//trim(workDir(i+len_trim(homeDir):))
     
     
     ! Store the path and name of the program that is being executed in program_path and program_name:
-    call get_command_argument(0,tmpstr)
-    i = index(tmpstr,'/',back=.true.)
+    call get_command_argument(0,tmpStr)
+    i = index(tmpStr,'/',back=.true.)
     if(i.eq.0) then
        program_path = ' '
-       program_name = trim(tmpstr)
+       program_name = trim(tmpStr)
     else
-       program_path = trim(tmpstr(1:i))      ! The string before the last slash should be the program path
-       program_name = trim(tmpstr(i+1:))     ! The bit after the last slash should be the program name
+       program_path = trim(tmpStr(1:i))      ! The string before the last slash should be the program path
+       program_name = trim(tmpStr(i+1:))     ! The bit after the last slash should be the program name
     end if
     
     ! Store the command-line arguments of the program that is being executed in program_args:
@@ -611,8 +616,8 @@ contains
     program_args = ' '
     if(narg.ge.1) then
        do i=1,narg
-          call get_command_argument(i,tmpstr)
-          write(program_args,'(A)', iostat=status) trim(program_args)//'  '//trim(tmpstr)
+          call get_command_argument(i,tmpStr)
+          write(program_args,'(A)', iostat=status) trim(program_args)//'  '//trim(tmpStr)
           if(status.ne.0) then
              write(program_args,'(A)') program_args(1:len(program_args)-13)//'  (truncated)'
              exit  ! Too many/long arguments
