@@ -233,22 +233,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the standard deviation of a data array with mean 'mean'
   !!
-  !! \param data  1D array with data points
-  !! \param mean  Mean of the data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param data   1D array with data points
+  !! \param dMean  Mean of the data points (optional; will be computed if not provided)
+  !! \param mask   Mask to apply to data (optional)
   !!
   !! \see https://en.wikipedia.org/wiki/Standard_deviation
   
-  function stdev(data, mean, mask)
+  function stdev(data, dMean, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error, error
     
     implicit none
-    real(double), intent(in) :: data(:), mean
+    real(double), intent(in) :: data(:)
+    real(double), intent(in), optional :: dMean
     logical, intent(in), optional :: mask(:)
     
     integer :: i, ni
-    real(double) :: stdev
+    real(double) :: stdev, lmean
     logical :: locmask(size(data))
     
     locmask = .true.
@@ -257,11 +258,17 @@ contains
        locmask = mask
     end if
     
+    if(present(dMean)) then
+       lmean = dMean
+    else
+       lmean = mean(data, locmask)
+    end if
+    
     stdev = 0.d0
     ni = 0
     do i=1,size(data)
        if(locmask(i)) then
-          stdev = stdev + (data(i)-mean)**2
+          stdev = stdev + (data(i)-lmean)**2
           ni = ni + 1
        end if
     end do
