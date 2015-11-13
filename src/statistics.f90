@@ -135,7 +135,7 @@ contains
     ni = count(locmask)  ! Number of .true. elements in locmask
     
     if(ni.eq.0) then
-       call error('libSUFR stdev():  data() has fewer than 2 elements', 0)
+       call error('libSUFR mean():  data() has fewer than two elements', 0)
        mean = 0.d0
     else
        mean = sum(data, mask=locmask)/dble(ni)
@@ -180,11 +180,64 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Compute the weighted mean of a data array
+  !!
+  !! \param data  1D array of data points
+  !! \param wgts  Weights for all data points
+  !! \param mask  Mask to apply to data (optional)
+  !! 
+  !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
+  
+  function mean_weight(data, wgts, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error, error
+    
+    implicit none
+    real(double), intent(in) :: data(:), wgts(:)
+    logical, intent(in), optional :: mask(:)
+    
+    integer :: ni, i
+    real(double) :: mean_weight, totDat,totWgt
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean_weight():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    ni = 0
+    totDat=0.d0
+    totWgt=0.d0
+    do i=1,size(data)
+       if(locmask(i)) then
+          if(wgts(i).lt.0.d0) call quit_program_error('libSUFR mean_weight():  weights cannot be negative', 0)
+          totDat = totDat + wgts(i)*data(i)
+          totWgt = totWgt + wgts(i)
+          if(wgts(i).gt.0.d0) ni = ni + 1
+       end if
+    end do
+    
+    if(ni.eq.0) then
+       call error('libSUFR mean_weight():  data() has fewer than two weighted elements', 0)
+       mean_weight = 0.d0
+    else
+       mean_weight = totDat/totWgt
+    end if
+    
+  end function mean_weight
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Compute the standard deviation of a data array with mean 'mean'
   !!
   !! \param data  1D array with data points
   !! \param mean  Mean of the data points
   !! \param mask  Mask to apply to data (optional)
+  !!
+  !! \see https://en.wikipedia.org/wiki/Standard_deviation
   
   function stdev(data, mean, mask)
     use SUFR_kinds, only: double
@@ -214,7 +267,7 @@ contains
     end do
     
     if(ni.le.1) then
-       call error('libSUFR stdev():  data() has fewer than 2 elements', 0)
+       call error('libSUFR stdev():  data() has fewer than two elements', 0)
        stdev = 0.d0
     else
        stdev = sqrt(stdev/dble(ni-1))
@@ -257,6 +310,66 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Compute the weighted standard deviation of a data array with weighted mean 'wMean'
+  !!
+  !! \param data   1D array with data points
+  !! \param wgts   Weights for all data points
+  !! \param wMean  Weighted mean of the data points (optional)
+  !! \param mask   Mask to apply to data (optional)
+  
+  function stDev_weight(data, wgts, wMean, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error, error
+    
+    implicit none
+    real(double), intent(in) :: data(:), wgts(:)
+    real(double), intent(in), optional :: wMean
+    logical, intent(in), optional :: mask(:)
+    
+    integer :: i, nw
+    real(double) :: stDev_weight, lwMean, totWgt,totWgt2
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stDev_weight():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    if(present(wMean)) then
+       lwMean = wMean
+    else
+       lwMean = mean_weight(data, wgts, locmask)
+    end if
+    
+    
+    stDev_weight = 0.d0
+    totWgt = 0.d0
+    totWgt2 = 0.d0
+    nw = 0
+    do i=1,size(data)
+       if(locmask(i)) then
+          if(wgts(i).lt.0.d0) call quit_program_error('libSUFR stDev_weight():  weights cannot be negative', 0)
+          stDev_weight = stDev_weight + wgts(i) * (data(i)-lwMean)**2
+          totWgt = totWgt + wgts(i)
+          totWgt2 = totWgt2 + wgts(i)**2
+          if(wgts(i).gt.0.d0) nw = nw + 1
+       end if
+    end do
+    
+    if(nw.le.1) then
+       call error('libSUFR stDev_weight():  data() has fewer than 2 weighted elements', 0)
+       stDev_weight = 0.d0
+    else
+       stDev_weight = sqrt( stDev_weight / (totWgt - totWgt2 / totWgt) )
+       !stDev_weight = sqrt(stDev_weight / (dble(nw-1)/dble(nw)*totWgt)  )
+    end if
+    
+  end function stDev_weight
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Compute a running mean and variance by adding a data point and the data point number to existing values.  If num=1,
   !!         initialise.  Note that mean and var are I/O variables and cannot be dummy variables or values.  Num must be accurate,
   !!         and increased by one between calls by the user.  Optionally, return the standard deviation.
@@ -266,6 +379,8 @@ contains
   !! \param  data   New/current data point
   !! \param  num    Number of the current data point
   !! \retval stdev  Current standard deviation (optional)
+  !!
+  !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
   
   subroutine mean_var_running(mean, var, data, num, stdev)
     use SUFR_kinds, only: double

@@ -494,7 +494,8 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculate whether year is leap (1) or not (0).  The number of days in February is then given by 28 + leapyr(yr)
+  !> \brief  Calculate whether year is leap (1) or not (0).  The number of days in February is then given by 28 + leapyr(yr) and
+  !!         number of days in a year by 365 + leapyr(yr)
   !!
   !! \param yr  Year (CE)
   
