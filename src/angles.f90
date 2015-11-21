@@ -331,6 +331,28 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Converts a wind direction/azimuth to one of 16 English wind directions (northnortheast, westsouthwest)
+  !!
+  !! \param  wd  Wind direction/azimuth (radians, N=0)
+  
+  function wdstr_en(wd)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2d
+    
+    implicit none
+    real(double), intent(in) :: wd
+    character :: wdstr_en*(14),wds(0:15)*(14)
+    
+    wds = [character(len=14) :: 'north','northnortheast','northeast','eastnortheast','east','eastsoutheast','southeast', &
+         'southsoutheast','south','southsouthwest','southwest','westsouthwest','west','westnorthwest','northwest','northnorthwest']
+    
+    wdstr_en = wds(mod( nint(wd*r2d/22.5) + 32, 16 ))  ! Mod, so that -1 -> 15
+    
+  end function wdstr_en
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
   !!
   !! \param  wd  Wind direction/azimuth (radians, N=0)
