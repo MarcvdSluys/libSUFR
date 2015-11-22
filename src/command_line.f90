@@ -439,6 +439,15 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print all command-line options and values found to stdOut for debugging
+  !!
+  !! \retval  nopts      Number of options found (without counting their variables)
+  !! \retval  options    Array of command-line options found
+  !! \retval  values     Array of command-line values found (i.e., the parameters that belong to an option)
+  !! \retval  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value,
+  !!                     30/31: long option (two dashes) without/with value
+  !! \retval  cl_option  Struct containing command-line option names, values, has_val, short and long
+
   subroutine print_commandline_options_values(nopts,options,values,optypes, cl_option)
     implicit none
     integer, intent(in) :: Nopts, optypes(nOpts)
