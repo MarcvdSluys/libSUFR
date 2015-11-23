@@ -132,7 +132,7 @@ message( STATUS "" )
 install( DIRECTORY usr/ DESTINATION ${CMAKE_INSTALL_PREFIX} )
 
 # Install man pages:
-install( DIRECTORY man/ DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man )
+install( DIRECTORY man/ DESTINATION ${CMAKE_INSTALL_PREFIX}/share/man/man3 )
 
 # Install documents:
 if( NOT EXISTS VERSION )
