@@ -326,6 +326,22 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  A modulo function to wrap array indices properly in Fortran ([1,N], rather than [0,N-1])
+  !!
+  !!         Since array indices in Fortran run from 1 to N, and the mod() function returns 0 to N-1 which can be used as an array
+  !!         index directly in e.g. C, mod1() provides that service in Fortran.
+  
+  function mod1(number, period)
+    implicit none
+    integer, intent(in) :: number, period
+    integer :: mod1
+    
+    mod1 = mod(number-1, period) + 1
+    
+  end function mod1
+  !*********************************************************************************************************************************
+  
 end module SUFR_numerics
 !***********************************************************************************************************************************
 
