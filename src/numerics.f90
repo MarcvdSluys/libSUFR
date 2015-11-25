@@ -337,7 +337,7 @@ contains
     integer, intent(in) :: number, period
     integer :: mod1
     
-    mod1 = mod(number-1, period) + 1
+    mod1 = mod(number-1+period, period) + 1
     
   end function mod1
   !*********************************************************************************************************************************
