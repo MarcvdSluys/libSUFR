@@ -233,13 +233,14 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the standard deviation of a data array with mean 'mean'
   !!
-  !! \param data   1D array with data points
-  !! \param dMean  Mean of the data points (optional; will be computed if not provided)
-  !! \param mask   Mask to apply to data (optional)
+  !! \param  data   1D array with data points
+  !! \param  dMean  Mean of the data points (optional; will be computed if not provided)
+  !! \param  mask   Mask to apply to data (optional)
+  !! \retval var    Variance of the data
   !!
   !! \see https://en.wikipedia.org/wiki/Standard_deviation
   
-  function stdev(data, dMean, mask)
+  function stdev(data, dMean, mask, var)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error, error
     
@@ -247,9 +248,10 @@ contains
     real(double), intent(in) :: data(:)
     real(double), intent(in), optional :: dMean
     logical, intent(in), optional :: mask(:)
+    real(double), intent(out), optional :: var
     
     integer :: i, ni
-    real(double) :: stdev, lmean
+    real(double) :: stdev, lmean, lVar
     logical :: locmask(size(data))
     
     locmask = .true.
@@ -264,21 +266,24 @@ contains
        lmean = mean(data, locmask)
     end if
     
-    stdev = 0.d0
+    lVar = 0.d0
     ni = 0
     do i=1,size(data)
        if(locmask(i)) then
-          stdev = stdev + (data(i)-lmean)**2
+          lVar = lVar + (data(i)-lmean)**2
           ni = ni + 1
        end if
     end do
     
     if(ni.le.1) then
        call error('libSUFR stdev():  data() has fewer than two elements', 0)
-       stdev = 0.d0
+       lVar = 0.d0
     else
-       stdev = sqrt(stdev/dble(ni-1))
+       lVar = lVar/dble(ni-1)
     end if
+    
+    stdev = sqrt(lVar)           ! Compute the standard deviation
+    if(present(var)) var = lVar  ! Return the variance if desired
     
   end function stdev
   !*********************************************************************************************************************************
