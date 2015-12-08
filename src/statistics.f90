@@ -240,7 +240,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Standard_deviation
   
-  function stdev(data, dMean, mask, var)
+  function stDev(data, dMean, mask, var)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error, error
     
@@ -251,52 +251,52 @@ contains
     real(double), intent(out), optional :: var
     
     integer :: i, ni
-    real(double) :: stdev, lmean, lVar
+    real(double) :: stDev, lMean, lVar
     logical :: locmask(size(data))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stdev():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stDev():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
     if(present(dMean)) then
-       lmean = dMean
+       lMean = dMean
     else
-       lmean = mean(data, locmask)
+       lMean = mean(data, locmask)
     end if
     
     lVar = 0.d0
     ni = 0
     do i=1,size(data)
        if(locmask(i)) then
-          lVar = lVar + (data(i)-lmean)**2
+          lVar = lVar + (data(i)-lMean)**2
           ni = ni + 1
        end if
     end do
     
     if(ni.le.1) then
-       call error('libSUFR stdev():  data() has fewer than two elements', 0)
+       call error('libSUFR stDev():  data() has fewer than two elements', 0)
        lVar = 0.d0
     else
        lVar = lVar/dble(ni-1)
     end if
     
-    stdev = sqrt(lVar)           ! Compute the standard deviation
+    stDev = sqrt(lVar)           ! Compute the standard deviation
     if(present(var)) var = lVar  ! Return the variance if desired
     
-  end function stdev
+  end function stDev
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the standard deviation of a data array with mean 'mean' - single-precision wrapper for stdev()
+  !> \brief  Compute the standard deviation of a data array with mean 'mean' - single-precision wrapper for stDev()
   !!
   !! \param data  1D array with data points
   !! \param mean  Mean of the data points
   !! \param mask  Mask to apply to data (optional)
   
-  function stdev_sp(data, mean, mask)
+  function stDev_sp(data, mean, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -304,20 +304,20 @@ contains
     real, intent(in) :: data(:), mean
     logical, intent(in), optional :: mask(:)
     
-    real :: stdev_sp
-    real(double) :: stdevd
+    real :: stDev_sp
+    real(double) :: stDevd
     logical :: locmask(size(data))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stdev_sp():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR stDev_sp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
-    stdevd = stdev(dble(data), dble(mean), mask=locmask)
-    stdev_sp = real(stdevd)
+    stDevd = stDev(dble(data), dble(mean), mask=locmask)
+    stDev_sp = real(stDevd)
     
-  end function stdev_sp
+  end function stDev_sp
   !*********************************************************************************************************************************
   
   
@@ -390,23 +390,23 @@ contains
   !! \param  var    Running variance (I/O)
   !! \param  data   New/current data point
   !! \param  num    Number of the current data point
-  !! \retval stdev  Current standard deviation (optional)
+  !! \retval stDev  Current standard deviation (optional)
   !!
   !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
   
-  subroutine mean_var_running(mean, var, data, num, stdev)
+  subroutine mean_var_running(mean, var, data, num, stDev)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(inout) :: mean, var
     real(double), intent(in) :: data
     integer, intent(in) :: num
-    real(double), intent(out), optional :: stdev
+    real(double), intent(out), optional :: stDev
     real(double) :: oldmean, var1,oldvar
     
     if(num.eq.1) then  ! Initialise
        mean    = data                                       ! initial mean = first data point
        var     = 0.d0                                       ! initial variance = 0 for a single data point
-       if(present(stdev)) stdev = 0.d0                      ! initial standard deviation = 0 for a single data point
+       if(present(stDev)) stDev = 0.d0                      ! initial standard deviation = 0 for a single data point
     else
        oldmean = mean                                       ! save old mean for the variance
        mean    = mean + (data - mean)/dble(num)             ! add new data point -> new mean
@@ -415,7 +415,7 @@ contains
        var1    = oldvar + (data - oldmean) * (data - mean)  ! add the new data point
        var     = var1/dble(num-1)                           ! new variance
        
-       if(present(stdev)) stdev = sqrt(var1/dble(num))      ! new standard deviation, if wanted
+       if(present(stDev)) stDev = sqrt(var1/dble(num))      ! new standard deviation, if wanted
     end if
     
   end subroutine mean_var_running
