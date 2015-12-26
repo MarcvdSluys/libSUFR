@@ -123,6 +123,33 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the dew point from the temperature and relative humidity
+  !!
+  !! \param  temp       Temperature (degrees Celcius)
+  !! \param  RH         Relative humidity (fraction)
+  !! \retval dew_point  Dew point (degrees Celcius)
+  !!
+  !! \see http://en.wikipedia.org/wiki/Dew_point
+  
+  function dew_point(temp, RH)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: temp, RH
+    real(double) :: dew_point, aa, bb, gam
+    
+    aa  = 17.27d0
+    bb  = 273.7d0
+    gam = aa * temp/(bb+temp) + log(rh)
+    
+    dew_point = bb * gam/(aa-gam)
+    
+  end function dew_point
+  !*********************************************************************************************************************************
+  
+  
+  
 end module SUFR_weather
 !***********************************************************************************************************************************
 
