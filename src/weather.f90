@@ -127,7 +127,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the dew point from the temperature and relative humidity
   !!
-  !! \param  temp       Temperature (degrees Celcius)
+  !! \param  temp       Air temperature (degrees Celcius)
   !! \param  RH         Relative humidity (fraction)
   !! \retval dew_point  Dew point (degrees Celcius)
   !!
@@ -146,6 +146,27 @@ contains
     dew_point = bb * gam/(aa-gam)
     
   end function dew_point
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the saturated water-vapor density in air for a given temperature
+  !!
+  !! \param  temp                           Air temperature (degrees Celcius)
+  !! \retval water_vapor_saturated_density  Saturated water-vapor density (g/m^3)
+  !!
+  !! \see http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3
+  
+  function water_vapor_saturated_density(temp)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: temp
+    real(double) :: water_vapor_saturated_density
+    
+    water_vapor_saturated_density = 5.018d0 + 0.32321d0*temp + 8.1847d-3*temp**2 + 3.1243d-4*temp**3
+    
+  end function water_vapor_saturated_density
   !*********************************************************************************************************************************
   
   
