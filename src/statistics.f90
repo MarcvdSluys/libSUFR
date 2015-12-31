@@ -894,14 +894,32 @@ contains
   !! \param  n            Total number of trials;  n in "n choose k"
   !! \param  k            Number of succesful trials;  k in "n choose k"
   !! \retval binom_coeff  Binomial coefficient  n! / [k!(n-k)!]
+  !!
+  !! \see https://en.wikipedia.org/wiki/Binomial_coefficient#Binomial_coefficient_in_programming_languages
   
   function binom_coeff(n, k)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: n, k
+    integer :: lk, ik
     real(double) :: binom_coeff
     
-    binom_coeff = faculty(n) / (faculty(k) * faculty(n-k))  ! [n! / k!(n-k)!]
+    !binom_coeff = faculty(n) / (faculty(k) * faculty(n-k))  ! [n! / k!(n-k)!]
+    
+    if(k.lt.0 .or. k.gt.n) then
+       binom_coeff = 0.d0
+    else if(k.eq.0 .or. k.eq.n) then
+       binom_coeff = 1.d0
+    else
+       lk = min(k, n-k)     ! Take advantage of symmetry
+       binom_coeff = 1
+       do ik=1,lk
+          binom_coeff = binom_coeff * (n-ik+1) / dble(ik)
+       end do
+    end if
+    
+    ! F2008 standard - g95, ifort don't like this:
+    ! binom_coeff = exp( log_gamma(dble(n+1)) - log_gamma(dble(k+1)) - log_gamma(dble(n-k+1)) )
     
   end function binom_coeff
   !*********************************************************************************************************************************
@@ -915,7 +933,6 @@ contains
   !! \param  k           Number of succesful trials;  k in "n choose k"
   !! \param  p           probability of a succesful trial
   !! \retval binom_prob  Binomial probability  n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
-  
   
   function binom_prob(n, k, p)
     use SUFR_kinds, only: double
