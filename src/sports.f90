@@ -115,7 +115,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert heart rate to body power
+  !> \brief  Convert heart rate to body power + uncertainty
   !!
   !! \param gender  Athlete's gender: f(emale) or m(ale)
   !! \param age     Athlete's age (years)
@@ -123,29 +123,33 @@ contains
   !! \param HR      Heart rate (beats per minute)
   !! 
   !! \retval power  Body power (W)
+  !! \retval dpower Uncertainty in body power (W)
   !!
   !! \see Keytel et al., Prediction of energy expenditure from heart rate monitoring during submaximal exercise, 
   !!      JSS 23:3, 289 (2005)
   
-  subroutine heartRate2Power(gender, age, mass, HR,  power)
+  subroutine heartRate2Power(gender, age, mass, HR,  power, dpower)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
     real(double), intent(in) :: HR, age, mass
     character, intent(in) :: gender
-    real(double) :: power
+    real(double) :: power, dpower
     
     select case(gender)
     case('f','F')  ! Female
        power = -20.4022d0 + 0.4472d0 * HR - 0.1263d0 * mass + 0.0740d0 * age
+       dpower = sqrt( 7.2318d0**2 + (0.0165d0 * HR)**2 + (0.1061d0 * mass)**2 + (0.1742d0 * age)**2 )
     case('m','M')  ! Male
        power = -55.0969d0 + 0.6309d0 * HR + 0.1988d0 * mass + 0.2017d0 * age  ! Power in kJ/min (!)
+       dpower = sqrt( 5.5780d0**2 + (0.0137d0 * HR)**2 + (0.0619d0 * mass)**2 + (0.1180d0 * age)**2 )
     case default
        call quit_program_error('libSUFR heartRate2Power():  unknown gender: '//gender, 0)
     end select
     
     ! Convert kJ/min to W:
-    power = power * 1000.d0/60.d0  ! i.e., *16.667
+    power  =  power * 1000.d0/60.d0  ! i.e., *16.667
+    dpower = dpower * 1000.d0/60.d0  ! i.e., *16.667
     
   end subroutine heartRate2Power
   !*********************************************************************************************************************************
