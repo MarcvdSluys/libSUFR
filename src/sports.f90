@@ -114,6 +114,42 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert heart rate to body power
+  !!
+  !! \param gender  Athlete's gender: f(emale) or m(ale)
+  !! \param age     Athlete's age (years)
+  !! \param mass    Athlete's body mass (kg)
+  !! \param HR      Heart rate (beats per minute)
+  !! 
+  !! \retval power  Body power (W)
+  !!
+  !! \see Keytel et al., Prediction of energy expenditure from heart rate monitoring during submaximal exercise, 
+  !!      JSS 23:3, 289 (2005)
+  
+  subroutine heartRate2Power(gender, age, mass, HR,  power)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    
+    real(double), intent(in) :: HR, age, mass
+    character, intent(in) :: gender
+    real(double) :: power
+    
+    select case(gender)
+    case('f','F')  ! Female
+       power = -20.4022d0 + 0.4472d0 * HR - 0.1263d0 * mass + 0.0740d0 * age
+    case('m','M')  ! Male
+       power = -55.0969d0 + 0.6309d0 * HR + 0.1988d0 * mass + 0.2017d0 * age  ! Power in kJ/min (!)
+    case default
+       call quit_program_error('libSUFR heartRate2Power():  unknown gender: '//gender, 0)
+    end select
+    
+    ! Convert kJ/min to W:
+    power = power * 1000.d0/60.d0  ! i.e., *16.667
+    
+  end subroutine heartRate2Power
+  !*********************************************************************************************************************************
+  
 end module SUFR_sports
 !***********************************************************************************************************************************
 
