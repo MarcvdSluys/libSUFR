@@ -336,7 +336,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert time (h) to hours and minutes
+  !> \brief  Convert time (h) to hours and (integer) minutes
   !!
   !! \param  tm  Time (hours)
   !! \retval h   Hours
@@ -363,14 +363,38 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert time (h) to hours, minutes and seconds
+  !> \brief  Convert time (h) to hours and (decimal) minutes
+  !!
+  !! \param  tm  Time (hours)
+  !! \retval h   Hours
+  !! \retval m   Minutes (decimal)
+  
+  subroutine tm2hmm(tm,h,m)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: tm
+    integer, intent(out) :: h
+    real(double), intent(out) :: m
+    
+    h = floor(tm)
+    m = (tm-dble(h))*60
+    
+    if(h.ge.24) h = h-24
+    
+  end subroutine tm2hmm
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert time (h) to hours, minutes and (integer) seconds
   !!
   !! \param  tm  Time (hours)
   !! \retval h   Hours
   !! \retval m   Minutes
   !! \retval s   Seconds (integer)
   
-  subroutine tm2hms(tm,h,m,s)
+  subroutine tm2hms(tm, h,m,s)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -391,6 +415,37 @@ contains
     if(h.ge.24) h = h-24
     
   end subroutine tm2hms
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert time (h) to hours, minutes and (decimal) seconds
+  !!
+  !! \param  tm  Time (hours)
+  !! \retval h   Hours
+  !! \retval m   Minutes
+  !! \retval s   Seconds
+  
+  subroutine tm2hmss(tm, h,m,s)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: tm
+    integer, intent(out) :: h,m
+    real(double), intent(out) :: s
+    
+    h = floor(tm)
+    m = floor((tm-dble(h))*60)
+    s = (tm - dble(h) - dble(m)/60.d0)*3600
+    
+    if(m.ge.60) then
+       h = h+1
+       m = m-60
+    end if
+    if(h.ge.24) h = h-24
+    
+  end subroutine tm2hmss
   !*********************************************************************************************************************************
   
   
