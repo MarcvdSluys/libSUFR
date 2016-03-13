@@ -389,32 +389,32 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hh:mm, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param time  Time (h)
   
-  function hm(t)
+  function hm(time)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
     use SUFR_numerics, only: deq0
     
     implicit none
-    real(double), intent(in) :: t
-    real(double) :: t1
-    integer :: h,m
+    real(double), intent(in) :: time
+    real(double) :: ltime
+    integer :: hr,mn
     character :: hm*(5)
     
-    t1 = rev(t*h2r)*r2h
-    h = int(t1)
-    m = nint((t1-h)*60.d0)
+    ltime = rev(time*h2r)*r2h
+    hr = int(ltime)
+    mn = nint((ltime-hr)*60.d0)
     
-    if(m.eq.60) then
-       m=0
-       h=h+1
+    if(mn.eq.60) then
+       mn=0
+       hr=hr+1
     end if
-    if(h.eq.24) h=0
+    if(hr.eq.24) hr=0
     
-    write(hm,'(I2.2,A1,I2.2)') h,':',m
-    if(deq0(t)) write(hm,'(A5)') '--:--'
+    write(hm,'(I2.2,A1,I2.2)') hr,':',mn
+    if(deq0(time)) write(hm,'(A5)') '--:--'
     
   end function hm
   !*********************************************************************************************************************************
