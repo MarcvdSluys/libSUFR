@@ -157,8 +157,8 @@ contains
        m = m+1
     end if
     if(m.eq.60) then
-       m=0
-       h=h+1
+       m = 0
+       h = h+1
     end if
     
     write(hh,'(I2.2)') h
@@ -242,7 +242,7 @@ contains
     m = int((t1-h)*60.d0)
     s = (t1-h-m/60.d0)*3600.d0
     
-    if(s.gt.59.999d0) then
+    if(s.ge.59.95d0) then
        s = s-60.d0
        m = m+1
     end if
@@ -288,7 +288,7 @@ contains
     m = int((t1-h)*60.d0)
     s = (t1-h-m/60.d0)*3600.d0
     
-    if(s.gt.59.999d0) then
+    if(s.ge.59.9995d0) then
        s = s-60.d0
        m = m+1
     end if
@@ -408,15 +408,50 @@ contains
     mn = nint((ltime-hr)*60.d0)
     
     if(mn.eq.60) then
-       mn=0
-       hr=hr+1
+       mn = 0
+       hr = hr+1
     end if
-    if(hr.eq.24) hr=0
+    if(hr.ge.24) hr = hr-24
     
     write(hm,'(I2.2,A1,I2.2)') hr,':',mn
     if(deq0(time)) write(hm,'(A5)') '--:--'
     
   end function hm
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Print time as string in hh:mm.mmm, input in hours
+  !!
+  !! \param time  Time (h)
+  
+  function hm_mmm(time)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: r2h,h2r
+    use SUFR_angles, only: rev
+    
+    implicit none
+    real(double), intent(in) :: time
+    real(double) :: ltime, mn
+    integer :: hr
+    character :: hm_mmm*(9)
+    
+    ltime = rev(time*h2r)*r2h
+    hr = int(ltime)
+    mn = (ltime-hr)*60.d0
+    
+    if(mn.ge.59.9995d0) then
+       mn = 0.d0
+       hr = hr+1
+    end if
+    if(hr.ge.24) hr = hr-24
+    
+    write(hm_mmm,'(I2.2,A1,F6.3)') hr,':',mn
+    if(mn.lt.9.9995d0) write(hm_mmm,'(I2.2,A2,F5.3)') hr,':0',mn
+    
+  end function hm_mmm
   !*********************************************************************************************************************************
   
   
@@ -647,7 +682,7 @@ contains
     m = int((t1-h)*60.d0)
     s = (t1-h-m/60.d0)*3600.d0
     
-    if(s.gt.59.999d0) then
+    if(s.ge.59.95d0) then
        s = s-60.d0
        m = m+1
     end if
