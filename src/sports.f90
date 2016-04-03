@@ -132,9 +132,9 @@ contains
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
-    real(double), intent(in) :: HR, age, mass
     character, intent(in) :: gender
-    real(double) :: power, dpower
+    real(double), intent(in) :: age, mass, HR
+    real(double), intent(out) :: power, dpower
     
     select case(gender)
     case('f','F')  ! Female
