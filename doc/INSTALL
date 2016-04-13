@@ -1,13 +1,18 @@
 
 libSUFR INSTALL
+libsufr.sf.net
 
 
 
 DEPENDENCIES:
 
-The default installer uses CMake to configure and compile the code.  CMake is
-open-source software, is included in many GNU/Linux distributions, and can be
-downloaded from http://www.cmake.org/.  Alternatively, you can create your own
+libSUFR is written in Fortran, hence you will need a Fortran compiler.  Gfortran,
+part of gcc, is a free, open-source Fortran compiler included in many GNU/Linux 
+distributions and available from https://gcc.gnu.org/fortran/.
+
+The default installer uses CMake to configure and compile the code.  CMake is also 
+open-source software, also included in most GNU/Linux distributions, and can be 
+downloaded from http://www.cmake.org/.  Alternatively, you can create your own 
 Makefile or compile and link the code manually.
 
 
@@ -20,7 +25,7 @@ directory by doing e.g.:
   $ tar xfz libsufr-0.0.1.tar.gz
   $ cd libsufr-0.0.1/
 
-(replace you 0.0.1 with the correct version number).
+(replace "0.0.1" with the correct version number).
 
 
 
@@ -57,8 +62,8 @@ can omit the 'sudo' command and combine the last two commands, e.g.:
  $ make install
 
 
-To compile the code with your favourite compiler, prepend the cmake line with e.g. 
-FC=gfortran:
+To compile the code with your favourite compiler (in case you have several installed),
+prepend the cmake line with e.g. FC=gfortran:
 
  $ FC=gfortran cmake ..
 
@@ -80,7 +85,7 @@ The compiled libraries and modules can then be found in the usr/ subdirectory of
 package dir.
 
 
-On a Linux system, the library and module files will be installed as:
+On a Linux system, the library and module files could be installed as:
 /usr/lib/libSUFR.*
 /usr/include/libSUFR/*.mod
 
