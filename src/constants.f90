@@ -176,6 +176,34 @@ module SUFR_constants
   
   
   
+  ! Physical constants:
+  !> \brief Newton's constant, cm^3 g^-1 s^-2
+  real(double), parameter, public :: pc_g       =  6.67259d-8
+  !> \brief Speed of light in vacuo, cm s^-1
+  real(double), parameter, public :: pc_c       =  2.99792458d10
+  
+  !> \brief Atomic mass unit; (mass of C12 atom)/12, g
+  real(double), parameter, public :: pc_amu     =  1.6605402d-24
+  !> \brief Mass of a hydrogen atom
+  real(double), parameter, public :: pc_mh      =  1.007825*pc_amu
+  !> \brief Boltzmann constant, erg/K
+  real(double), parameter, public :: pc_kb      =  1.380658d-16
+  !> \brief Planck's constant, erg s
+  real(double), parameter, public :: pc_hp      =  6.6260755d-27
+  !> \brief Reduced Planck constant, erg s
+  real(double), parameter, public :: pc_hbar    =  pc_hp/pi2
+  !> \brief Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
+  real(double), parameter, public :: pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0
+  !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
+  real(double), parameter, public :: pc_sigma   =  pc_arad*pc_c*0.25d0
+  
+  
+  !> \brief ElectronVolt in erg (cgs)
+  real(double), parameter, public :: eV = 1.6021766d-12
+  
+  
+  
+  
   ! Astronomical constants:
   !> \brief A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
   real(double), parameter, public :: au = 1.49597870700d13
@@ -411,32 +439,6 @@ module SUFR_constants
   character, public :: currentDateStrNll*(39)
   
   
-  
-  
-  ! Physical constants:
-  !> \brief Newton's constant, cm^3 g^-1 s^-2
-  real(double), parameter, public :: pc_g       =  6.67259d-8
-  !> \brief Speed of light in vacuo, cm s^-1
-  real(double), parameter, public :: pc_c       =  2.99792458d10
-  
-  !> \brief Atomic mass unit; (mass of C12 atom)/12, g
-  real(double), parameter, public :: pc_amu     =  1.6605402d-24
-  !> \brief Mass of a hydrogen atom
-  real(double), parameter, public :: pc_mh      =  1.007825*pc_amu
-  !> \brief Boltzmann constant, erg/K
-  real(double), parameter, public :: pc_kb      =  1.380658d-16
-  !> \brief Planck's constant, erg s
-  real(double), parameter, public :: pc_hp      =  6.6260755d-27
-  !> \brief Reduced Planck constant, erg s
-  real(double), parameter, public :: pc_hbar    =  pc_hp/pi2
-  !> \brief Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
-  real(double), parameter, public :: pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0
-  !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
-  real(double), parameter, public :: pc_sigma   =  pc_arad*pc_c*0.25d0
-  
-  
-  !> \brief ElectronVolt in erg (cgs)
-  real(double), parameter, public :: eV = 1.6021766d-12
   
   
 contains
