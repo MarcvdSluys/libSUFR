@@ -19,22 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Constants that describe cursor movement
-
-module SUFR_constants_cursor
-  implicit none
-  private
-  save
-  
-  character, public :: cursorup*(4), cursordown*(4), cursorright*(4), cursorleft*(4)
-  
-end module SUFR_constants_cursor
-!***********************************************************************************************************************************
-
-
-
-
-!***********************************************************************************************************************************
 !> \brief  Constants that describe the working environment
 
 module SUFR_constants_environment
@@ -60,8 +44,6 @@ end module SUFR_constants_environment
 module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
-  
-  use SUFR_constants_cursor
   
   use SUFR_constants_environment
   
@@ -426,15 +408,26 @@ module SUFR_constants
   
   ! Character constants:
   !> \brief  Tab character
-  character, public :: tab = char(9)
+  character, parameter, public :: tab = char(9)
   !> \brief  Lower-case English names for Greek characters
-  character, public :: enGrChar(24)*(7) = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta','theta', &
-       'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
+  character, parameter, public :: enGrChar(24)*(7) = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta', &
+       'theta','iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
   !> \brief  HTML codes for lower-case Greek characters
-  character, public :: htmlGrChar(24)*(9) = [character(len=9) :: '&alpha;','&beta;','&gamma;','&delta;','&epsilon;','&zeta;', &
-       '&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;','&tau;', &
-       '&upsilon;','&phi;','&chi;','&psi;','&omega;']
+  character, parameter, public :: htmlGrChar(24)*(9) = [character(len=9) :: '&alpha;','&beta;','&gamma;','&delta;','&epsilon;', &
+       '&zeta;','&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;', &
+       '&tau;','&upsilon;','&phi;','&chi;','&psi;','&omega;']
   
+  ! Cursor movement:
+  !> \brief  Print this to move the cursor up one line on screen (need 2 lines since print gives a hard return)
+  character, parameter, public :: cursorup*(4)    = char(27)//'[2A'
+  !> \brief  Print this to move the cursor down one line (on screen)
+  character, parameter, public :: cursordown*(4)  = char(27)//'[1B'
+  !> \brief  Print this to move the cursor to the right one space
+  character, parameter, public :: cursorright*(4) = char(27)//'[1C'
+  !> \brief  Print this to move the cursor to the left one space
+  character, parameter, public :: cursorleft*(4)  = char(27)//'[1D'
+
+
   
 contains
   
@@ -450,9 +443,6 @@ contains
     
     ! Set current date and time, etc.:
     call set_SUFR_constants_currentDate()
-    
-    ! Characters:
-    call set_SUFR_constants_cursor()      ! Cursor movement
     
     ! Cetera:
     call set_SUFR_constants_environment()
@@ -525,23 +515,6 @@ contains
     write(currentDateTimeStr,'(A)') trim(currentDateStr)//' '//trim(currentTimeStr)//' '//trim(currentTimezoneStr)
     
   end subroutine set_SUFR_constants_currentDate
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the values of constants for cursor movement
-  
-  subroutine set_SUFR_constants_cursor()
-    use SUFR_constants_cursor
-    implicit none
-    
-    ! Cursor movement:
-    cursorup    = char(27)//'[2A'  ! Print this to go up one line on screen (need 2 lines since print gives a hard return)
-    cursordown  = char(27)//'[1B'  ! Print this to go down one line (on screen)
-    cursorright = char(27)//'[1C'  ! Makes the cursor move right one space
-    cursorleft  = char(27)//'[1D'  ! Makes the cursor move left one space
-    
-  end subroutine set_SUFR_constants_cursor
   !*********************************************************************************************************************************
   
   
