@@ -19,21 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Planet names and their abbreviations in English and Dutch
-
-module SUFR_constants_planetnames
-  implicit none
-  private
-  save
-  
-  character, public :: enpname(-1:19)*(7),enpnames(-1:19)*(7),enpnamel(-1:19)*(8),enpnamelb(-1:19)*(8),enpnamess(-1:19)*(4)
-  character, public :: nlpname(-1:19)*(9),nlpnames(-1:19)*(9),nlpnamel(-1:19)*(9),nlpnamelb(-1:19)*(9),nlpnamess(-1:19)*(4)
-  
-end module SUFR_constants_planetnames
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
 !> \brief  Names of lunar phases in English and Dutch
 
 module SUFR_constants_moonphases
@@ -154,7 +139,6 @@ module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
-  use SUFR_constants_planetnames
   use SUFR_constants_moonphases
   
   use SUFR_constants_calendar
@@ -326,11 +310,12 @@ module SUFR_constants
   !> \brief Equatorial radius of the Earth in cm, WGS84
   real(double), parameter, public :: earthr = 6378137.0d2
   
-  !> \brief Equatorial diameters (cm) - Venus = 12103.6 + clouds? - e.g., Wikipedia
-  real(double), parameter, public :: pland(0:9) = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, &
-       51118.d5, 49528.d5, 2390.d5/)
-  !> \brief Equatorial radii (cm)
-  real(double), parameter, public :: planr(0:9) = pland/2.d0
+  !> \brief Equatorial diameters (cm)
+  !  Venus = 12103.6 + clouds? - e.g., Wikipedia
+  real(double), public :: pland(0:9) = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, &
+       51118.d5, 49528.d5, 2390.d5/)  ! Not constants - may be redefined if (3) = Earth
+  !> \brief Equatorial radii (cm) = pland/2.d0
+  real(double), public :: planr(0:9) != pland/2.d0  ! Not constants - may be redefined if (3) = Earth
   !> \brief Semi-major axes (cm)
   real(double), parameter, public :: plana(0:9) = (/384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, &
        19.191d0, 30.061d0, 39.529d0/)*au
@@ -341,6 +326,42 @@ module SUFR_constants
   real(double),public :: satrad(4:8,30)
   !> \brief Diameters Galilean moons (cm)
   real(double),public :: satdiam(4:8,30)
+
+  
+  ! Planet names - not constants, since (3) may be changed in 'Earth':
+  ! en:
+  ! \brief Capitalised planet names
+  character, public :: enpname(-1:11)*(7) = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter', &
+       'Saturn ','Uranus ','Neptune','Pluto  ','       ','Comet  '/)
+  ! \brief Lower-case planet names
+  character, public :: enpnames(-1:11)*(7)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter', &
+       'saturn ','uranus ','neptune','pluto  ','       ','Comet  '/)
+  ! \brief Capitalised planet names; "the Moon"
+  character, public :: enpnamel(-1:11)*(8)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ', &
+       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
+  ! \brief Capitalised planet names; "The Moon"
+  character, public :: enpnamelb(-1:11)*(8) = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ', &
+       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
+  ! \brief Capitalised planet abbreviations
+  character, public :: enpnamess(-1:11)*(4) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.', &
+       'Plu.','    ','Com.'/)
+  
+  !nl:
+  ! \brief Capitalised Dutch planet names
+  character, public :: nlpname(-1:11)*(9)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  ! \brief Lower-case Dutch planet names
+  character, public :: nlpnames(-1:11)*(9)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ', &
+       'mars     ','jupiter  ','saturnus ','uranus   ','neptunus ','pluto    ','         ','komeet   '/)
+  ! \brief Capitalised Dutch planet names; "the Moon"
+  character, public :: nlpnamel(-1:11)*(9)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  ! \brief Capitalised Dutch planet names; "The Moon"
+  character, public :: nlpnamelb(-1:11)*(9) = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  ! \brief Capitalised Dutch planet abbreviations
+  character, public :: nlpnamess(-1:11)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
+       'Plu.','    ','Kom.'/)
   
   
   ! Physical constants:
@@ -382,7 +403,6 @@ contains
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
     ! Set the astronomical constants:
-    call set_SUFR_constants_planetnames()
     call set_SUFR_constants_moonphases()
     
     ! Set calendar stuff:
@@ -397,8 +417,10 @@ contains
     call set_SUFR_constants_environment()
     
     
-    ! Set constants that cannot be defined at declaration (partly filled arrays):
+    ! Set constants that cannot be defined at declaration (partly filled arrays, non-constant 'contants'):
     ! Astronomical:
+    !> \brief Planet equatorial radii (cm)
+    planr(0:9) = pland/2.d0  ! Not constants - may be redefined if (3) = Earth
     !> \brief Radii (Galilean) moons (cm)
     satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
     !> \brief Diameters (Galilean) moons (cm)
@@ -406,40 +428,6 @@ contains
     
 
   end subroutine set_SUFR_constants
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the planet names
-  
-  subroutine set_SUFR_constants_planetnames
-    use SUFR_constants_planetnames
-    implicit none
-    
-    !Planet names:
-    !en:
-    enpname(-1:11)   = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter','Saturn ','Uranus ','Neptune', &
-         'Pluto  ','       ','Comet  '/)
-    enpnames(-1:11)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter','saturn ','uranus ','neptune', &
-         'pluto  ','       ','Comet  '/)
-    enpnamel(-1:11)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ','Jupiter ','Saturn  ','Uranus  ', &
-         'Neptune ','Pluto   ','        ','Comet   '/)
-    enpnamelb(-1:11)  = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ','Jupiter ','Saturn  ','Uranus  ', &
-         'Neptune ','Pluto   ','        ','Comet   '/)
-    enpnamess(-1:11) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.','Plu.','    ','Com.'/)
-    
-    !nl:
-    nlpname(-1:11)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ','Mars     ','Jupiter  ','Saturnus ', &
-         'Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-    nlpnames(-1:11)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ','mars     ','jupiter  ','saturnus ', &
-         'uranus   ','neptunus ','pluto    ','         ','komeet   '/)
-    nlpnamel(-1:11)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ','Mars     ','Jupiter  ','Saturnus ', &
-         'Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-    nlpnamelb(-1:11)  = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ','Mars     ','Jupiter  ','Saturnus ', &
-         'Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-    nlpnamess(-1:11) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.','Plu.','    ','Kom.'/)
-    
-  end subroutine set_SUFR_constants_planetnames
   !*********************************************************************************************************************************
   
   
