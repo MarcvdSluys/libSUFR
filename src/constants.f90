@@ -19,32 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Names of months, days and time zones in English and Dutch
-
-module SUFR_constants_calendar
-  implicit none
-  private
-  save
-  
-  ! Month names:
-  character, public :: enmonths(12)*(9),enmonthsm(12)*(9),enmnts(12)*(3),enmntsb(12)*(3)
-  character, public :: nlmonths(12)*(9),nlmonthsb(12)*(9),nlmnts(12)*(3),nlmntsb(12)*(3)
-  
-  ! Day names:
-  character, public :: endays(0:6)*(9),ends(0:6)*(2),endys(0:6)*(3)
-  character, public :: nldays(0:6)*(9),nlds(0:6)*(2)
-  
-  ! Time-zone namess:
-  character, public :: nltimezones(0:1)*(10)
-  
-  ! Length of the months:
-  integer, public :: mlen(12)
-  
-end module SUFR_constants_calendar
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
 !> \brief  Current date/time constants
 
 module SUFR_constants_datetime
@@ -125,7 +99,6 @@ module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
-  use SUFR_constants_calendar
   use SUFR_constants_datetime
   
   use SUFR_constants_characters
@@ -352,6 +325,55 @@ module SUFR_constants
   !> \brief Dutch names of Lunar phases
   character, parameter, public :: nlphases(0:3)*(16) = (/'Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ', &
        'Laatste Kwartier'/)
+
+
+  
+  ! Month names:
+  ! en:
+  !> \brief Capitalised month names in English
+  character, parameter, public :: enmonths(12)*(9)  = (/'January  ','February ','March    ','April    ','May      ','June     ', &
+       'July     ','August   ','September','October  ','November ','December '/)
+  !> \brief Lower-case month names in English
+  character, parameter, public :: enmonthsm(12)*(9) = (/'january  ','february ','march    ','april    ','may      ','june     ', &
+       'july     ','august   ','september','october  ','november ','december '/)
+  !> \brief Capitalised month abbreviations in English
+  character, parameter, public :: enmnts(12)*(3)    = (/'jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'/)
+  !> \brief Lower-case month abbreviations in English
+  character, parameter, public :: enmntsb(12)*(3)   = (/'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'/)
+    
+  ! nl:
+  !> \brief Capitalised month names in Dutch
+  character, parameter, public :: nlmonths(12)*(9)  = (/'januari  ','februari ','maart    ','april    ','mei      ','juni     ', &
+       'juli     ','augustus ','september','oktober  ','november ','december '/)
+  !> \brief Lower-case month names in Dutch
+  character, parameter, public :: nlmonthsb(12)*(9) = (/'Januari  ','Februari ','Maart    ','April    ','Mei      ','Juni     ', &
+       'Juli     ','Augustus ','September','Oktober  ','November ','December '/)
+  !> \brief Capitalised month abbreviations in Dutch
+  character, parameter, public :: nlmnts(12)*(3)    = (/'jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'/)
+  !> \brief Lower-case month abbreviations in Dutch
+  character, parameter, public :: nlmntsb(12)*(3)   = (/'Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'/)
+  
+  
+  ! Days of the week:
+  ! en:
+  character, parameter, public :: endays(0:6)*(9) = (/'Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ', &
+       'Saturday '/)
+  character, parameter, public :: endys(0:6)*(3)  = (/'Sun','Mon','Tue','Wed','Thu','Fri','Sat'/)
+  character, parameter, public :: ends(0:6)*(2)   = (/'Su','Mo','Tu','We','Th','Fr','Sa'/)
+  ! nl:
+  character, parameter, public :: nldays(0:6)*(9) = (/'zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ', &
+       'zaterdag '/)
+  character, parameter, public :: nldys(0:6)*(4)  = (/'zon ','maa ','din ','woe ','don ','vrij','zat '/)
+  character, parameter, public :: nlds(0:6)*(2)   = (/'zo','ma','di','wo','do','vr','za'/)
+  
+  
+  ! Time zones:
+  character, parameter, public :: nltimezones(0:1)*(10) = (/'wintertijd','zomertijd '/)
+    
+    
+  ! Length of the months (for non-leap year - changes for leap years -> not a constant)
+  integer, public :: mlen(12) = (/31,28,31,30,31,30,31,31,30,31,30,31/)
+    
   
   
   
@@ -394,7 +416,6 @@ contains
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
     ! Set calendar stuff:
-    call set_SUFR_constants_calendar()
     call set_SUFR_constants_currentDate()
     
     ! Characters:
@@ -420,56 +441,10 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Define the names of months, days and timezones;  define month lengths
-  
-  subroutine set_SUFR_constants_calendar
-    use SUFR_constants_calendar
-    implicit none
-    
-    !Months:
-    !en:
-    enmonths  = (/'January  ','February ','March    ','April    ','May      ','June     ','July     ','August   ','September', &
-         'October  ','November ','December '/)
-    enmonthsm = (/'january  ','february ','march    ','april    ','may      ','june     ','july     ','august   ','september', &
-         'october  ','november ','december '/)
-    enmnts    = (/'jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'/)
-    enmntsb   = (/'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'/)
-    
-    !nl:
-    nlmonths  = (/'januari  ','februari ','maart    ','april    ','mei      ','juni     ','juli     ','augustus ','september', &
-         'oktober  ','november ','december '/)
-    nlmonthsb = (/'Januari  ','Februari ','Maart    ','April    ','Mei      ','Juni     ','Juli     ','Augustus ','September', &
-         'Oktober  ','November ','December '/)
-    nlmnts    = (/'jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'/)
-    nlmntsb   = (/'Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'/)
-    
-    !Days:
-    endays = (/'Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ','Saturday '/)
-    endys  = (/'Sun','Mon','Tue','Wed','Thu','Fri','Sat'/)
-    ends   = (/'Su','Mo','Tu','We','Th','Fr','Sa'/)
-    
-    nldays = (/'zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ','zaterdag '/)
-    nlds   = (/'zo','ma','di','wo','do','vr','za'/)
-    
-    
-    !Time zones:
-    nltimezones = (/'wintertijd','zomertijd '/)
-    
-    
-    !Length of the months (for non-leap year)
-    mlen = (/31,28,31,30,31,30,31,31,30,31,30,31/)
-    
-  end subroutine set_SUFR_constants_calendar
-  !*********************************************************************************************************************************
-  
-  
-  
-  !*********************************************************************************************************************************
   !> \brief  Define the values of variables that describe the current date and time
   
   subroutine set_SUFR_constants_currentDate()
     use SUFR_constants_datetime
-    use SUFR_constants_calendar
     use SUFR_date_and_time
     
     implicit none
