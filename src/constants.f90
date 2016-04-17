@@ -238,37 +238,45 @@ module SUFR_constants
   ! Planet names - not constants, since (3) may be changed in 'Earth':
   ! en:
   !> \brief Capitalised planet names
-  character, public :: enpname(-1:11)*(7) = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter', &
-       'Saturn ','Uranus ','Neptune','Pluto  ','       ','Comet  '/)
+  character, public :: enpname(-1:19)*(7) = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter', &
+       'Saturn ','Uranus ','Neptune','Pluto  ','       ','Comet  ','       ','       ','       ','       ','       ', &
+       '       ','       ','       '/)
   !> \brief Lower-case planet names
-  character, public :: enpnames(-1:11)*(7)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter', &
-       'saturn ','uranus ','neptune','pluto  ','       ','Comet  '/)
+  character, public :: enpnames(-1:19)*(7)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter', &
+       'saturn ','uranus ','neptune','pluto  ','       ','Comet  ','       ','       ','       ','       ','       ', &
+       '       ','       ','       '/)
   !> \brief Capitalised planet names; "the Moon"
-  character, public :: enpnamel(-1:11)*(8)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ', &
-       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
+  character, public :: enpnamel(-1:19)*(8)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ', &
+       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   ','        ','        ','        ', &
+       '        ','        ','        ','        ','        '/)
   !> \brief Capitalised planet names; "The Moon"
-  character, public :: enpnamelb(-1:11)*(8) = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ', &
-       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
+  character, public :: enpnamelb(-1:19)*(8) = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ', &
+       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   ','        ','        ','        ', &
+       '        ','        ','        ','        ','        '/)
   !> \brief Capitalised planet abbreviations
-  character, public :: enpnamess(-1:11)*(4) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.', &
-       'Plu.','    ','Com.'/)
+  character, public :: enpnamess(-1:19)*(4) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.', &
+       'Plu.','    ','Com.','    ','    ','    ','    ','    ','    ','    ','    '/)
   
   !nl:
   !> \brief Capitalised Dutch planet names
-  character, public :: nlpname(-1:11)*(9)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  character, public :: nlpname(-1:19)*(9)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
+       '         ','         ','         ','         ','         ','         ','         ','         '/)
   !> \brief Lower-case Dutch planet names
-  character, public :: nlpnames(-1:11)*(9)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ', &
-       'mars     ','jupiter  ','saturnus ','uranus   ','neptunus ','pluto    ','         ','komeet   '/)
+  character, public :: nlpnames(-1:19)*(9)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ', &
+       'mars     ','jupiter  ','saturnus ','uranus   ','neptunus ','pluto    ','         ','komeet   ', &
+       '         ','         ','         ','         ','         ','         ','         ','         '/)
   !> \brief Capitalised Dutch planet names; "the Moon"
-  character, public :: nlpnamel(-1:11)*(9)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  character, public :: nlpnamel(-1:19)*(9)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
+       '         ','         ','         ','         ','         ','         ','         ','         '/)
   !> \brief Capitalised Dutch planet names; "The Moon"
-  character, public :: nlpnamelb(-1:11)*(9) = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
+  character, public :: nlpnamelb(-1:19)*(9) = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ', &
+       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
+       '         ','         ','         ','         ','         ','         ','         ','         '/)
   !> \brief Capitalised Dutch planet abbreviations
-  character, public :: nlpnamess(-1:11)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
-       'Plu.','    ','Kom.'/)
+  character, public :: nlpnamess(-1:19)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
+       'Plu.','    ','Kom.','    ','    ','    ','    ','    ','    ','    ','    '/)
   
   !> \brief English names of Lunar phases
   character, parameter, public :: enphases(0:3)*(13) = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
