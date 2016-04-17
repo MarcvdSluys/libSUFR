@@ -19,33 +19,11 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Constants that describe the working environment
-
-module SUFR_constants_environment
-  implicit none
-  private
-  save
-  
-  integer, public :: stdErr, StdIn, StdOut
-  character, public :: homeDir*(199), workDir*(199), hostName*(99), userName*(99), userID*(99)
-  character, public :: program_name*(199), program_path*(999), program_args*(999)
-  
-end module SUFR_constants_environment
-!***********************************************************************************************************************************
-
-
-
-
-
-
-!***********************************************************************************************************************************
 !> \brief  Provides all constants in the library, and routines to define them
 
 module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
-  
-  use SUFR_constants_environment
   
   implicit none
   private :: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
@@ -427,7 +405,32 @@ module SUFR_constants
   !> \brief  Print this to move the cursor to the left one space
   character, parameter, public :: cursorleft*(4)  = char(27)//'[1D'
 
-
+  
+  !> \brief  Default standard error unit for most (not all!) Fortran compilers
+  integer, public :: stdErr
+  !> \brief  Default standard input unit for most (not all!) Fortran compilers
+  integer, public :: StdIn
+  !> \brief  Default standard output unit for most (not all!) Fortran compilers
+  integer, public :: StdOut
+  
+  !> \brief  Current user's home directory  (= $HOME, will contain e.g. '/home/user')
+  character, public :: homeDir*(199)
+  !> \brief  Current working directory  (= $PWD, may contain e.g. '/home/user/myCode/...')
+  character, public :: workDir*(199)
+  !> \brief  Host name  (= $HOSTNAME - not always exported)
+  character, public :: hostName*(99)
+  !> \brief  Name of the current user (= $USER)
+  character, public :: userName*(99)
+  !> \brief  ID of the current user   (= $UID)
+  character, public :: userID*(99)
+  
+  !> \brief  Name of the currently running program, without the path
+  character, public :: program_name*(199)
+  !> \brief  Path of the currently running program, without the program name
+  character, public :: program_path*(999)
+  !> \brief  List of command-line arguments, separated by two spaces - may be truncated if longer than 999 characters
+  character, public :: program_args*(999)
+  
   
 contains
   
@@ -522,14 +525,13 @@ contains
   !> \brief  Define the values of constants that describe the working environment
   
   subroutine set_SUFR_constants_environment()
-    use SUFR_constants_environment
     implicit none
     integer :: i, narg, status
     character :: tmpStr*(99)
     
     ! Standard error, input, and output
     stdErr = 0  ! Unit for standard error
-    stdIn  = 0  ! Unit for standard input
+    stdIn  = 5  ! Unit for standard input
     stdOut = 6  ! Unit for standard output
     
     
