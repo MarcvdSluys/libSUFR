@@ -203,28 +203,28 @@ module SUFR_constants
   real(double), parameter, public :: solConst = 1361.5d0
   
   ! True for J2000.0:
-  !> \brief Gregorian month in s:    average calendar month length of 4800 months over 400 years
+  !> \brief Gregorian month in seconds:    average calendar month length of 4800 months over 400 years
   real(double), parameter, public :: gregmonth = 30.4369d0      * solday
-  !> \brief Sidereal month in s:     fixed star to fixed star
+  !> \brief Sidereal month in seconds:     fixed star to fixed star
   real(double), parameter, public :: sidmonth  = 27.321661547d0 * solday
-  !> \brief Tropical month in s:     equinox to equinox, influenced by precession
+  !> \brief Tropical month in seconds:     equinox to equinox, influenced by precession
   real(double), parameter, public :: tropmonth = 27.321582241d0 * solday
-  !> \brief Anomalistic month in s:  apside to apside
+  !> \brief Anomalistic month in seconds:  apside to apside
   real(double), parameter, public :: anomonth  = 27.554549878d0 * solday
-  !> \brief Draconic month in s:     node to node
+  !> \brief Draconic month in seconds:     node to node
   real(double), parameter, public :: dracmonth = 27.212220817d0 * solday
-  !> \brief Synodic month in s:      phase to phase
+  !> \brief Synodic month in seconds:      phase to phase
   real(double), parameter, public :: synmonth  = 29.530588853d0 * solday
   
-  !> \brief Julian year in s:        assumes 100 leap years in 400 years
+  !> \brief Julian year in seconds:        assumes 100 leap years in 400 years
   real(double), parameter, public :: julyear  = 365.25d0        * solday
-  !> \brief Gregorian year in s:     assumes 97 leap years in 400 years
+  !> \brief Gregorian year in seconds:     assumes 97 leap years in 400 years
   real(double), parameter, public :: gregyear = 365.2425d0      * solday
-  !> \brief Siderial year in s:      fixed star to fixed star
+  !> \brief Siderial year in seconds:      fixed star to fixed star
   real(double), parameter, public :: sidyear  = 365.256363051d0 * solday
-  !> \brief Tropical year in s:      equinox to equinox, influenced by precession
+  !> \brief Tropical year in seconds:      equinox to equinox, influenced by precession
   real(double), parameter, public :: tropyear = 365.24218967d0  * solday
-  !> \brief Anomalistic year in s:   apside to apside
+  !> \brief Anomalistic year in seconds:   apside to apside
   real(double), parameter, public :: anomyear = 365.259635864d0 * solday
   
   !> \brief JD at J1875.0 (when constellation boundaries were defined)
@@ -243,11 +243,14 @@ module SUFR_constants
   real(double), parameter, public :: earthr = 6378137.0d2
   
   !> \brief Equatorial diameters (cm)
-  !  Venus = 12103.6 + clouds? - e.g., Wikipedia
+  !! \note
+  !! - may be redefined if (3) = Earth -> not a constant
+  !! - Venus = 12103.6 + clouds? - e.g., Wikipedia
   real(double), public :: pland(0:9) = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, &
-       51118.d5, 49528.d5, 2390.d5/)  ! Not constants - may be redefined if (3) = Earth
+       51118.d5, 49528.d5, 2390.d5/)
   !> \brief Equatorial radii (cm) = pland/2.d0
-  real(double), public :: planr(0:9) != pland/2.d0  ! Not constants - may be redefined if (3) = Earth
+  !! \note  May be redefined if (3) = Earth -> not a constant
+  real(double), public :: planr(0:9) != pland/2.d0
   !> \brief Semi-major axes (cm)
   real(double), parameter, public :: plana(0:9) = (/384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, &
        19.191d0, 30.061d0, 39.529d0/)*au
@@ -262,36 +265,36 @@ module SUFR_constants
   
   ! Planet names - not constants, since (3) may be changed in 'Earth':
   ! en:
-  ! \brief Capitalised planet names
+  !> \brief Capitalised planet names
   character, public :: enpname(-1:11)*(7) = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter', &
        'Saturn ','Uranus ','Neptune','Pluto  ','       ','Comet  '/)
-  ! \brief Lower-case planet names
+  !> \brief Lower-case planet names
   character, public :: enpnames(-1:11)*(7)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter', &
        'saturn ','uranus ','neptune','pluto  ','       ','Comet  '/)
-  ! \brief Capitalised planet names; "the Moon"
+  !> \brief Capitalised planet names; "the Moon"
   character, public :: enpnamel(-1:11)*(8)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ', &
        'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
-  ! \brief Capitalised planet names; "The Moon"
+  !> \brief Capitalised planet names; "The Moon"
   character, public :: enpnamelb(-1:11)*(8) = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ', &
        'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   '/)
-  ! \brief Capitalised planet abbreviations
+  !> \brief Capitalised planet abbreviations
   character, public :: enpnamess(-1:11)*(4) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.', &
        'Plu.','    ','Com.'/)
   
   !nl:
-  ! \brief Capitalised Dutch planet names
+  !> \brief Capitalised Dutch planet names
   character, public :: nlpname(-1:11)*(9)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ', &
        'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-  ! \brief Lower-case Dutch planet names
+  !> \brief Lower-case Dutch planet names
   character, public :: nlpnames(-1:11)*(9)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ', &
        'mars     ','jupiter  ','saturnus ','uranus   ','neptunus ','pluto    ','         ','komeet   '/)
-  ! \brief Capitalised Dutch planet names; "the Moon"
+  !> \brief Capitalised Dutch planet names; "the Moon"
   character, public :: nlpnamel(-1:11)*(9)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ', &
        'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-  ! \brief Capitalised Dutch planet names; "The Moon"
+  !> \brief Capitalised Dutch planet names; "The Moon"
   character, public :: nlpnamelb(-1:11)*(9) = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ', &
        'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   '/)
-  ! \brief Capitalised Dutch planet abbreviations
+  !> \brief Capitalised Dutch planet abbreviations
   character, public :: nlpnamess(-1:11)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
        'Plu.','    ','Kom.'/)
   
@@ -331,22 +334,30 @@ module SUFR_constants
   
   ! Days of the week:
   ! en:
+  !> \brief  Capitalised day-of-week names in English
   character, parameter, public :: endays(0:6)*(9) = (/'Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ', &
        'Saturday '/)
+  !> \brief  Capitalised three-letter day-of-week abbreviations in English
   character, parameter, public :: endys(0:6)*(3)  = (/'Sun','Mon','Tue','Wed','Thu','Fri','Sat'/)
+  !> \brief  Capitalised two-letter day-of-week abbreviations in English
   character, parameter, public :: ends(0:6)*(2)   = (/'Su','Mo','Tu','We','Th','Fr','Sa'/)
+  
   ! nl:
+  !> \brief  Lower-case day-of-week names in Dutch
   character, parameter, public :: nldays(0:6)*(9) = (/'zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ', &
        'zaterdag '/)
+  !> \brief  Lower-case three-letter day-of-week abbreviations in Dutch
   character, parameter, public :: nldys(0:6)*(4)  = (/'zon ','maa ','din ','woe ','don ','vrij','zat '/)
+  !> \brief  Lower-case two-letter day-of-week abbreviations in Dutch
   character, parameter, public :: nlds(0:6)*(2)   = (/'zo','ma','di','wo','do','vr','za'/)
   
   
-  ! Time zones:
+  !> \brief  Timezone names in Dutch
   character, parameter, public :: nltimezones(0:1)*(10) = (/'wintertijd','zomertijd '/)
     
     
-  ! Length of the months (for non-leap year - changes for leap years -> not a constant)
+  !> \brief  Length of the months (for non-leap year)
+  !! \note   Changes for leap years -> not a constant
   integer, public :: mlen(12) = (/31,28,31,30,31,30,31,31,30,31,30,31/)
   
   
@@ -454,7 +465,8 @@ contains
     ! Set constants that cannot be defined at declaration (partly filled arrays, non-constant 'contants'):
     ! Astronomical:
     !> \brief Planet equatorial radii (cm)
-    planr(0:9) = pland/2.d0  ! Not constants - may be redefined if (3) = Earth
+    !! \note may be redefined if (3) = Earth -> not a constant
+    planr(0:9) = pland/2.d0
     !> \brief Radii (Galilean) moons (cm)
     satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
     !> \brief Diameters (Galilean) moons (cm)
