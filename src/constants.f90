@@ -19,20 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Names of lunar phases in English and Dutch
-
-module SUFR_constants_moonphases
-  implicit none
-  private
-  save
-  
-  character, public :: enphases(0:3)*(13),nlphases(0:3)*(16)
-  
-end module SUFR_constants_moonphases
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
 !> \brief  Names of months, days and time zones in English and Dutch
 
 module SUFR_constants_calendar
@@ -138,8 +124,6 @@ end module SUFR_constants_environment
 module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
-  
-  use SUFR_constants_moonphases
   
   use SUFR_constants_calendar
   use SUFR_constants_datetime
@@ -363,6 +347,13 @@ module SUFR_constants
   character, public :: nlpnamess(-1:11)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
        'Plu.','    ','Kom.'/)
   
+  !> \brief English names of Lunar phases
+  character, parameter, public :: enphases(0:3)*(13) = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
+  !> \brief Dutch names of Lunar phases
+  character, parameter, public :: nlphases(0:3)*(16) = (/'Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ', &
+       'Laatste Kwartier'/)
+  
+  
   
   ! Physical constants:
   !> \brief Newton's constant, cm^3 g^-1 s^-2
@@ -402,9 +393,6 @@ contains
     ! Get the kinds of the most accurate integer and real for the current compiler/system:
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
-    ! Set the astronomical constants:
-    call set_SUFR_constants_moonphases()
-    
     ! Set calendar stuff:
     call set_SUFR_constants_calendar()
     call set_SUFR_constants_currentDate()
@@ -428,20 +416,6 @@ contains
     
 
   end subroutine set_SUFR_constants
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the names of the lunar phases
-  
-  subroutine set_SUFR_constants_moonphases
-    use SUFR_constants_moonphases
-    implicit none
-    
-    enphases = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
-    nlphases = (/'Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ','Laatste Kwartier'/)
-    
-  end subroutine set_SUFR_constants_moonphases
   !*********************************************************************************************************************************
   
   
