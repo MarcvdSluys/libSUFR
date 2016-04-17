@@ -19,48 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Mathematical constants
-
-module SUFR_constants_math
-  use SUFR_kinds, only: double
-  implicit none
-  private
-  save
-  
-  !real(double), public ::  one, c3rd,two3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
-  !real, public ::         rc3rd,rtwo3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
-  
-end module SUFR_constants_math
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
-!> \brief  Astronomical constants and satellite data
-
-module SUFR_constants_astro
-  use SUFR_kinds, only: double, dbl
-  implicit none
-  private
-  save
-  
-  ! Astronomical constants:
-  !real(double),public :: solDay,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
-  !real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
-  !real(double),public :: au,km,nm,mm,mum,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
-  
-  ! Satellite data for planets 4-8:
-  !real(double),public :: satrad(4:8,30),satdiam(4:8,30)
-  
-  ! Physical constants:
-  !real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
-  !real(double), public :: eV
-  
-
-end module SUFR_constants_astro
-!***********************************************************************************************************************************
-
-
-!***********************************************************************************************************************************
 !> \brief  Planet names and their abbreviations in English and Dutch
 
 module SUFR_constants_planetnames
@@ -196,8 +154,6 @@ module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
-  !use SUFR_constants_math
-  !use SUFR_constants_astro
   use SUFR_constants_planetnames
   use SUFR_constants_moonphases
   
@@ -425,11 +381,7 @@ contains
     ! Get the kinds of the most accurate integer and real for the current compiler/system:
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
-    ! Set the mathematical constants:
-    !call set_SUFR_constants_math()
-    
     ! Set the astronomical constants:
-    !call set_SUFR_constants_astro()
     call set_SUFR_constants_planetnames()
     call set_SUFR_constants_moonphases()
     
@@ -445,39 +397,15 @@ contains
     call set_SUFR_constants_environment()
     
     
-    ! Set 'derived' constants:
-    !> \brief Radii Galilean moons (cm)
+    ! Set constants that cannot be defined at declaration (partly filled arrays):
+    ! Astronomical:
+    !> \brief Radii (Galilean) moons (cm)
     satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
-    !> \brief Diameters Galilean moons (cm)
+    !> \brief Diameters (Galilean) moons (cm)
     satdiam = 2*satrad
     
 
   end subroutine set_SUFR_constants
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the values of the mathematical constants
-  
-  subroutine set_SUFR_constants_math
-    use SUFR_constants_math
-    implicit none
-    
-    
-    
-  end subroutine set_SUFR_constants_math
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the values of astronomical constants
-  
-  subroutine set_SUFR_constants_astro
-    use SUFR_constants_astro
-    implicit none
-    
-    
-  end subroutine set_SUFR_constants_astro
   !*********************************************************************************************************************************
   
   
@@ -625,8 +553,6 @@ contains
     write(currentTimeStr,'(I2.2,A1,I2.2,A1,I2.2)') currentHour,':',currentMinute,':',currentSecond
     
     write(currentDateTimeStr,'(A)') trim(currentDateStr)//' '//trim(currentTimeStr)//' '//trim(currentTimezoneStr)
-    
-    
     
   end subroutine set_SUFR_constants_currentDate
   !*********************************************************************************************************************************
