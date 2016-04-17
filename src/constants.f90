@@ -27,8 +27,8 @@ module SUFR_constants_math
   private
   save
   
-  real(double), public ::  one, c3rd,two3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
-  real, public ::         rc3rd,rtwo3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
+  !real(double), public ::  one, c3rd,two3rd, pi, pi2, pio2, pio4, r2d, d2r, r2h, h2r, d2h, h2d, d2as, as2d, am2r, r2am, r2as, as2r
+  !real, public ::         rc3rd,rtwo3rd,rpi,rpi2,rpio2,rpio4,rr2d,rd2r,rr2h,rh2r,rd2h,rh2d,rd2as,ras2d,ram2r,rr2am,rr2as,ras2r
   
 end module SUFR_constants_math
 !***********************************************************************************************************************************
@@ -38,23 +38,24 @@ end module SUFR_constants_math
 !> \brief  Astronomical constants and satellite data
 
 module SUFR_constants_astro
-  use SUFR_kinds, only: double
+  use SUFR_kinds, only: double, dbl
   implicit none
   private
   save
   
   ! Astronomical constants:
-  real(double),public :: solDay,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
-  real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
-  real(double),public :: au,km,nm,mm,mum,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
+  !real(double),public :: solDay,siday,  gregmonth,sidmonth,tropmonth,anomonth,dracmonth,synmonth
+  !real(double),public :: julyear,gregyear,sidyear,tropyear,anomyear,  planr(0:9),pland(0:9),plana(0:9),earthr
+  !real(double),public :: au,km,nm,mm,mum,rsun,msun,lsun, jd1875,jd1900,jd1950,jd2000, eps2000, solConst
   
   ! Satellite data for planets 4-8:
-  real(double),public :: satrad(4:8,30),satdiam(4:8,30)
+  !real(double),public :: satrad(4:8,30),satdiam(4:8,30)
   
   ! Physical constants:
-  real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
-  real(double), public :: eV
+  !real(double), public :: pc_g,pc_c, pc_amu,pc_mh,pc_kb,pc_hp,pc_hbar,pc_arad,pc_sigma
+  !real(double), public :: eV
   
+
 end module SUFR_constants_astro
 !***********************************************************************************************************************************
 
@@ -195,20 +196,221 @@ module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
-  use SUFR_constants_math
-  use SUFR_constants_astro
+  !use SUFR_constants_math
+  !use SUFR_constants_astro
   use SUFR_constants_planetnames
   use SUFR_constants_moonphases
+  
   use SUFR_constants_calendar
   use SUFR_constants_datetime
+  
   use SUFR_constants_characters
   use SUFR_constants_cursor
+  
   use SUFR_constants_environment
   
   implicit none
   private :: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   save
   
+
+  
+
+  ! Double precision:
+  !> \brief Unity
+  real(double), parameter, public :: one    = 1.0_dbl
+  !> \brief One third
+  real(double), parameter, public :: c3rd   = one/3.0_dbl
+  !> \brief Two thirds
+  real(double), parameter, public :: two3rd = 2*c3rd
+    
+  !> \brief pi/4
+  real(double), parameter, public :: pio4 = atan(one)
+  !> \brief pi/2
+  real(double), parameter, public :: pio2 = 2*pio4
+  !> \brief pi
+  real(double), parameter, public :: pi   = 2*pio2
+  !> \brief 2*pi
+  real(double), parameter, public :: pi2  = 2*pi
+    
+  !> \brief Radians to degrees
+  real(double), parameter, public :: r2d = 180.0_dbl/pi
+  !> \brief Degrees to radians
+  real(double), parameter, public :: d2r = one/r2d
+  !> \brief Radians to hours
+  real(double), parameter, public :: r2h = 12.0_dbl/pi
+  !> \brief Hours to radians
+  real(double), parameter, public :: h2r = one/r2h
+  !> \brief Hours to degrees
+  real(double), parameter, public :: h2d = 15.0_dbl
+  !> \brief Degrees to hours
+  real(double), parameter, public :: d2h = one/h2d
+    
+  !> \brief Degrees to arcseconds
+  real(double), parameter, public :: d2as = 3600.0_dbl
+  !> \brief Arcseconds to degrees
+  real(double), parameter, public :: as2d = one/d2as
+  !> \brief Radians to arcminutes
+  real(double), parameter, public :: r2am = dble(180*60)/pi
+  !> \brief Arcminutes to radians
+  real(double), parameter, public :: am2r = one/r2am
+  !> \brief Radians to arcseconds
+  real(double), parameter, public :: r2as = r2am*60.0_dbl
+  !> \brief Arcseconds to radians
+  real(double), parameter, public :: as2r = one/r2as
+    
+    
+  ! Single precision:
+  !> \brief One third
+  real, parameter, public :: rc3rd   = real(c3rd)
+  !> \brief Two thirds
+  real, parameter, public :: rtwo3rd = real(two3rd)
+    
+  !> \brief pi/4
+  real, parameter, public :: rpio4 = real(pio4)
+  !> \brief pi/2
+  real, parameter, public :: rpio2 = real(pio2)
+  !> \brief pi
+  real, parameter, public :: rpi   = real(pi)
+  !> \brief 2*pi
+  real, parameter, public :: rpi2  = real(pi2)
+    
+  !> \brief Radians to degrees
+  real, parameter, public :: rr2d = real(r2d)
+  !> \brief Degrees to radians
+  real, parameter, public :: rd2r = real(d2r)
+  !> \brief Radians to hours
+  real, parameter, public :: rr2h = real(r2h)
+  !> \brief Hours to radians
+  real, parameter, public :: rh2r = real(h2r)
+  !> \brief Hours to degrees
+  real, parameter, public :: rh2d = real(h2d)
+  !> \brief Degrees to hours
+  real, parameter, public :: rd2h = real(d2h)
+    
+  !> \brief Degrees to arcseconds
+  real, parameter, public :: rd2as = real(d2as)
+  !> \brief Arcseconds to degrees
+  real, parameter, public :: ras2d = real(as2d)
+  !> \brief Radians to arcminutes
+  real, parameter, public :: rr2am = real(r2am)
+  !> \brief Arcminutes to radians
+  real, parameter, public :: ram2r = real(am2r)
+  !> \brief Radians to arcseconds
+  real, parameter, public :: rr2as = real(r2as)
+  !> \brief Arcseconds to radians
+  real, parameter, public :: ras2r = real(as2r)
+  
+  
+  
+  
+  ! Astronomical constants:
+  !> \brief A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
+  real(double), parameter, public :: au = 1.49597870700d13
+  
+  !> \brief nanometer in cgs (cm)
+  real(double), parameter, public :: nm = 1.d-7
+  !> \brief micrometer in cgs (cm)
+  real(double), parameter, public :: mum = 1.d-4
+  !> \brief millimeter in cgs (cm)
+  real(double), parameter, public :: mm = 1.d-1
+  !> \brief kilometer in cgs (cm)
+  real(double), parameter, public :: km = 1.d5
+  !> \brief Solar radius in cgs (cm)
+  real(double), parameter, public :: rsun = 6.9599d10
+  !> \brief Solar mass in cgs (gm)
+  real(double), parameter, public :: msun = 1.9891d33
+  !> \brief Solar luminosity in cgs (erg/s)
+  real(double), parameter, public :: lsun = 3.85d33
+  
+  !> \brief Siderial day in days
+  real(double), parameter, public :: siday = 0.997269663d0
+  !> \brief Solar day = 86400 s
+  real(double), parameter, public :: solDay   = 8.64d4
+  !> \brief Solar constant in W/m^2
+  real(double), parameter, public :: solConst = 1361.5d0
+  
+  ! True for J2000.0:
+  !> \brief Gregorian month in s:    average calendar month length of 4800 months over 400 years
+  real(double), parameter, public :: gregmonth = 30.4369d0      * solday
+  !> \brief Sidereal month in s:     fixed star to fixed star
+  real(double), parameter, public :: sidmonth  = 27.321661547d0 * solday
+  !> \brief Tropical month in s:     equinox to equinox, influenced by precession
+  real(double), parameter, public :: tropmonth = 27.321582241d0 * solday
+  !> \brief Anomalistic month in s:  apside to apside
+  real(double), parameter, public :: anomonth  = 27.554549878d0 * solday
+  !> \brief Draconic month in s:     node to node
+  real(double), parameter, public :: dracmonth = 27.212220817d0 * solday
+  !> \brief Synodic month in s:      phase to phase
+  real(double), parameter, public :: synmonth  = 29.530588853d0 * solday
+  
+  !> \brief Julian year in s:        assumes 100 leap years in 400 years
+  real(double), parameter, public :: julyear  = 365.25d0        * solday
+  !> \brief Gregorian year in s:     assumes 97 leap years in 400 years
+  real(double), parameter, public :: gregyear = 365.2425d0      * solday
+  !> \brief Siderial year in s:      fixed star to fixed star
+  real(double), parameter, public :: sidyear  = 365.256363051d0 * solday
+  !> \brief Tropical year in s:      equinox to equinox, influenced by precession
+  real(double), parameter, public :: tropyear = 365.24218967d0  * solday
+  !> \brief Anomalistic year in s:   apside to apside
+  real(double), parameter, public :: anomyear = 365.259635864d0 * solday
+  
+  !> \brief JD at J1875.0 (when constellation boundaries were defined)
+  real(double), parameter, public :: jd1875 = 2405890.d0
+  !> \brief JD at J1900.0
+  real(double), parameter, public :: jd1900 = 2415021.d0
+  !> \brief JD at J1950.0
+  real(double), parameter, public :: jd1950 = 2433283.d0
+  !> \brief JD at J2000.0 (2000-01-01 12:00 UT)
+  real(double), parameter, public :: jd2000 = 2451545.d0
+  
+  !> \brief Obliquity of the ecliptic at J2000.0
+  real(double), parameter, public :: eps2000 = 0.409092804d0
+  
+  !> \brief Equatorial radius of the Earth in cm, WGS84
+  real(double), parameter, public :: earthr = 6378137.0d2
+  
+  !> \brief Equatorial diameters (cm) - Venus = 12103.6 + clouds? - e.g., Wikipedia
+  real(double), parameter, public :: pland(0:9) = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, &
+       51118.d5, 49528.d5, 2390.d5/)
+  !> \brief Equatorial radii (cm)
+  real(double), parameter, public :: planr(0:9) = pland/2.d0
+  !> \brief Semi-major axes (cm)
+  real(double), parameter, public :: plana(0:9) = (/384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, &
+       19.191d0, 30.061d0, 39.529d0/)*au
+  
+  
+  ! Satellites:
+  !> \brief Radii Galilean moons (cm)
+  real(double),public :: satrad(4:8,30)
+  !> \brief Diameters Galilean moons (cm)
+  real(double),public :: satdiam(4:8,30)
+  
+  
+  ! Physical constants:
+  !> \brief Newton's constant, cm^3 g^-1 s^-2
+  real(double), parameter, public :: pc_g       =  6.67259d-8
+  !> \brief Speed of light in vacuo, cm s^-1
+  real(double), parameter, public :: pc_c       =  2.99792458d10
+  
+  !> \brief Atomic mass unit; (mass of C12 atom)/12, g
+  real(double), parameter, public :: pc_amu     =  1.6605402d-24
+  !> \brief Mass of a hydrogen atom
+  real(double), parameter, public :: pc_mh      =  1.007825*pc_amu
+  !> \brief Boltzmann constant, erg/K
+  real(double), parameter, public :: pc_kb      =  1.380658d-16
+  !> \brief Planck's constant, erg s
+  real(double), parameter, public :: pc_hp      =  6.6260755d-27
+  !> \brief Reduced Planck constant, erg s
+  real(double), parameter, public :: pc_hbar    =  pc_hp/pi2
+  !> \brief Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
+  real(double), parameter, public :: pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0
+  !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
+  real(double), parameter, public :: pc_sigma   =  pc_arad*pc_c*0.25d0
+  
+  
+  !> \brief ElectronVolt in erg (cgs)
+  real(double), parameter, public :: eV = 1.6021766d-12
   
   
 contains
@@ -224,10 +426,10 @@ contains
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
     ! Set the mathematical constants:
-    call set_SUFR_constants_math()
+    !call set_SUFR_constants_math()
     
     ! Set the astronomical constants:
-    call set_SUFR_constants_astro()
+    !call set_SUFR_constants_astro()
     call set_SUFR_constants_planetnames()
     call set_SUFR_constants_moonphases()
     
@@ -242,6 +444,14 @@ contains
     ! Cetera:
     call set_SUFR_constants_environment()
     
+    
+    ! Set 'derived' constants:
+    !> \brief Radii Galilean moons (cm)
+    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
+    !> \brief Diameters Galilean moons (cm)
+    satdiam = 2*satrad
+    
+
   end subroutine set_SUFR_constants
   !*********************************************************************************************************************************
   
@@ -254,53 +464,6 @@ contains
     implicit none
     
     
-    ! Double precision:
-    one    = 1.0_dbl          ! 1
-    c3rd   = one/3.0_dbl      ! 1/3
-    two3rd = 2*c3rd           ! 2/3
-    
-    pio4 = atan(one)          ! pi/4
-    pio2 = 2*pio4             ! pi/2
-    pi   = 2*pio2             ! pi
-    pi2  = 2*pi               ! 2*pi
-    
-    r2d = 180.0_dbl/pi        ! Radians to degrees
-    d2r = one/r2d             ! Degrees to radians
-    r2h = 12.0_dbl/pi         ! Radians to hours
-    h2r = one/r2h             ! Hours to radians
-    h2d = 15.0_dbl            ! Hours to degrees
-    d2h = one/h2d             ! Degrees to hours
-    
-    d2as = 3600.0_dbl         ! Degrees to arcseconds
-    as2d = one/d2as           ! Arcseconds to degrees
-    r2am = dble(180*60)/pi    ! Radians to arcminutes
-    am2r = one/r2am           ! Arcminutes to radians
-    r2as = r2am*60.0_dbl      ! Radians to arcseconds
-    as2r = one/r2as           ! Arcseconds to radians
-    
-    
-    ! Single precision:
-    rc3rd   = real(c3rd)      ! 1/3
-    rtwo3rd = real(two3rd)    ! 2/3
-    
-    rpio4 = real(pio4)        ! pi/4
-    rpio2 = real(pio2)        ! pi/2
-    rpi   = real(pi)          ! pi
-    rpi2  = real(pi2)         ! 2*pi
-    
-    rr2d = real(r2d)          ! Radians to degrees
-    rd2r = real(d2r)          ! Degrees to radians
-    rr2h = real(r2h)          ! Radians to hours
-    rh2r = real(h2r)          ! Hours to radians
-    rh2d = real(h2d)          ! Hours to degrees
-    rd2h = real(d2h)          ! Degrees to hours
-    
-    rd2as = real(d2as)        ! Degrees to arcseconds
-    ras2d = real(as2d)        ! Arcseconds to degrees
-    rr2am = real(r2am)        ! Radians to arcminutes
-    ram2r = real(am2r)        ! Arcminutes to radians
-    rr2as = real(r2as)        ! Radians to arcseconds
-    ras2r = real(as2r)        ! Arcseconds to radians
     
   end subroutine set_SUFR_constants_math
   !*********************************************************************************************************************************
@@ -313,70 +476,6 @@ contains
     use SUFR_constants_astro
     implicit none
     
-    ! Astronomical constants:
-    au = 1.49597870700d13                ! A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
-    
-    nm = 1.d-7                           ! nanometer in cgs (cm)
-    mum = 1.d-4                          ! micrometer in cgs (cm)
-    mm = 1.d-1                           ! millimeter in cgs (cm)
-    km = 1.d5                            ! kilometer in cgs (cm)
-    rsun = 6.9599d10                     ! Solar radius in cgs (cm)
-    msun = 1.9891d33                     ! Solar mass in cgs (gm)
-    lsun = 3.85d33                       ! Solar luminosity in cgs (erg/s)
-    
-    siday = 0.997269663d0                ! Siderial day in days
-    solDay   = 8.64d4                    ! Solar day = 86400 s
-    solConst = 1361.5d0                  ! Solar constant in W/m^2
-    
-    ! True for J2000.0:
-    gregmonth = 30.4369d0      * solday  ! Gregorian month in s:    average calendar month length of 4800 months over 400 years
-    sidmonth  = 27.321661547d0 * solday  ! Sidereal month in s:     fixed star to fixed star
-    tropmonth = 27.321582241d0 * solday  ! Tropical month in s:     equinox to equinox, influenced by precession
-    anomonth  = 27.554549878d0 * solday  ! Anomalistic month in s:  apside to apside
-    dracmonth = 27.212220817d0 * solday  ! Draconic month in s:     node to node
-    synmonth  = 29.530588853d0 * solday  ! Synodic month in s:      phase to phase
-    
-    julyear  = 365.25d0        * solday  ! Julian year in s:        assumes 100 leap years in 400 years
-    gregyear = 365.2425d0      * solday  ! Gregorian year in s:     assumes 97 leap years in 400 years
-    sidyear  = 365.256363051d0 * solday  ! Siderial year in s:      fixed star to fixed star
-    tropyear = 365.24218967d0  * solday  ! Tropical year in s:      equinox to equinox, influenced by precession
-    anomyear = 365.259635864d0 * solday  ! Anomalistic year in s:   apside to apside
-    
-    jd1875 = 2405890.d0                  ! JD at J1875.0 (when constellation boundaries were defined)
-    jd1900 = 2415021.d0                  ! JD at J1900.0
-    jd1950 = 2433283.d0                  ! JD at J1950.0
-    jd2000 = 2451545.d0                  ! JD at J2000.0 (2000-01-01 12:00 UT)
-    
-    eps2000 = 0.409092804d0              ! Obliquity of the ecliptic at J2000.0
-    
-    earthr = 6378137.0d2  ! Equatorial radius of the Earth in cm, WGS84
-    
-    pland = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, &
-         2390.d5/)      ! Equatorial diameters (cm) - Venus = 12103.6 + clouds? - e.g., Wikipedia
-    planr = pland/2.d0  ! Equatorial radii (cm)
-    plana = (/0.d0, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, 19.191d0, 30.061d0, 39.529d0/)*au  !Semi-major axes (cm)
-    plana(0) = 384400.d0*km  ! Semi-major axis Moon orbit
-    
-    
-    ! Satellites:
-    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5  ! Galilean moons (cm)
-    satdiam = 2*satrad
-    
-    
-    ! Physical constants:
-    pc_g       =  6.67259d-8                                  ! Newton's constant, cm^3 g^-1 s^-2
-    pc_c       =  2.99792458d10                               ! Speed of light in vacuo, cm s^-1
-    
-    pc_amu     =  1.6605402d-24                               ! Atomic mass unit; (mass of C12 atom)/12, g
-    pc_mh      =  1.007825*pc_amu                             ! Mass of a hydrogen atom
-    pc_kb      =  1.380658d-16                                ! Boltzmann constant, erg/K
-    pc_hp      =  6.6260755d-27                               ! Planck's constant, erg s
-    pc_hbar    =  pc_hp/pi2                                   ! Reduced Planck constant, erg s
-    pc_arad    =  pc_kb**4/((pc_c*pc_hp)**3) * 8*pi**5/15.d0  ! Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
-    pc_sigma   =  pc_arad*pc_c*0.25d0                         ! Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
-    
-    
-    eV = 1.6021766e-12  ! ElectronVolt in erg (cgs)
     
   end subroutine set_SUFR_constants_astro
   !*********************************************************************************************************************************
