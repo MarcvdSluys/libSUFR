@@ -19,29 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Current date/time constants
-
-module SUFR_constants_datetime
-  use SUFR_kinds, only: double
-  implicit none
-  private
-  save
-  
-  integer, public :: currentYear,currentMonth,currentDay,currentHour,currentMinute,currentSecond,currentMillisecond,currentDoW
-  real(double), public :: currentJD, currentTZ, currentTime
-  
-  character, public :: currentYearStr*(4),currentDateStr*(10),currentTimeStr*(8),currentTimezoneStr*(9),currentDateTimeStr*(29)
-  character, public :: currentDateStrEn*(10), currentDowStrEn*(9),currentDateStrEnl*(39)
-  character, public :: currentDateStrNl*(10), currentDowStrNl*(9),currentDateStrNll*(39)
-  
-end module SUFR_constants_datetime
-!***********************************************************************************************************************************
-
-
-
-
-
-!***********************************************************************************************************************************
 !> \brief  Character constants (e.g. Greek letters)
 
 module SUFR_constants_characters
@@ -98,8 +75,6 @@ end module SUFR_constants_environment
 module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
-  
-  use SUFR_constants_datetime
   
   use SUFR_constants_characters
   use SUFR_constants_cursor
@@ -373,7 +348,57 @@ module SUFR_constants
     
   ! Length of the months (for non-leap year - changes for leap years -> not a constant)
   integer, public :: mlen(12) = (/31,28,31,30,31,30,31,31,30,31,30,31/)
-    
+  
+  
+  !> \brief  Year at system clock at the moment of initialisation (program start)
+  integer, public :: currentYear
+  !> \brief  Month at system clock at the moment of initialisation (program start)
+  integer, public :: currentMonth
+  !> \brief  Day at system clock at the moment of initialisation (program start)
+  integer, public :: currentDay
+  !> \brief  Hour at system clock at the moment of initialisation (program start)
+  integer, public :: currentHour
+  !> \brief  Minute at system clock at the moment of initialisation (program start)
+  integer, public :: currentMinute
+  !> \brief  Second at system clock at the moment of initialisation (program start)
+  integer, public :: currentSecond
+  !> \brief  Millisecond at system clock at the moment of initialisation (program start)
+  integer, public :: currentMillisecond
+  !> \brief  Day of week at system clock at the moment of initialisation (program start)
+  integer, public :: currentDoW
+  
+  !> \brief  Julian day at system clock at the moment of initialisation (program start)
+  real(double), public :: currentJD
+  !> \brief  Time zone at system clock at the moment of initialisation (program start)
+  real(double), public :: currentTZ
+  !> \brief  Time in hours at system clock at the moment of initialisation (program start)
+  real(double), public :: currentTime
+  
+  !> \brief  Current year as a character string (system clock at moment of initialisation/program start)
+  character, public :: currentYearStr*(4)
+  !> \brief  Current date as an unambiguous character string YYYY-MM-DD
+  character, public :: currentDateStr*(10)
+  !> \brief  Current time as a character string HH:MM:SS (system clock at moment of initialisation/program start)
+  character, public :: currentTimeStr*(8)
+  !> \brief  Current time zone as a character string UTC+_XX (system clock at moment of initialisation)
+  character, public :: currentTimezoneStr*(9)
+  !> \brief  Current date, time and time zone as a character string (system clock at moment of initialisation)
+  character, public :: currentDateTimeStr*(29)
+  
+  !> \brief  Current date as a US character string MM/DD/YYYY (system clock)
+  character, public :: currentDateStrEn*(10)
+  !> \brief  Current English day of week as a character string (system clock)
+  character, public :: currentDowStrEn*(9)
+  !> \brief  Current English date as a long character string DayOfWeek Month DD YY (system clock)
+  character, public :: currentDateStrEnl*(39)
+  
+  !> \brief  Current date as a Dutch/EU character string DD/MM/YYYY (system clock)
+  character, public :: currentDateStrNl*(10)
+  !> \brief  Current Dutch day of week as a character string (system clock)
+  character, public :: currentDowStrNl*(9)
+  !> \brief  Current Dutch date as a long character string DayOfWeek Month DD YY (system clock)
+  character, public :: currentDateStrNll*(39)
+  
   
   
   
@@ -415,7 +440,7 @@ contains
     ! Get the kinds of the most accurate integer and real for the current compiler/system:
     !call max_accuracy_kinds(intkindmax,realkindmax)
     
-    ! Set calendar stuff:
+    ! Set current date and time, etc.:
     call set_SUFR_constants_currentDate()
     
     ! Characters:
@@ -444,7 +469,6 @@ contains
   !> \brief  Define the values of variables that describe the current date and time
   
   subroutine set_SUFR_constants_currentDate()
-    use SUFR_constants_datetime
     use SUFR_date_and_time
     
     implicit none
@@ -465,12 +489,12 @@ contains
     
     ! Time zone:
     tz = abs(dble(dt(4))/60.d0)
-    write(tzStr,'(F5.2)')tz
+    write(tzStr,'(F5.2)') tz
     !if(nint(tz).lt.10) write(tzStr,'(A1,F4.2)')'0',tz
-    if(nint(tz).lt.10) write(tzStr(1:1),'(A1)')'0'
+    if(nint(tz).lt.10) write(tzStr(1:1),'(A1)') '0'
     signStr = '-'
     if(dt(4).ge.0) signStr = '+'
-    write(currentTimezoneStr,'(A)')'UTC'//signStr//trim(tzStr)
+    write(currentTimezoneStr,'(A)') 'UTC'//signStr//trim(tzStr)
     if(dt(4).lt.0.d0) tz = -tz
     currentTZ = tz
     
@@ -481,9 +505,11 @@ contains
     currentDoWstrnl = nldays(currentDoW)  ! Dutch
     
     write(currentYearStr,'(I4)') currentYear
+    
     write(currentDateStr,'(I4.4,A1,I2.2,A1,I2.2)') currentYear,'-',currentMonth,'-',currentDay    ! Unambiguous
     write(currentDateStrEn,'(I2.2,A1,I2.2,A1,I4.4)') currentMonth,'/',currentDay,'/',currentYear  ! US
     write(currentDateStrNl,'(I2.2,A1,I2.2,A1,I4.4)') currentDay,'/',currentMonth,'/',currentYear  ! EU
+    
     write(currentDateStrEnl,'(A,1x,A,I3,I5)') trim(currentDoWStrEn),trim(enmonths(currentMonth)),currentDay,currentYear  ! English
     write(currentDateStrNll,'(A,I3,1x,A,I5)') trim(currentDoWStrNl),currentDay,trim(nlmonths(currentMonth)),currentYear  ! Dutch
     
