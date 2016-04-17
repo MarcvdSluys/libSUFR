@@ -19,21 +19,6 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Character constants (e.g. Greek letters)
-
-module SUFR_constants_characters
-  implicit none
-  private
-  save
-  
-  character, public :: tab,  engrchar(24)*(7),htmlgrchar(24)*(9)
-  
-end module SUFR_constants_characters
-!***********************************************************************************************************************************
-
-
-
-!***********************************************************************************************************************************
 !> \brief  Constants that describe cursor movement
 
 module SUFR_constants_cursor
@@ -76,7 +61,6 @@ module SUFR_constants
   
   use SUFR_kinds, only: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   
-  use SUFR_constants_characters
   use SUFR_constants_cursor
   
   use SUFR_constants_environment
@@ -440,6 +424,17 @@ module SUFR_constants
   
   
   
+  ! Character constants:
+  !> \brief  Tab character
+  character, public :: tab = char(9)
+  !> \brief  Lower-case English names for Greek characters
+  character, public :: enGrChar(24)*(7) = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta','theta', &
+       'iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
+  !> \brief  HTML codes for lower-case Greek characters
+  character, public :: htmlGrChar(24)*(9) = [character(len=9) :: '&alpha;','&beta;','&gamma;','&delta;','&epsilon;','&zeta;', &
+       '&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;','&tau;', &
+       '&upsilon;','&phi;','&chi;','&psi;','&omega;']
+  
   
 contains
   
@@ -457,7 +452,6 @@ contains
     call set_SUFR_constants_currentDate()
     
     ! Characters:
-    call set_SUFR_constants_characters()  ! Greek characters
     call set_SUFR_constants_cursor()      ! Cursor movement
     
     ! Cetera:
@@ -474,7 +468,6 @@ contains
     !> \brief Diameters (Galilean) moons (cm)
     satdiam = 2*satrad
     
-
   end subroutine set_SUFR_constants
   !*********************************************************************************************************************************
   
@@ -532,29 +525,6 @@ contains
     write(currentDateTimeStr,'(A)') trim(currentDateStr)//' '//trim(currentTimeStr)//' '//trim(currentTimezoneStr)
     
   end subroutine set_SUFR_constants_currentDate
-  !*********************************************************************************************************************************
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Define the values of character constants - e.g., Greek letters
-  
-  subroutine set_SUFR_constants_characters()
-    use SUFR_constants_characters
-    implicit none
-    integer :: i
-    
-    ! Tab character:
-    tab = char(9)
-    
-    ! Greek characters:
-    engrchar = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta','theta','iota','kappa','lambda','mu', &
-         'nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
-    
-    do i=1,24
-       htmlgrchar(i) = '&'//trim(engrchar(i))//';     '
-    end do
-    
-  end subroutine set_SUFR_constants_characters
   !*********************************************************************************************************************************
   
   
