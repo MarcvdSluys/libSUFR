@@ -492,7 +492,6 @@ contains
   subroutine printProgressBar(frac, timestamp0)
     use SUFR_kinds, only: double
     use SUFR_constants, only: cursorup
-    use SUFR_time2string, only: tms
     
     implicit none
     integer, parameter :: nsteps = 100
@@ -520,6 +519,34 @@ contains
     
   end subroutine printProgressBar
   !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief Print angle as mm:ss.s string, input in hours
+  !! 
+  !! \note use here to drop dependency to SUFR_time2string. Alternative: move printProgressBar elsewhere
+  !! 
+  !! \param t  Time (h)
+  
+  function tms(t)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: t
+    real(double) :: a,s
+    integer :: m
+    character :: tms*(8),ss*(4)
+    
+    a = t
+    m = int((a)*60.d0)
+    s = (a-m/60.d0)*3600.d0
+    
+    write(ss,'(F4.1)') s
+    if(nint(s*10).lt.100) write(ss,'(A1,F3.1)') '0',s
+    write(tms,'(I2.2,A1,A4,A1)') m,'m',ss,'s'
+    
+  end function tms
+  !*********************************************************************************************************************************
+  
+  
   
   
   !*********************************************************************************************************************************

@@ -342,6 +342,104 @@ contains
   end function mod1
   !*********************************************************************************************************************************
   
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Compute the greatest common divisor (GCD) of two positive integers using the Euclidean algoritm
+  !! 
+  !! \param  a     Positive integer 1
+  !! \param  b     Positive integer 2
+  !! 
+  !! \retval gcd2  The GCD of the two integers
+  !! 
+  !! \see https://en.wikipedia.org/wiki/Euclidean_algorithm#Implementations
+  
+  function gcd2(a,b)
+    use SUFR_system, only: quit_program_error, swapint
+    implicit  none
+    integer, intent(in) :: a, b
+    integer :: gcd2, la,lb,rem
+    
+    if(min(a,b).le.0) call quit_program_error('gcd2(): the two integers must be positive ',1)
+    
+    ! Don't change the input parameters:
+    la = a
+    lb = b
+    
+    if(la.lt.lb) call swapint(la,lb)  ! Ensure a >= b
+    
+    do
+       rem = mod(la, lb)    ! Compute remainder
+       if(rem == 0) exit    ! No remainder: we have finished
+       
+       la = lb
+       lb = rem
+    end do
+    
+    gcd2 = lb
+    
+  end function gcd2
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief Computes the greatest common divisor (GCD) for an array of positive integers using the Euclidean algoritm
+  !!
+  !! \param  array  The array of positive integers
+  !! 
+  !! \retval gcd    The GCD of the integers
+  !! 
+  !! \note This function uses gcd2() iteratively
+  !!
+  !! \see https://en.wikipedia.org/wiki/Euclidean_algorithm#Implementations
+  
+  
+  function gcd(array)
+    use SUFR_system, only: quit_program_error
+    implicit none
+    integer, intent(in) :: array(:)
+    integer :: gcd, it
+    
+    if(minval(array).le.0) call quit_program_error('gcd(): all integers must be positive ',1)
+    
+    gcd = maxval(array)
+    do it=1,size(array)
+       gcd = gcd2(array(it),gcd)
+    end do
+    
+  end function gcd
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief Computes the least common multiplier (LCM) for an array of positive integers
+  !!
+  !! \param  array  The array of positive integers
+  !! 
+  !! \retval lcm    The LCM of the integers
+  !! 
+  !! \see https://en.wikipedia.org/wiki/Least_common_multiple#A_simple_algorithm
+  
+  function lcm(array)
+    use SUFR_system, only: quit_program_error
+    implicit none
+    integer, intent(in) :: array(:)
+    integer :: lcm, larray(size(array)), in
+    
+    if(minval(array).le.0) call quit_program_error('lcm(): all integers must be positive ',1)
+    
+    larray = array
+    do
+       if(minval(larray).eq.maxval(larray)) exit  ! All values are equal, we have finished!
+       
+       in = minval(minloc(larray))  ! Index of the (first) smallest value in the array
+       larray(in) = larray(in) + array(in)
+    end do
+    
+    lcm = larray(1)
+  end function lcm
+  !*********************************************************************************************************************************
+  
+  
 end module SUFR_numerics
 !***********************************************************************************************************************************
 
