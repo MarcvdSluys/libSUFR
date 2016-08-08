@@ -166,26 +166,32 @@ contains
   !!
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
-  !! \param procedure  Name of the procedure this subroutine is called from (without "()")
+  !! \param procedure  Name of the procedure this subroutine is called from (without "()" - optional)
+  !! \param message    Message to report (optional)
   
-  subroutine file_read_error(filename, line, procedure)
+  subroutine file_read_error(filename, line, procedure, message)
     use SUFR_constants, only: program_name
     
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line
-    character, intent(in), optional :: procedure*(*)
-    character :: lproc*(99)
+    character, intent(in), optional :: procedure*(*), message*(*)
+    character :: lproc*(99), lmsg*(99)
     
     lproc = ''
     if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
     
+    lmsg = ''
+    if(present(message)) lmsg = ', '//trim(message(1:min(97,len(message))))               ! 99 - 2 = 97
+    
+    
     select case(line)
     case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)//'  ***'
+       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
+            trim(lmsg)//'  ***'
     case default
        write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            ', line ',line, '  ***'
+            ', line ',line, trim(lmsg)//'  ***'
     end select
     
   end subroutine file_read_error
@@ -199,26 +205,31 @@ contains
   !! \param line       Line number where read error occurred - 0: no line
   !! \param status     Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
   !! \param procedure  Name of the procedure this subroutine is called from (without "()")
+  !! \param message    Message to report (optional)
   
-  subroutine file_read_error_quit(filename, line, status, procedure)
+  subroutine file_read_error_quit(filename, line, status, procedure, message)
     use SUFR_constants, only: program_name
     
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line, status
-    character, intent(in), optional :: procedure*(*)
-    character :: lproc*(99)
+    character, intent(in), optional :: procedure*(*), message*(*)
+    character :: lproc*(99), lmsg*(99)
     
     lproc = ''
     if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
     
+    lmsg = ''
+    if(present(message)) lmsg = ', '//trim(message(1:min(97,len(message))))               ! 99 - 2 = 97
+    
+    
     select case(line)
     case(0)
        write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            ', aborting  ***'
+            trim(lmsg)//', aborting  ***'
     case default
        write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            ', line ',line,', aborting  ***'
+            ', line ',line, trim(lmsg)//', aborting  ***'
     end select
     
     if(status.eq.0) then
@@ -340,11 +351,13 @@ contains
   !! \param readstatus  Read status provided by iostat
   !! \param stopcode    Stop the execution of the code: 0-no, 1-yes
   !! \param exitstatus  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  !! \param message     Optional custom message
   
-  subroutine file_read_end_error(filename, line, readstatus, stopcode, exitstatus)
+  subroutine file_read_end_error(filename, line, readstatus, stopcode, exitstatus, message)
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line, readstatus, stopcode, exitstatus
+    character, intent(in), optional :: message*(*)
     
     select case(readstatus)
     case(:-1)  ! End of file reached (<0)
@@ -355,9 +368,17 @@ contains
        end if
     case(1:)   ! Read error (>0)
        if(stopcode.eq.0) then
-          call file_read_error(trim(filename), line)
+          if(present(message)) then
+             call file_read_error(trim(filename), line, message=trim(message))
+          else
+             call file_read_error(trim(filename), line)
+          end if
        else
-          call file_read_error_quit(trim(filename), line, exitstatus)
+          if(present(message)) then
+             call file_read_error_quit(trim(filename), line, exitstatus, message=trim(message))
+          else
+             call file_read_error_quit(trim(filename), line, exitstatus)
+          end if
        end if
     end select
     
