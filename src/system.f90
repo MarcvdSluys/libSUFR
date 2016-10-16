@@ -129,6 +129,31 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print a message to StdErr on file open error
+  !!
+  !! \param filename  Filename
+  !! \param filetype  File type: 0: (0)utput, 1: (1)nput
+  
+  subroutine file_open_error(filename, filetype)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: filename*(*)
+    integer, intent(in) :: filetype
+    
+    select case(filetype)
+    case(0)
+       write(0,'(A)') '  ***  '//trim(program_name)//':  Error opening output file  '//trim(filename)//'  ***'
+    case(1)
+       write(0,'(A)') '  ***  '//trim(program_name)//':  Error opening input file  '//trim(filename)//'  ***'
+    case default
+       write(0,'(A)') '  ***  '//trim(program_name)//', file_open_error_quit():  filetype must be 0 or 1  ***'
+    end select
+    
+  end subroutine file_open_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a message to StdErr on file open error, and stop the execution of the current program
   !!
   !! \param filename  Filename
