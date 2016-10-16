@@ -103,6 +103,30 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Convert a UTF-16 string to UTF-8
+  !!
+  !! \param  str16     UTF-16 string
+  !! \retval UTF16to8  UTF-8 string (about half the length of str16)
+  
+  function UTF16to8(str16)
+    use SUFR_system, only: warn
+    implicit none
+    character, intent(in) :: str16*(*)
+    character :: UTF16to8*((len(str16)+1)/2)
+    integer :: ic16, ic8
+    
+    UTF16to8(1:len(UTF16to8)) = ' '
+    do ic16=1,len(str16),2
+       ic8 = (ic16+1)/2
+       UTF16to8(ic8:ic8) = str16(ic16:ic16)
+    end do
+    
+  end function UTF16to8
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a substring in a string
   !!
   !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string))
