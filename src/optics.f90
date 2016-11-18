@@ -29,6 +29,67 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief Computes real index of refraction of air given wavelength, temperature, pressure and relative humidity
+  !!
+  !! \param wavelength   Wavelength (nanometers)
+  !! \param temperature  Temperature (degrees Celsius)
+  !! \param pressure     Pressure (millibar)
+  !! \param humidity     Relative humidity (%)
+  !!
+  !! \see http://emtoolbox.nist.gov/Wavelength/Documentation.asp#AppendixA
+  
+  function refractive_index_air(wavelength, temperature, pressure, humidity)
+    use SUFR_kinds, only: double
+    implicit none
+    
+    real(double), intent(in) :: wavelength, temperature, pressure, humidity
+    real(double) :: refractive_index_air
+    real(double) :: S,T, Omega, A,B,C,X, A1,A2,Theta,Y, Psv, Pv
+    real(double) :: D,E,F,G, Ns,Ntp
+    
+    T = temperature + 273.15d0  ! deg Celcius -> Kelvin
+    
+    if(temperature.ge.0.d0) then  ! Above 0deg Celcius;  use IAPWS model:
+       Omega = T - 2.38555575678d-1/(T-6.50175348448d2)
+       A =                  Omega**2 + 1.16705214528d3*Omega - 7.24213167032d5
+       B = -1.70738469401d1*Omega**2 + 1.20208247025d4*Omega - 3.23255503223d6
+       C =  1.49151086135d1*Omega**2 - 4.82326573616d3*Omega + 4.05113405421d5
+       X = -B + sqrt(B**2 - 4*A*C)
+       
+       Psv = 1.d6*(2*C/X)**4      ! saturation vapor pressure
+       
+    else                          ! Freezing
+       
+       A1 = -13.928169d0
+       A2 =  34.7078238d0
+       Theta = T/273.16d0
+       Y = A1*(1.d0 - Theta**(-1.5d0)) + A2*(1.d0 - Theta**(-1.25d0))
+       Psv = 611.657d0 * exp(Y)   ! saturation vapor pressure
+    end if
+    
+    Pv = (humidity/100.d0)*Psv  ! Water-vapor partial pressure
+    
+    !  Modified Edlen Equation
+    A = 8342.54d0
+    B = 2406147.d0
+    C = 15998.d0
+    D = 96095.43d0
+    E = 0.601d0
+    F = 0.00972d0
+    G = 0.003661d0
+    
+    S = 1.d6/wavelength**2
+    Ns = 1.d0 + 1.d-8 * (A + B/(130.d0-S) + C/(38.9d0-S))
+    X = (1.d0 + 1.d-8 * (E - F*temperature) * (100*pressure)) / (1.d0 + G*temperature)
+    Ntp = 1.d0 + (100*pressure) * (Ns-1.d0) * X/D
+    
+    refractive_index_air = Ntp - 1.d-10*(292.75d0/T) * (3.7345d0 - 0.0401d0*S) * Pv
+    
+  end function refractive_index_air
+  !*********************************************************************************************************************************
+
+
+  !*********************************************************************************************************************************
   !> \brief  Refractive index of PMMA as a function of wavelength
   !!
   !! \param wavelength  Wavelength in nanometres

@@ -378,7 +378,7 @@ contains
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
     write(dbl2str, trim(fmt)) number
     
-    ! Remove ugly leading decimal points:
+    ! Remove leading decimal points:
     if(dbl2str(1:1).eq.'.') then
        dbl2str = '0'//trim(dbl2str)
     else if(dbl2str(1:2).eq.'-.') then
