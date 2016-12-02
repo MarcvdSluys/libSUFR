@@ -120,7 +120,7 @@ module SUFR_constants
   
   
   
-  ! Physical constants:
+  ! Physical constants - cgs:
   !> \brief Newton's constant, cm^3 g^-1 s^-2
   real(double), parameter, public :: pc_g       =  6.67259d-8
   !> \brief Speed of light in vacuo, cm s^-1
@@ -129,7 +129,8 @@ module SUFR_constants
   !> \brief Atomic mass unit; (mass of C12 atom)/12, g
   real(double), parameter, public :: pc_amu     =  1.6605402d-24
   !> \brief Mass of a hydrogen atom
-  real(double), parameter, public :: pc_mh      =  1.007825*pc_amu
+  real(double), parameter, public :: pc_mh      =  1.007825d0*pc_amu
+  
   !> \brief Boltzmann constant, erg/K
   real(double), parameter, public :: pc_kb      =  1.380658d-16
   !> \brief Planck's constant, erg s
@@ -141,9 +142,35 @@ module SUFR_constants
   !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
   real(double), parameter, public :: pc_sigma   =  pc_arad*pc_c*0.25d0
   
-  
-  !> \brief ElectronVolt in erg (cgs)
+  !> \brief ElectronVolt in erg
   real(double), parameter, public :: eV = 1.6021766d-12
+
+  
+  
+  ! Physical constants - SI:
+  !> \brief Newton's constant, m^3 kg^-1 s^-2
+  real(double), parameter, public :: pc_si_g       =  6.67259d-11
+  !> \brief Speed of light in vacuo, m s^-1
+  real(double), parameter, public :: pc_si_c       =  2.99792458d8
+  
+  !> \brief Atomic mass unit; (mass of C12 atom)/12, kg
+  real(double), parameter, public :: pc_si_amu     =  1.6605402d-27
+  !> \brief Mass of a hydrogen atom
+  real(double), parameter, public :: pc_si_mh      =  1.007825d0*pc_si_amu
+  
+  !> \brief Boltzmann constant, J/K
+  real(double), parameter, public :: pc_si_kb      =  1.380658d-23
+  !> \brief Planck's constant, J s
+  real(double), parameter, public :: pc_si_hp      =  6.6260755d-34
+  !> \brief Reduced Planck constant, J s
+  real(double), parameter, public :: pc_si_hbar    =  pc_si_hp/pi2
+  !> \brief Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
+  real(double), parameter, public :: pc_si_arad    =  pc_si_kb**4/((pc_si_c*pc_si_hp)**3) * 8*pi**5/15.d0
+  !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
+  real(double), parameter, public :: pc_si_sigma   =  pc_si_arad*pc_si_c*0.25d0
+  
+  !> \brief ElectronVolt in J
+  real(double), parameter, public :: eV_si = 1.6021766d-19
   
   
   

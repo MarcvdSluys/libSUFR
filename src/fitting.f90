@@ -35,7 +35,7 @@ contains
   !> \brief  Fit the model coefficients using a chi^2 method
   !!
   !! Do a chi^2-minimisation fit of ndat data points xdat and ydat, the latter with errors yErr, to function func.  The fit uses
-  !! the nCoef coefficients stored in fCoef() that should be varied if the corresponding entry in varc =1, fixed if =0.
+  !! the nCoef coefficients stored in fCoef() that should be varied if the corresponding entry in freeCoef=1, fixed if =0.
   !!
   !! The fitting function must be provided as the subroutine myFunc which returns a value y = myFunc(x, basefunc, nCoef), where
   !!   y is a linear combination of x, i.e.  y = SUM(i=1,nCoef) fCoef(i) * basefunc(i)(x).
@@ -52,7 +52,7 @@ contains
   !!
   !! \param  nCoef     Number of coefficients of the fitting function
   !! \retval fCoef     Coefficients of the fitting function (nCoef)
-  !! \param  freeCoef  Fix coefficient coef(i) if varc(i)=0, otherwise let if vary freely and fit it (nCoef)
+  !! \param  freeCoef  Fix coefficient coef(i) if freeCoef(i)=0, otherwise let if vary freely and fit it (nCoef)
   !!
   !! \param  nCov      Size of both dimensions of covMat()
   !! \retval covMat    Covariance matrix (nCov,nCov)
