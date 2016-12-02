@@ -144,6 +144,16 @@ module SUFR_constants
   
   !> \brief ElectronVolt in erg
   real(double), parameter, public :: eV = 1.6021766208d-12
+
+
+  !> \brief nanometer in cgs (cm)
+  real(double), parameter, public :: nm = 1.d-7
+  !> \brief micrometer in cgs (cm)
+  real(double), parameter, public :: mum = 1.d-4
+  !> \brief millimeter in cgs (cm)
+  real(double), parameter, public :: mm = 1.d-1
+  !> \brief kilometer in cgs (cm)
+  real(double), parameter, public :: km = 1.d5
   
   
   
@@ -170,7 +180,17 @@ module SUFR_constants
   real(double), parameter, public :: pc_si_sigma   =  pc_si_arad*pc_si_c*0.25d0
   
   !> \brief ElectronVolt in J
-  real(double), parameter, public :: eV_si = eV * 1.d-7  ! 1.6021766d-19
+  real(double), parameter, public :: si_eV = eV * 1.d-7  ! 1.6021766d-19
+  
+  !> \brief nanometer in SI (m)
+  real(double), parameter, public :: si_nm = nm * 1.d-2
+  !> \brief micrometer in SI (m)
+  real(double), parameter, public :: si_mum = mum * 1.d-2
+  !> \brief millimeter in SI (m)
+  real(double), parameter, public :: si_mm = mm * 1.d-2
+  !> \brief kilometer in SI (m)
+  real(double), parameter, public :: si_km = km * 1.d-2
+  
   
   
   
@@ -179,20 +199,24 @@ module SUFR_constants
   !> \brief A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
   real(double), parameter, public :: au = 1.49597870700d13
   
-  !> \brief nanometer in cgs (cm)
-  real(double), parameter, public :: nm = 1.d-7
-  !> \brief micrometer in cgs (cm)
-  real(double), parameter, public :: mum = 1.d-4
-  !> \brief millimeter in cgs (cm)
-  real(double), parameter, public :: mm = 1.d-1
-  !> \brief kilometer in cgs (cm)
-  real(double), parameter, public :: km = 1.d5
   !> \brief Solar radius in cgs (cm)
   real(double), parameter, public :: rsun = 6.9599d10
   !> \brief Solar mass in cgs (gm)
   real(double), parameter, public :: msun = 1.9891d33
   !> \brief Solar luminosity in cgs (erg/s)
   real(double), parameter, public :: lsun = 3.85d33
+  
+  
+  !> \brief A.U. in SI (m)
+  real(double), parameter, public :: si_au = au * 1.d-2
+  
+  !> \brief Solar radius in SI (m)
+  real(double), parameter, public :: si_rsun = rsun * 1.d-2
+  !> \brief Solar mass in SI (kg)
+  real(double), parameter, public :: si_msun = msun * 1.d-3
+  !> \brief Solar luminosity in SI (W)
+  real(double), parameter, public :: si_lsun = lsun * 1.d-7
+  
   
   !> \brief Siderial day in days
   real(double), parameter, public :: siday = 0.997269663d0
@@ -239,7 +263,9 @@ module SUFR_constants
   real(double), parameter, public :: eps2000 = 0.409092804d0
   
   !> \brief Equatorial radius of the Earth in cm, WGS84
-  real(double), parameter, public :: earthr = 6378137.0d2
+  real(double), parameter, public :: earthr = 6378136.6d2
+  !> \brief Equatorial radius of the Earth in cm, WGS84
+  real(double), parameter, public :: si_earthr = earthr * 1.d-2
   
   !> \brief Equatorial diameters (cm)
   !! \note
@@ -254,6 +280,14 @@ module SUFR_constants
   real(double), parameter, public :: plana(0:9) = (/384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, &
        19.191d0, 30.061d0, 39.529d0/)*au
   
+  !SI:
+  !> \brief Equatorial diameters (m)
+  real(double), public :: si_pland(0:9)
+  !> \brief Equatorial radii (cm) = pland/2.d0
+  real(double), public :: si_planr(0:9) != pland/2.d0
+  !> \brief Semi-major axes (cm)
+  real(double), parameter, public :: si_plana(0:9) = plana(0:9) * 1.d-2
+  
   
   ! Satellites:
   !> \brief Radii Galilean moons (cm)
@@ -261,6 +295,11 @@ module SUFR_constants
   !> \brief Diameters Galilean moons (cm)
   real(double),public :: satdiam(4:8,30)
 
+  !> \brief Radii Galilean moons (m)
+  real(double),public :: si_satrad(4:8,30)
+  !> \brief Diameters Galilean moons (m)
+  real(double),public :: si_satdiam(4:8,30)
+  
   
   ! Planet names - not constants, since (3) may be changed in 'Earth':
   ! en:
@@ -491,10 +530,20 @@ contains
     !> \brief Planet equatorial radii (cm)
     !! \note may be redefined if (3) = Earth -> not a constant
     planr(0:9) = pland/2.d0
+    !> \brief Planet equatorial diameters (m)
+    si_pland(0:9) = pland * 1.d-2
+    !> \brief Planet equatorial radii (m)
+    si_planr(0:9) = si_pland/2.d0
+    
     !> \brief Radii (Galilean) moons (cm)
     satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
     !> \brief Diameters (Galilean) moons (cm)
     satdiam = 2*satrad
+    
+    !> \brief Radii (Galilean) moons (m)
+    si_satrad(5,1:4) = satrad(5,1:4) * 1.d-2
+    !> \brief Diameters (Galilean) moons (cm)
+    si_satdiam = 2*si_satrad
     
   end subroutine set_SUFR_constants
   !*********************************************************************************************************************************
