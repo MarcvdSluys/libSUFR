@@ -41,7 +41,7 @@ contains
   function linear_interpolation(x1,x2, y1,y2, x)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in)  :: x1,x2, y1,y2, x
+    real(double), intent(in) :: x1,x2, y1,y2, x
     real(double) :: linear_interpolation, a,b,y
     
     a = (y2-y1)/(x2-x1)
@@ -68,7 +68,7 @@ contains
   
   function linear_interpolation_sp(x1,x2, y1,y2, x)
     implicit none
-    real, intent(in)  :: x1,x2, y1,y2, x
+    real, intent(in) :: x1,x2, y1,y2, x
     real :: linear_interpolation_sp
     
     linear_interpolation_sp = real(linear_interpolation( dble(x1),dble(x2), dble(y1),dble(y2), dble(x) ))
@@ -78,37 +78,25 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Do linear interpolation using the data arrays xarr,yarr to find the value y corresponding to x
+  !> \brief  Do linear interpolation using the data arrays xArr,yArr to find the value y corresponding to x
   !!
-  !! \param narr  Size of the arrays
-  !! \param xarr  X-array, sorted to increasing value
-  !! \param yarr  Y-array
+  !! \param xArr  X-array, sorted to increasing value
+  !! \param yArr  Y-array
   !!
-  !! \param  x    X value to find y value for
+  !! \param xVal  X value to find y value for
   
-  function linear_interpolate_array(narr, xarr, yarr, x)
+  function linear_interpolate_array(xArr, yArr, xVal)
     use SUFR_kinds, only: double
     implicit none
-    integer, intent(in)  :: narr
-    real(double), intent(in)  :: xarr(narr), yarr(narr), x
-    
-    integer :: i,ii
+    real(double), intent(in) :: xArr(:), yArr(:), xVal
+    integer :: ind
     real(double) :: linear_interpolate_array
     
-    ii = 1
-    do i=1,narr-1
-       !print*,i,x,xarr(i),xarr(i+1)
-       if(xarr(i).gt.x) exit
-       ii = i
-    end do
-    
-    linear_interpolate_array = linear_interpolation(xarr(ii),xarr(ii+1), yarr(ii),yarr(ii+1), x)
-    !write(*,'(A,2I6,6F10.3)') 'ipol:',ii,narr,xarr(ii:ii+1),yarr(ii:ii+1),x,linear_interpolate_array
+    ind = locate_value_in_array(xVal, xArr)                                ! Find index ind such that xArr(ind) <= x <= xArr(ind+1)
+    linear_interpolate_array = linear_interpolation(xArr(ind),xArr(ind+1), yArr(ind),yArr(ind+1), xVal)  ! Interpolate
     
   end function linear_interpolate_array
   !*********************************************************************************************************************************
-  
-  
   
   
   !*********************************************************************************************************************************
@@ -127,7 +115,7 @@ contains
   subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in)  :: x1,x2,x3, y1,y2,y3
+    real(double), intent(in) :: x1,x2,x3, y1,y2,y3
     real(double), intent(out) :: a,b,c
     real(double) :: x12,x22,x32, d
     
@@ -156,13 +144,60 @@ contains
   function parabola(x, a,b,c)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in)  :: x,a,b,c
+    real(double), intent(in) :: x,a,b,c
     real(double) :: parabola
     
     parabola = a*x*x + b*x + c
   end function parabola
   !*********************************************************************************************************************************
   
+
+
+  !*********************************************************************************************************************************
+  !> \brief  Locate the index in a monotonic array, such that a given value lies between array(index) and array(index+1).
+  !!         0 or nArr+1 is returned if the value lies outside the array.
+  !!
+  !! \param xVal    Value to locate
+  !! \param xArray  Array to locate value in.  xArray must be monotonic, either ascending or descending
+  !!
+  !! \see  Numerical Recipes in Fortran, Sect.3.4
+  
+  function locate_value_in_array(xVal, xArray)
+    use SUFR_kinds, only: double
+    use SUFR_numerics, only: deq
+    
+    implicit none
+    real(double), intent(in) :: xVal, xArray(:)
+    integer :: locate_value_in_array,  nArr,iLow,iMid,iUp
+    logical :: ascending
+    
+    nArr = size(xArray)
+    ascending = (xArray(nArr).ge.xArray(1))  ! Array is ascending (T/F)
+    iLow = 0
+    iUp = nArr+1
+    
+    do
+       if(iUp-iLow.le.1) exit  ! We've converged
+       
+       iMid = (iUp+iLow)/2  ! Bisect
+       if(ascending .eqv. (xVal.ge.xArray(iMid))) then  ! xVal >= array_m and ascending,  or xVal < array_m and descending
+          iLow = iMid                                   !   -> replace lower index
+       else                                             ! xVal < array_m and ascending,  or xVal >= array_m and descending
+          iUp = iMid                                    !   -> replace upper index
+       end if
+    end do
+    
+    ! Assign the index to the return value:
+    if(deq(xVal, xArray(1))) then  ! Double equality
+       locate_value_in_array = 1
+    else if(deq(xVal, xArray(nArr))) then  ! Double equality
+       locate_value_in_array = nArr-1
+    else
+       locate_value_in_array = iLow  ! = iUp
+    end if
+    
+  end function locate_value_in_array
+  !*********************************************************************************************************************************
   
 end module SUFR_interpolate
 !***********************************************************************************************************************************
