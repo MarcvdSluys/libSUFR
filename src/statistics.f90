@@ -563,71 +563,70 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Bin data in 1D bins by counting the number of data points in each bin
   !! 
-  !! \param  xdat   Data to be binned (ndat points)
+  !! \param  xDat   Data to be binned (ndat points)
   !! \param  Nbin   Desired number of bins.  Note that the binned-data arrays xbin and ybin must have size >= Nbin+1
   !!
   !! \param  norm   Normalise histogram (T) or not (F)
   !! \param  mode   Mode:  -1: xbin is left of bin,  0: xbin is centre of bin,  1: xbin is right of bin
   !! \param  cumul  Make a cumulative histogram (T/F)
   !!
-  !! \param  xmin   Minimum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
-  !! \param  xmax   Maximum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !! \param  xMin   Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
+  !! \param  xMax   Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !!
-  !! \retval xbin   Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval ybin   Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \retval xBin   Binned data, location of the bins.  The x values are the left side of the bin!
+  !! \retval yBin   Binned data, height of the bins.    I/O so that the array size can be checked
   
-  subroutine bin_data_1d(xdat, Nbin, norm,mode,cumul, xmin,xmax, xbin,ybin)
+  subroutine bin_data_1d(xDat, Nbin, norm,mode,cumul, xMin,xMax, xBin,yBin)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     implicit none
-    real(double), intent(in) :: xdat(:)
+    real(double), intent(in) :: xDat(:)
     integer, intent(in) :: Nbin, mode
     logical, intent(in) :: norm, cumul
-    real(double), intent(inout) :: xmin,xmax
-    real(double), intent(inout) :: xbin(:),ybin(:)
+    real(double), intent(inout) :: xMin,xMax
+    real(double), intent(inout) :: xBin(:),yBin(:)
     
     integer :: i,k
     real(double) :: dx, dk
     
     
     ! Check array size for consistency:
-    if(size(xbin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): xbin must have size >= Nbin+1',1)
-    if(size(ybin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): ybin must have size >= Nbin+1',1)
+    if(size(xBin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): xBin must have size >= Nbin+1',1)
+    if(size(yBin).le.Nbin) call quit_program_error('libSUFR bin_data_1d(): yBin must have size >= Nbin+1',1)
     
-    if(abs((xmin-xmax)/(xmax+tiny(xmax))).lt.1.e-20) then  ! Autodetermine ranges
-       xmin = minval(xdat)
-       xmax = maxval(xdat)
+    if(abs((xMin-xMax)/(xMax+tiny(xMax))).lt.sqrt(tiny(xMax))) then  ! Autodetermine ranges
+       xMin = minval(xDat)
+       xMax = maxval(xDat)
     end if
     
     ! Make limits wider by 2 x epsilon, in order to include data points on the boundaries:
-    xmin = xmin - epsilon(xmin)*xmin
-    xmax = xmax + epsilon(xmax)*xmax
-    dx = abs(xmax - xmin)/dble(Nbin)
+    xMin = xMin - epsilon(xMin)*xMin
+    xMax = xMax + epsilon(xMax)*xMax
+    dx = abs(xMax - xMin)/dble(Nbin)
     
-    dk = dble(min(max(mode,-1),1))/2.   ! mode = -1,0,1 -> dk = -0.5, 0.0, 0.5  when xbin is the left, centre, right of the bin
+    dk = dble(min(max(mode,-1),1))/2.d0   ! mode = -1,0,1 -> dk = -0.5, 0.0, 0.5  when xBin is the left, centre, right of the bin
     do k=1,Nbin+1
-       !xbin(k) = xmin + (dble(k)-1.0)*dx   ! xbin is the left of the bin
-       xbin(k) = xmin + (dble(k)-0.5+dk)*dx
+       xBin(k) = xMin + (dble(k)-0.5d0+dk)*dx
     end do
     
-    ybin = 0.
-    do i=1,size(xdat)
+    yBin = 0.
+    do i=1,size(xDat)
        do k=1,Nbin
-          if(xdat(i).ge.xbin(k)) then
-             if(xdat(i).lt.xbin(k+1)) then
-                ybin(k) = ybin(k) + 1.
+          if(xDat(i).ge.xBin(k)) then
+             if(xDat(i).lt.xBin(k+1)) then
+                yBin(k) = yBin(k) + 1.d0
                 exit  ! If point i fits in this bin, don't try the others
              end if
           end if
-       end do !k (bin)
+       end do  ! k (bin)
     end do
     
-    if(norm) ybin = ybin/(sum(ybin)+1.e-30)
+    if(norm) yBin = yBin / (sum(yBin) + sqrt(tiny(yBin)))
     
     
     if(cumul) then  ! Create a cumulative histogram
        do k = 2,Nbin+1
-          ybin(k) = ybin(k-1) + ybin(k)
+          yBin(k) = yBin(k-1) + yBin(k)
        end do
     end if
     
@@ -638,43 +637,43 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Bin data in 1D bins by counting the number of data points in each bin - single-precision wrapper for bin_data_1d()
   !! 
-  !! \param  xdat   Data to be binned (ndat points)
-  !! \param  Nbin   Desired number of bins.  Note that the binned-data arrays xbin and ybin must have size >= Nbin+1
+  !! \param  xDat   Data to be binned (ndat points)
+  !! \param  Nbin   Desired number of bins.  Note that the binned-data arrays xBin and yBin must have size >= Nbin+1
   !!
   !! \param  norm   Normalise histogram (T) or not (F)
-  !! \param  mode   Mode:  -1: xbin is left of bin,  0: xbin is centre of bin,  1: xbin is right of bin
+  !! \param  mode   Mode:  -1: xBin is left of bin,  0: xBin is centre of bin,  1: xBin is right of bin
   !! \param  cumul  Make a cumulative histogram (T/F)
   !!
-  !! \param  xmin   Minimum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
-  !! \param  xmax   Maximum value of the binning range.  Set xmin=xmax to auto-determine (I/O)
+  !! \param  xMin   Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
+  !! \param  xMax   Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !!
-  !! \retval xbin   Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval ybin   Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \retval xBin   Binned data, location of the bins.  The x values are the left side of the bin!
+  !! \retval yBin   Binned data, height of the bins.    I/O so that the array size can be checked
   
-  subroutine bin_data_1d_sp(xdat, Nbin, norm,mode,cumul, xmin,xmax, xbin,ybin)
+  subroutine bin_data_1d_sp(xDat, Nbin, norm,mode,cumul, xMin,xMax, xBin,yBin)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     implicit none
-    real, intent(in) :: xdat(:)
+    real, intent(in) :: xDat(:)
     integer, intent(in) :: Nbin, mode
     logical, intent(in) :: norm, cumul
-    real, intent(inout) :: xmin,xmax
-    real, intent(inout) :: xbin(:),ybin(:)
+    real, intent(inout) :: xMin,xMax
+    real, intent(inout) :: xBin(:),yBin(:)
     
-    real(double) :: dxdat(size(xdat)), dxmin,dxmax, dxbin(size(xbin)),dybin(size(ybin))
+    real(double) :: dxDat(size(xDat)), dxMin,dxMax, dxBin(size(xBin)),dyBin(size(yBin))
     
     ! Copy single- to double-precision:
-    dxdat = dble(xdat)
-    dxmin = dble(xmin)
-    dxmax = dble(xmax)
+    dxDat = dble(xDat)
+    dxMin = dble(xMin)
+    dxMax = dble(xMax)
     
-    call bin_data_1d(dxdat, Nbin, norm,mode,cumul, dxmin,dxmax, dxbin,dybin)
+    call bin_data_1d(dxDat, Nbin, norm,mode,cumul, dxMin,dxMax, dxBin,dyBin)
     
     ! Copy double- to single-precision:
-    xmin = real(dxmin)
-    xmax = real(dxmax)
-    xbin = real(dxbin)
-    ybin = real(dybin)
+    xMin = real(dxMin)
+    xMax = real(dxMax)
+    xBin = real(dxBin)
+    yBin = real(dyBin)
     
   end subroutine bin_data_1d_sp
   !*********************************************************************************************************************************
@@ -683,52 +682,52 @@ contains
   !*********************************************************************************************************************************
   !> \brief Bin data in 2 dimensions - computing the bin number rather than searching for it is ~10x faster
   !! 
-  !! \param xdat   Input data: x values - array size: ndat
+  !! \param xDat   Input data: x values - array size: ndat
   !! \param ydat   Input data: y values - array size: ndat
   !!
   !! \param norm   Normalise the bins (1) or not (0)
   !!
-  !! \param nxbin  Desired number of bins in the x direction
-  !! \param nybin  Desired number of bins in the y direction
+  !! \param nxBin  Desired number of bins in the x direction
+  !! \param nyBin  Desired number of bins in the y direction
   !!
-  !! \param xmin   Lower limit for the binning range in the x direction - autodetermine if xmin = xmax
-  !! \param xmax   Upper limit for the binning range in the x direction - autodetermine if xmin = xmax
+  !! \param xMin   Lower limit for the binning range in the x direction - autodetermine if xMin = xMax
+  !! \param xMax   Upper limit for the binning range in the x direction - autodetermine if xMin = xMax
   !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
   !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
   !!
-  !! \retval z     Binned data set z(nxbin+1,nybin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
+  !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
   !! \retval tr    Transformation elements for pgplot tr(6)
   !!
-  !! \param weights  Weights to use when binning data, same size as xdat,ydat (optional)
+  !! \param weights  Weights to use when binning data, same size as xDat,ydat (optional)
   
-  subroutine bin_data_2d(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr,   weights)
+  subroutine bin_data_2d(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,ymin,ymax, z, tr,   weights)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
     implicit none
-    integer, intent(in) :: nxbin,nybin, norm
-    real(double), intent(in) :: xdat(:),ydat(:)
-    real(double), intent(in), optional :: weights(size(xdat))
-    real(double), intent(inout) :: xmin,xmax,ymin,ymax
-    real(double), intent(out) :: z(nxbin+1,nybin+1),tr(6)
+    integer, intent(in) :: nxBin,nyBin, norm
+    real(double), intent(in) :: xDat(:),ydat(:)
+    real(double), intent(in), optional :: weights(size(xDat))
+    real(double), intent(inout) :: xMin,xMax,ymin,ymax
+    real(double), intent(out) :: z(nxBin+1,nyBin+1),tr(6)
     
     integer :: i,bx,by, ndat
-    real(double) :: dx,dy, myweights(size(xdat))
+    real(double) :: dx,dy, myweights(size(xDat))
     
     ! Check data array sizes for consistency:
-    ndat = size(xdat)
-    if(size(ydat).ne.ndat) call quit_program_error('libSUFR bin_data_2d(): data arrays xdat and ydat must have the same size',1)
+    ndat = size(xDat)
+    if(size(ydat).ne.ndat) call quit_program_error('libSUFR bin_data_2d(): data arrays xDat and ydat must have the same size',1)
     
     myweights = 1.
     if(present(weights)) myweights = weights
     
-    if(abs((xmin-xmax)/(xmax+1.e-30)).lt.1.e-20) then  ! Autodetermine x ranges
-       xmin = minval(xdat(1:ndat))
-       xmax = maxval(xdat(1:ndat))
+    if(abs((xMin-xMax)/(xMax+1.e-30)).lt.1.e-20) then  ! Autodetermine x ranges
+       xMin = minval(xDat(1:ndat))
+       xMax = maxval(xDat(1:ndat))
     end if
-    xmin = xmin - epsilon(xmin)*xmin
-    xmax = xmax + epsilon(xmax)*xmax
-    dx = abs(xmax - xmin)/dble(nxbin)
+    xMin = xMin - epsilon(xMin)*xMin
+    xMax = xMax + epsilon(xMax)*xMax
+    dx = abs(xMax - xMin)/dble(nxBin)
     
     if(abs((ymin-ymax)/(ymax+1.e-30)).lt.1.e-20) then  ! Autodetermine y ranges
        ymin = minval(ydat(1:ndat))
@@ -736,12 +735,12 @@ contains
     end if
     ymin = ymin - epsilon(ymin)*ymin
     ymax = ymax + epsilon(ymax)*ymax
-    dy = abs(ymax - ymin)/dble(nybin)
+    dy = abs(ymax - ymin)/dble(nyBin)
     
     
     
     ! Determine transformation elements for pgplot (pggray, pgcont, pgimag):
-    tr(1) = xmin - dx/2.
+    tr(1) = xMin - dx/2.
     tr(2) = dx
     tr(3) = 0.
     tr(4) = ymin - dy/2.
@@ -750,19 +749,19 @@ contains
     
     z = 0.
     do i=1,ndat
-       bx = floor((xdat(i) - xmin)/dx) + 1 
+       bx = floor((xDat(i) - xMin)/dx) + 1 
        by = floor((ydat(i) - ymin)/dy) + 1
        
-       !if(bx.lt.1.or.bx.gt.nxbin.or.by.lt.1.or.by.gt.nybin) then
-       !   if(bx.eq.0.or.bx.eq.nxbin+1) bx = max(min(bx,nxbin),1)  !Treat an error of 1 x bin as round-off
-       !   if(by.eq.0.or.by.eq.nybin+1) by = max(min(by,nybin),1)  !Treat an error of 1 y bin as round-off
+       !if(bx.lt.1.or.bx.gt.nxBin.or.by.lt.1.or.by.gt.nyBin) then
+       !   if(bx.eq.0.or.bx.eq.nxBin+1) bx = max(min(bx,nxBin),1)  !Treat an error of 1 x bin as round-off
+       !   if(by.eq.0.or.by.eq.nyBin+1) by = max(min(by,nyBin),1)  !Treat an error of 1 y bin as round-off
        !   
-       !   if(bx.lt.0.or.bx.gt.nxbin+1) then
+       !   if(bx.lt.0.or.bx.gt.nxBin+1) then
        !      !write(stdErr,'(A,I7,A2,F8.3,A,I4,A,I4,A1)') &
-       !'  Bindata2d:  error for X data point',i,' (',xdat(i),').  I found bin',bx,', but it should lie between 1 and',nxbin,'.'
-       !   else if(by.lt.0.or.by.gt.nybin+1) then
+       !'  Bindata2d:  error for X data point',i,' (',xDat(i),').  I found bin',bx,', but it should lie between 1 and',nxBin,'.'
+       !   else if(by.lt.0.or.by.gt.nyBin+1) then
        !      !write(stdErr,'(A,I7,A2,F8.3,A,I4,A,I4,A1)') &
-       !'  Bindata2d:  error for Y data point',i,' (',ydat(i),').  I found bin',by,', but it should lie between 1 and',nybin,'.'
+       !'  Bindata2d:  error for Y data point',i,' (',ydat(i),').  I found bin',by,', but it should lie between 1 and',nyBin,'.'
        !   else
        !      z(bx,by) = z(bx,by) + 1.
        !   end if
@@ -771,9 +770,9 @@ contains
        !end if
        
        ! Don't treat 1-bin errors as round-off:
-       !if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + 1.
+       !if(bx.ge.1.and.bx.le.nxBin.and.by.ge.1.and.by.le.nyBin) z(bx,by) = z(bx,by) + 1.
        
-       if(bx.ge.1.and.bx.le.nxbin.and.by.ge.1.and.by.le.nybin) z(bx,by) = z(bx,by) + myweights(i)
+       if(bx.ge.1.and.bx.le.nxBin.and.by.ge.1.and.by.le.nyBin) z(bx,by) = z(bx,by) + myweights(i)
     end do
     
     !if(norm.eq.1) z = z/(ztot+1.e-30)
@@ -785,53 +784,53 @@ contains
   !*********************************************************************************************************************************
   !> \brief Bin data in 2 dimensions - single-precision wrapper for bin_data_2d()
   !! 
-  !! \param xdat   Input data: x values - array size: ndat
+  !! \param xDat   Input data: x values - array size: ndat
   !! \param ydat   Input data: y values - array size: ndat
   !!
   !! \param norm   Normalise the bins (1) or not (0)
   !!
-  !! \param nxbin  Desired number of bins in the x direction
-  !! \param nybin  Desired number of bins in the y direction
+  !! \param nxBin  Desired number of bins in the x direction
+  !! \param nyBin  Desired number of bins in the y direction
   !!
-  !! \param xmin   Lower limit for the binning range in the x direction - autodetermine if xmin = xmax
-  !! \param xmax   Upper limit for the binning range in the x direction - autodetermine if xmin = xmax
+  !! \param xMin   Lower limit for the binning range in the x direction - autodetermine if xMin = xMax
+  !! \param xMax   Upper limit for the binning range in the x direction - autodetermine if xMin = xMax
   !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
   !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
   !!
-  !! \retval z     Binned data set z(nxbin+1,nybin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
+  !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
   !! \retval tr    Transformation elements for pgplot tr(6)
   !!
-  !! \param weights  Weights to use when binning data, same size as xdat,ydat (optional)
+  !! \param weights  Weights to use when binning data, same size as xDat,ydat (optional)
   
-  subroutine bin_data_2d_sp(xdat,ydat, norm, nxbin,nybin, xmin,xmax,ymin,ymax, z, tr,   weights)
+  subroutine bin_data_2d_sp(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,ymin,ymax, z, tr,   weights)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
     implicit none
-    integer, intent(in) :: nxbin,nybin, norm
-    real, intent(in) :: xdat(:),ydat(:)
-    real, intent(in), optional :: weights(size(xdat))
-    real, intent(inout) :: xmin,xmax,ymin,ymax
-    real, intent(out) :: z(nxbin+1,nybin+1),tr(6)
+    integer, intent(in) :: nxBin,nyBin, norm
+    real, intent(in) :: xDat(:),ydat(:)
+    real, intent(in), optional :: weights(size(xDat))
+    real, intent(inout) :: xMin,xMax,ymin,ymax
+    real, intent(out) :: z(nxBin+1,nyBin+1),tr(6)
     
-    real(double) :: dxdat(size(xdat)),dydat(size(ydat)), dweights(size(xdat)), dxmin,dxmax,dymin,dymax, dz(nxbin+1,nybin+1),dtr(6)
+    real(double) :: dxDat(size(xDat)),dydat(size(ydat)), dweights(size(xDat)), dxMin,dxMax,dymin,dymax, dz(nxBin+1,nyBin+1),dtr(6)
     
     ! Copy single- to double-precision:
-    dxdat = dble(xdat)
+    dxDat = dble(xDat)
     dydat = dble(ydat)
-    dxmin = dble(xmin)
-    dxmax = dble(xmax)
+    dxMin = dble(xMin)
+    dxMax = dble(xMax)
     dymin = dble(ymin)
     dymax = dble(ymax)
     
     dweights = 1.
     if(present(weights)) dweights = weights
     
-    call bin_data_2d(dxdat,dydat, norm, nxbin,nybin, dxmin,dxmax,dymin,dymax, dz, dtr,   dweights)
+    call bin_data_2d(dxDat,dydat, norm, nxBin,nyBin, dxMin,dxMax,dymin,dymax, dz, dtr,   dweights)
     
     ! Copy double- to single-precision:
-    xmin = real(dxmin)
-    xmax = real(dxmax)
+    xMin = real(dxMin)
+    xMax = real(dxMax)
     ymin = real(dymin)
     ymax = real(dymax)
     z    = real(dz)
