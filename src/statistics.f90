@@ -982,7 +982,15 @@ contains
           tr(5) = 0.d0
           tr(6) = dy
        end if
+       
     end if
+    
+    
+    ! Check array size:
+    if(size(z,1).lt.nxBin+1) call quit_program_error('histogram_2d_onthefly: the first dimension of z is too small; the 2D '// &
+         'array should have a size of at least nxBin+1 x nyBin+1', 1)
+    if(size(z,2).lt.nyBin+1) call quit_program_error('histogram_2d_onthefly: the second dimension of z is too small; the 2D '// &
+         'array should have a size of at least nxBin+1 x nyBin+1', 1)
     
     
     ! Data gathering mode:
