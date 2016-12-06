@@ -179,8 +179,9 @@ module SUFR_constants
   !> \brief Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
   real(double), parameter, public :: si_pc_sigma   =  si_pc_arad*si_pc_c*0.25d0
   
-  !> \brief ElectronVolt in J
+  !> \brief Elementary (|electron|) charge in Coulomb;  ElectronVolt in J
   real(double), parameter, public :: si_eV = eV * 1.d-7  ! 1.6021766d-19
+  real(double), parameter, public :: si_pc_ec = si_eV
   
   !> \brief nanometer in SI (m)
   real(double), parameter, public :: si_nm = nm * 1.d-2
