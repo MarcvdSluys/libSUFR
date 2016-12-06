@@ -680,6 +680,90 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Create a 1D histogram on the fly (point by point).  Bin data points by computing the bin they should be in.
+  !!
+  !! \note Call this routine once to initialise (init=1; set xBin), then call many times to collect data and construct yBin (init=0)
+  !!
+  !! \param  xDat    Data point to be binned
+  !! \param  Nbin    Desired number of bins.  Note that the binned-data arrays xBin and yBin must have size >= Nbin+1
+  !!
+  !! \param  mode    Mode:  -1: xBin is left of bin,  0: xBin is centre of bin,  1: xBin is right of bin
+  !! \param  cumul   Make a cumulative histogram (T/F)
+  !!
+  !! \param  xMin    Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
+  !! \param  xMax    Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
+  !!
+  !! \retval xBin    Binned data, location of the bins.  The x values are the left side of the bin!
+  !! \retval yBin    Binned data, height of the bins.    I/O so that the array size can be checked
+  !!
+  !! \param  init    Initialisation call: true/false (data collection).  Optional; default=false.
+  !! \param  weight  Add weight to the bin, rather than 1.  Optional; default=1.
+  
+  subroutine histogram_1d_onthefly(xDat, Nbin, mode,cumul, xMin,xMax, xBin,yBin, init, weight)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    implicit none
+    real(double), intent(in) :: xDat, xMin,xMax
+    integer, intent(in) :: Nbin, mode
+    logical, intent(in) :: cumul
+    real(double), intent(inout) :: xBin(:),yBin(:)
+    real(double), intent(in), optional :: weight
+    logical, intent(in), optional :: init
+    
+    integer :: iBin
+    real(double) :: weightl
+    logical :: initl
+    
+    ! Deal with optional variables:
+    initl = .false.
+    if(present(init)) initl = init
+    
+    weightl = 1.d0  ! Add one to bin by default
+    if(present(weight)) weightl = weight
+    
+    
+    if(initl) then  ! Initialisation mode
+       do iBin=1,nBin+1
+          if(mode.le.-1) then
+             xBin(iBin) = xMin + dble(iBin-1)/dble(nBin) * (xMax-xMin)        ! X value indicates left of bin
+          else if(mode.eq.0) then
+             xBin(iBin) = xMin + (dble(iBin-1)+0.5d0)/dble(nBin) * (xMax-xMin)  ! X value indicates centre of bin
+          else
+             xBin(iBin) = xMin + dble(iBin)/dble(nBin) * (xMax-xMin)            ! X value indicates right of bin
+          end  if
+       end do
+       
+       yBin = 0.d0
+       
+       return  ! Initialisation done
+    end if
+    
+    
+    ! Data-collection mode: create a histogram on the fly:
+    
+    ! Determine the bin xDat belongs in:
+    if(mode.le.-1) then
+       iBin = ceiling( (xDat-xMin) / (xMax-xMin) * nBin ) ! X value indicates left of bin
+    else if(mode.eq.0) then
+       iBin = nint( (xDat-xMin) / (xMax-xMin) * nBin )    ! X value indicates centre of bin
+    else
+       iBin = floor( (xDat-xMin) / (xMax-xMin) * nBin )   ! X value indicates right of bin
+    end if
+    
+    ! Add to that bin:
+    if(iBin.ge.1 .and. iBin.le.nBin) then
+       if(cumul) then
+          yBin(1:iBin) = yBin(1:iBin) + weightl
+       else
+          yBin(iBin) = yBin(iBin) + weightl
+       end if
+    end if
+    
+  end subroutine histogram_1d_onthefly
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief Bin data in 2 dimensions - computing the bin number rather than searching for it is ~10x faster
   !! 
   !! \param xDat   Input data: x values - array size: ndat
