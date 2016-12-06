@@ -776,15 +776,15 @@ contains
   !!
   !! \param xMin   Lower limit for the binning range in the x direction - autodetermine if xMin = xMax
   !! \param xMax   Upper limit for the binning range in the x direction - autodetermine if xMin = xMax
-  !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
-  !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
+  !! \param yMin   Lower limit for the binning range in the y direction - autodetermine if yMin = yMax
+  !! \param yMax   Upper limit for the binning range in the y direction - autodetermine if yMin = yMax
   !!
   !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
   !! \retval tr    Transformation elements for pgplot tr(6)
   !!
   !! \param weights  Weights to use when binning data, same size as xDat,ydat (optional)
   
-  subroutine bin_data_2d(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,ymin,ymax, z, tr,   weights)
+  subroutine bin_data_2d(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,yMin,yMax, z, tr,   weights)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -792,20 +792,20 @@ contains
     integer, intent(in) :: nxBin,nyBin, norm
     real(double), intent(in) :: xDat(:),ydat(:)
     real(double), intent(in), optional :: weights(size(xDat))
-    real(double), intent(inout) :: xMin,xMax,ymin,ymax
+    real(double), intent(inout) :: xMin,xMax,yMin,yMax
     real(double), intent(out) :: z(nxBin+1,nyBin+1),tr(6)
     
     integer :: i,bx,by, ndat
-    real(double) :: dx,dy, myweights(size(xDat))
+    real(double) :: dx,dy, weightsl(size(xDat))
     
     ! Check data array sizes for consistency:
     ndat = size(xDat)
     if(size(ydat).ne.ndat) call quit_program_error('libSUFR bin_data_2d(): data arrays xDat and ydat must have the same size',1)
     
-    myweights = 1.
-    if(present(weights)) myweights = weights
+    weightsl = 1.d0
+    if(present(weights)) weightsl = weights
     
-    if(abs((xMin-xMax)/(xMax+1.e-30)).lt.1.e-20) then  ! Autodetermine x ranges
+    if(abs((xMin-xMax)/(xMax + sqrt(huge(xMax)))) .lt. sqrt(huge(xMax))) then  ! Autodetermine x ranges
        xMin = minval(xDat(1:ndat))
        xMax = maxval(xDat(1:ndat))
     end if
@@ -813,28 +813,28 @@ contains
     xMax = xMax + epsilon(xMax)*xMax
     dx = abs(xMax - xMin)/dble(nxBin)
     
-    if(abs((ymin-ymax)/(ymax+1.e-30)).lt.1.e-20) then  ! Autodetermine y ranges
-       ymin = minval(ydat(1:ndat))
-       ymax = maxval(ydat(1:ndat))
+    if(abs((yMin-yMax)/(yMax + sqrt(huge(yMax)))) .lt. sqrt(huge(yMax))) then  ! Autodetermine y ranges
+       yMin = minval(ydat(1:ndat))
+       yMax = maxval(ydat(1:ndat))
     end if
-    ymin = ymin - epsilon(ymin)*ymin
-    ymax = ymax + epsilon(ymax)*ymax
-    dy = abs(ymax - ymin)/dble(nyBin)
+    yMin = yMin - epsilon(yMin)*yMin
+    yMax = yMax + epsilon(yMax)*yMax
+    dy = abs(yMax - yMin)/dble(nyBin)
     
     
     
     ! Determine transformation elements for pgplot (pggray, pgcont, pgimag):
-    tr(1) = xMin - dx/2.
+    tr(1) = xMin - dx/2.d0
     tr(2) = dx
-    tr(3) = 0.
-    tr(4) = ymin - dy/2.
-    tr(5) = 0.
+    tr(3) = 0.d0
+    tr(4) = yMin - dy/2.d0
+    tr(5) = 0.d0
     tr(6) = dy
     
-    z = 0.
+    z = 0.d0
     do i=1,ndat
        bx = floor((xDat(i) - xMin)/dx) + 1 
-       by = floor((ydat(i) - ymin)/dy) + 1
+       by = floor((ydat(i) - yMin)/dy) + 1
        
        !if(bx.lt.1.or.bx.gt.nxBin.or.by.lt.1.or.by.gt.nyBin) then
        !   if(bx.eq.0.or.bx.eq.nxBin+1) bx = max(min(bx,nxBin),1)  !Treat an error of 1 x bin as round-off
@@ -856,11 +856,11 @@ contains
        ! Don't treat 1-bin errors as round-off:
        !if(bx.ge.1.and.bx.le.nxBin.and.by.ge.1.and.by.le.nyBin) z(bx,by) = z(bx,by) + 1.
        
-       if(bx.ge.1.and.bx.le.nxBin.and.by.ge.1.and.by.le.nyBin) z(bx,by) = z(bx,by) + myweights(i)
+       if(bx.ge.1.and.bx.le.nxBin.and.by.ge.1.and.by.le.nyBin) z(bx,by) = z(bx,by) + weightsl(i)
     end do
     
-    !if(norm.eq.1) z = z/(ztot+1.e-30)
-    if(norm.eq.1) z = z/maxval(z+1.e-30)
+    !if(norm.eq.1) z = z/(ztot+sqrt(huge(z)))
+    if(norm.eq.1) z = z/maxval(z+sqrt(huge(z)))
     
   end subroutine bin_data_2d
   !*********************************************************************************************************************************
@@ -878,15 +878,15 @@ contains
   !!
   !! \param xMin   Lower limit for the binning range in the x direction - autodetermine if xMin = xMax
   !! \param xMax   Upper limit for the binning range in the x direction - autodetermine if xMin = xMax
-  !! \param ymin   Lower limit for the binning range in the y direction - autodetermine if ymin = ymax
-  !! \param ymax   Upper limit for the binning range in the y direction - autodetermine if ymin = ymax
+  !! \param yMin   Lower limit for the binning range in the y direction - autodetermine if yMin = yMax
+  !! \param yMax   Upper limit for the binning range in the y direction - autodetermine if yMin = yMax
   !!
   !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
   !! \retval tr    Transformation elements for pgplot tr(6)
   !!
   !! \param weights  Weights to use when binning data, same size as xDat,ydat (optional)
   
-  subroutine bin_data_2d_sp(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,ymin,ymax, z, tr,   weights)
+  subroutine bin_data_2d_sp(xDat,ydat, norm, nxBin,nyBin, xMin,xMax,yMin,yMax, z, tr,   weights)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     
@@ -894,29 +894,29 @@ contains
     integer, intent(in) :: nxBin,nyBin, norm
     real, intent(in) :: xDat(:),ydat(:)
     real, intent(in), optional :: weights(size(xDat))
-    real, intent(inout) :: xMin,xMax,ymin,ymax
+    real, intent(inout) :: xMin,xMax,yMin,yMax
     real, intent(out) :: z(nxBin+1,nyBin+1),tr(6)
     
-    real(double) :: dxDat(size(xDat)),dydat(size(ydat)), dweights(size(xDat)), dxMin,dxMax,dymin,dymax, dz(nxBin+1,nyBin+1),dtr(6)
+    real(double) :: dxDat(size(xDat)),dydat(size(ydat)), dweights(size(xDat)), dxMin,dxMax,dyMin,dyMax, dz(nxBin+1,nyBin+1),dtr(6)
     
     ! Copy single- to double-precision:
     dxDat = dble(xDat)
     dydat = dble(ydat)
     dxMin = dble(xMin)
     dxMax = dble(xMax)
-    dymin = dble(ymin)
-    dymax = dble(ymax)
+    dyMin = dble(yMin)
+    dyMax = dble(yMax)
     
-    dweights = 1.
-    if(present(weights)) dweights = weights
+    dweights = 1.d0
+    if(present(weights)) dweights = dble(weights)
     
-    call bin_data_2d(dxDat,dydat, norm, nxBin,nyBin, dxMin,dxMax,dymin,dymax, dz, dtr,   dweights)
+    call bin_data_2d(dxDat,dydat, norm, nxBin,nyBin, dxMin,dxMax,dyMin,dyMax, dz, dtr,   dweights)
     
     ! Copy double- to single-precision:
     xMin = real(dxMin)
     xMax = real(dxMax)
-    ymin = real(dymin)
-    ymax = real(dymax)
+    yMin = real(dyMin)
+    yMax = real(dyMax)
     z    = real(dz)
     tr   = real(dtr)
     
