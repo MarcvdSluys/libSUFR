@@ -123,10 +123,12 @@ contains
   !! \retval  wavelength2rgb  RGB values: (0-1, 0-1, 0-1)
   !!
   !!
-  !! \note Assumed pure colour at centre of their wavelength bands:
-  !! Colours: Violet,   blue,   green,    yellow,    orange,     red:
-  !!          (1,0,1)  (0,0,1)  (0,1,0)   (1,1,0)   (1,0.5,0)  (1,0,0)
-  !!
+  !! \note 
+  !! - Assumed pure colour at centre of their wavelength bands:
+  !!   Colours: Violet,   blue,   green,    yellow,    orange,     red:
+  !!            (1,0,1)  (0,0,1)  (0,1,0)   (1,1,0)   (1,0.5,0)  (1,0,0)
+  !! 
+  !! - Colours between 390 and 420nm and 696 and 770nm are darker due to 'fading in' and 'fading out' effects
   
   function wavelength2rgb(wl, df)
     use SUFR_kinds, only: double

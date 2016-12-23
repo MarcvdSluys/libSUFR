@@ -87,7 +87,7 @@ contains
     
     integer, parameter :: im1=2147483563, ia1=40014, iq1=53668, ir1=12211 
     integer, parameter :: im2=2147483399, ia2=40692, iq2=52774, ir2= 3791
-    integer, parameter :: Ntab=32, im1m1=im1-1, ndtab=1+im1m1/Ntab
+    integer, parameter :: Ntab=32, im1m1=im1-1, ndtab=67108862  ! ndtab=1+im1m1/Ntab
     
     ! rnmx should be the largest number < 1 and != 1:
     real(double), parameter :: am1  = 1.0_dbl/im1
@@ -96,7 +96,6 @@ contains
     
     integer, save :: seed2=123456789, tab(Ntab)=0, iy=0
     integer :: j,k
-    
     
     if(seed.le.0) then                                  ! 'Initialise' generator
        seed = max(-seed,1)                              ! Don't allow seed=0
