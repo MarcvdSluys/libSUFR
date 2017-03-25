@@ -7,6 +7,7 @@ set(SRC_FILES
   src/dummy_variables.f90
   src/earth.f90
   src/fitting.f90
+  src/getopt.f90
   src/interpolate.f90
   src/kinds.f90
   src/libSUFR_version.f90
