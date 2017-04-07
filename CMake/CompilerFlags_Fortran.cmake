@@ -192,7 +192,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-warn all -std08 -diag-disable 6894,8290,8291" )   # 8290,8291: format for F,ES: too many decimal places (for negative numbers)
+    set( WARN_FLAGS "-warn all -std08 -diag-disable 6894,8290,8291,5268" )   # 8290,8291: format for F,ES: too many decimal places (for negative numbers), 5268: line longer than 132 characters
   endif( WANT_WARNINGS )
   
   if( STOP_ON_WARNING )
