@@ -29,7 +29,7 @@ module SUFR_constants
   private :: double, dbl, intkindmax, realkindmax !, max_accuracy_kinds
   save
   
-
+  
   ! Double precision:
   real(double), parameter, public :: one    = 1.0_dbl        !< Unity
   real(double), parameter, public :: c3rd   = one/3.0_dbl    !< One third
@@ -53,30 +53,30 @@ module SUFR_constants
   real(double), parameter, public :: am2r = one/r2am         !< Arcminutes to radians
   real(double), parameter, public :: r2as = r2am*60.0_dbl    !< Radians to arcseconds
   real(double), parameter, public :: as2r = one/r2as         !< Arcseconds to radians
-    
-    
+  
+  
   ! Single precision:
-  real, parameter, public :: rc3rd   = real(c3rd)    !< One third
-  real, parameter, public :: rtwo3rd = real(two3rd)  !< Two thirds
+  real, parameter, public :: rc3rd   = real(c3rd)            !< One third
+  real, parameter, public :: rtwo3rd = real(two3rd)          !< Two thirds
+  
+  real, parameter, public :: rpio4 = real(pio4)              !< pi/4
+  real, parameter, public :: rpio2 = real(pio2)              !< pi/2
+  real, parameter, public :: rpi   = real(pi)                !< pi
+  real, parameter, public :: rpi2  = real(pi2)               !< 2*pi
+  
+  real, parameter, public :: rr2d = real(r2d)                !< Radians to degrees
+  real, parameter, public :: rd2r = real(d2r)                !< Degrees to radians
+  real, parameter, public :: rr2h = real(r2h)                !< Radians to hours
+  real, parameter, public :: rh2r = real(h2r)                !< Hours to radians
+  real, parameter, public :: rh2d = real(h2d)                !< Hours to degrees
+  real, parameter, public :: rd2h = real(d2h)                !< Degrees to hours
     
-  real, parameter, public :: rpio4 = real(pio4)      !< pi/4
-  real, parameter, public :: rpio2 = real(pio2)      !< pi/2
-  real, parameter, public :: rpi   = real(pi)        !< pi
-  real, parameter, public :: rpi2  = real(pi2)       !< 2*pi
-    
-  real, parameter, public :: rr2d = real(r2d)        !< Radians to degrees
-  real, parameter, public :: rd2r = real(d2r)        !< Degrees to radians
-  real, parameter, public :: rr2h = real(r2h)        !< Radians to hours
-  real, parameter, public :: rh2r = real(h2r)        !< Hours to radians
-  real, parameter, public :: rh2d = real(h2d)        !< Hours to degrees
-  real, parameter, public :: rd2h = real(d2h)        !< Degrees to hours
-    
-  real, parameter, public :: rd2as = real(d2as)      !< Degrees to arcseconds
-  real, parameter, public :: ras2d = real(as2d)      !< Arcseconds to degrees
-  real, parameter, public :: rr2am = real(r2am)      !< Radians to arcminutes
-  real, parameter, public :: ram2r = real(am2r)      !< Arcminutes to radians
-  real, parameter, public :: rr2as = real(r2as)      !< Radians to arcseconds
-  real, parameter, public :: ras2r = real(as2r)      !< Arcseconds to radians
+  real, parameter, public :: rd2as = real(d2as)              !< Degrees to arcseconds
+  real, parameter, public :: ras2d = real(as2d)              !< Arcseconds to degrees
+  real, parameter, public :: rr2am = real(r2am)              !< Radians to arcminutes
+  real, parameter, public :: ram2r = real(am2r)              !< Arcminutes to radians
+  real, parameter, public :: rr2as = real(r2as)              !< Radians to arcseconds
+  real, parameter, public :: ras2r = real(as2r)              !< Arcseconds to radians
   
   
   
@@ -117,36 +117,33 @@ module SUFR_constants
   real(double), parameter, public :: si_pc_arad    =  si_pc_kb**4/((si_pc_c*si_pc_hp)**3) * 8*pi**5/15.d0    !< Radiation (density) constant, 7.56591d-15 erg cm^-3 K^-4
   real(double), parameter, public :: si_pc_sigma   =  si_pc_arad*si_pc_c*0.25d0                              !< Stefan-Boltzmann constant, 5.67051d-5 erg cm^-2 K^-4 s^-1
   
-  real(double), parameter, public :: si_eV = eV * 1.d-7    !< Elementary (|electron|) charge in Coulomb;  ElectronVolt: 1.6021766d-19 J
-  real(double), parameter, public :: si_pc_ec = si_eV      !< Elementary (|electron|) charge in Coulomb;  ElectronVolt: 1.6021766d-19 J
+  real(double), parameter, public :: si_eV = eV * 1.d-7                     !< Elementary (|electron|) charge in Coulomb;  ElectronVolt: 1.6021766d-19 J
+  real(double), parameter, public :: si_pc_ec = si_eV                       !< Elementary (|electron|) charge in Coulomb;  ElectronVolt: 1.6021766d-19 J
   
-  real(double), parameter, public :: si_nm = nm * 1.d-2    !< nanometer in SI (m)
-  real(double), parameter, public :: si_mum = mum * 1.d-2  !< micrometer in SI (m)
-  real(double), parameter, public :: si_mm = mm * 1.d-2    !< millimeter in SI (m)
-  real(double), parameter, public :: si_km = km * 1.d-2    !< kilometer in SI (m)
+  real(double), parameter, public :: si_nm = nm * 1.d-2                     !< nanometer in SI (m)
+  real(double), parameter, public :: si_mum = mum * 1.d-2                   !< micrometer in SI (m)
+  real(double), parameter, public :: si_mm = mm * 1.d-2                     !< millimeter in SI (m)
+  real(double), parameter, public :: si_km = km * 1.d-2                     !< kilometer in SI (m)
   
   
   
   
   
   ! Astronomical constants:
-  real(double), parameter, public :: au = 1.49597870700d13   !< A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
+  real(double), parameter, public :: au = 1.49597870700d13                  !< A.U. in cgs (IAU 2009 Resolution B2, IAU XXVIII GA 2012 - Astr.Almanac 2014)
+  real(double), parameter, public :: si_au = au * 1.d-2                     !< A.U. in SI (m)
   
-  real(double), parameter, public :: rsun = 6.9599d10        !< Solar radius in cgs (cm)
-  real(double), parameter, public :: msun = 1.9891d33        !< Solar mass in cgs (gm)
-  real(double), parameter, public :: lsun = 3.85d33          !< Solar luminosity in cgs (erg/s)
+  real(double), parameter, public :: rsun = 6.9599d10                       !< Solar radius in cgs (cm)
+  real(double), parameter, public :: msun = 1.9891d33                       !< Solar mass in cgs (gm)
+  real(double), parameter, public :: lsun = 3.85d33                         !< Solar luminosity in cgs (erg/s)
   
+  real(double), parameter, public :: si_rsun = rsun * 1.d-2                 !< Solar radius in SI (m)
+  real(double), parameter, public :: si_msun = msun * 1.d-3                 !< Solar mass in SI (kg)
+  real(double), parameter, public :: si_lsun = lsun * 1.d-7                 !< Solar luminosity in SI (W)
   
-  real(double), parameter, public :: si_au = au * 1.d-2      !< A.U. in SI (m)
-  
-  real(double), parameter, public :: si_rsun = rsun * 1.d-2  !< Solar radius in SI (m)
-  real(double), parameter, public :: si_msun = msun * 1.d-3  !< Solar mass in SI (kg)
-  real(double), parameter, public :: si_lsun = lsun * 1.d-7  !< Solar luminosity in SI (W)
-  
-  
-  real(double), parameter, public :: siday = 0.997269663d0   !< Siderial day in days
-  real(double), parameter, public :: solDay   = 8.64d4       !< Solar day = 86400 s
-  real(double), parameter, public :: solConst = 1361.5d0     !< Solar constant in W/m^2
+  real(double), parameter, public :: siday = 0.997269663d0                  !< Siderial day in days
+  real(double), parameter, public :: solDay   = 8.64d4                      !< Solar day = 86400 s
+  real(double), parameter, public :: solConst = 1361.5d0                    !< Solar constant in W/m^2
   
   ! True for J2000.0:
   real(double), parameter, public :: gregmonth = 30.4369d0      * solday    !< Gregorian month in seconds:    average calendar month length of 4800 months over 400 years
@@ -162,30 +159,28 @@ module SUFR_constants
   real(double), parameter, public :: tropyear = 365.24218967d0  * solday    !< Tropical year in seconds:      equinox to equinox, influenced by precession
   real(double), parameter, public :: anomyear = 365.259635864d0 * solday    !< Anomalistic year in seconds:   apside to apside
   
-  real(double), parameter, public :: jd1875 = 2405890.d0         !< JD at J1875.0 (when constellation boundaries were defined)
-  real(double), parameter, public :: jd1900 = 2415021.d0         !< JD at J1900.0
-  real(double), parameter, public :: jd1950 = 2433283.d0         !< JD at J1950.0
-  real(double), parameter, public :: jd2000 = 2451545.d0         !< JD at J2000.0 (2000-01-01 12:00 UT)
+  real(double), parameter, public :: jd1875 = 2405890.d0                    !< JD at J1875.0 (when constellation boundaries were defined)
+  real(double), parameter, public :: jd1900 = 2415021.d0                    !< JD at J1900.0
+  real(double), parameter, public :: jd1950 = 2433283.d0                    !< JD at J1950.0
+  real(double), parameter, public :: jd2000 = 2451545.d0                    !< JD at J2000.0 (2000-01-01 12:00 UT)
   
-  real(double), parameter, public :: eps2000 = 0.409092804d0     !< Obliquity of the ecliptic at J2000.0
+  real(double), parameter, public :: eps2000 = 0.409092804d0                !< Obliquity of the ecliptic at J2000.0
   
-  real(double), parameter, public :: earthr = 6378136.6d2        !< Equatorial radius of the Earth in cm, WGS84
-  real(double), parameter, public :: si_earthr = earthr * 1.d-2  !< Equatorial radius of the Earth in cm, WGS84
+  real(double), parameter, public :: earthr = 6378136.6d2                   !< Equatorial radius of the Earth in cm, WGS84
+  real(double), parameter, public :: si_earthr = earthr * 1.d-2             !< Equatorial radius of the Earth in cm, WGS84
   
   !> \brief Equatorial diameters (cm)
   !! \note
   !! - may be redefined if (3) = Earth -> not a constant
   !! - Venus = 12103.6 + clouds? - e.g., Wikipedia
-  real(double), public :: pland(0:9) = (/3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, &
-       51118.d5, 49528.d5, 2390.d5/)
+  real(double), public :: pland(0:9) = [3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, 2390.d5]
   
   !> \brief Equatorial radii (cm) = pland/2.d0
   !! \note  May be redefined if (3) = Earth -> not a constant
   real(double), public :: planr(0:9) != pland/2.d0
   
   !> \brief Semi-major axes (cm)
-  real(double), parameter, public :: plana(0:9) = (/384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, &
-       19.191d0, 30.061d0, 39.529d0/)*au
+  real(double), parameter, public :: plana(0:9) = [384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, 19.191d0, 30.061d0, 39.529d0]*au
   
   !SI:
   real(double), public :: si_pland(0:9)                                  !< Equatorial diameters (m)
@@ -204,121 +199,96 @@ module SUFR_constants
   ! Planet names - not constants, since (3) may be changed in 'Earth':
   ! en:
   !> \brief Capitalised planet names
-  character, public :: enpname(-1:19)*(7) = (/'Antisol','Moon   ','Mercury','Venus  ','Sun    ','Mars   ','Jupiter', &
-       'Saturn ','Uranus ','Neptune','Pluto  ','       ','Comet  ','       ','       ','       ','       ','       ', &
-       '       ','       ','       '/)
+  character, public :: enpname(-1:19)*(7)   = [character(len=7) :: 'Antisol','Moon','Mercury','Venus','Sun','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto','','Comet','','','','','','','','']
   !> \brief Lower-case planet names
-  character, public :: enpnames(-1:19)*(7)  = (/'antisol','moon   ','mercury','venus  ','sun    ','mars   ','jupiter', &
-       'saturn ','uranus ','neptune','pluto  ','       ','Comet  ','       ','       ','       ','       ','       ', &
-       '       ','       ','       '/)
+  character, public :: enpnames(-1:19)*(7)  = [character(len=7) :: 'antisol','moon','mercury','venus','sun','mars','jupiter', 'saturn','uranus','neptune','pluto','','Comet','','','','','','','','']
   !> \brief Capitalised planet names; "the Moon"
-  character, public :: enpnamel(-1:19)*(8)  = (/'Antisol ','the Moon','Mercury ','Venus   ','the Sun ','Mars    ', &
-       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   ','        ','        ','        ', &
-       '        ','        ','        ','        ','        '/)
+  character, public :: enpnamel(-1:19)*(8)  = [character(len=8) :: 'Antisol','the Moon','Mercury','Venus','the Sun','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto','','Comet','','','','','','','','']
   !> \brief Capitalised planet names; "The Moon"
-  character, public :: enpnamelb(-1:19)*(8) = (/'Antisol ','The Moon','Mercury ','Venus   ','The Sun ','Mars    ', &
-       'Jupiter ','Saturn  ','Uranus  ','Neptune ','Pluto   ','        ','Comet   ','        ','        ','        ', &
-       '        ','        ','        ','        ','        '/)
+  character, public :: enpnamelb(-1:19)*(8) = [character(len=8) :: 'Antisol','The Moon','Mercury','Venus','The Sun','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto','','Comet','','','','','','','','']
   !> \brief Capitalised planet abbreviations
-  character, public :: enpnamess(-1:19)*(4) = (/'A.S.','Moon','Mer.','Ven.','Sun ','Mars','Jup.','Sat.','Ura.','Nep.', &
-       'Plu.','    ','Com.','    ','    ','    ','    ','    ','    ','    ','    '/)
+  character, public :: enpnamess(-1:19)*(4) = [character(len=4) :: 'A.S.','Moon','Mer.','Ven.','Sun','Mars','Jup.','Sat.','Ura.','Nep.','Plu.','','Com.','','','','','','','','']
   
   !nl:
   !> \brief Capitalised Dutch planet names
-  character, public :: nlpname(-1:19)*(9)   = (/'Antizon  ','Maan     ','Mercurius','Venus    ','Zon      ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
-       '         ','         ','         ','         ','         ','         ','         ','         '/)
+  character, public :: nlpname(-1:19)*(9)   = [character(len=9) :: 'Antizon','Maan','Mercurius','Venus','Zon','Mars','Jupiter','Saturnus','Uranus','Neptunus','Pluto','','Komeet','','','','','','','','']
   !> \brief Lower-case Dutch planet names
-  character, public :: nlpnames(-1:19)*(9)  = (/'antizon  ','maan     ','mercurius','venus    ','zon      ', &
-       'mars     ','jupiter  ','saturnus ','uranus   ','neptunus ','pluto    ','         ','komeet   ', &
-       '         ','         ','         ','         ','         ','         ','         ','         '/)
+  character, public :: nlpnames(-1:19)*(9)  = [character(len=9) :: 'antizon','maan','mercurius','venus','zon','mars','jupiter','saturnus','uranus','neptunus','pluto','','komeet','','','','','','','','']
   !> \brief Capitalised Dutch planet names; "the Moon"
-  character, public :: nlpnamel(-1:19)*(9)  = (/'Antizon  ','de Maan  ','Mercurius','Venus    ','de Zon   ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
-       '         ','         ','         ','         ','         ','         ','         ','         '/)
+  character, public :: nlpnamel(-1:19)*(9)  = [character(len=9) :: 'Antizon','de Maan','Mercurius','Venus','de Zon','Mars','Jupiter','Saturnus','Uranus','Neptunus','Pluto','','Komeet','','','','','','','','']
   !> \brief Capitalised Dutch planet names; "The Moon"
-  character, public :: nlpnamelb(-1:19)*(9) = (/'Antizon  ','De Maan  ','Mercurius','Venus    ','De Zon   ', &
-       'Mars     ','Jupiter  ','Saturnus ','Uranus   ','Neptunus ','Pluto    ','         ','Komeet   ', &
-       '         ','         ','         ','         ','         ','         ','         ','         '/)
+  character, public :: nlpnamelb(-1:19)*(9) = [character(len=9) :: 'Antizon','De Maan','Mercurius','Venus','De Zon','Mars','Jupiter','Saturnus','Uranus','Neptunus','Pluto','','Komeet','','','','','','','','']
   !> \brief Capitalised Dutch planet abbreviations
-  character, public :: nlpnamess(-1:19)*(4) = (/'A.Z.','Maan','Mer.','Ven.','Zon ','Mars','Jup.','Sat.','Ura.','Nep.', &
-       'Plu.','    ','Kom.','    ','    ','    ','    ','    ','    ','    ','    '/)
+  character, public :: nlpnamess(-1:19)*(4) = [character(len=4) :: 'A.Z.','Maan','Mer.','Ven.','Zon','Mars','Jup.','Sat.','Ura.','Nep.','Plu.','','Kom.','','','','','','','','']
   
   !> \brief English names of Lunar phases
-  character, parameter, public :: enphases(0:3)*(13) = (/'New Moon     ','First Quarter','Full Moon    ','Last Quarter '/)
+  character, parameter, public :: enphases(0:3)*(13) = ['New Moon     ','First Quarter','Full Moon    ','Last Quarter ']
   !> \brief Dutch names of Lunar phases
-  character, parameter, public :: nlphases(0:3)*(16) = (/'Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ', &
-       'Laatste Kwartier'/)
+  character, parameter, public :: nlphases(0:3)*(16) = ['Nieuwe Maan     ','Eerste Kwartier ','Volle Maan      ','Laatste Kwartier']
 
 
   
   ! Month names:
   ! en:
   !> \brief Capitalised month names in English
-  character, parameter, public :: enmonths(12)*(9)  = (/'January  ','February ','March    ','April    ','May      ','June     ', &
-       'July     ','August   ','September','October  ','November ','December '/)
+  character, parameter, public :: enmonths(12)*(9)  = ['January  ','February ','March    ','April    ','May      ','June     ','July     ','August   ','September','October  ','November ','December ']
   !> \brief Lower-case month names in English
-  character, parameter, public :: enmonthsm(12)*(9) = (/'january  ','february ','march    ','april    ','may      ','june     ', &
-       'july     ','august   ','september','october  ','november ','december '/)
+  character, parameter, public :: enmonthsm(12)*(9) = ['january  ','february ','march    ','april    ','may      ','june     ','july     ','august   ','september','october  ','november ','december ']
   !> \brief Capitalised month abbreviations in English
-  character, parameter, public :: enmnts(12)*(3)    = (/'jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'/)
+  character, parameter, public :: enmnts(12)*(3)    = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
   !> \brief Lower-case month abbreviations in English
-  character, parameter, public :: enmntsb(12)*(3)   = (/'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'/)
+  character, parameter, public :: enmntsb(12)*(3)   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     
   ! nl:
   !> \brief Capitalised month names in Dutch
-  character, parameter, public :: nlmonths(12)*(9)  = (/'januari  ','februari ','maart    ','april    ','mei      ','juni     ', &
-       'juli     ','augustus ','september','oktober  ','november ','december '/)
+  character, parameter, public :: nlmonths(12)*(9)  = ['januari  ','februari ','maart    ','april    ','mei      ','juni     ','juli     ','augustus ','september','oktober  ','november ','december ']
   !> \brief Lower-case month names in Dutch
-  character, parameter, public :: nlmonthsb(12)*(9) = (/'Januari  ','Februari ','Maart    ','April    ','Mei      ','Juni     ', &
-       'Juli     ','Augustus ','September','Oktober  ','November ','December '/)
+  character, parameter, public :: nlmonthsb(12)*(9) = ['Januari  ','Februari ','Maart    ','April    ','Mei      ','Juni     ','Juli     ','Augustus ','September','Oktober  ','November ','December ']
   !> \brief Capitalised month abbreviations in Dutch
-  character, parameter, public :: nlmnts(12)*(3)    = (/'jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'/)
+  character, parameter, public :: nlmnts(12)*(3)    = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
   !> \brief Lower-case month abbreviations in Dutch
-  character, parameter, public :: nlmntsb(12)*(3)   = (/'Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec'/)
+  character, parameter, public :: nlmntsb(12)*(3)   = ['Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec']
   
   
   ! Days of the week:
   ! en:
   !> \brief  Capitalised day-of-week names in English
-  character, parameter, public :: endays(0:6)*(9) = (/'Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ', &
-       'Saturday '/)
+  character, parameter, public :: endays(0:6)*(9) = ['Sunday   ','Monday   ','Tuesday  ','Wednesday','Thursday ','Friday   ','Saturday ']
   !> \brief  Capitalised three-letter day-of-week abbreviations in English
-  character, parameter, public :: endys(0:6)*(3)  = (/'Sun','Mon','Tue','Wed','Thu','Fri','Sat'/)
+  character, parameter, public :: endys(0:6)*(3)  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
   !> \brief  Capitalised two-letter day-of-week abbreviations in English
-  character, parameter, public :: ends(0:6)*(2)   = (/'Su','Mo','Tu','We','Th','Fr','Sa'/)
+  character, parameter, public :: ends(0:6)*(2)   = ['Su','Mo','Tu','We','Th','Fr','Sa']
   
   ! nl:
   !> \brief  Lower-case day-of-week names in Dutch
-  character, parameter, public :: nldays(0:6)*(9) = (/'zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ', &
-       'zaterdag '/)
+  character, parameter, public :: nldays(0:6)*(9) = ['zondag   ','maandag  ','dinsdag  ','woensdag ','donderdag','vrijdag  ','zaterdag ']
   !> \brief  Lower-case three-letter day-of-week abbreviations in Dutch
-  character, parameter, public :: nldys(0:6)*(4)  = (/'zon ','maa ','din ','woe ','don ','vrij','zat '/)
+  character, parameter, public :: nldys(0:6)*(4)  = ['zon ','maa ','din ','woe ','don ','vrij','zat ']
   !> \brief  Lower-case two-letter day-of-week abbreviations in Dutch
-  character, parameter, public :: nlds(0:6)*(2)   = (/'zo','ma','di','wo','do','vr','za'/)
+  character, parameter, public :: nlds(0:6)*(2)   = ['zo','ma','di','wo','do','vr','za']
   
   
   !> \brief  Timezone names in Dutch
-  character, parameter, public :: nltimezones(0:1)*(10) = (/'wintertijd','zomertijd '/)
+  character, parameter, public :: nltimezones(0:1)*(10) = ['wintertijd','zomertijd ']
     
     
   !> \brief  Length of the months (for non-leap year)
   !! \note   Changes for leap years -> not a constant
-  integer, public :: mlen(12) = (/31,28,31,30,31,30,31,31,30,31,30,31/)
+  integer, public :: mlen(12) = [31,28,31,30,31,30,31,31,30,31,30,31]
   
   
-  integer, public :: currentYear         !<  Year at system clock at the moment of initialisation (program start)
-  integer, public :: currentMonth        !<  Month at system clock at the moment of initialisation (program start)
-  integer, public :: currentDay          !<  Day at system clock at the moment of initialisation (program start)
-  integer, public :: currentHour         !<  Hour at system clock at the moment of initialisation (program start)
-  integer, public :: currentMinute       !<  Minute at system clock at the moment of initialisation (program start)
-  integer, public :: currentSecond       !<  Second at system clock at the moment of initialisation (program start)
-  integer, public :: currentMillisecond  !<  Millisecond at system clock at the moment of initialisation (program start)
-  integer, public :: currentDoW          !<  Day of week at system clock at the moment of initialisation (program start)
+  integer, public :: currentYear                !<  Year at system clock at the moment of initialisation (program start)
+  integer, public :: currentMonth               !<  Month at system clock at the moment of initialisation (program start)
+  integer, public :: currentDay                 !<  Day at system clock at the moment of initialisation (program start)
+  integer, public :: currentHour                !<  Hour at system clock at the moment of initialisation (program start)
+  integer, public :: currentMinute              !<  Minute at system clock at the moment of initialisation (program start)
+  integer, public :: currentSecond              !<  Second at system clock at the moment of initialisation (program start)
+  integer, public :: currentMillisecond         !<  Millisecond at system clock at the moment of initialisation (program start)
+  integer, public :: currentDoW                 !<  Day of week at system clock at the moment of initialisation (program start)
   
-  real(double), public :: currentJD      !<  Julian day at system clock at the moment of initialisation (program start)
-  real(double), public :: currentTZ      !<  Time zone at system clock at the moment of initialisation (program start)
-  real(double), public :: currentTime    !<  Time in hours at system clock at the moment of initialisation (program start)
+  real(double), public :: currentJD             !<  Julian day at system clock at the moment of initialisation (program start)
+  real(double), public :: currentTZ             !<  Time zone at system clock at the moment of initialisation (program start)
+  real(double), public :: currentTime           !<  Time in hours at system clock at the moment of initialisation (program start)
   
   character, public :: currentYearStr*(4)       !<  Current year as a character string (system clock at initialisation)
   character, public :: currentDateStr*(10)      !<  Current date as an unambiguous character string YYYY-MM-DD
@@ -339,12 +309,11 @@ module SUFR_constants
   ! Character constants:
   character, parameter, public :: tab = char(9)    !<  Tab character
   !> \brief  Lower-case English names for Greek characters
-  character, parameter, public :: enGrChar(24)*(7) = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta', &
-       'theta','iota','kappa','lambda','mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
+  character, parameter, public :: enGrChar(24)*(7) = [character(len=7) :: 'alpha','beta','gamma','delta','epsilon','zeta','eta','theta','iota','kappa','lambda', &
+       'mu','nu','xi','omicron','pi','rho','sigma','tau','upsilon','phi','chi','psi','omega']
   !> \brief  HTML codes for lower-case Greek characters
-  character, parameter, public :: htmlGrChar(24)*(9) = [character(len=9) :: '&alpha;','&beta;','&gamma;','&delta;','&epsilon;', &
-       '&zeta;','&eta;','&theta;','&iota;','&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;', &
-       '&tau;','&upsilon;','&phi;','&chi;','&psi;','&omega;']
+  character, parameter, public :: htmlGrChar(24)*(9) = [character(len=9) :: '&alpha;','&beta;','&gamma;','&delta;','&epsilon;','&zeta;','&eta;','&theta;','&iota;', &
+       '&kappa;','&lambda;','&mu;','&nu;','&xi;','&omicron;','&pi;','&rho;','&sigma;','&tau;','&upsilon;','&phi;','&chi;','&psi;','&omega;']
   
   
   ! Cursor movement:
@@ -354,15 +323,15 @@ module SUFR_constants
   character, parameter, public :: cursorleft*(4)  = char(27)//'[1D'  !<  Print this to move the cursor to the left one space
   
   
-  integer, public :: stdErr  !<  Default standard error unit for most (not all!) Fortran compilers
-  integer, public :: StdIn   !<  Default standard input unit for most (not all!) Fortran compilers
-  integer, public :: StdOut  !<  Default standard output unit for most (not all!) Fortran compilers
+  integer, public :: stdErr                !<  Default standard error unit for most (not all!) Fortran compilers
+  integer, public :: StdIn                 !<  Default standard input unit for most (not all!) Fortran compilers
+  integer, public :: StdOut                !<  Default standard output unit for most (not all!) Fortran compilers
   
-  character, public :: homeDir*(199)  !<  Current user's home directory  (= $HOME, will contain e.g. '/home/user')
-  character, public :: workDir*(199)  !<  Current working directory  (= $PWD, may contain e.g. '/home/user/myCode/...')
-  character, public :: hostName*(99)  !<  Host name  (= $HOSTNAME - not always exported)
-  character, public :: userName*(99)  !<  Name of the current user (= $USER)
-  character, public :: userID*(99)    !<  ID of the current user   (= $UID)
+  character, public :: homeDir*(199)       !<  Current user's home directory  (= $HOME, will contain e.g. '/home/user')
+  character, public :: workDir*(199)       !<  Current working directory  (= $PWD, may contain e.g. '/home/user/myCode/...')
+  character, public :: hostName*(99)       !<  Host name  (= $HOSTNAME - not always exported)
+  character, public :: userName*(99)       !<  Name of the current user (= $USER)
+  character, public :: userID*(99)         !<  ID of the current user   (= $UID)
   
   character, public :: program_name*(199)  !<  Name of the currently running program, without the path
   character, public :: program_path*(999)  !<  Path of the currently running program, without the program name
@@ -399,7 +368,7 @@ contains
     si_planr(0:9) = si_pland/2.d0
     
     !> \brief Radii (Galilean) moons (cm)
-    satrad(5,1:4) = (/1821.6,1560.8,2631.2,2410.3/)*1.d5
+    satrad(5,1:4) = [1821.6,1560.8,2631.2,2410.3]*1.d5
     !> \brief Diameters (Galilean) moons (cm)
     satdiam = 2*satrad
     
