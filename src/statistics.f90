@@ -25,6 +25,11 @@ module SUFR_statistics
   implicit none
   save
   
+  private :: mean_int  !, mean_lon
+  interface mean
+     module procedure mean_dp, mean_sp, mean_int  !, mean_lon
+  end interface mean
+  
 contains
   
   
@@ -108,13 +113,17 @@ contains
   
   
   
+  
+  
+  
   !*********************************************************************************************************************************
-  !> \brief  Compute the mean of a data array
+  !> 
+  !! \brief  Compute the mean of a data array
   !!
   !! \param data  1D array of data points
   !! \param mask  Mask to apply to data (optional)
   
-  function mean(data, mask)
+  function mean_dp(data, mask)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error, error
     
@@ -123,31 +132,32 @@ contains
     logical, intent(in), optional :: mask(:)
     
     integer :: ni
-    real(double) :: mean
+    real(double) :: mean_dp
     logical :: locmask(size(data))
     
     locmask = .true.
     if(present(mask)) then
-       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean():  data and mask must have the same size', 0)
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean_dp():  data and mask must have the same size', 0)
        locmask = mask
     end if
     
     ni = count(locmask)  ! Number of .true. elements in locmask
     
     if(ni.eq.0) then
-       call error('libSUFR mean():  data() has fewer than two elements', 0)
-       mean = 0.d0
+       call error('libSUFR mean_dp():  data() has fewer than two elements', 0)
+       mean_dp = 0.d0
     else
-       mean = sum(data, mask=locmask)/dble(ni)
+       mean_dp = sum(data, mask=locmask)/dble(ni)
     end if
     
-  end function mean
+  end function mean_dp
   !*********************************************************************************************************************************
   
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the mean of a data array - single-precision wrapper for mean()
+  !> \overload
+  !! \brief  Compute the mean of a data array - single-precision wrapper for mean()
   !!
   !! \param data  1D array of data points
   !! \param mask  Mask to apply to data (optional)
@@ -175,6 +185,72 @@ contains
     mean_sp = real(mean_d)
     
   end function mean_sp
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the mean of a data array - integer wrapper for mean() - result is a float!
+  !!
+  !! \param data  1D array of data points
+  !! \param mask  Mask to apply to data (optional)
+  
+  function mean_int(data, mask)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    integer, intent(in) :: data(:)
+    logical, intent(in), optional :: mask(:)
+    
+    real :: mean_int
+    real(double) :: data_d(size(data)), mean_d
+    logical :: locmask(size(data))
+    
+    locmask = .true.
+    if(present(mask)) then
+       if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean_int():  data and mask must have the same size', 0)
+       locmask = mask
+    end if
+    
+    data_d = dble(data)
+    mean_d = mean(data_d, mask=locmask)
+    mean_int = real(mean_d)
+    
+  end function mean_int
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the mean of a data array - integer wrapper for mean() - result is a float!
+  !!
+  !! \param data  1D array of data points
+  !! \param mask  Mask to apply to data (optional)
+  
+  !function mean_lon(data, mask)
+  !  use SUFR_kinds, only: double, long
+  !  use SUFR_system, only: quit_program_error
+  !  
+  !  implicit none
+  !  integer(long), intent(in) :: data(:)
+  !  logical, intent(in), optional :: mask(:)
+  !  
+  !  real :: mean_lon
+  !  real(double) :: data_d(size(data)), mean_d
+  !  logical :: locmask(size(data))
+  !  
+  !  locmask = .true.
+  !  if(present(mask)) then
+  !     if(size(data).ne.size(mask)) call quit_program_error('libSUFR mean_lon():  data and mask must have the same size', 0)
+  !     locmask = mask
+  !  end if
+  !  
+  !  data_d = dble(data)
+  !  mean_d = mean(data_d, mask=locmask)
+  !  mean_lon = real(mean_d)
+  !  
+  !end function mean_lon
   !*********************************************************************************************************************************
   
   
