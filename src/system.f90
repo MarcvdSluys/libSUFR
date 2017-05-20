@@ -98,8 +98,8 @@ contains
   !> \brief  Print a syntax message to StdErr and stop the execution of the current program
   !!
   !! \param syntax  Description of syntax
-  !! \param status  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional)
-  !! \param descr   Program description (optional)
+  !! \param status  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default = 0)
+  !! \param descr   Program description (optional; default = none)
   
   subroutine syntax_quit(syntax, status, descr)
     use SUFR_constants, only: program_name
@@ -191,8 +191,8 @@ contains
   !!
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
-  !! \param procedure  Name of the procedure this subroutine is called from (without "()" - optional)
-  !! \param message    Message to report (optional)
+  !! \param procedure  Name of the procedure this subroutine is called from (without "()" - optional; default = none)
+  !! \param message    Message to report (optional; default = none)
   
   subroutine file_read_error(filename, line, procedure, message)
     use SUFR_constants, only: program_name
@@ -229,8 +229,8 @@ contains
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
   !! \param status     Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
-  !! \param procedure  Name of the procedure this subroutine is called from (without "()")
-  !! \param message    Message to report (optional)
+  !! \param procedure  Name of the procedure this subroutine is called from (without "()"; optional; default = none)
+  !! \param message    Message to report (optional; default = none)
   
   subroutine file_read_error_quit(filename, line, status, procedure, message)
     use SUFR_constants, only: program_name
@@ -376,7 +376,7 @@ contains
   !! \param readstatus  Read status provided by iostat
   !! \param stopcode    Stop the execution of the code: 0-no, 1-yes
   !! \param exitstatus  Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
-  !! \param message     Optional custom message
+  !! \param message     Custom message (optional; default = none)
   
   subroutine file_read_end_error(filename, line, readstatus, stopcode, exitstatus, message)
     implicit none
@@ -420,7 +420,7 @@ contains
   !> \brief  Print a warning to StdOut or StErr
   !!
   !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr, 1-StdOut (default) - optional variable
+  !! \param unit     Output unit: 0-StdErr, 1-StdOut (optional; default = 0)
   
   subroutine warn(message, unit)
     use SUFR_constants, only: program_name
@@ -443,7 +443,7 @@ contains
   !> \brief  Print an error to StdOut or StErr
   !!
   !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr (default), 1-StdOut - optional variable
+  !! \param unit     Output unit: 0-StdErr, 1-StdOut - (optional; default = 0)
   
   subroutine error(message, unit)
     use SUFR_constants, only: program_name
@@ -533,7 +533,7 @@ contains
   !> \brief  Print a text progress bar to the screen, optionally with estimated time left
   !!
   !! \param frac        Fraction of the task completed
-  !! \param timestamp0  Timestamp of start of task
+  !! \param timestamp0  Timestamp of start of task (optional; default = don't print time left)
   
   subroutine printProgressBar(frac, timestamp0)
     use SUFR_kinds, only: double
@@ -598,9 +598,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print run times: wall time and CPU time
   !!
-  !! \param calltype  Type of call: 1-reset time; 2-print and reset time; 3-print time (optional)
-  !! \param sp        Number of leading spaces (optional)
-  !! \param dec       Number of decimals in the time (optional)
+  !! \param calltype  Type of call: 1-reset time; 2-print and reset time; 3-print time (optional; default = 1 on first call, else 3)
+  !! \param sp        Number of leading spaces (optional; default = 0)
+  !! \param dec       Number of decimals in the time (optional; default = 3)
   
   subroutine print_runtimes(calltype, sp,dec)
     use SUFR_kinds, only: double, long
@@ -669,9 +669,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print CPU time since the first execution of the program
   !!
-  !! \param sp        Number of leading spaces (optional)
-  !! \param dec       Number of decimals in the time (optional)
-  !! \param unit      Output unit (0: stdErr, 6: stdOut)
+  !! \param sp        Number of leading spaces (optional; default = 0)
+  !! \param dec       Number of decimals in the time (optional; default = 3)
+  !! \param unit      Output unit (0: stdErr, 6: stdOut; optional; default = 6)
   
   subroutine print_cputime(sp,dec,unit)
     use SUFR_kinds, only: double

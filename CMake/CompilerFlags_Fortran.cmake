@@ -82,6 +82,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
     set( OPT_FLAGS "-O0" )
   else( WANT_CHECKS )
     set( OPT_FLAGS "-O2" )
+    #set( OPT_FLAGS "-Ofast" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
