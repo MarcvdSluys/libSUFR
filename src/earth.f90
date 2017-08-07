@@ -31,28 +31,27 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the distance between two points over the Earth's surface
   !!
-  !! \param ll1    Longitude of first location (degrees)
-  !! \param bb1    Latitude of first location (degrees)
-  !! \param ll2    Longitude of second location (degrees)
-  !! \param bb2    Latitude of second location (degrees)
-  !! \param miles  Return result in miles (T) or km (F)
+  !! \param l1     Longitude of first location (rad)
+  !! \param b1     Latitude of first location (rad)
+  !! \param l2     Longitude of second location (rad)
+  !! \param b2     Latitude of second location (rad)
+  !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
   
-  function distance(ll1,bb1, ll2,bb2, miles)
+  function distance(l1,b1, l2,b2, miles)
     use SUFR_kinds, only: double
-    use SUFR_constants, only: d2r, earthr
+    use SUFR_constants, only: earthr
     implicit none
-    real(double), intent(in) :: ll1,bb1, ll2,bb2
-    logical, intent(in) :: miles
-    real(double) :: a,fl,l1,l2,b1,b2,distance
+    real(double), intent(in) :: l1,b1, l2,b2
+    logical, optional, intent(in) :: miles
+    real(double) :: a,fl,distance
     real(double) :: f,g,l,s,c,o,r,d,h1,h2
+    logical :: milesL
+    
+    milesL = .false.  ! Return value in kilometres by default
+    if(present(miles)) milesL = miles
     
     a   = earthr*1.d-5                      ! Earth's radius in km
     fl  = 0.003352810665d0                  ! Earth's flattening
-    
-    l1 = ll1*d2r
-    b1 = bb1*d2r
-    l2 = ll2*d2r
-    b2 = bb2*d2r
     
     f = (b1+b2)*0.5d0
     g = (b1-b2)*0.5d0
@@ -67,7 +66,7 @@ contains
     h2 = (3*r+1)/(2*s + tiny(s))
     
     distance = d*(1.d0  +  fl*h1*sin(f)**2 * cos(g)**2  -  fl*h2*cos(f)**2 * sin(g)**2)
-    if(miles) distance = distance * 0.62137119d0  ! Miles rather than km - this is just one of the many definitions of a mile!
+    if(milesL) distance = distance * 0.62137119d0  ! Miles rather than km - this is just one of the many definitions of a mile!
     
   end function distance
   !*********************************************************************************************************************************
@@ -78,19 +77,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the distance between two points over the Earth's surface  --  single-precision version of distance()
   !!
-  !! \param ll1    Longitude of first location (degrees)
-  !! \param bb1    Latitude of first location (degrees)
-  !! \param ll2    Longitude of second location (degrees)
-  !! \param bb2    Latitude of second location (degrees)
-  !! \param miles  Return result in miles (T) or km (F)
+  !! \param l1     Longitude of first location (rad)
+  !! \param b1     Latitude of first location (rad)
+  !! \param l2     Longitude of second location (rad)
+  !! \param b2     Latitude of second location (rad)
+  !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
   
-  function distance_r(ll1,bb1, ll2,bb2, miles)
+  function distance_r(l1,b1, l2,b2, miles)
     implicit none
-    real, intent(in) :: ll1,bb1, ll2,bb2
-    logical, intent(in) :: miles
+    real, intent(in) :: l1,b1, l2,b2
+    logical, optional, intent(in) :: miles
     real :: distance_r
+    logical :: milesL
     
-    distance_r = real( distance(dble(ll1),dble(bb1), dble(ll2),dble(bb2), miles) )
+    milesL = .false.  ! Return value in kilometres by default
+    if(present(miles)) milesL = miles
+    
+    distance_r = real( distance(dble(l1),dble(b1), dble(l2),dble(b2), milesL) )
     
   end function distance_r
   !*********************************************************************************************************************************
