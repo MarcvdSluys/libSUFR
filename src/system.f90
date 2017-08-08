@@ -727,7 +727,7 @@ contains
     integer, intent(out) :: unit
     logical :: status
     
-    do unit=101,huge(unit)
+    do unit=101,huge(unit)-1
        inquire(unit=unit, opened=status)
        if(.not.status) exit
     end do

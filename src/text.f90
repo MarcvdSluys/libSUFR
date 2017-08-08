@@ -365,6 +365,7 @@ contains
     character, intent(in), optional :: mark*(*)
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
     character :: fmt*(9)
+    integer :: d2slen
     
     !> -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
     !! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
@@ -380,7 +381,8 @@ contains
     
     ! Remove leading decimal points:
     if(dbl2str(1:1).eq.'.') then
-       dbl2str = '0'//trim(dbl2str)
+       d2slen = len(dbl2str)
+       dbl2str = '0'//trim(dbl2str(1:d2slen-1))
     else if(dbl2str(1:2).eq.'-.') then
        call replace_substring(dbl2str, '-.', '-0.')
     end if
