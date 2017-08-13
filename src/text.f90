@@ -365,7 +365,7 @@ contains
     character, intent(in), optional :: mark*(*)
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
     character :: fmt*(9)
-    integer :: d2slen
+    integer :: d2slen  !, status
     
     !> -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
     !! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
@@ -373,13 +373,15 @@ contains
     !! -  - (sign(1_long,floor(number,long))-1)/2: space for negative sign
     !! -  + decim: add the decimals to the total string length
     !! -  + 1:     add the decimal separator
-    character :: dbl2str*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
+    character :: dbl2str*(max(ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))),1) -  &
          (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
     write(dbl2str, trim(fmt)) number
+    !write(dbl2str, trim(fmt), iostat=status) number
+    !if(status.ne.0) continue  ! Ignore EoR errors
     
-    ! Remove leading decimal points:
+    ! Prepend a zero before leading decimal points:
     if(dbl2str(1:1).eq.'.') then
        d2slen = len(dbl2str)
        dbl2str = '0'//trim(dbl2str(1:d2slen-1))
@@ -388,6 +390,23 @@ contains
     end if
     
     if(present(mark)) call replace_substring(dbl2str, '.', mark(1:1))  ! Replace default decimal point with a specified mark
+    
+    ! Debug output:
+    !write(*,'(4F9.4, 7I3, 3x, A)') &
+    !     number, &
+    !     10.d0**(-decim)/2.d0, &
+    !     abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)), &
+    !     log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps))), &
+    !     ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), &
+    !     ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))), &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1), &
+    !     (sign(1_long,floor(number,long))-1)/2 + decim + 1, &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) - &
+    !     (sign(1_long,floor(number,long))-1)/2 + decim + 1, &
+    !     len_trim(dbl2str), &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) - &
+    !     (sign(1_long,floor(number,long))-1)/2 + decim + 1 - len_trim(dbl2str), &
+    !     '###'//dbl2str//'###'
     
   end function dbl2str
   !*********************************************************************************************************************************
