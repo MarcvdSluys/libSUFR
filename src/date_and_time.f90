@@ -650,8 +650,8 @@ contains
     tzsign = '+'
     if(ltz.lt.0.d0) tzsign = '-'
     
-    write(jd2rfc822,'(A,I2.2, A,I5, I3.2,2(A1,I2.2), 1x,A1,2I2.2)') trim(endys(dow_ut(jd)))//', ',dy, ' '//enmntsb(mon), yr, &
-         hr,':',mn,':',se, tzsign,tzhr,tzmn
+    write(jd2rfc822,'(A,I2.2, A,I5, I3.2,2(A1,I2.2), 1x,A1,2I2.2)') trim(endys(dow_ut(jd+tz/24.d0)))//', ',dy, ' '//enmntsb(mon), yr, &
+         hr,':',mn,':',se,  tzsign,tzhr,tzmn
     
   end function jd2rfc822
   !*********************************************************************************************************************************
