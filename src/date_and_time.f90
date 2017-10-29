@@ -589,7 +589,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Return JD as date and time in ISO_8601 format (e.g. 2014-03-24T20:48:01+00:00)
   !!
-  !! \param jd  Julian day
+  !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
   
   function jd2iso8601(jd, tz)
@@ -605,7 +605,7 @@ contains
     ltz = 0.d0
     if(present(tz)) ltz = tz
     
-    call jd2cal(jd + ltz/24.d0, yr,mon,day)
+    call jd2cal(jd + ltz/24.d0, yr,mon,day)  ! UT -> LT
     dy = floor(day)
     time = (day - dble(dy)) * 24.d0
     call tm2hms(time, hr,mn,se)
@@ -617,6 +617,43 @@ contains
     write(jd2iso8601,'(I0, 7(A1,I2.2) )') yr,'-',mon,'-',dy,'T',hr,':',mn,':',se, tzsign,tzhr,':',tzmn
     
   end function jd2iso8601
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Return JD as date and time in RFC-822 format (e.g. Sat, 07 Sep 2002 23:12:01 +0100)
+  !!
+  !! \param jd  Julian day (UT)
+  !! \param tz  Time zone (optional - default: 0 = UT)
+  
+  function jd2rfc822(jd, tz)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: endys,enmntsb
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double), intent(in), optional :: tz
+    character :: jd2rfc822*(35), tzsign  ! Need 31 for -999 <= year <= 9999
+    integer :: dy,yr,mon, hr,mn,se, tzhr,tzmn
+    real(double) :: day, time, ltz
+    
+    ltz = 0.d0
+    if(present(tz)) ltz = tz
+    
+    call jd2cal(jd + ltz/24.d0, yr,mon,day)  ! UT -> LT
+    dy = floor(day)
+    time = (day - dble(dy)) * 24.d0
+    call tm2hms(time, hr,mn,se)
+    call tm2hm(abs(ltz), tzhr,tzmn)
+    
+    tzsign = '+'
+    if(ltz.lt.0.d0) tzsign = '-'
+    
+    write(jd2rfc822,'(A,I2.2, A,I5, I3.2,2(A1,I2.2), 1x,A1,2I2.2)') trim(endys(dow_ut(jd)))//', ',dy, ' '//enmntsb(mon), yr, &
+         hr,':',mn,':',se, tzsign,tzhr,tzmn
+    
+  end function jd2rfc822
   !*********************************************************************************************************************************
   
   
