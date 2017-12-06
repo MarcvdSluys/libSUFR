@@ -116,7 +116,7 @@ contains
   
   function mean(data, mask)
     use SUFR_kinds, only: double
-    use SUFR_system, only: quit_program_error, error
+    use SUFR_system, only: quit_program_error, warn
     
     implicit none
     real(double), intent(in) :: data(:)
@@ -135,7 +135,7 @@ contains
     ni = count(locmask)  ! Number of .true. elements in locmask
     
     if(ni.eq.0) then
-       call error('libSUFR mean():  data() has fewer than two elements', 0)
+       !call warn('libSUFR mean():  data() has fewer than two elements', 0)
        mean = 0.d0
     else
        mean = sum(data, mask=locmask)/dble(ni)

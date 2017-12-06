@@ -94,7 +94,7 @@ contains
     
     ind = locate_value_in_array(xVal, xArr)                                ! Find index ind such that xArr(ind) <= x <= xArr(ind+1)
     linear_interpolate_array = linear_interpolation(xArr(ind),xArr(ind+1), yArr(ind),yArr(ind+1), xVal)  ! Interpolate
-    
+
   end function linear_interpolate_array
   !*********************************************************************************************************************************
   

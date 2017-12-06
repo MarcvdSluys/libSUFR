@@ -34,7 +34,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Fit the model coefficients using a chi^2 method
   !!
-  !! Do a chi^2-minimisation fit of ndat data points xdat and ydat, the latter with errors yErr, to function func.  The fit uses
+  !! Do a chi^2-minimisation fit of nDat data points xDat and yDat, the latter with errors yErr, to function func.  The fit uses
   !! the nCoef coefficients stored in fCoef() that should be varied if the corresponding entry in freeCoef=1, fixed if =0.
   !!
   !! The fitting function must be provided as the subroutine myFunc which returns a value y = myFunc(x, basefunc, nCoef), where
