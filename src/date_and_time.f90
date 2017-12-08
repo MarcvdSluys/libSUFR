@@ -629,7 +629,6 @@ contains
   
   function jd2rfc822(jd, tz)
     use SUFR_kinds, only: double
-    use SUFR_constants, only: endys,enmntsb
     
     implicit none
     real(double), intent(in) :: jd
@@ -637,6 +636,10 @@ contains
     character :: jd2rfc822*(35), tzsign  ! Need 31 for -999 <= year <= 9999
     integer :: dy,yr,mon, hr,mn,se, tzhr,tzmn
     real(double) :: day, time, ltz
+    
+    ! Cannot use these from constants, because of circular dependencies:
+    character, parameter :: endys(0:6)*(3)  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+    character, parameter :: enmntsb(12)*(3) = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
     
     ltz = 0.d0
     if(present(tz)) ltz = tz
