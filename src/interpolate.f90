@@ -87,10 +87,17 @@ contains
   
   function linear_interpolate_array(xArr, yArr, xVal)
     use SUFR_kinds, only: double
+    use SUFR_system, only: warn
     implicit none
     real(double), intent(in) :: xArr(:), yArr(:), xVal
     integer :: ind
     real(double) :: linear_interpolate_array
+    
+    if(size(xArr)*size(yArr).eq.0) then
+       call warn('linear_interpolate_array(): at least one of the arrays has no elements.')
+       linear_interpolate_array = -huge(linear_interpolate_array)
+       return
+    end if
     
     ind = locate_value_in_array(xVal, xArr)                                ! Find index ind such that xArr(ind) <= x <= xArr(ind+1)
     linear_interpolate_array = linear_interpolation(xArr(ind),xArr(ind+1), yArr(ind),yArr(ind+1), xVal)  ! Interpolate
