@@ -471,7 +471,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculates day of week (0 - Sunday, ... 6).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
+  !> \brief  Calculates day of week (0 = Sunday, ..., 6 = Saturday).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
   !!
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
@@ -490,6 +490,26 @@ contains
     dow_ut = nint(jd + 1.5d0 - floor(x)*7.d0)
     
   end function dow_ut
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Calculates ISO day of week (1 = Monday, ..., 7 = Sunday).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
+  !!
+  !! \param  jd0  Julian day number (double)
+  !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
+  
+  function dow_iso(jd0)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd0
+    integer :: dow_iso
+
+    dow_iso = dow_ut(jd0)
+    if(dow_iso.eq.0) dow_iso = 7
+    
+  end function dow_iso
   !*********************************************************************************************************************************
   
   
