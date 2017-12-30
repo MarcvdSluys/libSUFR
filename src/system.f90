@@ -36,8 +36,8 @@ contains
     implicit none
     character, intent(in) :: message*(*)
     
-    write(6,'(//,A)')'  '//trim(message)
-    write(6,'(A,/)') '  Exiting...'
+    write(*,'(//,A)')'  '//trim(message)
+    write(*,'(A,/)') '  Exiting...'
     stop
     
   end subroutine quit_program
@@ -573,7 +573,7 @@ contains
   !! 
   !! \param t  Time (h)
   
-  function tms(t)
+  pure function tms(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t
@@ -743,7 +743,7 @@ contains
   !! \param int1  Integer 1
   !! \param int2  Integer 2
   
-  subroutine swapint(int1, int2)
+  pure subroutine swapint(int1, int2)
     implicit none
     integer, intent(inout) :: int1,int2
     integer :: int0
@@ -763,7 +763,7 @@ contains
   !! \param rl1  real 1
   !! \param rl2  real 2
   
-  subroutine swapreal(rl1, rl2)
+  pure subroutine swapreal(rl1, rl2)
     implicit none
     real, intent(inout) :: rl1,rl2
     real :: rl0
@@ -783,7 +783,7 @@ contains
   !! \param dbl1  Double 1
   !! \param dbl2  Double 2
   
-  subroutine swapdbl(dbl1, dbl2)
+  pure subroutine swapdbl(dbl1, dbl2)
     use SUFR_kinds, only: double    
     implicit none
     real(double), intent(inout) :: dbl1,dbl2

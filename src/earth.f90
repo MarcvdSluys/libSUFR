@@ -37,7 +37,7 @@ contains
   !! \param b2     Latitude of second location (rad)
   !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
   
-  function distance(l1,b1, l2,b2, miles)
+  pure function distance(l1,b1, l2,b2, miles)
     use SUFR_kinds, only: double
     use SUFR_constants, only: earthr
     implicit none
@@ -83,7 +83,7 @@ contains
   !! \param b2     Latitude of second location (rad)
   !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
   
-  function distance_r(l1,b1, l2,b2, miles)
+  pure function distance_r(l1,b1, l2,b2, miles)
     implicit none
     real, intent(in) :: l1,b1, l2,b2
     logical, optional, intent(in) :: miles

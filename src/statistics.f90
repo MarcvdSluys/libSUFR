@@ -394,7 +394,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
   
-  subroutine mean_var_running(mean, var, data, num, stDev)
+  pure subroutine mean_var_running(mean, var, data, num, stDev)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(inout) :: mean, var
@@ -544,7 +544,7 @@ contains
   !! \param  npoints               Number of data points
   !! \retval determine_nbin_1d     Number of bins
   
-  function determine_nbin_1d(npoints)
+  pure function determine_nbin_1d(npoints)
     implicit none
     integer, intent(in) :: npoints
     integer :: determine_nbin_1d
@@ -699,7 +699,7 @@ contains
   !! \param  init    Initialisation call: true/false (data collection).  Optional; default=false.
   !! \param  weight  Add weight to the bin, rather than 1.  Optional; default=1.
   
-  subroutine histogram_1d_onthefly(xDat, Nbin, mode,cumul, xMin,xMax, xBin,yBin, init, weight)
+  pure subroutine histogram_1d_onthefly(xDat, Nbin, mode,cumul, xMin,xMax, xBin,yBin, init, weight)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
     implicit none
@@ -1013,7 +1013,7 @@ contains
   !! \param  n          Number - up to 20 for long integers (up to 13 for integers)
   !! \retval faculty_i  Faculty of n;  n!  -  a long integer
   
-  function faculty_i(n)
+  pure function faculty_i(n)
     use SUFR_kinds, only: long
     implicit none
     integer, intent(in) :: n
@@ -1035,7 +1035,7 @@ contains
   !! \param  n        Number - can be up to 170 for double-precision reals (as opposed to 20 for long integers and 13 for integers)
   !! \retval faculty  Faculty of n;  n!  -  in double precision
   
-  function faculty(n)
+  pure function faculty(n)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: n
@@ -1060,7 +1060,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Binomial_coefficient#Binomial_coefficient_in_programming_languages
   
-  function binom_coeff(n, k)
+  pure function binom_coeff(n, k)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: n, k
@@ -1097,7 +1097,7 @@ contains
   !! \param  p           probability of a succesful trial
   !! \retval binom_prob  Binomial probability  n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
   
-  function binom_prob(n, k, p)
+  pure function binom_prob(n, k, p)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: n, k
@@ -1121,7 +1121,7 @@ contains
   !! \retval poisson_prob  Poisson probability  P = λ^k e^-λ / k!
   
   
-  function poisson_prob(k, lambda)
+  pure function poisson_prob(k, lambda)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: k

@@ -439,7 +439,7 @@ contains
   !! \see Numerical Recipes in Fortran 77, Sect.15.4
   !!
   
-  subroutine sort_var_covar_matrix(nCov,covMat, nCoef,freeCoef, nFit)
+  pure subroutine sort_var_covar_matrix(nCov,covMat, nCoef,freeCoef, nFit)
     use SUFR_kinds, only: double
     use SUFR_system, only: swapdbl
     
@@ -583,7 +583,7 @@ contains
   !!
   !! \retval baseFunc  Base function i for coefficent i.  For a polynomial, BF(i) = x**(i-1)
   
-  subroutine basefunc_polynomial(xVal,nCoef, baseFunc)
+  pure subroutine basefunc_polynomial(xVal,nCoef, baseFunc)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: nCoef

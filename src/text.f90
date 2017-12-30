@@ -33,7 +33,7 @@ contains
   !!
   !! \param str  String
   
-  function lowercase(str)
+  pure function lowercase(str)
     implicit none
     character, intent(in) :: str*(*)
     character :: lowercase*(len(str))
@@ -56,7 +56,7 @@ contains
   !!
   !! \param str  String
   
-  function uppercase(str)
+  pure function uppercase(str)
     implicit none
     character, intent(in) :: str*(*)
     character :: uppercase*(len(str))
@@ -79,7 +79,7 @@ contains
   !!
   !! \param str  String
   
-  function uppercaseinitial(str)
+  pure function uppercaseinitial(str)
     implicit none
     character, intent(in) :: str*(*)
     character :: uppercaseinitial*(len(str))
@@ -108,7 +108,7 @@ contains
   !! \param  str16     UTF-16 string
   !! \retval UTF16to8  UTF-8 string (about half the length of str16)
   
-  function UTF16to8(str16)
+  pure function UTF16to8(str16)
     use SUFR_system, only: warn
     implicit none
     character, intent(in) :: str16*(*)
@@ -134,7 +134,7 @@ contains
   !! \param str_srch  Search string
   !! \param str_repl  Replacement string
   
-  subroutine replace_substring(string, str_srch, str_repl)
+  pure subroutine replace_substring(string, str_srch, str_repl)
     implicit none
     character, intent(inout) :: string*(*)
     character, intent(in) :: str_srch*(*),str_repl*(*)
@@ -289,7 +289,7 @@ contains
   !!
   !! \retval string_contains_one_of  True if the string contains one of the specified characters, otherwise false
   
-  function string_contains_one_of(string, characters)
+  pure function string_contains_one_of(string, characters)
     implicit none
     character, intent(in) :: string*(*), characters*(*)
     logical :: string_contains_one_of
@@ -315,7 +315,7 @@ contains
   !!
   !! \param number  Desired number of tab characters
   
-  function tabs(number)
+  pure function tabs(number)
     implicit none
     integer, intent(in) :: number
     character :: tabs*(max(number,1))
@@ -338,7 +338,7 @@ contains
   !!
   !! \param number  Integer number to convert
   
-  function int2str(number)
+  pure function int2str(number)
     implicit none
     integer, intent(in) :: number
     character :: int2str*(max(ceiling(log10(dble(abs(number)+1))),1) - (sign(1,number)-1)/2)  ! 0-9 -> 1; 10-99 -> 2; +1 if <0
@@ -357,7 +357,7 @@ contains
   !! \param decim   Number of decimals to use
   !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   
-  function dbl2str(number, decim, mark)
+  pure function dbl2str(number, decim, mark)
     use SUFR_kinds, only: double, long
     implicit none
     real(double), intent(in) :: number
@@ -419,7 +419,7 @@ contains
   !! \param decim   Number of decimals to use
   !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   
-  function d2s(number, decim, mark)
+  pure function d2s(number, decim, mark)
     use SUFR_kinds, only: double, long
     implicit none
     real(double), intent(in) :: number
@@ -447,7 +447,7 @@ contains
   !! \param number  Value to convert
   !! \param decim   Number of decimals to use
   
-  function d2sc(number, decim)
+  pure function d2sc(number, decim)
     use SUFR_kinds, only: double, long
     implicit none
     real(double), intent(in) :: number
@@ -470,7 +470,7 @@ contains
   !! \param decim   Number of decimals to use
   !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   
-  function real2str(number, decim, mark)
+  pure function real2str(number, decim, mark)
     implicit none
     real, intent(in) :: number
     integer, intent(in) :: decim

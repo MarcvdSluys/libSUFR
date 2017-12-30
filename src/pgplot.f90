@@ -115,7 +115,7 @@ contains
   !! \retval size   PGPlot plot size
   !! \retval ratio  PGPlot plot ratio
   
-  subroutine pghv2szrat_bitmap(horiz,vert, size,ratio)
+  pure subroutine pghv2szrat_bitmap(horiz,vert, size,ratio)
     implicit none
     integer, intent(in) :: horiz,vert
     real, intent(out) :: size,ratio
@@ -135,7 +135,7 @@ contains
   !! \retval horiz  Horizontal plot size in pixels
   !! \retval vert   Vertical plot size in pixels
   
-  subroutine pgszrat2hv_bitmap(size,ratio, horiz,vert)
+  pure subroutine pgszrat2hv_bitmap(size,ratio, horiz,vert)
     implicit none
     real, intent(in) :: size,ratio
     integer, intent(out) :: horiz,vert
@@ -157,7 +157,7 @@ contains
   !! \retval size   PGPlot screen size
   !! \retval ratio  PGPlot screen ratio
   
-  subroutine pghv2szrat_screen(horiz,vert, dpi, size,ratio)
+  pure subroutine pghv2szrat_screen(horiz,vert, dpi, size,ratio)
     implicit none
     integer, intent(in) :: horiz,vert
     real, intent(in) :: dpi
@@ -179,7 +179,7 @@ contains
   !! \retval horiz  Horizontal screen size (pixels)
   !! \retval vert   Vertical screen size (pixels)
   
-  subroutine pgszrat2hv_screen(size,ratio, dpi, horiz,vert)
+  pure subroutine pgszrat2hv_screen(size,ratio, dpi, horiz,vert)
     implicit none
     real, intent(in) :: size,ratio, dpi
     integer, intent(out) :: horiz,vert

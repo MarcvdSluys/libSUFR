@@ -34,7 +34,7 @@ contains
   !! \param x1  First number
   !! \param x2  Second number
   
-  function reldiff(x1,x2)
+  pure function reldiff(x1,x2)
     use SUFR_kinds, only: double, dbl
     
     implicit none
@@ -63,7 +63,7 @@ contains
   !! \param x1  First number
   !! \param x2  Second number
   
-  function reldiff_sp(x1,x2)
+  pure function reldiff_sp(x1,x2)
     implicit none
     real, intent(in) :: x1,x2
     real :: reldiff_sp
@@ -83,7 +83,7 @@ contains
   !! \param x2   Second number
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function deq(x1,x2, eps)
+  pure function deq(x1,x2, eps)
     use SUFR_kinds, only: double
     
     implicit none
@@ -110,7 +110,7 @@ contains
   !! \param x0   Number to check
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function deq0(x0, eps)
+  pure function deq0(x0, eps)
     use SUFR_kinds, only: double
     
     implicit none
@@ -139,7 +139,7 @@ contains
   !! \param x2   Second number
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function seq(x1,x2, eps)
+  pure function seq(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
     real, intent(in), optional :: eps
@@ -164,7 +164,7 @@ contains
   !! \param x0   Number to check
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function seq0(x0, eps)
+  pure function seq0(x0, eps)
     implicit none
     real, intent(in) :: x0
     real, intent(in), optional :: eps
@@ -191,7 +191,7 @@ contains
   !! \param x2   Second number
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function dne(x1,x2, eps)
+  pure function dne(x1,x2, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x1,x2
@@ -212,7 +212,7 @@ contains
   !! \param x0   Number to check
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function dne0(x0, eps)
+  pure function dne0(x0, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x0
@@ -236,7 +236,7 @@ contains
   !! \param x2   Second number
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function sne(x1,x2, eps)
+  pure function sne(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
     real, intent(in), optional :: eps
@@ -257,7 +257,7 @@ contains
   !! \param x0   Number to check
   !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   
-  function sne0(x0, eps)
+  pure function sne0(x0, eps)
     implicit none
     real, intent(in) :: x0
     real, intent(in), optional :: eps
@@ -289,7 +289,7 @@ contains
   !! \retval ymin  Minimum of plot range in y
   !! \retval ymax  Maximum of plot range in y
   
-  subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax)
+  pure subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax)
     use SUFR_kinds, only: double
     
     implicit none
@@ -332,7 +332,7 @@ contains
   !!         Since array indices in Fortran run from 1 to N, and the mod() function returns 0 to N-1 which can be used as an array
   !!         index directly in e.g. C, mod1() provides that service in Fortran.
   
-  function mod1(number, period)
+  pure function mod1(number, period)
     implicit none
     integer, intent(in) :: number, period
     integer :: mod1

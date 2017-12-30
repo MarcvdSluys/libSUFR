@@ -55,7 +55,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hms(t)
+  pure function hms(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -93,7 +93,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hhms(t)
+  pure function hhms(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -134,7 +134,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hms2(t)
+  pure function hms2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
@@ -180,7 +180,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function ums(t)
+  pure function ums(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -225,7 +225,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hms_s(t)
+  pure function hms_s(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -271,7 +271,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hms_sss(t)
+  pure function hms_sss(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -317,7 +317,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hmm(t)
+  pure function hmm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -354,7 +354,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function umm(t)
+  pure function umm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -391,7 +391,7 @@ contains
   !!
   !! \param time  Time (h)
   
-  function hm(time)
+  pure function hm(time)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -427,7 +427,7 @@ contains
   !!
   !! \param time  Time (h)
   
-  function hm_mmm(time)
+  pure function hm_mmm(time)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -462,7 +462,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hhm(t)
+  pure function hhm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -500,7 +500,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function um(t)
+  pure function um(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -541,7 +541,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function wum(t)
+  pure function wum(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -581,7 +581,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function wumm(t)
+  pure function wumm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -621,7 +621,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function wums(t)
+  pure function wums(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -665,7 +665,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function wums_s(t)
+  pure function wums_s(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -716,7 +716,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hm2(t)
+  pure function hm2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
@@ -755,7 +755,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function hdm(t)
+  pure function hdm(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2h,h2r
@@ -795,7 +795,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function tms(t)
+  pure function tms(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t
@@ -820,7 +820,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function tms2(t)
+  pure function tms2(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t
@@ -854,7 +854,7 @@ contains
   !!
   !! \param t  Time (h)
   
-  function tmsss2(t)
+  pure function tmsss2(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t

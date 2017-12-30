@@ -43,7 +43,7 @@ contains
   !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
   !! - https://en.wikipedia.org/wiki/Bicycle_performance#Power_required
   
-  subroutine cycling_power(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
+  pure subroutine cycling_power(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
     use SUFR_kinds, only: double
     use SUFR_weather, only: air_density
     
@@ -92,7 +92,7 @@ contains
   !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
   !! - https://en.wikipedia.org/wiki/Bicycle_performance#Power_required
   
-  subroutine cycling_power_sp(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
+  pure subroutine cycling_power_sp(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
     use SUFR_kinds, only: double
     implicit none
     real, intent(in) :: mass, slope, vair, vgr

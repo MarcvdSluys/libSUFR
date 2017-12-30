@@ -71,7 +71,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function prs(angle)
+  pure function prs(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -113,7 +113,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dms(angle)
+  pure function dms(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -154,7 +154,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dmss(angle)
+  pure function dmss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -196,7 +196,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dms2(angle)
+  pure function dms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -243,7 +243,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function ddms2(angle)
+  pure function ddms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -287,7 +287,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function d1ms2(angle)
+  pure function d1ms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -332,7 +332,7 @@ contains
   !! \param angle      Angle (rad)
   !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
   
-  function dmss2(angle, noSymbols)
+  pure function dmss2(angle, noSymbols)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -390,7 +390,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dm(angle)
+  pure function dm(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -425,7 +425,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dm2(angle)
+  pure function dm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -465,7 +465,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dmm2(angle)
+  pure function dmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -505,7 +505,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function dmmm2(angle)
+  pure function dmmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -547,7 +547,7 @@ contains
   !! \param angle      Angle (rad)
   !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
   
-  function dmmmmm2(angle, noSymbols)
+  pure function dmmmmm2(angle, noSymbols)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     use SUFR_angles, only: rev2
@@ -598,7 +598,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function ddd2(angle)
+  pure function ddd2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -635,7 +635,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdms(angle)
+  pure function wdms(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -676,7 +676,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdmss(angle)
+  pure function wdmss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -719,7 +719,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdms2(angle)
+  pure function wdms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -766,7 +766,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdmss2(angle)
+  pure function wdmss2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -816,7 +816,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wddms2(angle)
+  pure function wddms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -863,7 +863,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wd1ms2(angle)
+  pure function wd1ms2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -907,7 +907,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdm(angle)
+  pure function wdm(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -941,7 +941,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdm2(angle)
+  pure function wdm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -982,7 +982,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdmm2(angle)
+  pure function wdmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -1021,7 +1021,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wdmmm2(angle)
+  pure function wdmmm2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -1061,7 +1061,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wddd2(angle)
+  pure function wddd2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -1096,7 +1096,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function ams(angle)
+  pure function ams(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -1127,7 +1127,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function ams2(angle)
+  pure function ams2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -1164,7 +1164,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function amss(angle)
+  pure function amss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -1194,7 +1194,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function ass(angle)
+  pure function ass(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -1227,7 +1227,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wams(angle)
+  pure function wams(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -1258,7 +1258,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wams2(angle)
+  pure function wams2(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev2
     use SUFR_constants, only: r2d
@@ -1295,7 +1295,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wamss(angle)
+  pure function wamss(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d
@@ -1325,7 +1325,7 @@ contains
   !!
   !! \param angle  Angle (rad)
   
-  function wass(angle)
+  pure function wass(angle)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2d

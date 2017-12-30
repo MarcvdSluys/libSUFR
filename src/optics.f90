@@ -38,7 +38,7 @@ contains
   !!
   !! \see http://emtoolbox.nist.gov/Wavelength/Documentation.asp#AppendixA
   
-  function refractive_index_air(wavelength, temperature, pressure, humidity)
+  pure function refractive_index_air(wavelength, temperature, pressure, humidity)
     use SUFR_kinds, only: double
     implicit none
     
@@ -100,7 +100,7 @@ contains
   !! 
   !! \see Marcin Szczurowski, http://refractiveindex.info/?shelf=3d&book=plastics&page=pmma
   
-  function refractive_index_pmma(wavelength)
+  pure function refractive_index_pmma(wavelength)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: wavelength

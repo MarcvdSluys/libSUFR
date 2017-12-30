@@ -38,7 +38,7 @@ contains
   !! \param x   X value to find y value for
   !! \retval y  Y value to find
   
-  function linear_interpolation(x1,x2, y1,y2, x)
+  pure function linear_interpolation(x1,x2, y1,y2, x)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x1,x2, y1,y2, x
@@ -66,7 +66,7 @@ contains
   !! \param x   X value to find y value for
   !! \retval y  Y value to find
   
-  function linear_interpolation_sp(x1,x2, y1,y2, x)
+  pure function linear_interpolation_sp(x1,x2, y1,y2, x)
     implicit none
     real, intent(in) :: x1,x2, y1,y2, x
     real :: linear_interpolation_sp
@@ -119,7 +119,7 @@ contains
   !! \retval b  Coefficient b in y = a*x^2 + b*x + c
   !! \retval c  Coefficient c in y = a*x^2 + b*x + c
   
-  subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
+  pure subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x1,x2,x3, y1,y2,y3
@@ -148,7 +148,7 @@ contains
   !! \param b  Coefficient b in y = a*x^2 +b*x + c
   !! \param c  Coefficient c in y = a*x^2 +b*x + c
   
-  function parabola(x, a,b,c)
+  pure function parabola(x, a,b,c)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x,a,b,c
@@ -169,7 +169,7 @@ contains
   !!
   !! \see  Numerical Recipes in Fortran, Sect.3.4
   
-  function locate_value_in_array(xVal, xArray)
+  pure function locate_value_in_array(xVal, xArray)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq
     

@@ -37,7 +37,7 @@ contains
   !!
   !! \param ang  Input angle (radians)
   
-  function rev(ang)
+  pure function rev(ang)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
     
@@ -55,7 +55,7 @@ contains
   !!
   !! \param ang  Input angle (radians)
   
-  function rrev(ang)
+  pure function rrev(ang)
     use SUFR_constants, only: rpi2
     
     implicit none
@@ -74,7 +74,7 @@ contains
   !!
   !! \param ang  Input angle (degrees)
   
-  function rev360(ang)
+  pure function rev360(ang)
     use SUFR_kinds, only: double
     
     implicit none
@@ -95,7 +95,7 @@ contains
   !!
   !! \param ang  Input angle (radians)
   
-  function rev2(ang)
+  pure function rev2(ang)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi,pi2
     
@@ -115,7 +115,7 @@ contains
   !!
   !! \param ang  Input angle (radians)
   
-  function rrev2(ang)
+  pure function rrev2(ang)
     use SUFR_constants, only: rpi,rpi2
     
     implicit none
@@ -139,7 +139,7 @@ contains
   !! \param ang  Input angle (radians)
   !! \param cen  'Central value' (radians)
   
-  function revc(ang,cen)
+  pure function revc(ang,cen)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi,pi2
     
@@ -165,7 +165,7 @@ contains
   !!
   !! \param tm  Input time (hours)
   
-  function rv(tm)
+  pure function rv(tm)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -182,7 +182,7 @@ contains
   !!
   !! \param tm  Input time (hours)
   
-  function rv12(tm)
+  pure function rv12(tm)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -200,7 +200,7 @@ contains
   !!
   !! \param ang  Input angle (degrees)
   
-  function rv180(ang)
+  pure function rv180(ang)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: ang
@@ -223,7 +223,7 @@ contains
   !! \param b1  Latitude of object 1
   !! \param b2  Latitude of object 2
   
-  function asep(l1,l2, b1,b2)
+  pure function asep(l1,l2, b1,b2)
     use SUFR_kinds, only: double
     
     implicit none
@@ -251,7 +251,7 @@ contains
   !! \param b1  Latitude of object 1 - Dec if measuring from the north
   !! \param b2  Latitude of object 2 - Dec if measuring from the north
   
-  function calpa(l1,l2,b1,b2)
+  pure function calpa(l1,l2,b1,b2)
     implicit none
     real(double), intent(in) :: l1,l2,b1,b2
     real(double) :: calpa,dl
@@ -270,7 +270,7 @@ contains
   !!
   !! \param pa  Position angle (radians, N=0)
   
-  function pastr_en(pa)
+  pure function pastr_en(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
     
@@ -290,7 +290,7 @@ contains
   !!
   !! \param pa  Position angle (radians, N=0)
   
-  function pastr_nl(pa)
+  pure function pastr_nl(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
     
@@ -311,7 +311,7 @@ contains
   !!
   !! \param pa  Position angle (radians, N=0)
   
-  function pastr_nls(pa)
+  pure function pastr_nls(pa)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
     
@@ -335,7 +335,7 @@ contains
   !!
   !! \param  wd  Wind direction/azimuth (radians, N=0)
   
-  function wdstr_en(wd)
+  pure function wdstr_en(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
@@ -357,7 +357,7 @@ contains
   !!
   !! \param  wd  Wind direction/azimuth (radians, N=0)
   
-  function wdstr_ens(wd)
+  pure function wdstr_ens(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
@@ -377,7 +377,7 @@ contains
   !!
   !! \param  wd  Wind direction/azimuth (radians, N=0)
   
-  function wdstr_nls(wd)
+  pure function wdstr_nls(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
@@ -397,7 +397,7 @@ contains
   !!
   !! \param wd  Wind direction (radians, N=0)
   
-  function wdstr_nl(wd)
+  pure function wdstr_nl(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2d
     
@@ -423,7 +423,7 @@ contains
   !!
   !! \param wd  Wind direction (radians, N=0)
   
-  function wdstr_nls2(wd)
+  pure function wdstr_nls2(wd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -443,7 +443,7 @@ contains
   !!
   !! \param wd  Wind direction (radians, N=0)
   
-  function wdstr_nl8(wd)
+  pure function wdstr_nl8(wd)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pi2
     

@@ -37,7 +37,7 @@ contains
   !!
   !! \retval  cal2jd  The Julian day number (double)
   
-  function cal2jd(yy,mm,dd)
+  pure function cal2jd(yy,mm,dd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -85,7 +85,7 @@ contains
   !! \retval mm  Month
   !! \retval dd  Day of month (+ fraction)
   
-  subroutine jd2cal(jd, yy,mm,dd)
+  pure subroutine jd2cal(jd, yy,mm,dd)
     use SUFR_kinds, only: double, dbl, long
     
     implicit none
@@ -143,7 +143,7 @@ contains
   !!
   !! \retval  year2jd  The Julian day number
   
-  function year2jd(year)
+  pure function year2jd(year)
     use SUFR_kinds, only: double
     
     implicit none
@@ -179,7 +179,7 @@ contains
   !! \retval m   Minute (UT)
   !! \retval s   Second (+ fraction, UT)
   
-  subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
+  pure subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
     use SUFR_kinds, only: double, dbl
     
     implicit none
@@ -214,7 +214,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  function jd2datestr(jd)
+  pure function jd2datestr(jd)
     use SUFR_kinds, only: double
     
     character :: jd2datestr*(15)
@@ -235,7 +235,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  function jd2time(jd)
+  pure function jd2time(jd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -261,7 +261,7 @@ contains
   !! \retval day    Day of the month
   !! \retval time   Time of day (hours)
   
-  subroutine jd2datetime(jd, year,month,day, time)
+  pure subroutine jd2datetime(jd, year,month,day, time)
     use SUFR_kinds, only: double
     
     implicit none
@@ -290,7 +290,7 @@ contains
   !! \param s           The second (double)
   !! \retval ymdhms2jd  The Julian day number (double)
   
-  function ymdhms2jd(yy,mmo,dd, h,m,s)
+  pure function ymdhms2jd(yy,mmo,dd, h,m,s)
     use SUFR_kinds, only: double
     
     implicit none
@@ -313,7 +313,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Correct time after manipulation, i.e. ensure a correct date and time is returned (0<month<13, 0<=minute<60, etc.)
   
-  subroutine correct_time(year,month,day, hour,minute,second)
+  pure subroutine correct_time(year,month,day, hour,minute,second)
     use SUFR_kinds, only: double
     
     implicit none
@@ -336,7 +336,7 @@ contains
   !! \param dd    Day of month
   !! \param time  Time (hours)
   
-  function dtm2jd(yy,mo,dd,time)
+  pure function dtm2jd(yy,mo,dd,time)
     use SUFR_kinds, only: double
     
     implicit none
@@ -361,7 +361,7 @@ contains
   !! \retval h   Hours
   !! \retval m   Minutes (integer)
   
-  subroutine tm2hm(tm,h,m)
+  pure subroutine tm2hm(tm,h,m)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -388,7 +388,7 @@ contains
   !! \retval h   Hours
   !! \retval m   Minutes (decimal)
   
-  subroutine tm2hmm(tm,h,m)
+  pure subroutine tm2hmm(tm,h,m)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -413,7 +413,7 @@ contains
   !! \retval m   Minutes
   !! \retval s   Seconds (integer)
   
-  subroutine tm2hms(tm, h,m,s)
+  pure subroutine tm2hms(tm, h,m,s)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -447,7 +447,7 @@ contains
   !! \retval m   Minutes
   !! \retval s   Seconds
   
-  subroutine tm2hmss(tm, h,m,s)
+  pure subroutine tm2hmss(tm, h,m,s)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -476,7 +476,7 @@ contains
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
-  function dow_ut(jd0)
+  pure function dow_ut(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -499,7 +499,7 @@ contains
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
-  function dow_iso(jd0)
+  pure function dow_iso(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -518,7 +518,7 @@ contains
   !!
   !! \param jd0  Julian day
   
-  function doy(jd0)
+  pure function doy(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -542,7 +542,7 @@ contains
   !! \param mon  Month
   !! \param dy   Day of month
   
-  function ymd2doy(yr,mon,dy)
+  pure function ymd2doy(yr,mon,dy)
     use SUFR_kinds, only: double
     
     implicit none
@@ -569,7 +569,7 @@ contains
   !!
   !! \note year is input
   
-  subroutine doy2md(doy,yr, mon,dy)
+  pure subroutine doy2md(doy,yr, mon,dy)
     use SUFR_kinds, only: double
     
     implicit none
@@ -593,7 +593,7 @@ contains
   !!
   !! \param yr  Year (CE)
   
-  function leapyr(yr)
+  pure function leapyr(yr)
     
     implicit none
     integer, intent(in) :: yr
@@ -612,7 +612,7 @@ contains
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
   
-  function jd2iso8601(jd, tz)
+  pure function jd2iso8601(jd, tz)
     use SUFR_kinds, only: double
     
     implicit none
@@ -647,7 +647,7 @@ contains
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
   
-  function jd2rfc822(jd, tz)
+  pure function jd2rfc822(jd, tz)
     use SUFR_kinds, only: double
     
     implicit none
@@ -698,7 +698,7 @@ contains
     
     jd2gps = (jd - 2451544.5d0)*86400.d0 + 630720013.d0
     
-    if(jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1/1/1980'
+    if(jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
     
     Nleap = 0
     if(jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1981
@@ -742,7 +742,7 @@ contains
     
     gps2jd = (GPStime - 630720013.d0)/86400.d0 + 2451544.5d0  ! GPS time 630720013 = JD 2451544.5 = 2000-01-01
     
-    if(gps2jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1/1/1980'
+    if(gps2jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
     
     Nleap = 0
     if(gps2jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1981
@@ -773,7 +773,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  function jd2unix(jd)
+  pure function jd2unix(jd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -792,7 +792,7 @@ contains
   !!
   !! \param  unixTime  Unix time: 0 = JD 2440587.5 = 1970-01-01
   
-  function unix2jd(unixTime)
+  pure function unix2jd(unixTime)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: unixTime

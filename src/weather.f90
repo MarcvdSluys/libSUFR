@@ -37,7 +37,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Density_of_air
   
-  function air_density(press, temp)
+  pure function air_density(press, temp)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: press, temp
@@ -62,7 +62,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Density_of_air
   
-  function air_density_sp(press, temp)
+  pure function air_density_sp(press, temp)
     implicit none
     real, intent(in) :: press, temp
     real :: air_density_sp
@@ -81,7 +81,7 @@ contains
   !!
   !! \see http://en.wikipedia.org/wiki/Beaufort_scale#Modern_scale
   
-  function beaufort(speed)
+  pure function beaufort(speed)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: speed
@@ -133,7 +133,7 @@ contains
   !!
   !! \see http://en.wikipedia.org/wiki/Dew_point
   
-  function dew_point(temp, RH)
+  pure function dew_point(temp, RH)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: temp, RH
@@ -158,7 +158,7 @@ contains
   !!
   !! \see http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3
   
-  function water_vapor_saturated_density(temp)
+  pure function water_vapor_saturated_density(temp)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: temp
