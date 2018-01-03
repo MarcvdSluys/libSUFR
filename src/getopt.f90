@@ -59,6 +59,8 @@ module SUFR_getopt
   character :: optArg*(999)
   !> \brief The short or long option found, including leading dash(es)
   character :: longOption*(longOptLen+2)
+  !> \brief The current option count
+  integer, save :: optCount = 0
   
   !> \brief Struct to define short and long options for getopt_long()
   type getopt_t
@@ -93,10 +95,11 @@ contains
   function getopt(optStr)
     implicit none
     character, intent(in) :: optStr*(*) 
-    integer, save :: optCount = 1
     integer :: Narg, optStrI
     character :: getopt, option, arg*(999)
     logical :: found
+    
+    optCount = optCount+1
     
     ! Default values:
     getopt = ''
@@ -150,9 +153,6 @@ contains
        optArg = arg
     end if
     
-    optCount = optCount+1
-    return
-    
   end function getopt
   !*********************************************************************************************************************************
   
@@ -183,10 +183,11 @@ contains
   function getopt_long(longopts)
     implicit none
     type(getopt_t), intent(in) :: longopts(:)
-    integer, save :: optCount = 1
     integer :: Narg, optI, pos,                                                  debug=0  ! 0-1
     character :: getopt_long, option, arg*(999), longOpt*(longOptLen)
     logical :: found, hasEql
+    
+    optCount = optCount+1
     
     ! Default values:
     getopt_long = ''
@@ -285,8 +286,6 @@ contains
     end if
     
     if(debug.ge.1) write(*,'(2(A,I0))') 'optCount: ',optCount, ' -> ', optCount+1
-    optCount = optCount+1
-    return
     
   end function getopt_long
   !*********************************************************************************************************************************
