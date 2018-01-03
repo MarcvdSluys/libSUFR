@@ -325,12 +325,23 @@ contains
   !> \brief  Print a help list of all short/long options, their required arguments and their descriptions
   !!
   !! \param longopts  Long-options struct used for getopt_long()
+  !! \param lineBef   Number of lines to print before option list (default: 0)
+  !! \param lineAft   Number of lines to print after option list (default: 0)
   
-  subroutine getopt_long_help(longopts)
+  subroutine getopt_long_help(longopts, lineBef, lineAft)
     implicit none
     type(getopt_t), intent(in) :: longopts(:)
+    integer, intent(in), optional :: lineBef, lineAft
     type(getopt_t) :: curOpt
-    integer :: iOpt, nChar, iSpc
+    integer :: iLine, iOpt, nChar, iSpc
+    
+    if(present(lineBef)) then
+       if(lineBef.gt.0) then
+          do iLine=1,lineBef
+             write(*,*)
+          end do
+       end if
+    end if
     
     write(*,'(A)') 'Available options:'
     do iOpt=1,size(longopts)
@@ -363,6 +374,14 @@ contains
        ! Print description:
        write(*,'(5x,A)') trim(curOpt%descr)
     end do
+    
+    if(present(lineAft)) then
+       if(lineAft.gt.0) then
+          do iLine=1,lineAft
+             write(*,*)
+          end do
+       end if
+    end if
     
   end subroutine getopt_long_help
   !*********************************************************************************************************************************
