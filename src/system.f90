@@ -95,6 +95,27 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print a syntax message to StdErr
+  !!
+  !! \param syntax  Description of syntax
+  !! \param descr   Program description (optional; default = none)
+  
+  subroutine syntax_print(syntax, descr)
+    use SUFR_constants, only: program_name
+    implicit none
+    character, intent(in) :: syntax*(*)
+    character, intent(in), optional :: descr*(*)
+    
+    write(0,*) ''
+    if(present(descr)) write(0,'(A)') trim(descr)
+    
+    write(0,'(A,/)') 'Syntax:  '//trim(program_name)//'  '//trim(syntax)
+    
+  end subroutine syntax_print
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a syntax message to StdErr and stop the execution of the current program
   !!
   !! \param syntax  Description of syntax
@@ -110,9 +131,9 @@ contains
     integer :: lstatus
     
     write(0,*) ''
-    if(present(descr)) write(0,'(2x,A)') trim(descr)
+    if(present(descr)) write(0,'(A)') trim(descr)
     
-    write(0,'(A,/)') '  Syntax:  '//trim(program_name)//'  '//trim(syntax)
+    write(0,'(A,/)') 'Syntax:  '//trim(program_name)//'  '//trim(syntax)
     
     lstatus = 0  ! No stop message by default
     if(present(status)) lstatus = status
