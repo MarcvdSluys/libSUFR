@@ -28,6 +28,68 @@ module SUFR_optics
 contains
   
   
+  !***********************************************************************************************************************************
+  !> \brief  Compute the reflectance for a transition from a medium with refractive index Nref1 to one with Nref2, under an angle ang.
+  !!         Optionally, compute the transmittance, and the polarised components.
+  !!
+  !! \param  angI   Angle of incidence (rad)
+  !! \param  Nref1  Refractive index of first medium, incoming ray
+  !! \param  Nref2  Refractive index of second medium, transmitted ray
+  !!
+  !! \retval Runp   Unpolarised reflectance
+  !!
+  !! \retval Tunp   Unpolarised transmittance
+  !!
+  !! \retval Rprp   Perpendicular polarised reflectance
+  !! \retval Rpar   Parallel polarised reflectance
+  !! \retval Tprp   Perpendicular polarised transmittance
+  !! \retval Tpar   Parallel polarised transmittance
+  !!
+  !! \see
+  !! - Hecht, Optics, 3rd Ed. (1998), p.113ff
+  !! - https://en.wikipedia.org/wiki/Fresnel_equations#Power_or_intensity_equations
+  
+  elemental subroutine reflectance_transmittance(angI, Nref1,Nref2,  Runp,  Tunp, Rprp,Rpar, Tprp,Tpar)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: angI, Nref1,Nref2
+    real(double), intent(out) :: Runp
+    real(double), intent(out), optional :: Rprp,Rpar, Tunp,Tprp,Tpar
+    real(double) :: var, angT, cosAngI,cosAngT, lRprp,lRpar
+    
+    var = Nref1/Nref2 * sin(angI)  ! Argument for Snell's law
+    
+    if(var.gt.1.d0) then  ! Total internal reflection
+       lRprp = 1.d0
+       lRpar = 1.d0
+    else
+       angT = asin(var)  ! Snell's law
+       
+       ! Reused variables:
+       cosAngI = cos(angI)
+       cosAngT = cos(angT)
+       
+       lRprp = ( (Nref1 * cosAngI - Nref2 * cosAngT) / (Nref1 * cosAngI + Nref2 * cosAngT) )**2
+       lRpar = ( (Nref1 * cosAngT - Nref2 * cosAngI) / (Nref1 * cosAngT + Nref2 * cosAngI) )**2
+    end if
+    
+    ! Unpolarised reflectance:
+    Runp = 0.5d0 * (lRprp + lRpar)
+    
+    ! Assign optional return values:
+    if(present(Rprp))  Rprp = lRprp
+    if(present(Rpar))  Rpar = lRpar
+    
+    if(present(Tunp))  Tunp = 1.d0 -  Runp
+    if(present(Tprp))  Tprp = 1.d0 - lRprp
+    if(present(Tpar))  Tpar = 1.d0 - lRpar
+    
+  end subroutine reflectance_transmittance
+  !***********************************************************************************************************************************
+  
+  
+  
+  
   !*********************************************************************************************************************************
   !> \brief Computes real index of refraction of air given wavelength, temperature, pressure and relative humidity
   !!
