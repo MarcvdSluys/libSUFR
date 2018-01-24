@@ -30,27 +30,28 @@ contains
   
   !***********************************************************************************************************************************
   !> \brief  Compute the reflectance for a transition from a medium with refractive index Nref1 to one with Nref2, under an angle ang.
-  !!         Optionally, compute the transmittance, and the polarised components.
+  !!         Optionally, compute the transmittance, and the polarised components.  The media are assumed to be non-magnetic.
   !!
   !! \param  angI   Angle of incidence (rad)
   !! \param  Nref1  Refractive index of first medium, incoming ray
   !! \param  Nref2  Refractive index of second medium, transmitted ray
-  !!
+  !! 
   !! \retval Runp   Unpolarised reflectance
-  !!
-  !! \retval Tunp   Unpolarised transmittance
-  !!
-  !! \retval Rprp   Perpendicular polarised reflectance
-  !! \retval Rpar   Parallel polarised reflectance
-  !! \retval Tprp   Perpendicular polarised transmittance
-  !! \retval Tpar   Parallel polarised transmittance
+  !! 
+  !! \retval Tunp   Unpolarised transmittance (optional)
+  !! 
+  !! \retval Rprp   Perpendicular polarised reflectance (optional)
+  !! \retval Rpar   Parallel polarised reflectance (optional)
+  !! \retval Tprp   Perpendicular polarised transmittance (optional)
+  !! \retval Tpar   Parallel polarised transmittance (optional)
   !!
   !! \see
   !! - Hecht, Optics, 3rd Ed. (1998), p.113ff
   !! - https://en.wikipedia.org/wiki/Fresnel_equations#Power_or_intensity_equations
   
-  elemental subroutine reflectance_transmittance(angI, Nref1,Nref2,  Runp,  Tunp, Rprp,Rpar, Tprp,Tpar)
+  elemental subroutine reflectance_transmittance(angI, Nref1,Nref2,  Runp, Tunp, Rprp,Rpar, Tprp,Tpar)
     use SUFR_kinds, only: double
+    use SUFR_constants, only: pio2
     implicit none
     real(double), intent(in) :: angI, Nref1,Nref2
     real(double), intent(out) :: Runp
@@ -58,8 +59,7 @@ contains
     real(double) :: var, angT, cosAngI,cosAngT, lRprp,lRpar
     
     var = Nref1/Nref2 * sin(angI)  ! Argument for Snell's law
-    
-    if(var.gt.1.d0) then  ! Total internal reflection
+    if(var.gt.1.d0 .or. abs(angI).gt.pio2) then  ! Total internal reflection or an impossible input value
        lRprp = 1.d0
        lRpar = 1.d0
     else
