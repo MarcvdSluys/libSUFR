@@ -53,6 +53,8 @@ module SUFR_constants
   real(double), parameter, public :: am2r = one/r2am         !< Arcminutes to radians
   real(double), parameter, public :: r2as = r2am*60.0_dbl    !< Radians to arcseconds
   real(double), parameter, public :: as2r = one/r2as         !< Arcseconds to radians
+  real(double), parameter, public :: r2mas = r2as*1000.0_dbl !< Radians to milliarcseconds
+  real(double), parameter, public :: mas2r = one/r2mas       !< Milliarcseconds to radians
   
   
   ! Single precision:
@@ -77,6 +79,8 @@ module SUFR_constants
   real, parameter, public :: ram2r = real(am2r)              !< Arcminutes to radians
   real, parameter, public :: rr2as = real(r2as)              !< Radians to arcseconds
   real, parameter, public :: ras2r = real(as2r)              !< Arcseconds to radians
+  real, parameter, public :: rr2mas = real(r2mas)            !< Radians to milliarcseconds
+  real, parameter, public :: rmas2r = real(mas2r)            !< Milliarcseconds to radians
   
   
   

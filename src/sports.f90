@@ -63,7 +63,7 @@ contains
     
     surf = 0.4d0  ! Typical surface of a rider, m^2
     c_d  = 0.7d0  ! Drag coefficient
-    k2   = 0.5d0 * rho * surf * c_d  ! 1/2 rho A C_d  - A=0.4m^2, C_d=0.7
+    k2   = 0.5d0 * rho * surf * c_d  ! 1/2 rho A C_d  - A=0.4m^2, C_d=0.7  -  k2 = 0.1718 with these numbers (T=15°C,P=1015hPa,surf=0.4,c_d=0.7)
     
     g    = 9.81d0  ! Gravitational acceleration, m/s^2
     

@@ -252,6 +252,31 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Convert a Julian day to decimal year (e.g. 2000.0)
+  !!
+  !! \param jd  Julian day (UT)
+  
+  pure function jd2year(jd)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: jd
+    real(double) :: jd2year,dd, jd0,jd1, dy
+    integer :: mm,yy
+    
+    call jd2cal(jd, yy,mm,dd)
+    jd0 = cal2jd(yy,1,1.d0)
+    jd1 = cal2jd(yy+1,1,1.d0)
+    
+    dy = (jd-jd0) / (jd1-jd0)
+    jd2year = dble(yy) + dy
+    
+  end function jd2year
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Convert a Julian day to a date (y,m,d) and time (UT, h)
   !!
   !! \param  jd     Julian day (UT).  In order to obtain a local date and time, add TZ/24 to the JD.
