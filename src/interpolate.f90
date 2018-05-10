@@ -1,7 +1,7 @@
 !> \file interpolate.f90  Procedures to do interpolation (and fitting?)
 
 
-!  Copyright (c) 2002-2017  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2018  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
