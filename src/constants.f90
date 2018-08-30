@@ -30,7 +30,7 @@ module SUFR_constants
   save
   
   
-  ! Double precision:
+  ! Mathematical/general constants - double precision:
   real(double), parameter, public :: one    = 1.0_dbl        !< Unity
   real(double), parameter, public :: c3rd   = one/3.0_dbl    !< One third
   real(double), parameter, public :: two3rd = 2*c3rd         !< Two thirds
@@ -56,8 +56,10 @@ module SUFR_constants
   real(double), parameter, public :: r2mas = r2as*1000.0_dbl !< Radians to milliarcseconds
   real(double), parameter, public :: mas2r = one/r2mas       !< Milliarcseconds to radians
   
+  real(double), parameter, public :: c2k = 273.15d0          !< Degrees Celcius to Kelvin
   
-  ! Single precision:
+  
+  ! Mathematical/general constants - single precision:
   real, parameter, public :: rc3rd   = real(c3rd)            !< One third
   real, parameter, public :: rtwo3rd = real(two3rd)          !< Two thirds
   
@@ -82,12 +84,14 @@ module SUFR_constants
   real, parameter, public :: rr2mas = real(r2mas)            !< Radians to milliarcseconds
   real, parameter, public :: rmas2r = real(mas2r)            !< Milliarcseconds to radians
   
+  real, parameter, public :: rc2k = real(c2k)                !< Degrees Celcius to Kelvin
   
   
   
   ! Physical constants - cgs (http://physics.nist.gov/cuu/Constants/ - 2016):
-  real(double), parameter, public :: pc_g       =  6.67408d-8                                  !< Newton's constant, cm^3 g^-1 s^-2
+  real(double), parameter, public :: pc_g       =  6.67408d-8                                  !< Newton's gravitational constant, cm^3 g^-1 s^-2
   real(double), parameter, public :: pc_c       =  2.99792458d10                               !< Speed of light in vacuo, cm s^-1
+  real(double), parameter, public :: pc_gr      =  9.80665d2                                   !< Mean gravitational acceleration at the Earth's surface, cm s^-2
   
   real(double), parameter, public :: pc_amu     =  1.660539040d-24                             !< Atomic mass unit; (mass of C12 atom)/12, g
   real(double), parameter, public :: pc_mh      =  1.007825d0*pc_amu                           !< Mass of a hydrogen atom
@@ -109,8 +113,9 @@ module SUFR_constants
   
   
   ! Physical constants - SI:
-  real(double), parameter, public :: si_pc_g       =  pc_g * 1.d-3          !< Newton's constant, 6.67259d-11 m^3 kg^-1 s^-2
+  real(double), parameter, public :: si_pc_g       =  pc_g * 1.d-3          !< Newton's gravitational constant, 6.67259d-11 m^3 kg^-1 s^-2
   real(double), parameter, public :: si_pc_c       =  pc_c * 1.d-2          !< Speed of light in vacuo, 2.99792458d8 m s^-1
+  real(double), parameter, public :: si_pc_gr      =  pc_gr * 1.d-2         !< Mean gravitational acceleration at the Earth's surface, cm s^-2
   
   real(double), parameter, public :: si_pc_amu     =  pc_amu * 1.d-3        !< Atomic mass unit; (mass of C12 atom)/12, 1.6605402d-27 kg
   real(double), parameter, public :: si_pc_mh      =  1.007825d0*si_pc_amu  !< Mass of a hydrogen atom
