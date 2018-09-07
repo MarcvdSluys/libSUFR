@@ -44,30 +44,34 @@ contains
   !! \retval Rpar   Parallel polarised reflectance (optional)
   !! \retval Tprp   Perpendicular polarised transmittance (optional)
   !! \retval Tpar   Parallel polarised transmittance (optional)
+  !! 
+  !! \retval angT   Angle of transmittance (rad; optional)
   !!
   !! \see
   !! - Hecht, Optics, 3rd Ed. (1998), p.113ff
   !! - https://en.wikipedia.org/wiki/Fresnel_equations#Power_or_intensity_equations
   
-  elemental subroutine reflectance_transmittance(angI, Nref1,Nref2,  Runp, Tunp, Rprp,Rpar, Tprp,Tpar)
+  elemental subroutine reflectance_transmittance(angI, Nref1,Nref2,  Runp, Tunp, Rprp,Rpar, Tprp,Tpar, angT)
     use SUFR_kinds, only: double
     use SUFR_constants, only: pio2
+    
     implicit none
     real(double), intent(in) :: angI, Nref1,Nref2
     real(double), intent(out) :: Runp
-    real(double), intent(out), optional :: Rprp,Rpar, Tunp,Tprp,Tpar
-    real(double) :: var, angT, cosAngI,cosAngT, lRprp,lRpar
+    real(double), intent(out), optional :: Rprp,Rpar, Tunp,Tprp,Tpar, angT
+    real(double) :: var, langT, cosAngI,cosAngT, lRprp,lRpar
     
     var = Nref1/Nref2 * sin(angI)  ! Argument for Snell's law
     if(var.gt.1.d0 .or. abs(angI).gt.pio2) then  ! Total internal reflection or an impossible input value
        lRprp = 1.d0
        lRpar = 1.d0
+       lAngt = 0.d0
     else
-       angT = asin(var)  ! Snell's law
+       langT = asin(var)  ! Angle of transmittance - Snell's law - local variable
        
        ! Reused variables:
        cosAngI = cos(angI)
-       cosAngT = cos(angT)
+       cosAngT = cos(langT)
        
        lRprp = ( (Nref1 * cosAngI - Nref2 * cosAngT) / (Nref1 * cosAngI + Nref2 * cosAngT) )**2
        lRpar = ( (Nref1 * cosAngT - Nref2 * cosAngI) / (Nref1 * cosAngT + Nref2 * cosAngI) )**2
@@ -83,6 +87,8 @@ contains
     if(present(Tunp))  Tunp = 1.d0 -  Runp
     if(present(Tprp))  Tprp = 1.d0 - lRprp
     if(present(Tpar))  Tpar = 1.d0 - lRpar
+    
+    if(present(angT))  angT = langT
     
   end subroutine reflectance_transmittance
   !***********************************************************************************************************************************
