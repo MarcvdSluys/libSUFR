@@ -86,7 +86,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-Wall -Wextra -Wno-conversion -ffree-line-length-0" )
+    set( WARN_FLAGS "-Wall -Wextra -ffree-line-length-0 -Wno-conversion" )
   endif( WANT_WARNINGS )
   if( STOP_ON_WARNING )
     set( WARN_FLAGS "${WARN_FLAGS} -Werror" )

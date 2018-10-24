@@ -232,7 +232,7 @@ contains
     
     if(verbose.ge.3) then
        do ia=1,nargs
-          write(*,'(A,I6,A15,3I6)')'Types:',ia,trim(arguments(ia)),types(ia),types(ia)/10,mod(types(ia),10)
+          write(*,'(A,I6,A15,3I6)') 'Types:',ia,trim(arguments(ia)),types(ia),types(ia)/10,mod(types(ia),10)
        end do
     end if
     

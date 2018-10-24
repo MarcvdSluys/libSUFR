@@ -277,6 +277,99 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is (+/-) infinite
+  !!
+  !! \param x0   Number to check
+  
+  elemental function isinf(x0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x0
+    logical :: isinf
+    
+    isinf = x0.gt.huge(x0) .or. x0.lt.-huge(x0)
+  end function isinf
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable is (+/-) infinite
+  !!
+  !! \param x0   Number to check
+  
+  elemental function sisinf(x0)
+    implicit none
+    real, intent(in) :: x0
+    logical :: sisinf
+    
+    sisinf = x0.gt.huge(x0) .or. x0.lt.-huge(x0)
+  end function sisinf
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is not a number (NaN)
+  !!
+  !! \param x0   Number to check
+  
+  elemental function isnan(x0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x0
+    logical :: isnan
+    
+    isnan = .not. (x0.le.x0 .or. x0.ge.x0)
+  end function isnan
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable is not a number (NaN)
+  !!
+  !! \param x0   Number to check
+  
+  elemental function sisnan(x0)
+    implicit none
+    real, intent(in) :: x0
+    logical :: sisnan
+    
+    sisnan = .not. (x0.le.x0 .or. x0.ge.x0)
+  end function sisnan
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is normal (not +/- Inf, not NaN)
+  !!
+  !! \param x0   Number to check
+  
+  elemental function isnormal(x0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x0
+    logical :: isnormal
+    
+    isnormal = .not.(isinf(x0) .or. isnan(x0))
+  end function isnormal
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable is normal (not +/- Inf, not NaN)
+  !!
+  !! \param x0   Number to check
+  
+  elemental function sisnormal(x0)
+    implicit none
+    real, intent(in) :: x0
+    logical :: sisnormal
+    
+    sisnormal = .not.(sisinf(x0) .or. sisnan(x0))
+  end function sisnormal
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Determine plot ranges from data arrays in x and y, and relative margins
   !!
   !! \param plx    Array contaiting x values
