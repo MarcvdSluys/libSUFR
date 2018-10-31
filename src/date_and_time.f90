@@ -37,7 +37,7 @@ contains
   !!
   !! \retval  cal2jd  The Julian day number (double)
   
-  pure function cal2jd(yy,mm,dd)
+  elemental function cal2jd(yy,mm,dd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -85,7 +85,7 @@ contains
   !! \retval mm  Month
   !! \retval dd  Day of month (+ fraction)
   
-  pure subroutine jd2cal(jd, yy,mm,dd)
+  elemental subroutine jd2cal(jd, yy,mm,dd)
     use SUFR_kinds, only: double, dbl, long
     
     implicit none
@@ -143,7 +143,7 @@ contains
   !!
   !! \retval  year2jd  The Julian day number
   
-  pure function year2jd(year)
+  elemental function year2jd(year)
     use SUFR_kinds, only: double
     
     implicit none
@@ -179,7 +179,7 @@ contains
   !! \retval m   Minute (UT)
   !! \retval s   Second (+ fraction, UT)
   
-  pure subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
+  elemental subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
     use SUFR_kinds, only: double, dbl
     
     implicit none
@@ -214,7 +214,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  pure function jd2datestr(jd)
+  elemental function jd2datestr(jd)
     use SUFR_kinds, only: double
     
     character :: jd2datestr*(15)
@@ -235,7 +235,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  pure function jd2time(jd)
+  elemental function jd2time(jd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -256,7 +256,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  pure function jd2year(jd)
+  elemental function jd2year(jd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -286,7 +286,7 @@ contains
   !! \retval day    Day of the month
   !! \retval time   Time of day (hours)
   
-  pure subroutine jd2datetime(jd, year,month,day, time)
+  elemental subroutine jd2datetime(jd, year,month,day, time)
     use SUFR_kinds, only: double
     
     implicit none
@@ -315,7 +315,7 @@ contains
   !! \param s           The second (double)
   !! \retval ymdhms2jd  The Julian day number (double)
   
-  pure function ymdhms2jd(yy,mmo,dd, h,m,s)
+  elemental function ymdhms2jd(yy,mmo,dd, h,m,s)
     use SUFR_kinds, only: double
     
     implicit none
@@ -338,7 +338,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Correct time after manipulation, i.e. ensure a correct date and time is returned (0<month<13, 0<=minute<60, etc.)
   
-  pure subroutine correct_time(year,month,day, hour,minute,second)
+  elemental subroutine correct_time(year,month,day, hour,minute,second)
     use SUFR_kinds, only: double
     
     implicit none
@@ -361,7 +361,7 @@ contains
   !! \param dd    Day of month
   !! \param time  Time (hours)
   
-  pure function dtm2jd(yy,mo,dd,time)
+  elemental function dtm2jd(yy,mo,dd,time)
     use SUFR_kinds, only: double
     
     implicit none
@@ -386,7 +386,7 @@ contains
   !! \retval h   Hours
   !! \retval m   Minutes (integer)
   
-  pure subroutine tm2hm(tm,h,m)
+  elemental subroutine tm2hm(tm,h,m)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -413,7 +413,7 @@ contains
   !! \retval h   Hours
   !! \retval m   Minutes (decimal)
   
-  pure subroutine tm2hmm(tm,h,m)
+  elemental subroutine tm2hmm(tm,h,m)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -438,7 +438,7 @@ contains
   !! \retval m   Minutes
   !! \retval s   Seconds (integer)
   
-  pure subroutine tm2hms(tm, h,m,s)
+  elemental subroutine tm2hms(tm, h,m,s)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -472,7 +472,7 @@ contains
   !! \retval m   Minutes
   !! \retval s   Seconds
   
-  pure subroutine tm2hmss(tm, h,m,s)
+  elemental subroutine tm2hmss(tm, h,m,s)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: tm
@@ -501,7 +501,7 @@ contains
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
-  pure function dow_ut(jd0)
+  elemental function dow_ut(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -524,7 +524,7 @@ contains
   !! \param  jd0  Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
-  pure function dow_iso(jd0)
+  elemental function dow_iso(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -543,7 +543,7 @@ contains
   !!
   !! \param jd0  Julian day
   
-  pure function doy(jd0)
+  elemental function doy(jd0)
     use SUFR_kinds, only: double
     
     implicit none
@@ -567,7 +567,7 @@ contains
   !! \param mon  Month
   !! \param dy   Day of month
   
-  pure function ymd2doy(yr,mon,dy)
+  elemental function ymd2doy(yr,mon,dy)
     use SUFR_kinds, only: double
     
     implicit none
@@ -594,7 +594,7 @@ contains
   !!
   !! \note year is input
   
-  pure subroutine doy2md(doy,yr, mon,dy)
+  elemental subroutine doy2md(doy,yr, mon,dy)
     use SUFR_kinds, only: double
     
     implicit none
@@ -618,7 +618,7 @@ contains
   !!
   !! \param yr  Year (CE)
   
-  pure function leapyr(yr)
+  elemental function leapyr(yr)
     
     implicit none
     integer, intent(in) :: yr
@@ -637,7 +637,7 @@ contains
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
   
-  pure function jd2iso8601(jd, tz)
+  elemental function jd2iso8601(jd, tz)
     use SUFR_kinds, only: double
     
     implicit none
@@ -672,7 +672,7 @@ contains
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
   
-  pure function jd2rfc822(jd, tz)
+  elemental function jd2rfc822(jd, tz)
     use SUFR_kinds, only: double
     
     implicit none
@@ -798,7 +798,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   
-  pure function jd2unix(jd)
+  elemental function jd2unix(jd)
     use SUFR_kinds, only: double
     
     implicit none
@@ -817,7 +817,7 @@ contains
   !!
   !! \param  unixTime  Unix time: 0 = JD 2440587.5 = 1970-01-01
   
-  pure function unix2jd(unixTime)
+  elemental function unix2jd(unixTime)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: unixTime
