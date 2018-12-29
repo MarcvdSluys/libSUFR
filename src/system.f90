@@ -154,12 +154,16 @@ contains
   !!
   !! \param filename  Filename
   !! \param filetype  File type: 0: (0)utput, 1: (1)nput
+  !! \param ioStat    IO status (optional)
+  !! \param ioMsg     IO status message (optional; default = none)
   
-  subroutine file_open_error(filename, filetype)
+  subroutine file_open_error(filename, filetype, ioStat,ioMsg)
     use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: filetype
+    integer, intent(in), optional :: ioStat
+    character, intent(in), optional :: ioMsg*(*)
     
     select case(filetype)
     case(0)
@@ -170,6 +174,20 @@ contains
        write(0,'(A)') '  ***  '//trim(program_name)//', file_open_error_quit():  filetype must be 0 or 1  ***'
     end select
     
+    ! Print IO status code and/or message:
+    if(present(ioStat)) then
+       if(ioStat.ne.0) then
+          write(0,'(A,I0,A)', advance='no') 'Error ', ioStat, ' occurred'
+          if(present(ioMsg)) then
+             write(0,'(A)') ': '//trim(ioMsg)
+          else
+             write(0,'(A)') '.'
+          end if
+       end if
+    else if(present(ioMsg)) then
+       if(len_trim(ioMsg).gt.0) write(0,'(A)') ': '//trim(ioMsg)
+    end if
+    
   end subroutine file_open_error
   !*********************************************************************************************************************************
   
@@ -179,28 +197,30 @@ contains
   !!
   !! \param filename  Filename
   !! \param filetype  File type: 0: (0)utput, 1: (1)nput
-  !! \param status    Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
+  !! \param ioStat    IO status (optional): 0-ok, otherwise not ok.  The latter makes the stop command appear on screen
+  !! \param ioMsg     IO status message (optional; default = none)
   
-  subroutine file_open_error_quit(filename, filetype, status)
-    use SUFR_constants, only: program_name
+  subroutine file_open_error_quit(filename, filetype, ioStat,ioMsg)
     implicit none
     character, intent(in) :: filename*(*)
-    integer, intent(in) :: filetype, status
+    integer, intent(in) :: filetype
+    integer, intent(in), optional :: ioStat
+    character, intent(in), optional :: ioMsg*(*)
+    integer :: ioStatL
+    character :: ioMsgL*(999)
     
-    select case(filetype)
-    case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error opening output file  '//trim(filename)//', aborting  ***'
-    case(1)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//':  Error opening input file  '//trim(filename)//', aborting  ***'
-    case default
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//', file_open_error_quit():  filetype must be 0 or 1, aborting  ***'
-    end select
+    ioStatL = 0
+    if(present(ioStat)) ioStatL = ioStat
+    ioMsgL = ''
+    if(present(ioMsg)) ioMsgL = trim(ioMsg)
     
-    if(status.eq.0) then
+    call file_open_error(filename, filetype, ioStat,ioMsg)
+    
+    if(ioStat.eq.0) then
        stop
     else
        write(0,'(A)', advance='no')'  ***  '
-       stop 1
+       stop ioStat
     end if
     
   end subroutine file_open_error_quit
@@ -213,32 +233,32 @@ contains
   !! \param filename   Filename
   !! \param line       Line number where read error occurred - 0: no line
   !! \param procedure  Name of the procedure this subroutine is called from (without "()" - optional; default = none)
-  !! \param message    Message to report (optional; default = none)
+  !! \param ioStat     IO status code (optional)
+  !! \param ioMsg      IO status message (optional; default = none)
   
-  subroutine file_read_error(filename, line, procedure, message)
+  subroutine file_read_error(filename, line, procedure, ioStat,ioMsg)
     use SUFR_constants, only: program_name
     
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line
-    character, intent(in), optional :: procedure*(*), message*(*)
-    character :: lproc*(99), lmsg*(99)
+    character, intent(in), optional :: procedure*(*)
+    integer, intent(in), optional :: ioStat
+    character, intent(in), optional :: ioMsg*(*)
     
-    lproc = ''
-    if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
-    
-    lmsg = ''
-    if(present(message)) lmsg = ', '//trim(message(1:min(97,len(message))))               ! 99 - 2 = 97
-    
-    
-    select case(line)
-    case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            trim(lmsg)//'  ***'
-    case default
-       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            ', line ',line, trim(lmsg)//'  ***'
-    end select
+    write(0,'(/,A)', advance='no') '  ***  '//trim(program_name)
+    if(present(procedure)) then
+       if(len_trim(procedure).gt.0)  write(0,'(A)', advance='no') ', '//trim(procedure)
+    end if
+    write(0,'(A)', advance='no') ':  Error reading input file  '//trim(filename)
+    if(line.gt.0) write(0,'(A,I0)', advance='no') ', line ', line
+    if(present(ioStat)) then
+       if(ioStat.ne.0)  write(0,'(A,I0)', advance='no') ', status code ',ioStat
+    end if
+    if(present(ioMsg)) then
+       if(len_trim(ioMsg).gt.0)  write(0,'(A)', advance='no') ': '//trim(ioMsg)
+    end if
+    write(*,'(A,/)') '  ***'
     
   end subroutine file_read_error
   !*********************************************************************************************************************************
@@ -251,37 +271,31 @@ contains
   !! \param line       Line number where read error occurred - 0: no line
   !! \param status     Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen
   !! \param procedure  Name of the procedure this subroutine is called from (without "()"; optional; default = none)
-  !! \param message    Message to report (optional; default = none)
+  !! \param ioStat     IO status code (optional)
+  !! \param ioMsg      IO status message (optional; default = none)
   
-  subroutine file_read_error_quit(filename, line, status, procedure, message)
-    use SUFR_constants, only: program_name
-    
+  subroutine file_read_error_quit(filename, line, status, procedure, ioStat,ioMsg)
     implicit none
     character, intent(in) :: filename*(*)
     integer, intent(in) :: line, status
-    character, intent(in), optional :: procedure*(*), message*(*)
-    character :: lproc*(99), lmsg*(99)
+    character, intent(in), optional :: procedure*(*), ioMsg*(*)
+    integer, intent(in), optional :: ioStat
+    integer :: ioStatL
+    character :: procedureL*(999), ioMsgL*(999)
     
-    lproc = ''
-    if(present(procedure)) lproc = ', '//trim(procedure(1:min(95,len(procedure))))//'()'  ! 99 - 2 - 2 = 95
+    procedureL = ''
+    if(present(procedure)) procedureL = trim(procedure)
+    ioStatL = 0
+    if(present(ioStat)) ioStatL = ioStat
+    ioMsgL = ''
+    if(present(ioMsg)) ioMsgL = trim(ioMsg)
     
-    lmsg = ''
-    if(present(message)) lmsg = ', '//trim(message(1:min(97,len(message))))               ! 99 - 2 = 97
-    
-    
-    select case(line)
-    case(0)
-       write(0,'(/,A,/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            trim(lmsg)//', aborting  ***'
-    case default
-       write(0,'(/,A,I0,A/)') '  ***  '//trim(program_name)//trim(lproc)//':  Error reading input file  '//trim(filename)// &
-            ', line ',line, trim(lmsg)//', aborting  ***'
-    end select
+    call file_read_error(filename, line, procedure, ioStat,ioMsg)
     
     if(status.eq.0) then
        stop
     else
-       write(0,'(A)', advance='no')'  ***  '
+       write(0,'(A)', advance='no') '  ***  '
        stop 1
     end if
     
@@ -415,13 +429,13 @@ contains
     case(1:)   ! Read error (>0)
        if(stopcode.eq.0) then
           if(present(message)) then
-             call file_read_error(trim(filename), line, message=trim(message))
+             call file_read_error(trim(filename), line, ioMsg=trim(message))
           else
              call file_read_error(trim(filename), line)
           end if
        else
           if(present(message)) then
-             call file_read_error_quit(trim(filename), line, exitstatus, message=trim(message))
+             call file_read_error_quit(trim(filename), line, exitstatus, ioMsg=trim(message))
           else
              call file_read_error_quit(trim(filename), line, exitstatus)
           end if
