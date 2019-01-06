@@ -220,7 +220,7 @@ contains
        stop
     else
        write(0,'(A)', advance='no')'  ***  '
-       stop ioStat
+       stop 1
     end if
     
   end subroutine file_open_error_quit
