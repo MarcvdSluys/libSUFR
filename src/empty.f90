@@ -1,7 +1,7 @@
 !> \file filename.f90  Procedures to ...
 
 
-!  Copyright (c) 2002-2018  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2019  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
