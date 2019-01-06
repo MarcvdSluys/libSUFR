@@ -194,7 +194,7 @@ contains
     integer, intent(out) :: types(nargs)
     character, intent(in) :: arguments(nargs)*(*)
     
-    integer :: ia,il, typ, oldtyp
+    integer :: ia,il, typ, oldtyp, ltypes(0:nargs)
     character :: arg*(len(arguments)), abc*(52)
     logical :: has_letters
     
@@ -220,21 +220,23 @@ contains
        else                                                           ! argument doesn't start with a dash: normal option
           typ = 10  ! normal option
           if(oldtyp.eq.20 .or. oldtyp.eq.30) then                     ! argument is a variable (and ia>1)
-             types(ia-1) = oldtyp + 1                                 ! previous argument is an option with a variable (21, 31)
+             ltypes(ia-1) = oldtyp + 1                                 ! previous argument is an option with a variable (21, 31)
              typ = oldtyp + 2                                         ! argument is a variable for a short or long option (22, 32)
           end if
        end if
        
-       types(ia) = typ
+       ltypes(ia) = typ
        oldtyp = typ
        
     end do  ! ia
     
     if(verbose.ge.3) then
        do ia=1,nargs
-          write(*,'(A,I6,A15,3I6)') 'Types:',ia,trim(arguments(ia)),types(ia),types(ia)/10,mod(types(ia),10)
+          write(*,'(A,I6,A15,3I6)') 'Types:',ia,trim(arguments(ia)),ltypes(ia),ltypes(ia)/10,mod(ltypes(ia),10)
        end do
     end if
+    
+    types(1:nargs) = ltypes(1:nargs)  ! ltypes(0:nargs) is needed because types(ia-1) above triggers a warning in gfortran-8
     
   end subroutine get_commandline_argument_types
   !*********************************************************************************************************************************

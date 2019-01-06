@@ -311,14 +311,14 @@ contains
   !!
   !! \param x0   Number to check
   
-  elemental function isnan(x0)
+  elemental function isanan(x0)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x0
-    logical :: isnan
+    logical :: isanan
     
-    isnan = .not. (x0.le.x0 .or. x0.ge.x0)
-  end function isnan
+    isanan = .not. (x0.le.x0 .or. x0.ge.x0)
+  end function isanan
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
@@ -326,13 +326,13 @@ contains
   !!
   !! \param x0   Number to check
   
-  elemental function sisnan(x0)
+  elemental function sisanan(x0)
     implicit none
     real, intent(in) :: x0
-    logical :: sisnan
+    logical :: sisanan
     
-    sisnan = .not. (x0.le.x0 .or. x0.ge.x0)
-  end function sisnan
+    sisanan = .not. (x0.le.x0 .or. x0.ge.x0)
+  end function sisanan
   !*********************************************************************************************************************************
   
   
@@ -347,7 +347,7 @@ contains
     real(double), intent(in) :: x0
     logical :: isnormal
     
-    isnormal = .not.(isinf(x0) .or. isnan(x0))
+    isnormal = .not.(isinf(x0) .or. isanan(x0))
   end function isnormal
   !*********************************************************************************************************************************
   
@@ -361,7 +361,7 @@ contains
     real, intent(in) :: x0
     logical :: sisnormal
     
-    sisnormal = .not.(sisinf(x0) .or. sisnan(x0))
+    sisnormal = .not.(sisinf(x0) .or. sisanan(x0))
   end function sisnormal
   !*********************************************************************************************************************************
   

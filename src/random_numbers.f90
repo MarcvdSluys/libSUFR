@@ -94,7 +94,7 @@ contains
     real(double), parameter :: eps  = epsilon(0.0_dbl)
     real(double), parameter :: rnmx = 1.0_dbl - eps
     
-    integer, save :: seed2=123456789, tab(Ntab)=0, iy=0
+    integer, save :: seed2=123456789, tab(Ntab+8)=0, iy=0  ! +8 needed to avoid gfortran-8 out-of-bounds warnings
     integer :: j,k
     
     if(seed.le.0) then                                  ! 'Initialise' generator
