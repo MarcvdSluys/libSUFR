@@ -773,6 +773,28 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Skip the next (e.g. first) lines of a file
+  !!
+  !! \param unit    File unit
+  !! \param nLines  Number of lines to skip
+  
+  subroutine skip_file_header(unit, nLines)
+    implicit none
+    integer, intent(in) :: unit, nLines
+    integer :: ln
+    character :: dumStr
+    
+    ! Read and discard lines in file:
+    do ln=1,nLines
+       read(unit,'(A)') dumStr
+    end do
+    
+  end subroutine skip_file_header
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Swap two integer variables
   !!
   !! \param int1  Integer 1
