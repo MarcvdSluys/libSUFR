@@ -214,9 +214,9 @@ contains
     ioMsgL = ''
     if(present(ioMsg)) ioMsgL = trim(ioMsg)
     
-    call file_open_error(filename, filetype, ioStat,ioMsg)
+    call file_open_error(filename, filetype, ioStat,ioMsgL)
     
-    if(ioStat.eq.0) then
+    if(ioStatL.eq.0) then
        stop
     else
        write(0,'(A)', advance='no')'  ***  '
@@ -290,7 +290,7 @@ contains
     ioMsgL = ''
     if(present(ioMsg)) ioMsgL = trim(ioMsg)
     
-    call file_read_error(filename, line, procedure, ioStat,ioMsg)
+    call file_read_error(filename, line, procedureL, ioStatL,ioMsgL)
     
     if(status.eq.0) then
        stop
@@ -779,10 +779,10 @@ contains
   !! \param nLines  Number of lines to skip
   
   subroutine skip_file_header(unit, nLines)
+    use SUFR_dummy, only: dumstr
     implicit none
     integer, intent(in) :: unit, nLines
     integer :: ln
-    character :: dumStr
     
     ! Read and discard lines in file:
     do ln=1,nLines
