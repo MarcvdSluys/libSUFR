@@ -50,8 +50,8 @@ contains
     y = yy
     m = mm
     d = dd
-    greg = 0                 ! Julian or gregorian?
     
+    greg = 0                 ! Julian or gregorian?
     if(y.gt.1582) greg = 1
     if(y.eq.1582) then
        if(m.gt.10) greg = 1
@@ -65,7 +65,7 @@ contains
     end if
     b = 0
     
-    if(greg.eq.1) then     ! For a Gregorian date
+    if(greg.eq.1) then     ! Assume a Gregorian date
        a = floor(y/100.d0)
        b = 2 - a + floor(a/4.d0)
     end if

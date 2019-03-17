@@ -179,6 +179,30 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Generate a pseudo-random number from a uniform distribution 0 < r < 1.
+  !!
+  !! \param  seed    The seed to generate the random number from.  
+  !!                 Set seed<0 to initialise the generator; seed is updated between calls (int).
+  !! \retval str     The random string  (I/O: output str has length of input str, filled with random characters)
+  
+  subroutine ran_str(seed, str)
+    implicit none
+    integer, intent(inout) :: seed
+    character, intent(inout) :: str*(*)
+    
+    integer, parameter :: ascii_start=33, ascii_end=126  ! First and last ASCII characters to use
+    integer :: dascii, ich, chari
+    
+    
+    dascii = ascii_end - ascii_start + 1
+    do ich=1,len(str)
+       chari = nint(ascii_start + ran_unif(seed)*dascii)
+       str(ich:ich) = char(chari)
+    end do
+    
+  end subroutine ran_str
+  !*********************************************************************************************************************************
   
 end module SUFR_random_numbers
 !***********************************************************************************************************************************
