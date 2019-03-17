@@ -127,30 +127,81 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Search and replace occurences of a substring in a string
+  !> \brief  Search and replace occurences of a substring in a string as often as the search string is found
   !!
   !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string))
   !!                  to ignore them and speed things up.
   !! \param str_srch  Search string
   !! \param str_repl  Replacement string
+  !!
+  !! \note If the search string is part of the replace string, replacement is done in two steps:
+  !!       - replace the search string with a random string of the same length
+  !!       - replace the random string with the replacement string
+  !!       - this should avoid undesired outcomes for the case where the replacement string contains the search string,
+  !!         e.g. when replacing '.csv' with '_backup.csv', which will end up as e.g. '_backup_backup_back'
   
   pure subroutine replace_substring(string, str_srch, str_repl)
     implicit none
     character, intent(inout) :: string*(*)
     character, intent(in) :: str_srch*(*),str_repl*(*)
-    integer :: lstr,is,lsrch, il, maxloop
+    integer, parameter :: lRan=100
+    character*(lRan), parameter :: ranStr = 'G^$("q]WvtDB5VCFCJ/\gAo9|8^wDB|G,?q|Vi)|9wUhN.mKZI6>VMkGa~NkBMk(~F{b?<:kW1TDJ-Gmq8q-eW<WD3=(1M#*MhSy'
+    character :: tmpStr*(len(str_srch))
+    integer :: iStart,iStop,di,iLoop, lTmp,lstr,is,lsrch, il, maxLoop
     
     lstr  = len(string)
     lsrch = len(str_srch)
     if(lsrch.gt.lstr) return  ! Search string is longer than string
     
+    if(index(str_repl, str_srch) .ne. 0) then  ! Search string is part of replace string
+       ! Obtain a 'random' temporary string of the same length as the search string.  Since ran_str() is
+       !   impure, so will this subroutine be, and hence its dependencies (e.g. dbl2str())
+       !seed = -1
+       !call ran_str(seed, tmpStr)
+       
+       ! Construct a 'random' string from slowly changing selections from the hardcoded ranStr
+       lTmp = len(tmpStr)
+       if(lTmp.le.lRan) then
+          tmpStr = ranStr(1:lTmp)
+       else
+          iStart = 1
+          iStop  = lRan
+          do iLoop=1,huge(iLoop)-1
+             di = iStop-iStart
+             tmpStr(iStart:iStop) = ranStr(1:1+di)
+             if(iStop.ge.lTmp) exit
+             
+             iStart = iStop+1
+             iStop = min(iStart + lRan - 1 - (mod(iLoop,max(lRan-2,lRan/10))), lTmp)
+          end do
+          
+       end if
+       
+       
+       ! Step 1: replace search string with temporary (random) string of same length:
+       is = huge(is)
+       maxLoop = lstr+1-lsrch  ! Prevent infinite loops
+       do il = 1,maxLoop
+          is = index(string, str_srch, back=.false.)
+          if(is.le.0) exit
+          if(is.gt.maxLoop) exit
+          !print*,il,maxLoop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output
+          string = string(1:is-1)//tmpStr//trim(string(is+lsrch:))
+       end do
+       
+    else  ! Search string is NOT part of replace string
+       tmpStr = str_srch
+    end if  ! Search string is part of replace string
+    
+    
+    ! Step 2: replace temporary (random or original search) string with replace string:
     is = huge(is)
-    maxloop = lstr+1-lsrch  ! Prevent infinite loops
-    do il = 1,maxloop
-       is = index(string, str_srch, back=.false.)
+    maxLoop = lstr+1-lsrch  ! Prevent infinite loops
+    do il = 1,maxLoop
+       is = index(string, tmpStr, back=.false.)
        if(is.le.0) exit
-       if(is.gt.maxloop) exit
-       !print*,il,maxloop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output
+       if(is.gt.maxLoop) exit
+       !print*,il,maxLoop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output
        string = string(1:is-1)//str_repl//trim(string(is+lsrch:))
     end do
     
@@ -173,7 +224,7 @@ contains
     character, intent(in) :: substr*(*)
     logical, intent(in), optional :: debug
     
-    integer :: l,ls, i1, il,maxloop
+    integer :: l,ls, i1, il,maxLoop
     character :: tstr*(len(string))
     logical :: print_debug
     
@@ -184,8 +235,8 @@ contains
     if(ls.lt.1) return   ! Zero-length string
     
     i1 = -1
-    maxloop = ceiling( real(len(string))/real(ls) )  ! Prevent infinite loops
-    do il = 1,maxloop
+    maxLoop = ceiling( real(len(string))/real(ls) )  ! Prevent infinite loops
+    do il = 1,maxLoop
        l = len_trim(string)
        
        i1 = index(string,substr,back=.false.)
