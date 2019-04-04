@@ -27,7 +27,7 @@ module SUFR_fitting
   
   private
   
-  public linear_fit_yerr, nonlin_fit_yerr, nonlin_fit_example_myfunc, basefunc_polynomial
+  public linear_fit_yerr, nonlin_fit_yerr, nonlin_fit_example_myfunc, basefunc_polynomial, amoeba
   
 contains
   
@@ -601,6 +601,128 @@ contains
   !*********************************************************************************************************************************
   
   
+  
+  !***********************************************************************************************************************************
+  !>
+  !! \see https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+  subroutine amoeba(verts, vertVals, nDim,ftol,func,iter)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: warn, swapdbl
+    
+    implicit none
+    integer, intent(in) :: nDim
+    integer, intent(out) :: iter
+    real(double), intent(inout) ::  verts(:,:),vertVals(:)
+    real(double), intent(in) ::  ftol
+    integer, parameter :: itMax=5000
+    real(double), parameter :: tiny=1.d-10
+    real(double), external :: func
+    
+    integer :: i,iHigh,iLow,iNHigh,j,n
+    real(double) :: rtol,sum,valSave,valTry,vertSum(size(verts,2))
+    
+    iter=0
+    vertSum(:) = sum(verts, dim=1)
+    
+    main: do  ! Main loop
+       ! Determine iLow and iHigh:
+       iLow = 1
+       if(vertVals(1).gt.vertVals(2)) then
+          iHigh = 1
+          iNHigh = 2
+       else
+          iHigh = 2
+          iNHigh = 1
+       end if
+       do i = 1,nDim+1
+          if(vertVals(i).le.vertVals(iLow)) iLow = i
+          if(vertVals(i).gt.vertVals(iHigh)) then
+             iNHigh = iHigh
+             iHigh = i
+          else if(vertVals(i).gt.vertVals(iNHigh)) then
+             if(i.ne.iHigh) iNHigh = i
+          end if
+       end do
+       
+       ! Compute tolerance and compare it to desired tolerance:
+       rtol = 2 * abs(vertVals(iHigh)-vertVals(iLow)) / (abs(vertVals(iHigh))+abs(vertVals(iLow))+tiny)
+       if(rtol.lt.ftol) then
+          call swapdbl(vertVals(1), vertVals(iLow))
+          do n = 1,nDim
+             call swapdbl(verts(1,n), verts(iLow,n))
+          end do
+          return
+       end if
+       
+       if(iter.ge.itMax) call warn('itMax exceeded in solvers/amoeba()')
+       
+       iter = iter+2
+       valTry = amoeba_try(verts, vertVals,vertSum,nDim,func,iHigh, -1.d0)
+       
+       if(valTry.le.vertVals(iLow)) then
+          valTry = amoeba_try(verts, vertVals,vertSum,nDim,func,iHigh, 2.d0)
+       else if(valTry.ge.vertVals(iNHigh)) then
+          
+          valSave = vertVals(iHigh)
+          valTry = amoeba_try(verts, vertVals,vertSum,nDim,func,iHigh, 0.5d0)
+          if(valTry.ge.valSave) then
+             do i = 1,nDim+1
+                if(i.ne.iLow)then
+                   do j = 1,nDim
+                      vertSum(j) = 0.5d0*(verts(i,j)+verts(iLow,j))
+                      verts(i,j) = vertSum(j)
+                   end do
+                   vertVals(i) = func(vertSum)
+                end if
+             end do
+             
+             iter = iter + nDim
+             vertSum(:) = sum(verts, dim=1)
+             cycle main
+          end if
+          
+       else
+          iter = iter-1
+       end if
+       
+    end do main  ! Main (infinite) loop
+    
+  end subroutine amoeba
+  !***********************************************************************************************************************************
+  
+  
+  !***********************************************************************************************************************************
+  function amoeba_try(verts,vertVals,vertSum,nDim,func,iHigh,fac)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    integer, intent(in) :: nDim, iHigh
+    real(double), intent(in) :: fac
+    real(double), intent(inout) :: verts(:,:),vertSum(:),vertVals(:)
+    real(double) :: amoeba_try
+    
+    real(double), external :: func
+    
+    integer :: j
+    real(double) :: fac1,fac2,valTry,vertsTry(size(verts,2))
+    
+    fac1 = (1.d0-fac)/nDim
+    fac2 = fac1 - fac
+    vertsTry = vertSum*fac1 - verts(iHigh,:)*fac2
+    
+    valTry = func(vertsTry)
+    if(valTry.lt.vertVals(iHigh)) then
+       vertVals(iHigh) = valTry
+       do j = 1,nDim
+          vertSum(j) = vertSum(j) - verts(iHigh,j) + vertsTry(j)
+          verts(iHigh,j) = vertsTry(j)
+       end do
+    end if
+    
+    amoeba_try = valTry
+    
+  end function amoeba_try
+  !***********************************************************************************************************************************
   
   
 end module SUFR_fitting
