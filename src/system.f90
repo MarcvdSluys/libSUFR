@@ -778,7 +778,7 @@ contains
   !! \param unit    File unit
   !! \param nLines  Number of lines to skip
   
-  subroutine skip_file_header(unit, nLines)
+  subroutine file_skip_header(unit, nLines)
     use SUFR_dummy, only: dumstr
     implicit none
     integer, intent(in) :: unit, nLines
@@ -789,7 +789,7 @@ contains
        read(unit,'(A)') dumStr
     end do
     
-  end subroutine skip_file_header
+  end subroutine file_skip_header
   !*********************************************************************************************************************************
   
   

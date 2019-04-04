@@ -145,7 +145,7 @@ contains
     character, intent(inout) :: string*(*)
     character, intent(in) :: str_srch*(*),str_repl*(*)
     integer, parameter :: lRan=100
-    character*(lRan), parameter :: ranStr = 'G^$("q]WvtDB5VCFCJ/\gAo9|8^wDB|G,?q|Vi)|9wUhN.mKZI6>VMkGa~NkBMk(~F{b?<:kW1TDJ-Gmq8q-eW<WD3=(1M#*MhSy'
+    character(len=lRan), parameter :: ranStr = 'G^$("q]WvtDB5VCFCJ/\gAo9|8^wDB|G,?q|Vi)|9wUhN.mKZI6>VMkGa~NkBMk(~F{b?<:kW1TDJ-Gmq8q-eW<WD3=(1M#*MhSy'
     character :: tmpStr*(len(str_srch))
     integer :: iStart,iStop,di,iLoop, lTmp,lstr,is,lsrch, il, maxLoop
     

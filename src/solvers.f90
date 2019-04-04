@@ -328,7 +328,7 @@ end module SUFR_solvers
 !! \retval  y2  
 
 
-subroutine golden_section(x1,x2, a1,a2, y1,y2)
+pure subroutine golden_section(x1,x2, a1,a2, y1,y2)
   use SUFR_kinds, only: double, dbl
   
   implicit none
@@ -345,4 +345,6 @@ subroutine golden_section(x1,x2, a1,a2, y1,y2)
   
 end subroutine golden_section
 !***********************************************************************************************************************************
+
+
 

@@ -392,7 +392,7 @@ contains
   !! \param  num    Number of the current data point
   !! \retval stDev  Current standard deviation (optional)
   !!
-  !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
+  !! \see https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Na%C3%AFve_algorithm
   
   pure subroutine mean_var_running(mean, var, data, num, stDev)
     use SUFR_kinds, only: double
@@ -411,7 +411,7 @@ contains
        oldmean = mean                                       ! save old mean for the variance
        mean    = mean + (data - mean)/dble(num)             ! add new data point -> new mean
        
-       oldvar  = var*(num-2)                                ! since var = va1/(num-1) in the previous iteration
+       oldvar  = var*(num-2)                                ! since var = var1/(num-1) in the previous iteration
        var1    = oldvar + (data - oldmean) * (data - mean)  ! add the new data point
        var     = var1/dble(num-1)                           ! new variance
        
