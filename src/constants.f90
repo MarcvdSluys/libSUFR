@@ -452,7 +452,7 @@ contains
   subroutine set_SUFR_constants_environment()
     implicit none
     integer :: i, narg, status
-    character :: tmpStr*(99)
+    character :: tmpStr*(999)
     
     ! Standard error, input, and output
     stdErr = 0  ! Unit for standard error
