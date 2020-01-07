@@ -275,12 +275,12 @@ contains
     do ia1 = 1,nargs
        arg1 = trim(arguments(ia1))
        typ1 = types(ia1)
-       if(typ1.eq.20.or.typ1.eq.21) then
+       if(typ1.eq.20.or.typ1.eq.21) then  ! Short option with or without argument
           dn0 = dn0 + len_trim(arg1) - 2
        end if
+       if(verbose.ge.3) print*, 'Extra parameters: ', arg1, typ1, dn0
     end do
     if(dn0+nargs.gt.narg_max) call quit_program('Command-line argument arrays too small')
-    
     
     ia2 = 0
     do ia1 = 1,nargs

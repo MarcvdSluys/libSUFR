@@ -286,6 +286,75 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Split combined short command-line options into several individual ones, e.g. "... -abc ..." -> "... -a -b -c ..."
+  !!
+  !! \param CLoptStr  String containing (all) command-line options.
+  
+  subroutine getopt_split_short_options(CLoptStr)
+    use SUFR_dummy, only: dumdbl
+    
+    implicit none
+    character, intent(inout) :: CLoptStr*(*)
+    integer :: iArg, in1,din, status, iChar,nChar, lverbose
+    character :: subStr*(99),newSubStr*(99)
+    
+    iArg = 0
+    in1 = 1
+    din = 1
+    lverbose = 0
+    
+    do while(din.ge.0)
+       din = index(trim(CLoptStr(in1:)), ' ') - 1  ! Issue, since trim is used, a final compound of short options will never be found ("... -abc")
+       
+       if(lverbose.gt.0) then
+          print*
+          write(*,'(A,3I5, A50)') 'iArg: ',iArg,in1,din,'###'//trim(CLoptStr(in1:))//'###'
+          print*,len_trim(CLoptStr),in1,din,len_trim(CLoptStr(in1:)), in1+len_trim(CLoptStr(in1:))-1
+       end if
+       
+       if(din.lt.0 .and. in1+len_trim(CLoptStr(in1:))-1.eq.len_trim(CLoptStr))  din = len_trim(CLoptStr(in1:))  ! Last argument on command line
+       
+       if(din.ge.0) then
+          subStr = CLoptStr(in1:in1+din)  ! Isolate a single argument
+          
+          ! Verify whether this argument is a compound short option (>2 characters long, starting with a single dash, and not a negative number):
+          if(len_trim(subStr).gt.2) then  ! Argument contains >2 characters
+             if(subStr(1:1) .eq. '-') then  ! Argument is an option (starts with dash)
+                if(.not.subStr(1:2) .eq. '--') then  ! Argument is a LONG option (starts with --)
+                   read(subStr,*, iostat=status) dumdbl
+                   if(status.ne.0) then  ! Argument is not a negative number
+                      
+                      ! When arrived here, the current argument is an option with >2 characters, not a long option and and not a negative number, hence must be (?) a compound short option
+                      if(lverbose.gt.0) write(*,'(A,4I5,2A25)') '  New group: ', iArg,in1,din,status, '###'//CLoptStr(in1:in1+din-1)//'###', '###'//subStr(1:din)//'###'
+                      
+                      
+                      nChar = len_trim(subStr)
+                      newSubStr = ''
+                      do iChar=2,nChar
+                         newSubStr = trim(newSubStr)//' -'//subStr(iChar:iChar)
+                      end do
+                      if(lverbose.gt.0) print*,'New substring:  ###'//trim(newSubStr)//'###'
+                      
+                      CLoptStr = CLoptStr(1:in1-2)//trim(newSubStr)//trim(CLoptStr(in1+din:))  ! -2: remove dash and first character.  CLoptStr(in1+din) contains space.
+                      in1 = in1-2 + len_trim(newSubStr) - din  ! - din, since this will be added below
+                   end if
+                end if
+             end if
+          end if
+          
+          
+          ! Prepare for the next iteration:
+          iArg = iArg+1
+          in1 = in1+din+1  ! Until after the current space
+       end if
+    end do
+    
+    
+  end subroutine getopt_split_short_options
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a help list of all short options and their required arguments
   !!
   !! \param optStr  Short-options string used for getopt()
