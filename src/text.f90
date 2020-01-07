@@ -260,6 +260,52 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Count how many times a substring is present in a string.
+  !!
+  !! \param string  String to count substrings in.
+  !! \param substr  Substring to count.
+  !! \param debug   Print debug info (T/F, optional)
+  !!
+  !! \retval count  Number of times substring was found in string.
+  
+  function count_substring(string,substr, debug)
+    implicit none
+    character, intent(in) :: string*(*), substr*(*)
+    logical, intent(in), optional :: debug
+    
+    integer :: count_substring, l,ls, i1, il,maxLoop
+    character :: lstr*(len(string)), tstr*(len(string))
+    logical :: print_debug
+    
+    count_substring = 0
+    
+    print_debug = .false.
+    if(present(debug)) print_debug = debug
+    
+    ls = len(substr)     ! Length of the substring to count
+    if(ls.lt.1) return   ! Zero-length string
+    
+    i1 = -1
+    maxLoop = ceiling( real(len(string))/real(ls) )  ! Prevent infinite loops
+    lstr = string
+    do il = 1,maxLoop
+       l = len_trim(lstr)
+       
+       i1 = index(trim(lstr),substr,back=.false.)
+       if(i1.le.0) exit
+       
+       tstr = lstr(1:i1-1)//lstr(i1+ls:l)  ! String gets shorter by ls
+       lstr = tstr
+       count_substring = count_substring + 1
+       !print*,count_substring,i1,trim(lstr)
+    end do
+    
+  end function count_substring
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Search and replace occurences of a string in a text file.  Lines up to 9999 characters only, otherwise a warning 
   !!         is given
   !!
