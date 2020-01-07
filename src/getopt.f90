@@ -47,31 +47,24 @@
 !! The general idea comes from [1] and [2], while I followed [3] for the return values indication an issue (>!.).  Unlike [3],
 !!   I wanted both short and long options, allow the argument to be glued to the option (e.g. -ffile.txt) and get a warning if
 !!   a required argument is missing.  Unlike [2] I thought a non-OOP solution might be simpler.  In addition, I wanted to allow
-!!   an equal sign in e.g. --file=file.txt, and to provide a short description for each option, and to simplify the generation
-!!   of an explanatory list of options, which is provided through getopt_help() and getopt_long_help().
+!!   an equal sign in e.g. --file=file.txt, and to provide a short description for each option, in order to simplify the
+!!   generation of an explanatory list of options, which is provided through getopt_help() and getopt_long_help().
 
 module SUFR_getopt
   implicit none
   
-  integer, parameter, private :: longOptLen = 99        ! Maximum length of a long option (without '--')
+  integer, parameter, private :: longOptLen = 99   !< \brief Maximum length of a long option (without '--')
   
-  !> \brief The option's argument, if required and present
-  character :: optArg*(999)
-  !> \brief The short or long option found, including leading dash(es)
-  character :: longOption*(longOptLen+2)
-  !> \brief The current option count
-  integer, save :: optCount = 0
+  character :: optArg*(999)                 !< \brief The option's argument, if required and present
+  character :: longOption*(longOptLen+2)    !< \brief The short or long option found, including leading dash(es)
+  integer, save :: optCount = 0             !< \brief The current option count
   
   !> \brief Struct to define short and long options for getopt_long()
   type getopt_t
-     !> \brief The short option (single character, without the leading dash)
-     character :: short             = ''
-     !> \brief The long option (without the leading dashes, max 99 characters long)
-     character :: long*(longOptLen) = ''
-     !> \brief Argument required? 0-no, 1-yes
-     integer   :: reqArg            = 0
-     !> \brief A (short) description (recommended: <1 screen width; max 999 characters)
-     character :: descr*(999)       = ''
+     character :: short             = ''  !< \brief The short option (single character, without the leading dash)
+     character :: long*(longOptLen) = ''  !< \brief The long option (without the leading dashes, max 99 characters long)
+     integer   :: reqArg            = 0   !< \brief Argument required? 0-no, 1-yes
+     character :: descr*(999)       = ''  !< \brief A (short) description (recommended: <1 screen width; max 999 characters)
   end type getopt_t
   
 contains
