@@ -55,6 +55,10 @@ module SUFR_getopt
   
   integer, parameter, private :: longOptLen = 99   !< \brief Maximum length of a long option (without '--')
   
+  character :: commandLine*(9999)           !< \brief The full command line as a single string
+  integer ::   numberOfArguments = -1       !< \brief The number of *arguments* on the command line, *excluding* the command (= argc-1 in C)
+  
+  character :: curArg*(999)                 !< \brief The current argument or option (word)
   character :: optArg*(999)                 !< \brief The option's argument, if required and present
   character :: longOption*(longOptLen+2)    !< \brief The short or long option found, including leading dash(es)
   integer, save :: optCount = 0             !< \brief The current option count
@@ -83,14 +87,23 @@ contains
   !!                 - a single character identifying the short version of the option identified (without the leading dash)
   !!
   !! The following 'global' variable is set (accessible through the module SUFR_getopt):
-  !! - optArg: the argument, if required and present
+  !! - commandLine:  the full command line as a single string
+  !! - curArg:       the current argument or option
+  !! - optArg:       the argument, if required and present
   
   function getopt(optStr)
     implicit none
     character, intent(in) :: optStr*(*) 
     integer :: Narg, optStrI
-    character :: getopt, option, arg*(999)
+    character :: getopt, option
     logical :: found
+    
+    
+    ! If this is the first call, get the command-line arguments, split compound short options, and save them as an array:
+    if(optCount.eq.0) then
+       call getopt_get_command()
+    end if
+    
     
     optCount = optCount+1
     
@@ -98,17 +111,18 @@ contains
     getopt = ''
     optArg = ''
     
-    Narg = command_argument_count()
+    Narg = getopt_command_argument_count()
+    
     if(optCount.gt.Narg) then
        getopt = '>'
        return
     end if
     
-    call get_command_argument(optCount, arg)
+    call getopt_get_command_argument(optCount, curArg)    ! Fetch the current argument or option
     
-    if(arg(1:1).eq.'-') then                              ! Found a short option
+    if(curArg(1:1).eq.'-') then                           ! Found a short option
        
-       option = arg(2:2)                                  ! The short-option character
+       option = curArg(2:2)                               ! The short-option character
        found = .false.
        
        do optStrI=1,len(optStr)                           ! Loop over all defined options for a match
@@ -116,13 +130,13 @@ contains
              found = .true.
              
              if(optStr(optStrI+1:optStrI+1).eq.':') then  ! Option requires an argument
-                if(len_trim(arg).gt.2) then               ! Argument is glued to option (no space)
-                   optArg = trim(arg(3:))
+                if(len_trim(curArg).gt.2) then            ! Argument is glued to option (no space)
+                   optArg = trim(curArg(3:))
                    
                 else                                      ! Next parameter should be an argument
                    
                    optCount = optCount+1
-                   call get_command_argument(optCount, optArg)
+                   call getopt_get_command_argument(optCount, optArg)
                    if(optCount.gt.Narg .or. optArg.eq.'') write(0,'(A)') 'WARNING: option -'//option//' requires an argument'
                 end if
                 
@@ -137,13 +151,13 @@ contains
           getopt = option
        else
           getopt = '!'
-          optArg = arg
+          optArg = curArg
        end if
        
     else  ! no '-'
        
        getopt = '.'
-       optArg = arg
+       optArg = curArg
     end if
     
   end function getopt
@@ -169,16 +183,25 @@ contains
   !!                      - a single character identifying the short version of the option identified (without the leading dash)
   !! 
   !! The following 'global' variables are set (accessible through the module SUFR_getopt):
-  !! - longOption:  the short or long option found, including leading dash(es)
-  !! - optArg:      the option's argument, if required and found
+  !! - commandLine:  the full command line as a single string
+  !! - curArg:       the current argument or option
+  !! - longOption:   the short or long option found, including leading dash(es)
+  !! - optArg:       the option's argument, if required and found
   !!
   
   function getopt_long(longopts)
     implicit none
     type(getopt_t), intent(in) :: longopts(:)
     integer :: Narg, optI, pos,                                                  debug=0  ! 0-1
-    character :: getopt_long, option, arg*(999), longOpt*(longOptLen)
+    character :: getopt_long, option, longOpt*(longOptLen)
     logical :: found, hasEql
+    
+    
+    ! If this is the first call, get the command-line arguments, split compound short options, and save them as an array:
+    if(optCount.eq.0) then
+       call getopt_get_command()
+    end if
+    
     
     optCount = optCount+1
     
@@ -188,19 +211,19 @@ contains
     longOption  = ''
     
     ! Get the current command-line parameter:
-    Narg = command_argument_count()
+    Narg = getopt_command_argument_count()
     if(optCount.gt.Narg) then
        getopt_long = '>'
        return
     end if
     
-    call get_command_argument(optCount, arg)
-    if(debug.ge.1) write(*,'(A,I0,A)') 'getopt_long():  option ', optCount, ': '//trim(arg)
+    call getopt_get_command_argument(optCount, curArg)  ! Fetch the current argument or option
+    if(debug.ge.1) write(*,'(A,I0,A)') 'getopt_long():  option ', optCount, ': '//trim(curArg)
     
     
     ! Check for long options, short options and arguments:
-    if(arg(1:2).eq.'--') then                                           ! Found a long option
-       longOpt = trim(arg(3:))
+    if(curArg(1:2).eq.'--') then                                        ! Found a long option
+       longOpt = trim(curArg(3:))
        
        ! Allow for an argument connected through an equal sign, e.g. --file=file.txt
        hasEql = .false.
@@ -219,7 +242,7 @@ contains
              if(longopts(optI)%reqArg.gt.0 .and. .not.hasEql) then      ! Option requires an argument, not glued using =
                 
                 optCount = optCount+1
-                call get_command_argument(optCount, optArg)
+                call getopt_get_command_argument(optCount, optArg)
                 
                 if(optCount.gt.Narg .or. optArg.eq.'') write(0,'(A)') 'WARNING: option --'//option//' requires an argument'
                 
@@ -235,12 +258,12 @@ contains
           getopt_long = longopts(optI)%short
        else
           getopt_long = '!'
-          optArg = arg
+          optArg = curArg
        end if
        
        
-    else if(arg(1:1).eq.'-') then  ! Short option
-       option = arg(2:2)
+    else if(curArg(1:1).eq.'-') then  ! Short option
+       option = curArg(2:2)
        
        found = .false.
        do optI=1,size(longopts)
@@ -248,13 +271,13 @@ contains
              found = .true.
              longOption = '-'//option
              if(longopts(optI)%reqArg.gt.0) then             ! Option requires an argument
-                if(len_trim(arg).gt.2) then                  ! Argument is glued to option (no space)
-                   optArg = trim(arg(3:))
+                if(len_trim(curArg).gt.2) then               ! Argument is glued to option (no space)
+                   optArg = trim(curArg(3:))
                    
                 else  ! Next parameter should be argument
                    
                    optCount = optCount+1
-                   call get_command_argument(optCount, optArg)
+                   call getopt_get_command_argument(optCount, optArg)
                    
                    if(optCount.gt.Narg .or. optArg.eq.'') write(0,'(A)') 'WARNING: option -'//option//' requires an argument'
                    
@@ -269,13 +292,13 @@ contains
           getopt_long = option
        else
           getopt_long = '!'
-          optArg = arg
+          optArg = curArg
        end if
        
     else  ! no '-'
        
        getopt_long = '.'
-       optArg = arg
+       optArg = curArg
     end if
     
     if(debug.ge.1) write(*,'(2(A,I0))') 'optCount: ',optCount, ' -> ', optCount+1
@@ -283,6 +306,69 @@ contains
   end function getopt_long
   !*********************************************************************************************************************************
   
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Get the full command line in a string, split compound short options (e.g. "-abc" -> "-a -b -c") and set numberOfArguments.
+  
+  subroutine getopt_get_command()
+    use SUFR_text, only: count_substring
+    
+    implicit none
+    
+    call get_command(commandLine)                 ! Fetch the complete command line as a single string
+    call getopt_split_short_options(commandLine)  ! Split compound short options into separate ones (e.g. " -abc" -> " -a -b -c")
+    
+    numberOfArguments = count_substring(trim(commandLine), ' ')  ! Number of internal spaces = number of arguments, excluding the command
+    
+  end subroutine getopt_get_command
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Return the number of arguments on the command line (excluding the command).
+  
+  function getopt_command_argument_count()
+    implicit none
+    integer :: getopt_command_argument_count
+    
+    if(numberOfArguments.lt.0) call getopt_get_command()  ! If still at initialised -1, read the command line now
+    getopt_command_argument_count = numberOfArguments     ! Note: number of *arguments* excluding the command, like Fortran's command_argument_count()
+    
+  end function getopt_command_argument_count
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Returns the argNr-th command-line argument.
+  !!
+  !! \param argNr  Number of the desired argument
+  !!
+  !! \retval arg   Content of the desired argument (a word/string)
+  
+  subroutine getopt_get_command_argument(argNr, arg)
+    use SUFR_system, only: quit_program_error
+    use SUFR_text, only: int2str
+    
+    implicit none
+    integer, intent(in) :: argNr
+    character, intent(out) :: arg*(99)
+    integer :: iArg, in,din
+    
+    if(numberOfArguments.lt.0) call getopt_get_command()  ! If still at initialised -1, read the command line now
+    
+    if(argNr.gt.numberOfArguments) call quit_program_error('getopt_get_command_argument(): the argument number ('//int2str(argNr)// &
+         ') must be smaller than or equal to the total number of arguments ('//int2str(numberOfArguments)//').', 1)
+    
+    in = 1
+    do iArg=0,argNr                          ! Starting with the command (iArg=0), loop up to the desired argument
+       din = index(commandLine(in:), ' ')    ! Find the iArg+1-th space, which precedes the iArg+1-th argument
+       arg = trim(commandLine(in:in+din-2))  ! Save the current argument as the return value.  If the loop finishes, this becomes the return value
+       in  = in + din                        ! In the next iteration, start with the next space
+    end do
+    
+  end subroutine getopt_get_command_argument
+  !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
@@ -348,7 +434,6 @@ contains
           in1 = in1+din+1  ! Until after the current space
        end if
     end do
-    
     
   end subroutine getopt_split_short_options
   !*********************************************************************************************************************************
