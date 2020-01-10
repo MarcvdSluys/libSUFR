@@ -36,19 +36,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get an integer from the command line
   !! 
-  !! \param n        Number of command-line argument (1,2,...)
+  !! \param  nArg    Number of command-line argument (1,2,...)
   !! \retval arg     Value of the argument
   !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_i(n,arg, status)
+  subroutine get_command_argument_i(nArg,arg, status)
     implicit none
-    integer, intent(in) :: n
+    integer, intent(in) :: nArg
     integer, intent(out) :: arg
     integer, intent(out), optional :: status
     integer :: lstatus
     character :: str*(199)
     
-    call get_command_argument(n,str)
+    call get_command_argument(nArg, str)
     read(str,*, iostat=lstatus) arg
     
     if(present(status)) status = lstatus
@@ -60,21 +60,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a long integer from the command line
   !! 
-  !! \param n        Number of command-line argument (1,2,...)
+  !! \param  nArg    Number of command-line argument (1,2,...)
   !! \retval arg     Value of the argument
   !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_l(n,arg, status)
+  subroutine get_command_argument_l(nArg,arg, status)
     use SUFR_kinds, only: long
     
     implicit none
-    integer, intent(in) :: n
+    integer, intent(in) :: nArg
     integer(long), intent(out) :: arg
     integer, intent(out), optional :: status
     integer :: lstatus
     character :: str*(199)
     
-    call get_command_argument(n,str)
+    call get_command_argument(nArg, str)
     read(str,*, iostat=lstatus) arg
     
     if(present(status)) status = lstatus
@@ -86,21 +86,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a double-precision real from the command line
   !! 
-  !! \param n        Number of command-line argument (1,2,...)
+  !! \param  nArg    Number of command-line argument (1,2,...)
   !! \retval arg     Value of the argument
   !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_d(n, arg, status)
+  subroutine get_command_argument_d(nArg,arg, status)
     use SUFR_kinds, only: double
     
     implicit none
-    integer, intent(in) :: n
+    integer, intent(in) :: nArg
     real(double), intent(out) :: arg
     integer, intent(out), optional :: status
     integer :: lstatus
     character :: str*(199)
     
-    call get_command_argument(n,str)
+    call get_command_argument(nArg, str)
     read(str,*, iostat=lstatus) arg
     
     if(present(status)) status = lstatus
@@ -112,19 +112,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get a single-precision real from the command line
   !! 
-  !! \param n        Number of command-line argument (1,2,...)
+  !! \param  nArg    Number of command-line argument (1,2,...)
   !! \retval arg     Value of the argument
   !! \retval status  Exit status: 0: ok, !=0: not ok
   
-  subroutine get_command_argument_r(n,arg, status)
+  subroutine get_command_argument_r(nArg,arg, status)
     implicit none
-    integer, intent(in) :: n
+    integer, intent(in) :: nArg
     real, intent(out) :: arg
     integer, intent(out), optional :: status
     integer :: lstatus
     character :: str*(199)
     
-    call get_command_argument(n,str)
+    call get_command_argument(nArg, str)
     read(str,*, iostat=lstatus) arg
     
     if(present(status)) status = lstatus
