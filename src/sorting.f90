@@ -33,11 +33,11 @@ contains
   !!
   !! \param  array        Array of size n with values that must be sorted - use dble(array) for other variable types
   !!
-  !! \retval index_list   List with indices of array values, sorted to ascending value, same dimension and size as array.
+  !! \param  index_list   List with indices of array values, sorted to ascending value, same dimension and size as array. (output)
   !!                      array(index_list) gives the sorted array.
   !! 
   !! \param  mask         Mask to apply to array. If present, index_list will have zeroes after the last meaningful entry (optional)
-  !! \retval index_n      Number of meaningful elements in index_list, after applying mask (optional)
+  !! \param  index_n      Number of meaningful elements in index_list, after applying mask (output, optional)
   !!
   !! \note  This routine does not need to be called directly, but is implicitly called by sort_array().
   !! \see   Numerical Recipes in Fortran 77, Sect. 8.2, 8.4.
@@ -248,7 +248,7 @@ contains
   !! \param  narr        Number of strings in array str
   !! \param  strlen      Length of the strings in array str
   !! \param  strarr      Array of n strings with length len
-  !! \retval index_list  Sorting index
+  !! \param  index_list  Sorting index (output)
   
   subroutine sort_string_array(narr, strlen, strarr, index_list)
     implicit none

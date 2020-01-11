@@ -377,10 +377,10 @@ contains
   !! \param ddx    Relative margin in x
   !! \param ddy    Relative margin in y
   !!
-  !! \retval xmin  Minimum of plot range in x
-  !! \retval xmax  Maximum of plot range in x
-  !! \retval ymin  Minimum of plot range in y
-  !! \retval ymax  Maximum of plot range in y
+  !! \param xmin  Minimum of plot range in x (output)
+  !! \param xmax  Maximum of plot range in x (output)
+  !! \param ymin  Minimum of plot range in y (output)
+  !! \param ymax  Maximum of plot range in y (output)
   
   pure subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax)
     use SUFR_kinds, only: double

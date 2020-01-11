@@ -32,20 +32,20 @@ contains
   !> \brief  Compute the reflectance for a transition from a medium with refractive index Nref1 to one with Nref2, under an angle ang.
   !!         Optionally, compute the transmittance, and the polarised components.  The media are assumed to be non-magnetic.
   !!
-  !! \param  angI   Angle of incidence (rad)
-  !! \param  Nref1  Refractive index of first medium, incoming ray
-  !! \param  Nref2  Refractive index of second medium, transmitted ray
+  !! \param angI   Angle of incidence (rad)
+  !! \param Nref1  Refractive index of first medium, incoming ray
+  !! \param Nref2  Refractive index of second medium, transmitted ray
   !! 
-  !! \retval Runp   Unpolarised reflectance
+  !! \param Runp   Unpolarised reflectance (output)
   !! 
-  !! \retval Tunp   Unpolarised transmittance (optional)
+  !! \param Tunp   Unpolarised transmittance (output, optional)
   !! 
-  !! \retval Rprp   Perpendicular polarised reflectance (optional)
-  !! \retval Rpar   Parallel polarised reflectance (optional)
-  !! \retval Tprp   Perpendicular polarised transmittance (optional)
-  !! \retval Tpar   Parallel polarised transmittance (optional)
+  !! \param Rprp   Perpendicular polarised reflectance (output, optional)
+  !! \param Rpar   Parallel polarised reflectance (output, optional)
+  !! \param Tprp   Perpendicular polarised transmittance (output, optional)
+  !! \param Tpar   Parallel polarised transmittance (output, optional)
   !! 
-  !! \retval angT   Angle of transmittance (rad; optional)
+  !! \param angT   Angle of transmittance (rad; optional) (output, optional)
   !!
   !! \see
   !! - Hecht, Optics, 3rd Ed. (1998), p.113ff
@@ -104,6 +104,8 @@ contains
   !! \param pressure     Pressure (millibar)
   !! \param humidity     Relative humidity (%)
   !!
+  !! \retval refractive_index_air  Refractive index of air
+  !!
   !! \see http://emtoolbox.nist.gov/Wavelength/Documentation.asp#AppendixA
   
   pure function refractive_index_air(wavelength, temperature, pressure, humidity)
@@ -161,6 +163,8 @@ contains
   !> \brief  Refractive index of PMMA as a function of wavelength
   !!
   !! \param wavelength  Wavelength in nanometres
+  !!
+  !! \retval refractive_index_pmma  Refractive index of PMMA
   !!
   !! \note
   !! - valid for 23 degrees C

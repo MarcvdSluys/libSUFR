@@ -37,8 +37,8 @@ contains
   !> \brief  Get an integer from the command line
   !! 
   !! \param  nArg    Number of command-line argument (1,2,...)
-  !! \retval arg     Value of the argument
-  !! \retval status  Exit status: 0: ok, !=0: not ok
+  !! \param arg     Value of the argument (output)
+  !! \param status  Exit status: 0: ok, !=0: not ok (output)
   
   subroutine get_command_argument_i(nArg,arg, status)
     implicit none
@@ -61,8 +61,8 @@ contains
   !> \brief  Get a long integer from the command line
   !! 
   !! \param  nArg    Number of command-line argument (1,2,...)
-  !! \retval arg     Value of the argument
-  !! \retval status  Exit status: 0: ok, !=0: not ok
+  !! \param arg     Value of the argument (output)
+  !! \param status  Exit status: 0: ok, !=0: not ok (output)
   
   subroutine get_command_argument_l(nArg,arg, status)
     use SUFR_kinds, only: long
@@ -87,8 +87,8 @@ contains
   !> \brief  Get a double-precision real from the command line
   !! 
   !! \param  nArg    Number of command-line argument (1,2,...)
-  !! \retval arg     Value of the argument
-  !! \retval status  Exit status: 0: ok, !=0: not ok
+  !! \param arg     Value of the argument (output)
+  !! \param status  Exit status: 0: ok, !=0: not ok (output)
   
   subroutine get_command_argument_d(nArg,arg, status)
     use SUFR_kinds, only: double
@@ -113,8 +113,8 @@ contains
   !> \brief  Get a single-precision real from the command line
   !! 
   !! \param  nArg    Number of command-line argument (1,2,...)
-  !! \retval arg     Value of the argument
-  !! \retval status  Exit status: 0: ok, !=0: not ok
+  !! \param arg     Value of the argument (output)
+  !! \param status  Exit status: 0: ok, !=0: not ok (output)
   
   subroutine get_command_argument_r(nArg,arg, status)
     implicit none
@@ -139,8 +139,8 @@ contains
   !! \param  verbose    Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
   !! \param  narg_max   Maximum array size for arguments
   !!
-  !! \retval nargs      Number of command-line arguments found
-  !! \retval arguments  Array of command-line arguments found
+  !! \param nargs      Number of command-line arguments found (output)
+  !! \param arguments  Array of command-line arguments found (output)
   
   subroutine read_all_commandline_arguments(verbose,narg_max,  nargs,arguments)
     implicit none
@@ -184,7 +184,7 @@ contains
   !! \param  nargs      Number of command-line arguments
   !! \param  arguments  Array of command-line arguments
   !!
-  !! \retval types      Array with command-line argument types:  10: normal option (no value), 20/21: short option (one dash) 
+  !! \param types      Array with command-line argument types:  10: normal option (no value), 20/21: short option (one dash)  (output)
   !!                    without/with value, 22: value for short option,  30/31: long option (two dashes) without/with value
   !!                    33: value for long option
   
@@ -249,9 +249,9 @@ contains
   !! \param   verbose   Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
   !! \param   narg_max  Maximum number of command-line arguments
   !!
-  !! \retval nargs      Actual number of command-line arguments (I/O)
-  !! \retval arguments  Array of command-line arguments (I/O)
-  !! \retval types      Array with command-line argument types:  10: normal option (no value), 20/21: short option (one dash) 
+  !! \param nargs      Actual number of command-line arguments (I/O) (output)
+  !! \param arguments  Array of command-line arguments (I/O) (output)
+  !! \param types      Array with command-line argument types:  10: normal option (no value), 20/21: short option (one dash)  (output)
   !!                    without/with value, 22: value for short option,  30/31: long option (two dashes) without/with value
   !!                    33: value for long option
   
@@ -358,12 +358,12 @@ contains
   !! \param   verbose    Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
   !! \param   narg_max   Maximum number of command-line arguments
   !!
-  !! \retval  nopts      Number of options found (without counting their variables)
-  !! \retval  options    Array of command-line options found
-  !! \retval  values     Array of command-line values found (i.e., the parameters that belong to an option)
-  !! \retval  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value,
+  !! \param  nopts      Number of options found (without counting their variables) (output)
+  !! \param  options    Array of command-line options found (output)
+  !! \param  values     Array of command-line values found (i.e., the parameters that belong to an option) (output)
+  !! \param  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value, (output)
   !!                     30/31: long option (two dashes) without/with value
-  !! \retval  cl_option  Struct containing command-line option names, values, has_val, short and long
+  !! \param  cl_option  Struct containing command-line option names, values, has_val, short and long (output)
   
   
   subroutine get_commandline_options_values(verbose,narg_max, nopts,options,values,optypes, cl_option)
@@ -443,12 +443,12 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print all command-line options and values found to stdOut for debugging
   !!
-  !! \retval  nopts      Number of options found (without counting their variables)
-  !! \retval  options    Array of command-line options found
-  !! \retval  values     Array of command-line values found (i.e., the parameters that belong to an option)
-  !! \retval  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value,
+  !! \param  nopts      Number of options found (without counting their variables) (output)
+  !! \param  options    Array of command-line options found (output)
+  !! \param  values     Array of command-line values found (i.e., the parameters that belong to an option) (output)
+  !! \param  optypes    Array of option types: 10: normal option (no value), 20/21: short option (one dash) without/with value, (output)
   !!                     30/31: long option (two dashes) without/with value
-  !! \retval  cl_option  Struct containing command-line option names, values, has_val, short and long
+  !! \param  cl_option  Struct containing command-line option names, values, has_val, short and long (output)
 
   subroutine print_commandline_options_values(nopts,options,values,optypes, cl_option)
     implicit none
@@ -517,7 +517,9 @@ contains
   !> \brief  Retrieve the string argument/variable of a command-line option, if it exists
   !!
   !! \param  option  Option to get the argument from
-  !! \retval string  Argument/variable string
+  !! \param  string  Argument/variable string (output)
+  !!
+  !! \retval  cl_option_var_string  Bool that indicates whether an option argument was present.
   
   function cl_option_var_string(option, string)
     implicit none
@@ -556,7 +558,9 @@ contains
   !> \brief  Retrieve the integer argument/variable of a command-line option, if it exists
   !!
   !! \param  option  Option to get the argument from
-  !! \retval intarg  Argument/variable integer
+  !! \param  intarg  Argument/variable integer (output)
+  !! 
+  !! \retval  cl_option_var_int  Bool that indicates whether an option argument was present.
   
   function cl_option_var_int(option, intarg)
     implicit none
@@ -596,7 +600,9 @@ contains
   !> \brief  Retrieve the floating-point argument/variable of a command-line option, if it exists
   !!
   !! \param  option  Option to get the argument from
-  !! \retval dblarg  Argument/variable floating-point
+  !! \param  dblarg  Argument/variable floating-point (output)
+  !!
+  !! \retval  cl_option_var_dbl  Bool that indicates whether an option argument was present.
   
   function cl_option_var_dbl(option, dblarg)
     use SUFR_kinds, only: double

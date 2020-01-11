@@ -50,10 +50,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get the kinds of the most accurate integer and real for the current compiler/system
   !!
-  !! \retval ikindmax  Maximum integer kind
-  !! \retval rkindmax  Maximum real kind
+  !! \param ikindmax  Maximum integer kind (output)
+  !! \param rkindmax  Maximum real kind (output)
   !! 
-  !! \param  warn      Warn if something funny happens (optional)
+  !! \param  warn      Warn if something funny happens (output, optional)
   !!
   !! \note  Problem: ikindmax,rkindmax are not parameters (defined at compile time)!
   

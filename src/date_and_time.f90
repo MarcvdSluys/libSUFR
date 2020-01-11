@@ -81,9 +81,9 @@ contains
   !> \brief  Convert a Julian day to a calendar date (fractional day) - in UT
   !!
   !! \param  jd  Julian day (UT)
-  !! \retval yy  Year (CE)
-  !! \retval mm  Month
-  !! \retval dd  Day of month (+ fraction)
+  !! \param yy  Year (CE) (output)
+  !! \param mm  Month (output)
+  !! \param dd  Day of month (+ fraction) (output)
   
   elemental subroutine jd2cal(jd, yy,mm,dd)
     use SUFR_kinds, only: double, dbl, long
@@ -172,12 +172,12 @@ contains
   !!
   !! \param  jd  Julian day (UT)
   !!
-  !! \retval yy  Year (CE, UT)
-  !! \retval mm  Month (UT)
-  !! \retval d   Day (UT)
-  !! \retval h   Hour (UT)
-  !! \retval m   Minute (UT)
-  !! \retval s   Second (+ fraction, UT)
+  !! \param yy  Year (CE, UT) (output)
+  !! \param mm  Month (UT) (output)
+  !! \param d   Day (UT) (output)
+  !! \param h   Hour (UT) (output)
+  !! \param m   Minute (UT) (output)
+  !! \param s   Second (+ fraction, UT) (output)
   
   elemental subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
     use SUFR_kinds, only: double, dbl
@@ -281,10 +281,10 @@ contains
   !!
   !! \param  jd     Julian day (UT).  In order to obtain a local date and time, add TZ/24 to the JD.
   !! 
-  !! \retval year   Year CE
-  !! \retval month  Month of year
-  !! \retval day    Day of the month
-  !! \retval time   Time of day (hours)
+  !! \param year   Year CE (output)
+  !! \param month  Month of year (output)
+  !! \param day    Day of the month (output)
+  !! \param time   Time of day (hours) (output)
   
   elemental subroutine jd2datetime(jd, year,month,day, time)
     use SUFR_kinds, only: double
@@ -313,6 +313,7 @@ contains
   !! \param h           The hour (int)
   !! \param m           The minute (int)
   !! \param s           The second (double)
+  !!
   !! \retval ymdhms2jd  The Julian day number (double)
   
   elemental function ymdhms2jd(yy,mmo,dd, h,m,s)
@@ -383,8 +384,8 @@ contains
   !> \brief  Convert time (h) to hours and (integer) minutes
   !!
   !! \param  tm  Time (hours)
-  !! \retval h   Hours
-  !! \retval m   Minutes (integer)
+  !! \param h   Hours (output)
+  !! \param m   Minutes (integer) (output)
   
   elemental subroutine tm2hm(tm,h,m)
     use SUFR_kinds, only: double
@@ -410,8 +411,8 @@ contains
   !> \brief  Convert time (h) to hours and (decimal) minutes
   !!
   !! \param  tm  Time (hours)
-  !! \retval h   Hours
-  !! \retval m   Minutes (decimal)
+  !! \param h   Hours (output)
+  !! \param m   Minutes (decimal) (output)
   
   elemental subroutine tm2hmm(tm,h,m)
     use SUFR_kinds, only: double
@@ -434,9 +435,9 @@ contains
   !> \brief  Convert time (h) to hours, minutes and (integer) seconds
   !!
   !! \param  tm  Time (hours)
-  !! \retval h   Hours
-  !! \retval m   Minutes
-  !! \retval s   Seconds (integer)
+  !! \param h   Hours (output)
+  !! \param m   Minutes (output)
+  !! \param s   Seconds (integer) (output)
   
   elemental subroutine tm2hms(tm, h,m,s)
     use SUFR_kinds, only: double
@@ -468,9 +469,9 @@ contains
   !> \brief  Convert time (h) to hours, minutes and (decimal) seconds
   !!
   !! \param  tm  Time (hours)
-  !! \retval h   Hours
-  !! \retval m   Minutes
-  !! \retval s   Seconds
+  !! \param h   Hours (output)
+  !! \param m   Minutes (output)
+  !! \param s   Seconds (output)
   
   elemental subroutine tm2hmss(tm, h,m,s)
     use SUFR_kinds, only: double
@@ -589,8 +590,8 @@ contains
   !!
   !! \param doy   Day of year number
   !! \param yr    Year (CE)
-  !! \retval mon  Month of year
-  !! \retval dy   Day of month
+  !! \param mon  Month of year (output)
+  !! \param dy   Day of month (output)
   !!
   !! \note year is input
   

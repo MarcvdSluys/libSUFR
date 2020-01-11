@@ -35,9 +35,9 @@ contains
   !! \param vair        Air speed of the rider (m/s)
   !! \param vgr         Ground speed of the rider (m/s)
   !!
-  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike, W)
-  !! \retval pwr_air    Power to overcome air resistance (W)
-  !! \retval pwr_climb  Power to climb a given slope (W)
+  !! \param pwr_mech   Power to overcome mechanical resistance (of a typical bike, W) (output)
+  !! \param pwr_air    Power to overcome air resistance (W) (output)
+  !! \param pwr_climb  Power to climb a given slope (W) (output)
   !!
   !! \see
   !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
@@ -84,9 +84,9 @@ contains
   !! \param vair        Air speed of the rider (m/s)
   !! \param vgr         Ground speed of the rider (m/s)
   !!
-  !! \retval pwr_mech   Power to overcome mechanical resistance (of a typical bike, W)
-  !! \retval pwr_air    Power to overcome air resistance (W)
-  !! \retval pwr_climb  Power to climb a given slope (W)
+  !! \param pwr_mech   Power to overcome mechanical resistance (of a typical bike, W) (output)
+  !! \param pwr_air    Power to overcome air resistance (W) (output)
+  !! \param pwr_climb  Power to climb a given slope (W) (output)
   !!
   !! \see 
   !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
@@ -122,8 +122,8 @@ contains
   !! \param mass    Athlete's body mass (kg)
   !! \param HR      Heart rate (beats per minute)
   !! 
-  !! \retval power  Body power (W)
-  !! \retval dpower Uncertainty in body power (W)
+  !! \param power  Body power (W) (output)
+  !! \param dpower Uncertainty in body power (W) (output)
   !!
   !! \see Keytel et al., Prediction of energy expenditure from heart rate monitoring during submaximal exercise, 
   !!      JSS 23:3, 289 (2005)

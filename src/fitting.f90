@@ -51,13 +51,13 @@ contains
   !! \param  yErr      Errors (standard deviations) of the y values (nDat)
   !!
   !! \param  nCoef     Number of coefficients of the fitting function
-  !! \retval fCoef     Coefficients of the fitting function (nCoef)
+  !! \param fCoef     Coefficients of the fitting function (nCoef) (output)
   !! \param  freeCoef  Fix coefficient coef(i) if freeCoef(i)=0, otherwise let if vary freely and fit it (nCoef)
   !!
   !! \param  nCov      Size of both dimensions of covMat()
-  !! \retval covMat    Covariance matrix (nCov,nCov)
+  !! \param covMat    Covariance matrix (nCov,nCov) (output)
   !!
-  !! \retval chiSq     Chi^2 - chi squared
+  !! \param chiSq     Chi^2 - chi squared (output)
   !!
   !! \param  myFunc    External subroutine that describes the model value of Y for given value X
   !!
@@ -398,8 +398,8 @@ contains
   !! \param nCoef  Number of coefficients
   !! \param fCoef  Vector of coefficients that describe the function
   !!
-  !! \retval yDat  Y values for the current data point
-  !! \retval dyda  Partial derivatives for yDat:  1: dy/dfCoef(1),  ...,  n: dy/dfCoef(n)
+  !! \param yDat  Y values for the current data point (output)
+  !! \param dyda  Partial derivatives for yDat:  1: dy/dfCoef(1),  ...,  n: dy/dfCoef(n) (output)
   !!
   !!
   !! \note  Write a subroutine with the same interface to use with nonlin_fit_yerr()
@@ -581,7 +581,7 @@ contains
   !! \param  xVal      X value to evaluate yVal = basefunc_polynimial(xVal) for
   !! \param  nCoef     Number of coefficients for the base function
   !!
-  !! \retval baseFunc  Base function i for coefficent i.  For a polynomial, BF(i) = x**(i-1)
+  !! \param baseFunc  Base function i for coefficent i.  For a polynomial, BF(i) = x**(i-1) (output)
   
   pure subroutine basefunc_polynomial(xVal,nCoef, baseFunc)
     use SUFR_kinds, only: double

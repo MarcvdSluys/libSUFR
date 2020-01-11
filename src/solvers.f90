@@ -35,10 +35,12 @@ contains
   !! \param x1    Lower limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
   !! \param x2    Upper limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
   !! \param accur  The accuracy with which the root is to be determined
-  !! \retval root_solver  The value of the root of func, between x1 and x2 and with accuracy accur.  If a root was not bracketed by
+  !! 
+  !! \param status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (output, optional)
+  !! \param verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
+  !! 
+  !! \retval root_solver  The value of the root of func, between x1 and x2 and with accuracy accur.  If a root was not bracketed by (output)
   !!                      x1 and x2, -huge is returned and status=1.
-  !! \retval status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (optional)
-  !! \retval verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (optional, default=2)
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
   function root_solver(func,x1,x2,accur, status,verbose)
@@ -169,12 +171,13 @@ contains
   !! \param bx        A good guess for the x-value of the minimum:  xa < xb < xc  and  func(xb) < min(funx(xa),func(xc))
   !! \param cx        The upper limit for the x-value of the minimum:  xa < x_min < xc
   !! \param accur     Relative accuracy with which the minimum is to be found
-  !!
-  !! \retval minimum_solver   The value of the minimum of the function func, to accuracy accur
-  !! \retval xmin             X-value of the minimum
-  !! \retval status           Status: 0-ok, 1-maximum number of iterations exceeded  (optional argument)
-  !! \retval verbose          Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  
-  !!                          (optional argument, default=2)
+  !! 
+  !! \param xmin      X-value of the minimum (output)
+  !! \param status    Status: 0-ok, 1-maximum number of iterations exceeded   (output, optional)
+  !! \param verbose   Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info
+  !!                  (output, optional argument, default=2)
+  !! 
+  !! \retval minimum_solver  The value of the minimum of the function func, to accuracy accur
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   
@@ -320,12 +323,13 @@ end module SUFR_solvers
 !***********************************************************************************************************************************
 !> \brief  Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
 !!
-!! \param   x1  
-!! \param   x2  
-!! \param   a1  
-!! \param   a2  
-!! \retval  y1  
-!! \retval  y2  
+!! \param  x1  
+!! \param  x2  
+!! \param  a1  
+!! \param  a2
+!! 
+!! \param  y1   (output)
+!! \param  y2   (output)
 
 
 pure subroutine golden_section(x1,x2, a1,a2, y1,y2)

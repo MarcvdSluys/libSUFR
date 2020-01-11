@@ -236,7 +236,9 @@ contains
   !! \param  data   1D array with data points
   !! \param  dMean  Mean of the data points (optional; will be computed if not provided)
   !! \param  mask   Mask to apply to data (optional)
-  !! \retval var    Variance of the data
+  !! \param  var    Variance of the data (output)
+  !!
+  !! \retval stDev  The standard deviation
   !!
   !! \see https://en.wikipedia.org/wiki/Standard_deviation
   
@@ -390,7 +392,7 @@ contains
   !! \param  var    Running variance (I/O)
   !! \param  data   New/current data point
   !! \param  num    Number of the current data point
-  !! \retval stDev  Current standard deviation (optional)
+  !! \param  stDev  Current standard deviation (output; optional)
   !!
   !! \see https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Na%C3%AFve_algorithm
   
@@ -425,13 +427,13 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Find a given probability range for a data array - the narrowest range that contains a given fraction of data points
   !!
-  !! \param  data   1D array of data points
-  !! \param  range  Probability range - e.g. 0.95 = 95% probability ~ "2-sigma"
+  !! \param data   1D array of data points
+  !! \param range  Probability range - e.g. 0.95 = 95% probability ~ "2-sigma"
   !!
-  !! \retval llim   Lower limit of probability range
-  !! \retval ulim   Upper limit of probability range
+  !! \param llim   Lower limit of probability range (output)
+  !! \param ulim   Upper limit of probability range (output)
   !!
-  !! \param  mask   Mask to apply to data (optional)
+  !! \param mask   Mask to apply to data (optional)
   
   subroutine prob_range(data, range, llim, ulim, mask)
     use SUFR_kinds, only: double
@@ -496,8 +498,8 @@ contains
   !! \param  data   1D array of data points
   !! \param  range  Probability range - e.g. 0.95 = 95% probability ~ "2-sigma"
   !!
-  !! \retval llim   Lower limit of probability range
-  !! \retval ulim   Upper limit of probability range
+  !! \param  llim   Lower limit of probability range (output)
+  !! \param  ulim   Upper limit of probability range (output)
   !!
   !! \param  mask   Mask to apply to data (optional)
   
@@ -573,8 +575,8 @@ contains
   !! \param  xMin   Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !! \param  xMax   Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !!
-  !! \retval xBin   Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval yBin   Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \param  xBin   Binned data, location of the bins.  The x values are the left side of the bin! (output)
+  !! \param  yBin   Binned data, height of the bins.    I/O so that the array size can be checked (output)
   
   subroutine bin_data_1d(xDat, Nbin, norm,mode,cumul, xMin,xMax, xBin,yBin)
     use SUFR_kinds, only: double
@@ -647,8 +649,8 @@ contains
   !! \param  xMin   Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !! \param  xMax   Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !!
-  !! \retval xBin   Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval yBin   Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \param  xBin   Binned data, location of the bins.  The x values are the left side of the bin! (output)
+  !! \param  yBin   Binned data, height of the bins.    I/O so that the array size can be checked (output)
   
   subroutine bin_data_1d_sp(xDat, Nbin, norm,mode,cumul, xMin,xMax, xBin,yBin)
     use SUFR_kinds, only: double
@@ -693,8 +695,8 @@ contains
   !! \param  xMin    Minimum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !! \param  xMax    Maximum value of the binning range.  Set xMin=xMax to auto-determine (I/O)
   !!
-  !! \retval xBin    Binned data, location of the bins.  The x values are the left side of the bin!
-  !! \retval yBin    Binned data, height of the bins.    I/O so that the array size can be checked
+  !! \param  xBin    Binned data, location of the bins.  The x values are the left side of the bin! (output)
+  !! \param  yBin    Binned data, height of the bins.    I/O so that the array size can be checked (output)
   !!
   !! \param  init    Initialisation call: true/false (data collection).  Optional; default=false.
   !! \param  weight  Add weight to the bin, rather than 1.  Optional; default=1.
@@ -779,8 +781,8 @@ contains
   !! \param yMin   Lower limit for the binning range in the y direction - autodetermine if yMin = yMax
   !! \param yMax   Upper limit for the binning range in the y direction - autodetermine if yMin = yMax
   !!
-  !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
-  !! \retval tr    Transformation elements for pgplot tr(6)
+  !! \param  z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders (output)
+  !! \param  tr    Transformation elements for pgplot tr(6) (output)
   !!
   !! \param weights  Weights to use when binning data, same size as xDat,yDat (optional)
   
@@ -881,8 +883,8 @@ contains
   !! \param yMin   Lower limit for the binning range in the y direction - autodetermine if yMin = yMax
   !! \param yMax   Upper limit for the binning range in the y direction - autodetermine if yMin = yMax
   !!
-  !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
-  !! \retval tr    Transformation elements for pgplot tr(6)
+  !! \param  z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders (output)
+  !! \param  tr    Transformation elements for pgplot tr(6) (output)
   !!
   !! \param weights  Weights to use when binning data, same size as xDat,yDat (optional)
   
@@ -941,11 +943,11 @@ contains
   !! \param yMin   Lower limit for the binning range in the y direction - autodetermine if yMin = yMax
   !! \param yMax   Upper limit for the binning range in the y direction - autodetermine if yMin = yMax
   !!
-  !! \retval z     Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders
+  !! \param z      Binned data set z(nxBin+1,nyBin+1) - this array may be larger than you expect - nbin bins have nbin+1 borders (output)
   !!
   !! \param init     Init mode: true/false (optional)
   !! \param weight   Weight to use when binning data, same size as xDat,yDat (optional)
-  !! \retval tr    Transformation elements for pgplot tr(6) (optional)
+  !! \param tr       Transformation elements for pgplot tr(6)  (output; optional)
   
   subroutine histogram_2d_onthefly(xDat,yDat, nxBin,nyBin, xMin,xMax,yMin,yMax, z,   init, weight,  tr)
     use SUFR_kinds, only: double

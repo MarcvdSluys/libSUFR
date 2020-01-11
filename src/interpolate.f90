@@ -112,12 +112,14 @@ contains
   !! \param x1  X value 1
   !! \param x2  X value 2
   !! \param x3  X value 3
+  !! 
   !! \param y1  Y value 1, belonging to x1
   !! \param y2  Y value 2, belonging to x2
   !! \param y3  Y value 3, belonging to x3
-  !! \retval a  Coefficient a in y = a*x^2 + b*x + c
-  !! \retval b  Coefficient b in y = a*x^2 + b*x + c
-  !! \retval c  Coefficient c in y = a*x^2 + b*x + c
+  !! 
+  !! \param a   Coefficient a in y = a*x^2 + b*x + c (output)
+  !! \param b   Coefficient b in y = a*x^2 + b*x + c (output)
+  !! \param c   Coefficient c in y = a*x^2 + b*x + c (output)
   
   pure subroutine perfect_parabolic_fit(x1,x2,x3, y1,y2,y3, a,b,c)
     use SUFR_kinds, only: double

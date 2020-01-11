@@ -314,7 +314,7 @@ contains
   !! \param  str_srch  Search string
   !! \param  str_repl  Replacement string
   !!
-  !! \retval status    Exit status: 0-ok, 1/2: could not open I/O file, 11/12: character array string too small
+  !! \param  status    Exit status: 0-ok, 1/2: could not open I/O file, 11/12: character array string too small (output)
   
   subroutine replace_string_in_textfile(file_in, file_out, str_srch, str_repl, status)
     use SUFR_system, only: error, find_free_io_unit
@@ -464,12 +464,14 @@ contains
     character :: fmt*(9)
     integer :: d2slen  !, status
     
-    !> -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
-    !! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
-    !!      but we need 3 since 100.0 must be printed - eps no longer needed?
-    !! -  - (sign(1_long,floor(number,long))-1)/2: space for negative sign
-    !! -  + decim: add the decimals to the total string length
-    !! -  + 1:     add the decimal separator
+    ! The length of dbl2str is derived as follows:
+    ! -  ceiling(log10(abs((number)))): 99 gives 2, 999 3, etc.
+    ! -  + 10.d0**(-decim)/2.d0: to catch rounding up.  E.g. 99.97 with decim=1 gives ceiling(log10(abs((number)))) = 2,
+    !      but we need 3 since 100.0 must be printed - eps no longer needed?
+    ! -  - (sign(1_long,floor(number,long))-1)/2: space for negative sign
+    ! -  + decim: add the decimals to the total string length
+    ! -  + 1:     add the decimal separator
+    
     character :: dbl2str*(max(ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))),1) -  &
          (sign(1_long,floor(number,long))-1)/2 + decim + 1)
     

@@ -184,7 +184,7 @@ contains
   !!
   !! \param  seed    The seed to generate the random number from.  
   !!                 Set seed<0 to initialise the generator; seed is updated between calls (int).
-  !! \retval str     The random string  (I/O: output str has length of input str, filled with random characters)
+  !! \param  str     The random string  (I/O: output str has length of input str, filled with random characters)
   
   subroutine ran_str(seed, str)
     implicit none

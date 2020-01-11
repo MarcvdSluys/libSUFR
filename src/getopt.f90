@@ -344,7 +344,7 @@ contains
   !!
   !! \param argNr  Number of the desired argument
   !!
-  !! \retval arg   Content of the desired argument (a word/string)
+  !! \param arg   Content of the desired argument (a word/string) (output)
   
   subroutine getopt_get_command_argument(argNr, arg)
     use SUFR_system, only: quit_program_error

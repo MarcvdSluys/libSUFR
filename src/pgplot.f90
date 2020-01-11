@@ -112,8 +112,8 @@ contains
   !!
   !! \param  horiz  Horizontal plot size in pixels
   !! \param  vert   Vertical plot size in pixels
-  !! \retval size   PGPlot plot size
-  !! \retval ratio  PGPlot plot ratio
+  !! \param  size   PGPlot plot size (output)
+  !! \param  ratio  PGPlot plot ratio (output)
   
   pure subroutine pghv2szrat_bitmap(horiz,vert, size,ratio)
     implicit none
@@ -132,8 +132,8 @@ contains
   !!
   !! \param  size   PGPlot plot size
   !! \param  ratio  PGPlot plot ratio
-  !! \retval horiz  Horizontal plot size in pixels
-  !! \retval vert   Vertical plot size in pixels
+  !! \param  horiz  Horizontal plot size in pixels (output)
+  !! \param  vert   Vertical plot size in pixels (output)
   
   pure subroutine pgszrat2hv_bitmap(size,ratio, horiz,vert)
     implicit none
@@ -151,11 +151,11 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert x,y screen dimensions to PGPlot paper size and ratio for a screen
   !!
-  !! \param horiz   Horizontal screen size (pixels)
-  !! \param vert    Vertical screen size (pixels)
-  !! \param dpi     Screen resolution in dots per inch
-  !! \retval size   PGPlot screen size
-  !! \retval ratio  PGPlot screen ratio
+  !! \param horiz  Horizontal screen size (pixels)
+  !! \param vert   Vertical screen size (pixels)
+  !! \param dpi    Screen resolution in dots per inch
+  !! \param size   PGPlot screen size (output)
+  !! \param ratio  PGPlot screen ratio (output)
   
   pure subroutine pghv2szrat_screen(horiz,vert, dpi, size,ratio)
     implicit none
@@ -173,11 +173,11 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert PGPlot paper size and ratio to screen dimensions
   !!
-  !! \param size    PGPlot screen size
-  !! \param ratio   PGPlot screen ratio
-  !! \param dpi     Screen resolution in dots per inch
-  !! \retval horiz  Horizontal screen size (pixels)
-  !! \retval vert   Vertical screen size (pixels)
+  !! \param size   PGPlot screen size
+  !! \param ratio  PGPlot screen ratio
+  !! \param dpi    Screen resolution in dots per inch
+  !! \param horiz  Horizontal screen size (pixels) (output)
+  !! \param vert   Vertical screen size (pixels) (output)
   
   pure subroutine pgszrat2hv_screen(size,ratio, dpi, horiz,vert)
     implicit none
