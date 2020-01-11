@@ -86,7 +86,7 @@ contains
   !!                 - a '.' if a non-option argument was found
   !!                 - a single character identifying the short version of the option identified (without the leading dash)
   !!
-  !! The following 'global' variable is set (accessible through the module SUFR_getopt):
+  !! The following 'global' variables are set (accessible through the module SUFR_getopt):
   !! - commandLine:  the full command line as a single string
   !! - curArg:       the current argument or option
   !! - optArg:       the argument, if required and present
