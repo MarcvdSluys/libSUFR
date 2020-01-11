@@ -1,7 +1,7 @@
 !> \file command_line.f90  Procedures to handle command-line options and arguments
 
 
-!  Copyright (c) 2002-2019  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2020  Marc van der Sluys - marc.vandersluys.nl
 !  
 !  This file is part of the libSUFR package,
 !  see: http://libsufr.sourceforge.net/
