@@ -42,6 +42,9 @@ contains
   !! \see
   !! - https://en.wikipedia.org/wiki/Drag_%28physics%29#Power
   !! - https://en.wikipedia.org/wiki/Bicycle_performance#Power_required
+  !! - http://www.sportsci.org/jour/9804/dps.html
+  !! - Charles Henry (2015-03-15). "Diagram of Crr as a function of V" - http://www.velomobil.ch/ch/sites/default/files/images/pages/reifenpruefstand/diagramm_cr_v.jpg
+  !!   - ~/diverse/software/Fortran/fit/07_Bicycle_tyre_resistance (used Schwalbe Ultremo 2x for fit)
   
   pure subroutine cycling_power(mass, slope, vair, vgr,  pwr_mech, pwr_air, pwr_climb)
     use SUFR_kinds, only: double
@@ -53,14 +56,15 @@ contains
     real(double) :: k1,k2,g, g_mass_vgr
     real(double) :: rho, surf,c_d, temp,press
     
-    k1   = 0.0053d0  ! lumped constant for all frictional losses (tires, bearings, chain), dimensionless
-    !k2   = 0.185d0   ! lumped constant for aerodynamic drag, kg/m, compute it below from T, P
+    !k1   = 0.0053d0  ! lumped constant for all frictional losses (tires, bearings, chain), dimensionless
+    k1 = 0.00267d0 + 0.001018d0 * vgr**0.46435d0  ! Schwalbe Ultremo 2x
     
     ! Compute the air density for the given temperature and pressure:
     temp  = 15.d0 + 273.15d0  ! Temperature in deg C -> K
     press = 1015.d0 * 100.d0  ! Pressure in mbar/hPa -> Pa
     rho = air_density(press, temp)  ! SI, kg/m^3
     
+    !k2   = 0.185d0   ! lumped constant for aerodynamic drag, kg/m, compute it below from T, P
     surf = 0.4d0  ! Typical surface of a rider, m^2
     c_d  = 0.7d0  ! Drag coefficient
     k2   = 0.5d0 * rho * surf * c_d  ! 1/2 rho A C_d  - A=0.4m^2, C_d=0.7  -  k2 = 0.1718 with these numbers (T=15°C,P=1015hPa,surf=0.4,c_d=0.7)
