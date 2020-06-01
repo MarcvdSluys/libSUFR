@@ -210,7 +210,7 @@ contains
     real(double), intent(in) :: wl,df
     integer, parameter :: nc = 6  ! Number of colours in the spectrum (violet, blue, green, yellow, orange, red)
     integer :: ic
-    real(double) :: wavelength2RGB(3), xIpol,dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(nc),CBdst(nc+1), RGB(3)
+    real(double) :: wavelength2RGB(3), xIpol,dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1), RGB(3)
     
     
     ! Set the boundaries of the colour bands and compute their centres and mutual distances:
@@ -234,6 +234,7 @@ contains
     
     
     ! Convert xIpol to RGB.  Use black as 'invisible', i.e. UV or IR:
+    RGB = [0.d0, 0.d0, 0.d0]  ! Ensure always defined
     if(xIpol.ge.0.d0 .and. xIpol.le.0.5d0) then
        RGB =                         [xIpol,           0.d0,       xIpol]       ! Black to violet    xIpol: 0.0 - 0.5
     else if(xIpol.le.1.0d0) then
