@@ -95,6 +95,43 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Print an error message to StdErr and stop the execution of the current program
+  !!
+  !! \param command  Command line to execute
+  !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
+  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  
+  subroutine execute_command_line_quit_on_error(command, wait, status)
+    implicit none
+    character, intent(in) :: command*(*)
+    logical, intent(in), optional :: wait
+    integer, intent(in), optional :: status
+    
+    integer :: exitstat, cmdstat, lstatus
+    character :: cmdmsg*(1024)
+    logical :: lwait
+    
+    ! Get optional variables:
+    lwait = .true.
+    lstatus = 1
+    if(present(wait)) lwait = wait
+    if(present(status)) lstatus = status
+    
+    ! Execute command:
+    cmdmsg = ''
+    call execute_command_line(command, lwait, exitstat, cmdstat, cmdmsg)
+    
+    if(lwait .and. exitstat.ne.0)  &
+         call quit_program_error('the command "'//trim(command)//'" was not executed correctly', lstatus)
+    
+    if(cmdstat.ne.0)  &
+         call quit_program_error('the command "'//trim(command)//'" could not be executed: '//trim(cmdmsg), lstatus)
+    
+  end subroutine execute_command_line_quit_on_error
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a syntax message to StdErr
   !!
   !! \param syntax  Description of syntax
