@@ -110,6 +110,7 @@ contains
     ! Default values:
     getopt = ''
     optArg = ''
+    curArg = ''
     
     Narg = getopt_command_argument_count()
     
@@ -208,6 +209,7 @@ contains
     ! Default values:
     getopt_long = ''
     optArg      = ''
+    curArg      = ''
     longOption  = ''
     
     ! Get the current command-line parameter:

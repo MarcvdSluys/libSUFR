@@ -6,9 +6,10 @@
 program getopt_long_example
   use SUFR_getopt, only: getopt_t, getopt_long, longOption, optArg, getopt_long_help
   implicit none
-  integer :: Np
+  integer :: nPosArg
   character :: option
-
+  logical, parameter :: debug = .true.  ! Print debug output
+  
   ! Set up the longopts struct to define the valid options: short option, long option, argument (0/1), short description:
   type(getopt_t) :: longopts(4) = [ &
        getopt_t('a', 'all',     0, 'Select all'),         &
@@ -16,7 +17,7 @@ program getopt_long_example
        getopt_t('h', 'help',    0, 'Print help'),         &
        getopt_t('',  'ignore',  0, '')                    ]
   
-  Np = 0
+  nPosArg = 0
   
   do  ! scan all the command-line parameters
      
@@ -37,28 +38,30 @@ program getopt_long_example
      case('!')  ! Unknown option (starting with "-" or "--")
         write(*,'(A)') 'WARNING: unknown option:  '//trim(optArg)//'  Use --help for a list of valid options'
      case('a')
-        write(*,'(A)') 'Found option:             '//trim(longOption)
+        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)
      case('f')
-        write(*,'(A)') 'Found option:             '//trim(longOption)//' '//trim(optArg)
+        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)//' '//trim(optArg)
      case('h')
         call getopt_long_help(longopts)  ! Print getopt_long help
      case('.')  ! Parameter is not an option (i.e., it doesn't start with "-" or "--")
-        write(*,'(A)') 'Found parameter:          '//trim(optArg)
-        Np = Np + 1
+        nPosArg = nPosArg + 1
+        if(debug) write(*,'(A,I0,A)') 'Found parameter ',nPosArg,':        '//trim(optArg)
      case default
         select case(longOption)
         case('--ignore')  ! Note that --ignore was not given a short equivalent
-        write(*,'(A)') 'Found option:             '//trim(longOption)
+        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)
         case default
            write(*,'(A)') 'Valid option unhandled:   '//trim(longOption)
         end select
      end select
   end do
   
-  if(Np.eq.0) then
-     write(*,'(A)') 'No parameters found'
-  else
-     write(*,'(I0,A)') Np, ' parameters found'
+  if(debug) then
+     if(nPosArg.eq.0) then
+        write(*,'(A)') 'No positional arguments found'
+     else
+        write(*,'(I0,A)') nPosArg, ' positional arguments found'
+     end if
   end if
   
 end program getopt_long_example
