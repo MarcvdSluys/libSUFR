@@ -4,9 +4,20 @@
 !> \brief  Example code demonstrating the use of the libSUFR getopt() implementation in Fortran.
 
 program getopt_example
+  use SUFR_constants, only: set_SUFR_constants
   use SUFR_getopt, only: getopt_t, getopt, optArg, getopt_help
+  use SUFR_getopt, only: getoptHelpHeader,getoptHelpSyntax
+  
   implicit none
   character :: option, optStr*(99)
+  
+  ! Set libSUFR constants:
+  call set_SUFR_constants()
+  
+  ! Set getopt help output lines:
+  getoptHelpHeader = 'present some possibilities for the libSUFR getopt implementation'
+  getoptHelpSyntax = '[long/short options] [positional arguments]'
+  ! getoptHelpFooter = 'this is a footer'  ! Don't print a footer by keeping the string empty.
   
   ! Set the option string for short options.  Only specify the character after the dash (e.g. 'a' for -a).  Characters followed
   !   by a colon (:) have a required argument:
@@ -25,7 +36,7 @@ program getopt_example
      ! Do different things depending on the option returned:
      select case(option)
      case('>')  ! Last parameter
-        if(command_argument_count().eq.0) call getopt_help(trim(optStr))  ! No parameters found - print help
+        if(command_argument_count().eq.0) call getopt_help(trim(optStr), 1,1)  ! No parameters found - print help with 1 empty line before/after
         exit
      case('!')  ! Unknown option (starting with "-" or "--")
         write(*,'(A)') 'WARNING: unknown option:  '//trim(optArg)//'  Use -h for a list of valid options'

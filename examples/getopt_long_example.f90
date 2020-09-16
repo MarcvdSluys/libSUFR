@@ -4,7 +4,10 @@
 !> \brief  Example code demonstrating the use of the libSUFR getopt_long() implementation in Fortran.
 
 program getopt_long_example
+  use SUFR_constants, only: set_SUFR_constants
   use SUFR_getopt, only: getopt_t, getopt_long, longOption, optArg, getopt_long_help
+  use SUFR_getopt, only: getoptHelpHeader,getoptHelpSyntax
+  
   implicit none
   integer :: nPosArg
   character :: option
@@ -17,8 +20,16 @@ program getopt_long_example
        getopt_t('h', 'help',    0, 'Print help'),         &
        getopt_t('',  'ignore',  0, '')                    ]
   
-  nPosArg = 0
   
+  ! Set libSUFR constants:
+  call set_SUFR_constants()
+  
+  ! Set getopt help output lines:
+  getoptHelpHeader = 'present some possibilities for the libSUFR getopt implementation'
+  getoptHelpSyntax = '[long/short options] [positional arguments]'
+  ! getoptHelpFooter = 'this is a footer'  ! Don't print a footer by keeping the string empty.
+  
+  nPosArg = 0
   do  ! scan all the command-line parameters
      
      ! getopt_long() returns a single character" ">","!",".", or the short-option character (e.g. "a" for -a).
@@ -33,7 +44,7 @@ program getopt_long_example
      ! Do different things depending on the option returned:
      select case(option)
      case('>')  ! Last parameter
-        if(command_argument_count().eq.0) call getopt_long_help(longopts)  ! No parameters found - print help
+        if(command_argument_count().eq.0) call getopt_long_help(longopts, 1,1)  ! No parameters found - print help with 1 empty line before/after
         exit
      case('!')  ! Unknown option (starting with "-" or "--")
         write(*,'(A)') 'WARNING: unknown option:  '//trim(optArg)//'  Use --help for a list of valid options'

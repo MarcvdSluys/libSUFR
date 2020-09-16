@@ -63,6 +63,10 @@ module SUFR_getopt
   character :: longOption*(longOptLen+2)    !< \brief The short or long option found, including leading dash(es)
   integer, save :: optCount = 0             !< \brief The current option count
   
+  character :: getoptHelpHeader*(999) = ''  !< \brief The header line for the message printed by getopt(_long)_help()
+  character :: getoptHelpSyntax*(999) = ''  !< \brief The syntax line for the message printed by getopt(_long)_help()
+  character :: getoptHelpFooter*(999) = ''  !< \brief The footer line for the message printed by getopt(_long)_help()
+  
   !> \brief Struct to define short and long options for getopt_long()
   type getopt_t
      character :: short             = ''  !< \brief The short option (single character, without the leading dash)
@@ -444,13 +448,41 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print a help list of all short options and their required arguments
   !!
-  !! \param optStr  Short-options string used for getopt()
+  !! \param optStr   Short-options string used for getopt()
+  !! \param lineBef  Number of lines to print before option list (default: 0)
+  !! \param lineAft  Number of lines to print after option list (default: 0)
+  !!
+  !! \note If the string variables getoptHelpHeader, getoptHelpSyntax or getoptHelpFooter are set, a header,
+  !! syntax or footer line is printed in addition to the options.  By default, the strings are empty and the
+  !! lines are not printed.
   
-  subroutine getopt_help(optStr)
+  
+  subroutine getopt_help(optStr, lineBef,lineAft)
+    use SUFR_constants, only: program_name
     implicit none
     character, intent(in) :: optStr*(*)
+    integer, intent(in), optional :: lineBef, lineAft
     character :: curChar
-    integer :: iChar
+    integer :: iLine,iChar
+    
+    ! Print empty lines:
+    if(present(lineBef)) then
+       if(lineBef.gt.0) then
+          do iLine=1,lineBef
+             write(*,*)
+          end do
+       end if
+    end if
+    
+    ! Print header:
+    if(getoptHelpHeader.ne.'') then
+       write(*,'(A)') trim(program_name)//': '//trim(getoptHelpHeader)
+    end if
+    
+    ! Print syntax:
+    if(getoptHelpSyntax.ne.'') then
+       write(*,'(A)') 'Syntax:  '//trim(program_name)//' '//trim(getoptHelpSyntax)
+    end if
     
     write(*,'(A)', advance='no') 'Available options: '
     do iChar=1,len_trim(optStr)
@@ -465,6 +497,20 @@ contains
     end do
     write(*,'(A)') '.'
     
+    ! Print footer:
+    if(getoptHelpFooter.ne.'') then
+       write(*,'(A)') trim(getoptHelpFooter)
+    end if
+    
+    ! Print empty lines:
+    if(present(lineAft)) then
+       if(lineAft.gt.0) then
+          do iLine=1,lineAft
+             write(*,*)
+          end do
+       end if
+    end if
+    
   end subroutine getopt_help
   !*********************************************************************************************************************************
   
@@ -475,20 +521,38 @@ contains
   !! \param longopts  Long-options struct used for getopt_long()
   !! \param lineBef   Number of lines to print before option list (default: 0)
   !! \param lineAft   Number of lines to print after option list (default: 0)
+  !!
+  !! \note If the string variables getoptHelpHeader, getoptHelpSyntax or getoptHelpFooter are set, a header,
+  !! syntax or footer line is printed in addition to the options.  By default, the strings are empty and the
+  !! lines are not printed.
   
   subroutine getopt_long_help(longopts, lineBef, lineAft)
+    use SUFR_constants, only: program_name
     implicit none
     type(getopt_t), intent(in) :: longopts(:)
     integer, intent(in), optional :: lineBef, lineAft
     type(getopt_t) :: curOpt
     integer :: iLine, iOpt, nChar, iSpc
     
+    ! Print empty lines:
     if(present(lineBef)) then
        if(lineBef.gt.0) then
           do iLine=1,lineBef
              write(*,*)
           end do
        end if
+    end if
+    
+    ! Print header:
+    if(getoptHelpHeader.ne.'') then
+       write(*,'(A)') trim(program_name)//': '//trim(getoptHelpHeader)
+       write(*,*)
+    end if
+    
+    ! Print syntax:
+    if(getoptHelpSyntax.ne.'') then
+       write(*,'(A)') 'Syntax:  '//trim(program_name)//' '//trim(getoptHelpSyntax)
+       write(*,*)
     end if
     
     write(*,'(A)') 'Available options:'
@@ -523,6 +587,13 @@ contains
        write(*,'(5x,A)') trim(curOpt%descr)
     end do
     
+    ! Print footer:
+    if(getoptHelpFooter.ne.'') then
+       write(*,*)
+       write(*,'(A)') trim(getoptHelpFooter)
+    end if
+    
+    ! Print empty lines:
     if(present(lineAft)) then
        if(lineAft.gt.0) then
           do iLine=1,lineAft
