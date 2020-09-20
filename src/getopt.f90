@@ -248,7 +248,7 @@ contains
              if(longopts(optI)%reqArg.gt.0 .and. .not.hasEql) then      ! Option requires an argument, not glued using =
                 
                 optCount = optCount+1
-                call getopt_get_command_argument(optCount, optArg)
+                call getopt_get_command_argument(optCount, optArg)      ! Fetch the current argument or option
                 
                 if(optCount.gt.Narg .or. optArg.eq.'') write(0,'(A)') 'WARNING: option --'//option//' requires an argument'
                 
@@ -283,7 +283,7 @@ contains
                 else  ! Next parameter should be argument
                    
                    optCount = optCount+1
-                   call getopt_get_command_argument(optCount, optArg)
+                   call getopt_get_command_argument(optCount, optArg)  ! Fetch the current argument or option
                    
                    if(optCount.gt.Narg .or. optArg.eq.'') write(0,'(A)') 'WARNING: option -'//option//' requires an argument'
                    
@@ -346,11 +346,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Returns the argNr-th command-line argument.
+  !> \brief  Returns the argNr-th command-line argument or option.
   !!
   !! \param argNr  Number of the desired argument
   !!
-  !! \param arg   Content of the desired argument (a word/string) (output)
+  !! \retval arg   Content of the desired argument (a word/string)
   
   subroutine getopt_get_command_argument(argNr, arg)
     use SUFR_system, only: quit_program_error
@@ -378,9 +378,69 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Extract and return an integer value from the argument optArg.  On error, report and abort.
+  
+  function getopt_optarg_to_int()
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    integer :: getopt_optarg_to_int, status
+    
+    ! Read the value from the string, and monitor the output status:
+    read(optArg,*, iostat=status) getopt_optarg_to_int
+    
+    ! In case of probem, report the error and abort the program:
+    if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid integer value as the argument of option '//trim(longOption)//', aborting.', 1)
+    
+  end function getopt_optarg_to_int
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Extract and return a real value from the argument optArg.  On error, report and abort.
+  
+  function getopt_optarg_to_real()
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    real :: getopt_optarg_to_real
+    integer :: status
+    
+    ! Read the value from the string, and monitor the output status:
+    read(optArg,*, iostat=status) getopt_optarg_to_real
+    
+    ! In case of probem, report the error and abort the program:
+    if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid value as the argument of option '//trim(longOption)//', aborting.', 1)
+    
+  end function getopt_optarg_to_real
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Extract and return a double value from the argument optArg.  On error, report and abort.
+  
+  function getopt_optarg_to_dbl()
+    use SUFR_kinds, only: double
+    use SUFR_system, only: quit_program_error
+    
+    implicit none
+    real(double) :: getopt_optarg_to_dbl
+    integer :: status
+    
+    ! Read the value from the string, and monitor the output status:
+    read(optArg,*, iostat=status) getopt_optarg_to_dbl
+    
+    ! In case of probem, report the error and abort the program:
+    if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid value as the argument of option '//trim(longOption)//', aborting.', 1)
+    
+  end function getopt_optarg_to_dbl
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Split combined short command-line options into several individual ones, e.g. "... -abc ..." -> "... -a -b -c ..."
   !!
-  !! \param CLoptStr  String containing (all) command-line options.
+  !! \param CLoptStr  String containing (all) command-line options (I/O).
   
   subroutine getopt_split_short_options(CLoptStr)
     use SUFR_dummy, only: dumdbl

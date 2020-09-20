@@ -5,6 +5,7 @@
 
 program getopt_long_example
   use SUFR_constants, only: set_SUFR_constants
+  use SUFR_system, only: quit_program_error  ! warn
   use SUFR_getopt, only: getopt_t, getopt_long, longOption, optArg, getopt_long_help
   use SUFR_getopt, only: getoptHelpHeader,getoptHelpSyntax
   
@@ -48,7 +49,8 @@ program getopt_long_example
         if(command_argument_count().eq.0) call getopt_long_help(longopts, 1,1)  ! No parameters found - print help with 1 empty line before/after
         exit
      case('!')  ! Unknown option (starting with "-" or "--")
-        write(*,'(A)') 'WARNING: unknown option:  '//trim(optArg)//'  Use --help for a list of valid options'
+        ! call warn('unknown option:  '//trim(optArg)//'  Use -h/--help for a list of valid options')  ! Warn only
+        call quit_program_error('unknown option:  '//trim(optArg)//'  Use -h/--help for a list of valid options', 1)  ! Throw error and abort
      case('a')
         if(getoptDebug) write(*,'(A)') 'Found option:             '//trim(longOption)
      case('f')
