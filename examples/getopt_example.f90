@@ -46,6 +46,7 @@ program getopt_example
         write(*,'(A)') 'Found option:             -'//option//' '//trim(optArg)
      case('h')
         call getopt_help(trim(optStr))
+        stop
      case('x')
         write(*,'(A)') 'Found option:             -'//option
      case('.')  ! Parameter is not an option (i.e., it doesn't start with "-" or "--")

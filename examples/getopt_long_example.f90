@@ -11,12 +11,13 @@ program getopt_long_example
   implicit none
   integer :: nPosArg
   character :: option
-  logical, parameter :: debug = .true.  ! Print debug output
+  logical, parameter :: getoptDebug = .true.  ! Print getopt debug output
   
   ! Set up the longopts struct to define the valid options: short option, long option, argument (0/1), short description:
-  type(getopt_t) :: longopts(4) = [ &
+  type(getopt_t) :: longopts(5) = [ &
        getopt_t('a', 'all',     0, 'Select all'),         &
        getopt_t('f', 'file',    1, 'Specify input file'), &
+       getopt_t('',  '',    0, ''), &  ! Add an empty line to the help output for better readability
        getopt_t('h', 'help',    0, 'Print help'),         &
        getopt_t('',  'ignore',  0, '')                    ]
   
@@ -49,25 +50,27 @@ program getopt_long_example
      case('!')  ! Unknown option (starting with "-" or "--")
         write(*,'(A)') 'WARNING: unknown option:  '//trim(optArg)//'  Use --help for a list of valid options'
      case('a')
-        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)
+        if(getoptDebug) write(*,'(A)') 'Found option:             '//trim(longOption)
      case('f')
-        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)//' '//trim(optArg)
+        if(getoptDebug) write(*,'(A)') 'Found option:             '//trim(longOption)//' '//trim(optArg)
      case('h')
-        call getopt_long_help(longopts)  ! Print getopt_long help
+        call getopt_long_help(longopts, 0,1)  ! Print getopt_long help with 0 leading empty lines and 1 trailing empty line
+        stop
      case('.')  ! Parameter is not an option (i.e., it doesn't start with "-" or "--")
         nPosArg = nPosArg + 1
-        if(debug) write(*,'(A,I0,A)') 'Found parameter ',nPosArg,':        '//trim(optArg)
-     case default
+        if(getoptDebug) write(*,'(A,I0,A)') 'Found parameter ',nPosArg,':        '//trim(optArg)
+        
+     case default  ! None of the short options above match - try to match long options
         select case(longOption)
         case('--ignore')  ! Note that --ignore was not given a short equivalent
-        if(debug) write(*,'(A)') 'Found option:             '//trim(longOption)
+           if(getoptDebug) write(*,'(A)') 'Found option:             '//trim(longOption)
         case default
-           write(*,'(A)') 'Valid option unhandled:   '//trim(longOption)
+           if(len_trim(longOption).ge.3) write(*,'(A)') 'Valid option unhandled:   '//trim(longOption)
         end select
      end select
   end do
   
-  if(debug) then
+  if(getoptDebug) then
      if(nPosArg.eq.0) then
         write(*,'(A)') 'No positional arguments found'
      else
