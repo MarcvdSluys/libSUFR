@@ -379,12 +379,17 @@ contains
   
   !*********************************************************************************************************************************
   !> \brief  Extract and return an integer value from the argument optArg.  On error, report and abort.
+  !!
+  !! \param  minValue  Minimum acceptable value for this argument (optional).
+  !! \param  maxValue  Maximum acceptable value for this argument (optional).
   
-  function getopt_optarg_to_int()
+  function getopt_optarg_to_int(minValue, maxValue)
     use SUFR_system, only: quit_program_error
+    use SUFR_text, only: int2str
     
     implicit none
     integer :: getopt_optarg_to_int, status
+    integer, intent(in), optional :: minValue,maxValue
     
     ! Read the value from the string, and monitor the output status:
     read(optArg,*, iostat=status) getopt_optarg_to_int
@@ -392,18 +397,34 @@ contains
     ! In case of probem, report the error and abort the program:
     if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid integer value as the argument of option '//trim(longOption)//', aborting.', 1)
     
+    ! Check value boundaries if desired:
+    if(present(minValue)) then
+       if(getopt_optarg_to_int.lt.minValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be lower than '//int2str(minValue)//', aborting.', 1)
+    end if
+    
+    if(present(maxValue)) then
+       if(getopt_optarg_to_int.gt.maxValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be higher than '//int2str(maxValue)//', aborting.', 1)
+    end if
+    
   end function getopt_optarg_to_int
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Extract and return a real value from the argument optArg.  On error, report and abort.
+  !!
+  !! \param  minValue  Minimum acceptable value for this argument (optional).
+  !! \param  maxValue  Maximum acceptable value for this argument (optional).
   
-  function getopt_optarg_to_real()
+  function getopt_optarg_to_real(minValue, maxValue)
     use SUFR_system, only: quit_program_error
+    use SUFR_text, only: real2str
     
     implicit none
     real :: getopt_optarg_to_real
+    real, intent(in), optional :: minValue,maxValue
     integer :: status
     
     ! Read the value from the string, and monitor the output status:
@@ -412,19 +433,35 @@ contains
     ! In case of probem, report the error and abort the program:
     if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid value as the argument of option '//trim(longOption)//', aborting.', 1)
     
+    ! Check value boundaries if desired:
+    if(present(minValue)) then
+       if(getopt_optarg_to_real.lt.minValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be lower than '//real2str(minValue, len_trim(optArg))//', aborting.', 1)
+    end if
+    
+    if(present(maxValue)) then
+       if(getopt_optarg_to_real.gt.maxValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be higher than '//real2str(maxValue, len_trim(optArg))//', aborting.', 1)
+    end if
+        
   end function getopt_optarg_to_real
   !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
   !> \brief  Extract and return a double value from the argument optArg.  On error, report and abort.
+  !!
+  !! \param  minValue  Minimum acceptable value for this argument (optional).
+  !! \param  maxValue  Maximum acceptable value for this argument (optional).
   
-  function getopt_optarg_to_dbl()
+  function getopt_optarg_to_dbl(minValue, maxValue)
     use SUFR_kinds, only: double
     use SUFR_system, only: quit_program_error
+    use SUFR_text, only: dbl2str
     
     implicit none
     real(double) :: getopt_optarg_to_dbl
+    real(double), intent(in), optional :: minValue,maxValue
     integer :: status
     
     ! Read the value from the string, and monitor the output status:
@@ -433,6 +470,17 @@ contains
     ! In case of probem, report the error and abort the program:
     if(status.ne.0) call quit_program_error('Error: '//trim(optArg)//' is an invalid value as the argument of option '//trim(longOption)//', aborting.', 1)
     
+    ! Check value boundaries if desired:
+    if(present(minValue)) then
+       if(getopt_optarg_to_dbl.lt.minValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be lower than '//dbl2str(minValue, len_trim(optArg))//', aborting.', 1)
+    end if
+    
+    if(present(maxValue)) then
+       if(getopt_optarg_to_dbl.gt.maxValue) call quit_program_error('Error: the argument of option '//trim(longOption)//' is '//trim(optArg)// &
+            ', but should not be higher than '//dbl2str(maxValue, len_trim(optArg))//', aborting.', 1)
+    end if
+        
   end function getopt_optarg_to_dbl
   !*********************************************************************************************************************************
   
