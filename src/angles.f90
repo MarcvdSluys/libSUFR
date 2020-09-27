@@ -222,6 +222,9 @@ contains
   !! \param l2  Longitude of object 2
   !! \param b1  Latitude of object 1
   !! \param b2  Latitude of object 2
+  !!
+  !! \see Celestial Mechanics in a Nutshell (CMiaNS), Sect.5.3: Angular distance and phase angle between two
+  !! celestial objects (CMiaNS.sf.net).
   
   pure function asep(l1,l2, b1,b2)
     use SUFR_kinds, only: double
