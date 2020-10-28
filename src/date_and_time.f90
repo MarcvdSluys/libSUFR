@@ -36,6 +36,8 @@ contains
   !! \param dd  The day (double)
   !!
   !! \retval  cal2jd  The Julian day number (double)
+  !!
+  !! \note  The Gregorian calendar is assumed to start on 1582-10-15.
   
   elemental function cal2jd(yy,mm,dd)
     use SUFR_kinds, only: double
@@ -142,6 +144,8 @@ contains
   !! \param year  The year
   !!
   !! \retval  year2jd  The Julian day number
+  !!
+  !! \note  The Gregorian calendar is assumed to start on 1582-10-15.
   
   elemental function year2jd(year)
     use SUFR_kinds, only: double
@@ -155,7 +159,7 @@ contains
     y = year - 1.d0
     
     b = 0
-    if(year .gt. 1582.d0+278.d0/365.25d0) then  ! Gregorian calendar starts on 1582-10-15 in this code
+    if(year .gt. 1582.d0+278.d0/365.25d0) then  ! Gregorian calendar starts on 1582-10-15
        a = floor(y/100.d0)
        b = 2 - a + floor(a/4.d0)
     end if
