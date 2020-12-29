@@ -178,23 +178,28 @@ module SUFR_constants
   real(double), parameter, public :: earthr = 6378136.6d2                   !< Equatorial radius of the Earth in cm, WGS84
   real(double), parameter, public :: si_earthr = earthr * 1.d-2             !< Equatorial radius of the Earth in cm, WGS84
   
-  !> \brief Equatorial diameters (cm)
+  !> \brief Planet equatorial diameters (cm)
   !! \note
   !! - may be redefined if (3) = Earth -> not a constant
   !! - Venus = 12103.6 + clouds? - e.g., Wikipedia
   real(double), public :: pland(0:9) = [3476.206d5, 4879.4d5, 12198.d5, 2*rsun, 6792.4d5, 142984.d5, 120536.d5, 51118.d5, 49528.d5, 2390.d5]
   
-  !> \brief Equatorial radii (cm) = pland/2.d0
+  !> \brief Planet equatorial radii (cm) = pland/2.d0
   !! \note  May be redefined if (3) = Earth -> not a constant
   real(double), public :: planr(0:9) != pland/2.d0
   
-  !> \brief Semi-major axes (cm)
+  !> \brief Planet semi-major axes (cm)
   real(double), parameter, public :: plana(0:9) = [384400.d0/au*km, 0.3871d0, 0.7233d0, 1.d0, 1.5237d0, 5.2028d0, 9.5388d0, 19.191d0, 30.061d0, 39.529d0]*au
   
-  !SI:
-  real(double), public :: si_pland(0:9)                                  !< Equatorial diameters (m)
-  real(double), public :: si_planr(0:9)                                  !< Equatorial radii (cm) = pland/2.d0
-  real(double), parameter, public :: si_plana(0:9) = plana(0:9) * 1.d-2  !< Semi-major axes (cm)
+  !> \brief Planet orbital periods (years - https://en.wikipedia.org/wiki/Orbital_period):
+  real(double), parameter, public :: planp(0:9) = [0.0748d0, 0.240846d0, 0.615198d0, 1.d0, 1.88082d0, 11.862d0, 29.4571d0, 84.0205d0, 164.8d0, 247.94d0]
+  
+  
+  ! SI:
+  real(double), public :: si_pland(0:9)                                    !< Planet equatorial diameters (m)
+  real(double), public :: si_planr(0:9)                                    !< Planet equatorial radii (m) = pland/2.d0
+  real(double), parameter, public :: si_plana(0:9) = plana(0:9) * 1.d-2    !< Planet semi-major axes (m)
+  real(double), parameter, public :: si_planp(0:9) = planp(0:9) * sidyear  !< Planet orbital periods (s)
   
   
   ! Satellites:
