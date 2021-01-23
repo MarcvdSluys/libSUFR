@@ -234,7 +234,7 @@ contains
     real(double) :: asep,dl,db,bb
     
     dl = rev2(l2-l1)
-    asep = acos(sin(b1)*sin(b2) + cos(b1)*cos(b2)*cos(dl))
+    asep = acos(min(max( sin(b1)*sin(b2) + cos(b1)*cos(b2)*cos(dl), -1.d0),1.d0))  ! Min/max: catch round-off errors leading to |arg|>1.
     
     if(asep.lt.3.d-3) then  ! for angles < 10'
        bb = rev2((b1+b2)/2.d0)
