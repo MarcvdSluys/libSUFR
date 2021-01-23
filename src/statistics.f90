@@ -1115,13 +1115,12 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the Poisson probability of k events occurring in a fixed interval for a known average rate lambda,
-  !!         and independently of the time since the last event:  P = λ^k e^-λ / k!
-  !!
+  !> \brief  Compute the Poisson probability of EXACTLY k events occurring in a fixed interval for a known
+  !!         average rate lambda, and independently of the time since the last event:  P = λ^k e^-λ / k!
+  !! 
   !! \param  k             Number of events
   !! \param  lambda        Average event rate
   !! \retval poisson_prob  Poisson probability  P = λ^k e^-λ / k!
-  
   
   pure function poisson_prob(k, lambda)
     use SUFR_kinds, only: double
@@ -1133,6 +1132,34 @@ contains
     poisson_prob = lambda**k * exp(-lambda) / faculty(k)  ! λ^k e^-λ / k!
     
   end function poisson_prob
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the cumulative Poisson probability of k OR FEWER events occurring in a fixed interval for
+  !!         a known average rate lambda, and independently of the time since the last event:
+  !!         P = Σ(i=0,k) λ^i e^-λ / i!
+  !! 
+  !! \param  k                   Number of events
+  !! \param  lambda              Average event rate
+  !! \retval poisson_prob_cumul  Poisson probability  P = Σ(i=0,k) λ^i e^-λ / i!
+  
+  pure function poisson_prob_cumul(k, lambda)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: k
+    real(double), intent(in) :: lambda
+    integer :: ki
+    real(double) :: poisson_prob_cumul
+    
+    poisson_prob_cumul = 0.d0
+    do ki=0,k  ! k or fewer -> 0, 1, ..., k
+       poisson_prob_cumul = poisson_prob_cumul + poisson_prob(ki, lambda)
+    end do
+    
+  end function poisson_prob_cumul
   !*********************************************************************************************************************************
   
   
