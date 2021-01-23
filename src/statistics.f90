@@ -1035,7 +1035,7 @@ contains
   !> \brief  Compute the faculty of an integer, returning a double-precision real
   !!
   !! \param  n        Number - can be up to 170 for double-precision reals (as opposed to 20 for long integers and 13 for integers)
-  !! \retval faculty  Faculty of n;  n!  -  in double precision
+  !! \retval faculty  Faculty of n;  n!  (double-precision real)
   
   pure function faculty(n)
     use SUFR_kinds, only: double
@@ -1054,7 +1054,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the binomial coefficient of n and k - result in double-precision real
+  !> \brief  Compute the binomial coefficient of n and k
   !!
   !! \param  n            Total number of trials;  n in "n choose k"
   !! \param  k            Number of succesful trials;  k in "n choose k"
@@ -1069,7 +1069,7 @@ contains
     integer :: lk, ik
     real(double) :: binom_coeff
     
-    !binom_coeff = faculty(n) / (faculty(k) * faculty(n-k))  ! [n! / k!(n-k)!]
+    ! binom_coeff = faculty(n) / (faculty(k) * faculty(n-k))  ! [n! / k!(n-k)!]
     
     if(k.lt.0 .or. k.gt.n) then
        binom_coeff = 0.d0
@@ -1092,11 +1092,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Compute the binomial probability of n and k, and probability p, result in double-precision real
+  !> \brief  Compute the binomial probability of n and k, and probability p
   !!
   !! \param  n           Total number of trials;  n in "n choose k"
   !! \param  k           Number of succesful trials;  k in "n choose k"
-  !! \param  p           probability of a succesful trial
+  !! \param  p           Probability of a succesful trial
   !! \retval binom_prob  Binomial probability  n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
   
   pure function binom_prob(n, k, p)
@@ -1109,6 +1109,33 @@ contains
     binom_prob = binom_coeff(n,k) * p**k * (1.d0-p)**(n-k)   ! n! / [k!(n-k)!] * p^k * (1-p)^(n-k)
     
   end function binom_prob
+  !*********************************************************************************************************************************
+  
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Compute the cumulative binomial probability of n and k OR FEWER, and probability p
+  !!
+  !! \param  n                 Total number of trials;  n in "n choose k"
+  !! \param  k                 Number of succesful trials OR FEWER;  k in "n choose k"
+  !! \param  p                 Probability of a succesful trial
+  !! \retval binom_cumul_prob  Cumulative binomial probability  Σ(i=0,k) n! / [i!(n-i)!] * p^i * (1-p)^(n-i)
+  
+  pure function binom_cumul_prob(n, k, p)
+    use SUFR_kinds, only: double
+    implicit none
+    integer, intent(in) :: n, k
+    real(double), intent(in) :: p
+    integer :: ki
+    real(double) :: binom_cumul_prob
+    
+    binom_cumul_prob = 0.d0
+    do ki=0,k
+       binom_cumul_prob = binom_cumul_prob + binom_prob(n, ki, p)  ! Probability of EXACTLY k succesful trials
+    end do
+    
+  end function binom_cumul_prob
   !*********************************************************************************************************************************
   
   
@@ -1144,7 +1171,7 @@ contains
   !! 
   !! \param  k                   Number of events
   !! \param  lambda              Average event rate
-  !! \retval poisson_prob_cumul  Poisson probability  P = Σ(i=0,k) λ^i e^-λ / i!
+  !! \retval poisson_prob_cumul  Cumulative Poisson probability  P = Σ(i=0,k) λ^i e^-λ / i!
   
   pure function poisson_prob_cumul(k, lambda)
     use SUFR_kinds, only: double
@@ -1156,7 +1183,7 @@ contains
     
     poisson_prob_cumul = 0.d0
     do ki=0,k  ! k or fewer -> 0, 1, ..., k
-       poisson_prob_cumul = poisson_prob_cumul + poisson_prob(ki, lambda)
+       poisson_prob_cumul = poisson_prob_cumul + poisson_prob(ki, lambda)  ! Probability of EXACTLY k events
     end do
     
   end function poisson_prob_cumul
