@@ -203,10 +203,10 @@ contains
        return
     end if
     
-    d  = int(dd)
+    d  = floor(dd)
     tm = (dd - dble(d))*24.d0
-    h  = int(tm)
-    m  = int((tm-h)*60.d0)
+    h  = floor(tm)
+    m  = floor((tm-h)*60.d0)
     s  = (tm-h-m/60.d0)*3600.d0
     
   end subroutine jd2ymdhms
