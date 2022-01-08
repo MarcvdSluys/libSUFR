@@ -527,7 +527,7 @@ contains
   !> \brief  Calculates ISO day of week (1 = Monday, ..., 7 = Sunday).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
   !!
   !! \param  jd0  Julian day number (double)
-  !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
+  !! \retval dow_ut  The day-of-week number, 1-7 for Mon-Sun (int)
   
   elemental function dow_iso(jd0)
     use SUFR_kinds, only: double

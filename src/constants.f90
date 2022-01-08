@@ -249,19 +249,19 @@ module SUFR_constants
   !> \brief Lower-case month names in English
   character, parameter, public :: enmonthsm(12)*(9) = ['january  ','february ','march    ','april    ','may      ','june     ','july     ','august   ','september','october  ','november ','december ']
   !> \brief Capitalised month abbreviations in English
-  character, parameter, public :: enmnts(12)*(3)    = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
-  !> \brief Lower-case month abbreviations in English
   character, parameter, public :: enmntsb(12)*(3)   = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  !> \brief Lower-case month abbreviations in English
+  character, parameter, public :: enmnts(12)*(3)    = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec']
     
   ! nl:
-  !> \brief Capitalised month names in Dutch
-  character, parameter, public :: nlmonths(12)*(9)  = ['januari  ','februari ','maart    ','april    ','mei      ','juni     ','juli     ','augustus ','september','oktober  ','november ','december ']
   !> \brief Lower-case month names in Dutch
+  character, parameter, public :: nlmonths(12)*(9)  = ['januari  ','februari ','maart    ','april    ','mei      ','juni     ','juli     ','augustus ','september','oktober  ','november ','december ']
+  !> \brief Capitalised month names in Dutch
   character, parameter, public :: nlmonthsb(12)*(9) = ['Januari  ','Februari ','Maart    ','April    ','Mei      ','Juni     ','Juli     ','Augustus ','September','Oktober  ','November ','December ']
   !> \brief Capitalised month abbreviations in Dutch
-  character, parameter, public :: nlmnts(12)*(3)    = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
-  !> \brief Lower-case month abbreviations in Dutch
   character, parameter, public :: nlmntsb(12)*(3)   = ['Jan','Feb','Mrt','Apr','Mei','Jun','Jul','Aug','Sep','Okt','Nov','Dec']
+  !> \brief Lower-case month abbreviations in Dutch
+  character, parameter, public :: nlmnts(12)*(3)    = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec']
   
   
   ! Days of the week:
