@@ -726,27 +726,29 @@ contains
     real(double) :: jd2gps
     integer :: Nleap
     
-    jd2gps = (jd - 2451544.5d0)*86400.d0 + 630720013.d0
+    jd2gps = (jd - 2451544.5d0)*86400.d0 + 630720013.d0  ! GPS time 630720013 = JD 2451544.5 = 2000-01-01
     
     if(jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
     
     Nleap = 0
-    if(jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1981
-    if(jd.lt.2445151.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1982
-    if(jd.lt.2445516.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1983
-    if(jd.lt.2446247.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1985
-    if(jd.lt.2447161.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1988
-    if(jd.lt.2447892.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1990
-    if(jd.lt.2448257.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1991
-    if(jd.lt.2448804.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1992
-    if(jd.lt.2449169.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1993
-    if(jd.lt.2449534.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1994
-    if(jd.lt.2450083.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1996
-    if(jd.lt.2450630.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1997
-    if(jd.lt.2451179.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1999
-    if(jd.ge.2453736.5d0) Nleap = Nleap + 1  ! Leap second on 1/1/2006
-    if(jd.ge.2454832.5d0) Nleap = Nleap + 1  ! Leap second on 1/1/2009
-    !if(jd.ge..5d0) Nleap = Nleap + 1  ! Leap second on 1//19
+    if(jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1981-07-01
+    if(jd.lt.2445151.5d0) Nleap = Nleap - 1  ! Leap second on 1982-07-01
+    if(jd.lt.2445516.5d0) Nleap = Nleap - 1  ! Leap second on 1983-07-01
+    if(jd.lt.2446247.5d0) Nleap = Nleap - 1  ! Leap second on 1985-07-01
+    if(jd.lt.2447161.5d0) Nleap = Nleap - 1  ! Leap second on 1988-01-01
+    if(jd.lt.2447892.5d0) Nleap = Nleap - 1  ! Leap second on 1990-01-01
+    if(jd.lt.2448257.5d0) Nleap = Nleap - 1  ! Leap second on 1991-01-01
+    if(jd.lt.2448804.5d0) Nleap = Nleap - 1  ! Leap second on 1992-07-01
+    if(jd.lt.2449169.5d0) Nleap = Nleap - 1  ! Leap second on 1993-07-01
+    if(jd.lt.2449534.5d0) Nleap = Nleap - 1  ! Leap second on 1994-07-01
+    if(jd.lt.2450083.5d0) Nleap = Nleap - 1  ! Leap second on 1996-01-01
+    if(jd.lt.2450630.5d0) Nleap = Nleap - 1  ! Leap second on 1997-07-01
+    if(jd.lt.2451179.5d0) Nleap = Nleap - 1  ! Leap second on 1999-01-01
+    if(jd.ge.2453736.5d0) Nleap = Nleap + 1  ! Leap second on 2006-01-01
+    if(jd.ge.2454832.5d0) Nleap = Nleap + 1  ! Leap second on 2009-01-01
+    if(jd.ge.2456109.5d0) Nleap = Nleap + 1  ! Leap second on 2012-07-01
+    if(jd.ge.2457204.5d0) Nleap = Nleap + 1  ! Leap second on 2015-07-01
+    if(jd.ge.2457754.5d0) Nleap = Nleap + 1  ! Leap second on 2017-01-01
     
     jd2gps = jd2gps + dble(Nleap)
     
@@ -775,21 +777,24 @@ contains
     if(gps2jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
     
     Nleap = 0
-    if(gps2jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1981
-    if(gps2jd.lt.2445151.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1982
-    if(gps2jd.lt.2445516.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1983
-    if(gps2jd.lt.2446247.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1985
-    if(gps2jd.lt.2447161.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1988
-    if(gps2jd.lt.2447892.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1990
-    if(gps2jd.lt.2448257.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1991
-    if(gps2jd.lt.2448804.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1992
-    if(gps2jd.lt.2449169.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1993
-    if(gps2jd.lt.2449534.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1994
-    if(gps2jd.lt.2450083.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1996
-    if(gps2jd.lt.2450630.5d0) Nleap = Nleap - 1  ! Leap second on 1/7/1997
-    if(gps2jd.lt.2451179.5d0) Nleap = Nleap - 1  ! Leap second on 1/1/1999
-    if(gps2jd.gt.2453736.5d0) Nleap = Nleap + 1  ! Leap second on 1/1/2006
-    if(gps2jd.gt.2454832.5d0) Nleap = Nleap + 1  ! Leap second on 1/1/2009
+    if(gps2jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1981-07-01
+    if(gps2jd.lt.2445151.5d0) Nleap = Nleap - 1  ! Leap second on 1982-07-01
+    if(gps2jd.lt.2445516.5d0) Nleap = Nleap - 1  ! Leap second on 1983-07-01
+    if(gps2jd.lt.2446247.5d0) Nleap = Nleap - 1  ! Leap second on 1985-07-01
+    if(gps2jd.lt.2447161.5d0) Nleap = Nleap - 1  ! Leap second on 1988-01-01
+    if(gps2jd.lt.2447892.5d0) Nleap = Nleap - 1  ! Leap second on 1990-01-01
+    if(gps2jd.lt.2448257.5d0) Nleap = Nleap - 1  ! Leap second on 1991-01-01
+    if(gps2jd.lt.2448804.5d0) Nleap = Nleap - 1  ! Leap second on 1992-07-01
+    if(gps2jd.lt.2449169.5d0) Nleap = Nleap - 1  ! Leap second on 1993-07-01
+    if(gps2jd.lt.2449534.5d0) Nleap = Nleap - 1  ! Leap second on 1994-07-01
+    if(gps2jd.lt.2450083.5d0) Nleap = Nleap - 1  ! Leap second on 1996-01-01
+    if(gps2jd.lt.2450630.5d0) Nleap = Nleap - 1  ! Leap second on 1997-07-01
+    if(gps2jd.lt.2451179.5d0) Nleap = Nleap - 1  ! Leap second on 1999-01-01
+    if(gps2jd.gt.2453736.5d0) Nleap = Nleap + 1  ! Leap second on 2006-01-01
+    if(gps2jd.gt.2454832.5d0) Nleap = Nleap + 1  ! Leap second on 2009-01-01
+    if(gps2jd.gt.2456109.5d0) Nleap = Nleap + 1  ! Leap second on 2012-07-01
+    if(gps2jd.gt.2457204.5d0) Nleap = Nleap + 1  ! Leap second on 2015-07-01
+    if(gps2jd.gt.2457754.5d0) Nleap = Nleap + 1  ! Leap second on 2017-01-01
     
     gps2jd = gps2jd - dble(Nleap)/86400.d0       ! s -> days
     
