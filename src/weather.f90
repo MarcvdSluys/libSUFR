@@ -26,6 +26,32 @@ module SUFR_weather
   save
   
 contains
+
+
+  !*********************************************************************************************************************************
+  !> \brief  Compute the air pressure for a given elevation and pressure at sea level
+  !!
+  !! \param elev           Elevation w.r.t. sea level (m)
+  !! \param press0         Air pressure at sea level (e.g. mbar)
+  !! \retval air_pressure  Air pressure at the given elevation (same as press0, default: mbar)
+  !!
+  !! \see https://en.wikipedia.org/wiki/Scale_height
+  
+  pure function air_pressure(elev, press0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: elev
+    real(double), intent(in), optional :: press0
+    real(double) :: air_pressure, press00
+    
+    press00 = 1010  ! 1010 mbar by default
+    if(present(press0)) press00 = press0
+    
+    air_pressure = press0*exp(-elev/8500.d0)  ! 8500m: typical pressure scale height for Earth's atmosphere
+    
+  end function air_pressure
+  !*********************************************************************************************************************************
+  
   
   
   !*********************************************************************************************************************************
