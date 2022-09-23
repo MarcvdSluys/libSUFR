@@ -29,8 +29,9 @@ contains
   
   
   !***********************************************************************************************************************************
-  !> \brief  Compute the reflectance for a transition from a medium with refractive index Nref1 to one with Nref2, under an angle ang.
-  !!         Optionally, compute the transmittance, and the polarised components.  The media are assumed to be non-magnetic.
+  !> \brief  Compute the reflectance for the transition from a medium with refractive index Nref1 to one with
+  !!         Nref2, under an incident angle ang.  Optionally, compute the transmittance, and the polarised
+  !!         components.  The media are assumed to be non-magnetic.
   !!
   !! \param angI   Angle of incidence (rad)
   !! \param Nref1  Refractive index of first medium, incoming ray
