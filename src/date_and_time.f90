@@ -716,39 +716,41 @@ contains
   !!
   !! \param jd  Julian day (UT)
   !!
-  !! \todo Check leap seconds since 2009
+  !! \todo Check: leap seconds taken into account until 2022.
   
   function jd2gps(jd)
     use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: jd
-    real(double) :: jd2gps
+    real(double) :: jd1980, jd2gps
     integer :: Nleap
     
-    jd2gps = (jd - 2451544.5d0)*86400.d0 + 630720013.d0  ! GPS time 630720013 = JD 2451544.5 = 2000-01-01
+    jd1980 = cal2jd(1980,1,6.d0)
+    jd2gps = (jd - jd1980)*86400.d0  ! GPS time w/o leap seconds
     
-    if(jd.lt.2444239.5d0) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
+    if(jd.lt.jd1980) &
+         write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-06'
     
     Nleap = 0
-    if(jd.lt.2444786.5d0) Nleap = Nleap - 1  ! Leap second on 1981-07-01
-    if(jd.lt.2445151.5d0) Nleap = Nleap - 1  ! Leap second on 1982-07-01
-    if(jd.lt.2445516.5d0) Nleap = Nleap - 1  ! Leap second on 1983-07-01
-    if(jd.lt.2446247.5d0) Nleap = Nleap - 1  ! Leap second on 1985-07-01
-    if(jd.lt.2447161.5d0) Nleap = Nleap - 1  ! Leap second on 1988-01-01
-    if(jd.lt.2447892.5d0) Nleap = Nleap - 1  ! Leap second on 1990-01-01
-    if(jd.lt.2448257.5d0) Nleap = Nleap - 1  ! Leap second on 1991-01-01
-    if(jd.lt.2448804.5d0) Nleap = Nleap - 1  ! Leap second on 1992-07-01
-    if(jd.lt.2449169.5d0) Nleap = Nleap - 1  ! Leap second on 1993-07-01
-    if(jd.lt.2449534.5d0) Nleap = Nleap - 1  ! Leap second on 1994-07-01
-    if(jd.lt.2450083.5d0) Nleap = Nleap - 1  ! Leap second on 1996-01-01
-    if(jd.lt.2450630.5d0) Nleap = Nleap - 1  ! Leap second on 1997-07-01
-    if(jd.lt.2451179.5d0) Nleap = Nleap - 1  ! Leap second on 1999-01-01
-    if(jd.ge.2453736.5d0) Nleap = Nleap + 1  ! Leap second on 2006-01-01
-    if(jd.ge.2454832.5d0) Nleap = Nleap + 1  ! Leap second on 2009-01-01
-    if(jd.ge.2456109.5d0) Nleap = Nleap + 1  ! Leap second on 2012-07-01
-    if(jd.ge.2457204.5d0) Nleap = Nleap + 1  ! Leap second on 2015-07-01
-    if(jd.ge.2457754.5d0) Nleap = Nleap + 1  ! Leap second on 2017-01-01
+    if(jd.ge.cal2jd(1981,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1981-07-01
+    if(jd.ge.cal2jd(1982,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1982-07-01
+    if(jd.ge.cal2jd(1983,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1983-07-01
+    if(jd.ge.cal2jd(1985,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1985-07-01
+    if(jd.ge.cal2jd(1988,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 1988-01-01
+    if(jd.ge.cal2jd(1990,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 1990-01-01
+    if(jd.ge.cal2jd(1991,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 1991-01-01
+    if(jd.ge.cal2jd(1992,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1992-07-01
+    if(jd.ge.cal2jd(1993,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1993-07-01
+    if(jd.ge.cal2jd(1994,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1994-07-01
+    if(jd.ge.cal2jd(1996,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 1996-01-01
+    if(jd.ge.cal2jd(1997,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1997-07-01
+    if(jd.ge.cal2jd(1999,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 1999-01-01
+    if(jd.ge.cal2jd(2006,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 2006-01-01
+    if(jd.ge.cal2jd(2009,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 2009-01-01
+    if(jd.ge.cal2jd(2012,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 2012-07-01
+    if(jd.ge.cal2jd(2015,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 2015-07-01
+    if(jd.ge.cal2jd(2017,1,1.d0)) Nleap = Nleap + 1  ! Leap second on 2017-01-01
     
     jd2gps = jd2gps + dble(Nleap)
     
