@@ -730,7 +730,7 @@ contains
     jd2gps = (jd - jd1980)*86400.d0  ! GPS time w/o leap seconds
     
     if(jd.lt.jd1980) &
-         write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-06'
+         write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-06.'
     
     Nleap = 0
     if(jd.ge.cal2jd(1981,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1981-07-01
@@ -777,7 +777,7 @@ contains
     jd1980 = cal2jd(1980,1,6.d0)        ! Start of GPS time
     gps2jd = GPStime/86400.d0 + jd1980  ! GPS time, w/o leap seconds
     
-    if(gps2jd.lt.jd1980) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-01'
+    if(gps2jd.lt.jd1980) write(0,*) 'Warning: Leap seconds are not taken into account when computing GPS time before 1980-01-06.'
     
     Nleap = 0
     if(gps2jd.ge.cal2jd(1981,7,1.d0)) Nleap = Nleap + 1  ! Leap second on 1981-07-01
