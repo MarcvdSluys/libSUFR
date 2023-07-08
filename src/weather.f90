@@ -153,9 +153,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the dew point from the temperature and relative humidity
   !!
-  !! \param  temp       Air temperature (degrees Celcius)
+  !! \param  temp       Air temperature (degrees Celsius)
   !! \param  RH         Relative humidity (fraction)
-  !! \retval dew_point  Dew point (degrees Celcius)
+  !! \retval dew_point  Dew point (degrees Celsius)
   !!
   !! \see http://en.wikipedia.org/wiki/Dew_point
   
@@ -179,7 +179,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the saturated water-vapor density in air for a given temperature
   !!
-  !! \param  temp                           Air temperature (degrees Celcius)
+  !! \param  temp                           Air temperature (degrees Celsius)
   !! \retval water_vapor_saturated_density  Saturated water-vapor density (g/m^3)
   !!
   !! \see http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3

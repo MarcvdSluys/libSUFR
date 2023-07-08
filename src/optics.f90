@@ -118,9 +118,9 @@ contains
     real(double) :: S,T, Omega, A,B,C,X, A1,A2,Theta,Y, Psv, Pv
     real(double) :: D,E,F,G, Ns,Ntp
     
-    T = temperature + 273.15d0  ! deg Celcius -> Kelvin
+    T = temperature + 273.15d0  ! deg Celsius -> Kelvin
     
-    if(temperature.ge.0.d0) then  ! Above 0deg Celcius;  use IAPWS model:
+    if(temperature.ge.0.d0) then  ! Above 0deg Celsius;  use IAPWS model:
        Omega = T - 2.38555575678d-1/(T-6.50175348448d2)
        A =                  Omega**2 + 1.16705214528d3*Omega - 7.24213167032d5
        B = -1.70738469401d1*Omega**2 + 1.20208247025d4*Omega - 3.23255503223d6

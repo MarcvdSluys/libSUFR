@@ -56,7 +56,7 @@ module SUFR_constants
   real(double), parameter, public :: r2mas = r2as*1000.0_dbl !< Radians to milliarcseconds
   real(double), parameter, public :: mas2r = one/r2mas       !< Milliarcseconds to radians
   
-  real(double), parameter, public :: c2k = 273.15d0          !< Degrees Celcius to Kelvin
+  real(double), parameter, public :: c2k = 273.15d0          !< Degrees Celsius to Kelvin
   
   
   ! Mathematical/general constants - single precision:
@@ -84,7 +84,7 @@ module SUFR_constants
   real, parameter, public :: rr2mas = real(r2mas)            !< Radians to milliarcseconds
   real, parameter, public :: rmas2r = real(mas2r)            !< Milliarcseconds to radians
   
-  real, parameter, public :: rc2k = real(c2k)                !< Degrees Celcius to Kelvin
+  real, parameter, public :: rc2k = real(c2k)                !< Degrees Celsius to Kelvin
   
   
   

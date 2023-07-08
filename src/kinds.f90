@@ -37,19 +37,19 @@ module SUFR_kinds
   integer, parameter :: dbl = selected_real_kind(15,307)     ! Precision = 15, range = 307
   
   ! Maximum integer and real kinds:
-  !integer :: intkindmax, realkindmax
+  ! integer :: intkindmax, realkindmax
   integer, parameter :: intkindmax = max(selected_int_kind(9),selected_int_kind(18),selected_int_kind(38),selected_int_kind(99))
   integer, parameter :: realkindmax = max(selected_real_kind(6),selected_real_kind(15),selected_real_kind(18), &
        selected_real_kind(31),selected_real_kind(33),selected_real_kind(99))
   ! Problem with g95: not all functions have been defined in the maximum accuracy yet!
-  !integer, parameter :: realmaxkind = double  ! If the above doesn't work
+  ! integer, parameter :: realmaxkind = double  ! If the above doesn't work
 
 contains
   
   
   !*********************************************************************************************************************************
   !> \brief  Get the kinds of the most accurate integer and real for the current compiler/system
-  !!
+  !! 
   !! \param ikindmax  Maximum integer kind (output)
   !! \param rkindmax  Maximum real kind (output)
   !! 
@@ -72,7 +72,7 @@ contains
     do rng=1,1000000
        kind = selected_int_kind(rng)
        if(kind.lt.0) exit
-       !rngmax   = rng
+       ! rngmax   = rng
        ikindmax = kind
     end do
     
@@ -81,7 +81,7 @@ contains
     do acc=1,10000
        kind = selected_real_kind(acc,rng)
        if(kind.lt.0) exit
-       !accmax   = acc
+       ! accmax   = acc
        rkindmax = kind
     end do
     
@@ -89,7 +89,7 @@ contains
     do rng=1,1000000
        kind = selected_real_kind(acc,rng)
        if(kind.lt.0) exit
-       !rngmax   = rng
+       ! rngmax   = rng
        rkindmax2 = kind
     end do
     
