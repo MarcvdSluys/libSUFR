@@ -19,7 +19,7 @@
 
 
 !***********************************************************************************************************************************
-!> \brief  Procedures to handle PGPlot (sceen) settings
+!> \brief  Procedures to handle PGPlot (screen) settings
 
 module SUFR_pgplot
   implicit none

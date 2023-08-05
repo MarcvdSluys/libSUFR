@@ -381,14 +381,18 @@ contains
   !! \param xmax  Maximum of plot range in x (output)
   !! \param ymin  Minimum of plot range in y (output)
   !! \param ymax  Maximum of plot range in y (output)
+  !!
+  !! \param dx    Range width of x (xmax-xmin; output, optional)
+  !! \param dy    Range wifth of y (ymax-ymin; output, optional)
   
-  pure subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax)
+  pure subroutine plot_ranges(plx,ply, ddx,ddy,  xmin,xmax, ymin,ymax, dx,dy)
     use SUFR_kinds, only: double
     
     implicit none
     real(double), intent(in) :: plx(:),ply(:), ddx,ddy
     real(double), intent(out) :: xmin,xmax, ymin,ymax
-    real(double):: dx,dy
+    real(double), intent(out), optional :: dx,dy
+    real(double) :: dx1,dy1
     
     xmin = minval(plx)
     xmax = maxval(plx)
@@ -397,9 +401,9 @@ contains
        xmin = xmin * (1.d0-ddx)
        xmax = xmax * (1.d0+ddx)
     else
-       dx   = xmax-xmin
-       xmin = xmin - dx*ddx
-       xmax = xmax + dx*ddx
+       dx1  = xmax - xmin
+       xmin = xmin - dx1*ddx
+       xmax = xmax + dx1*ddx
     end if
     
     
@@ -410,10 +414,14 @@ contains
        ymin = ymin * (1.d0-ddy)
        ymax = ymax * (1.d0+ddy)
     else
-       dy   = ymax-ymin
-       ymin = ymin - dy*ddy
-       ymax = ymax + dy*ddy
+       dy1  = ymax - ymin
+       ymin = ymin - dy1*ddy
+       ymax = ymax + dy1*ddy
     end if
+    
+    ! Optional return values:
+    if(present(dx)) dx = xmax - xmin
+    if(present(dy)) dy = ymax - ymin
     
   end subroutine plot_ranges
   !*********************************************************************************************************************************
