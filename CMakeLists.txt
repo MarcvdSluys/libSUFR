@@ -22,7 +22,7 @@
 ##    $ make install
 
 
-cmake_minimum_required( VERSION 2.8 FATAL_ERROR )
+cmake_minimum_required( VERSION 3.0 FATAL_ERROR )
 
 # Set build type. Do this *before* we set the project name:
 if( NOT CMAKE_BUILD_TYPE )
