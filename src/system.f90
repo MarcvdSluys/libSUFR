@@ -538,15 +538,15 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get date and time from the system clock
   !!
-  !! \retval year    Current year CE
-  !! \retval month   Current month
-  !! \retval day     Current day of month
+  !! \param year    Current year CE
+  !! \param month   Current month
+  !! \param day     Current day of month
   !!
-  !! \retval hour    Current hour of day
-  !! \retval minute  Current minute of time
-  !! \retval second  Current second of time
+  !! \param hour    Current hour of day
+  !! \param minute  Current minute of time
+  !! \param second  Current second of time
   !!
-  !! \retval tz      Time zone in hours (optional)
+  !! \param tz      Time zone in hours (optional)
   
   subroutine system_time(year,month,day, hour,minute,second, tz)
     use SUFR_kinds, only: double
@@ -792,7 +792,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Find the first unused I/O unit larger than 100
   !!
-  !! \retval unit  I/O unit; unit > 100
+  !! \param unit  I/O unit; unit > 100 (output)
   
   subroutine find_free_io_unit(unit)
     implicit none
