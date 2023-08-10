@@ -1,7 +1,7 @@
 !> \file weather.f90  Procedures to deal with weather
 
 
-!  Copyright (c) 2002-2020  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2023  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: http://libsufr.sourceforge.net/
@@ -153,23 +153,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the dew point from the temperature and relative humidity
   !!
-  !! \param  temp       Air temperature (degrees Celsius)
+  !! \param  tempc      Air temperature (degrees Celsius)
   !! \param  RH         Relative humidity (fraction)
   !! \retval dew_point  Dew point (degrees Celsius)
   !!
   !! \see http://en.wikipedia.org/wiki/Dew_point
   
-  pure function dew_point(temp, RH)
+  elemental function dew_point(tempc, RH)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in) :: temp, RH
-    real(double) :: dew_point, aa, bb, gam
+    real(double), intent(in) :: tempc, RH
+    real(double) :: dew_point, temp0, tempfac, gam
     
-    aa  = 17.27d0
-    bb  = 273.7d0
-    gam = aa * temp/(bb+temp) + log(rh)
+    temp0  = 273.7d0
+    tempfac  = 17.27d0
+    gam = tempfac * tempc/(temp0+tempc) + log(rh)
     
-    dew_point = bb * gam/(aa-gam)
+    dew_point = temp0 * gam/(tempfac-gam)
     
   end function dew_point
   !*********************************************************************************************************************************
@@ -179,18 +179,19 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the saturated water-vapor density in air for a given temperature
   !!
-  !! \param  temp                           Air temperature (degrees Celsius)
+  !! \param  tempc                          Air temperature (degrees Celsius)
   !! \retval water_vapor_saturated_density  Saturated water-vapor density (g/m^3)
   !!
   !! \see http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3
   
-  pure function water_vapor_saturated_density(temp)
+  elemental function water_vapor_saturated_density(tempc)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in) :: temp
+    real(double), intent(in) :: tempc
     real(double) :: water_vapor_saturated_density
     
-    water_vapor_saturated_density = 5.018d0 + 0.32321d0*temp + 8.1847d-3*temp**2 + 3.1243d-4*temp**3
+    water_vapor_saturated_density = 4.85684d0 + 3.32664d-1 * tempc + 1.00885d-2 * tempc**2 + &
+         1.89345d-4 * tempc**3 + 1.09606d-6 * tempc**4 + 1.83396d-8 * tempc**5
     
   end function water_vapor_saturated_density
   !*********************************************************************************************************************************
