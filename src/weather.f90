@@ -182,7 +182,16 @@ contains
   !! \param  tempc                          Air temperature (degrees Celsius)
   !! \retval water_vapor_saturated_density  Saturated water-vapor density (g/m^3)
   !!
-  !! \see http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3
+  !! \note
+  !! - uses data from http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3:
+  !!   - for T= -10 - +60°C.
+  !! - drops to 0 below T~-25°C;
+  !! - significantly better results than original fit (3rd order polynomial):
+  !!   - for T<~-15°C and T>~45°C: by eye;
+  !!   - for -10°C < T < 60°C (range original fit -0°C < T < 40°C):
+  !!     - typical sigma 0.116 (T=0-40°C) -> 0.030 g/m^3 (T=-10-60°C);
+  !!     - max. abs. deviation: 0.168 g/m^3 (T=0-40°C; @T=0°C)  ->  0.0445 g/m^3 (T=-10-60°C; @T=25°C)
+  !!     - max. rel. deviation: 3.46  %     (T=0-40°C; @T=0°C)  ->  0.194  %     (T=-10-60°C; @T=25°C)
   
   elemental function water_vapor_saturated_density(tempc)
     use SUFR_kinds, only: double
