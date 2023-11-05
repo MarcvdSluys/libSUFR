@@ -387,9 +387,12 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print time as string in hh:mm, input in hours
+  !> \brief Print time as string in hh:mm, input in hours.
   !!
   !! \param time  Time (h)
+  !!
+  !! \notes
+  !! - Prints '--:--' for time=0!  Use hhm() to avoid this.
   
   pure function hm(time)
     use SUFR_kinds, only: double
