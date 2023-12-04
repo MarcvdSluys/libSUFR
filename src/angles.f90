@@ -216,12 +216,12 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculate the angular separation between two objects with given longitudes and latitudes
+  !> \brief  Calculate the angular separation between two objects with given longitudes and latitudes.
   !!
-  !! \param l1  Longitude of object 1
-  !! \param l2  Longitude of object 2
-  !! \param b1  Latitude of object 1
-  !! \param b2  Latitude of object 2
+  !! \param l1  Longitude of object 1 (rad).
+  !! \param l2  Longitude of object 2 (rad).
+  !! \param b1  Latitude of object 1 (rad).
+  !! \param b2  Latitude of object 2 (rad).
   !!
   !! \see Celestial Mechanics in a Nutshell (CMiaNS), Sect.5.3: Angular distance and phase angle between two
   !! celestial objects (CMiaNS.sf.net).
@@ -249,18 +249,18 @@ contains
   !*********************************************************************************************************************************
   !> \brief Calculates the position angle of object 2 with respect to object 1, COUNTERCLOCKWISE from the north
   !!
-  !! \param l1  Longitude of object 1 - RA if measuring from the north
-  !! \param l2  Longitude of object 2 - RA if measuring from the north
-  !! \param b1  Latitude of object 1 - Dec if measuring from the north
-  !! \param b2  Latitude of object 2 - Dec if measuring from the north
+  !! \param lon1  Longitude of object 1 - RA if measuring from the north (rad)
+  !! \param lon2  Longitude of object 2 - RA if measuring from the north (rad)
+  !! \param lat1  Latitude of object 1 - Dec if measuring from the north (rad)
+  !! \param lat2  Latitude of object 2 - Dec if measuring from the north (rad)
   
-  pure function calpa(l1,l2,b1,b2)
+  pure function calpa(lon1,lon2,lat1,lat2)
     implicit none
-    real(double), intent(in) :: l1,l2,b1,b2
-    real(double) :: calpa,dl
+    real(double), intent(in) :: lon1,lon2,lat1,lat2
+    real(double) :: calpa,dlon
     
-    dl = l2-l1
-    calpa = atan2( sin(dl),  cos(b1)*tan(b2) - sin(b1)*cos(dl) )
+    dlon  = lon2-lon1
+    calpa = atan2( sin(dlon),  cos(lat1)*tan(lat2) - sin(lat1)*cos(dlon) )
     
   end function calpa
   !*********************************************************************************************************************************
