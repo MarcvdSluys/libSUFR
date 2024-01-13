@@ -391,7 +391,7 @@ contains
   !!
   !! \param time  Time (h)
   !!
-  !! \notes
+  !! \note
   !! - Prints '--:--' for time=0!  Use hhm() to avoid this.
   
   pure function hm(time)

@@ -190,8 +190,8 @@ contains
   !!   - for T<~-15°C and T>~45°C: by eye;
   !!   - for -10°C < T < 60°C (range original fit -0°C < T < 40°C):
   !!     - typical sigma 0.116 (T=0-40°C) -> 0.030 g/m^3 (T=-10-60°C);
-  !!     - max. abs. deviation: 0.168 g/m^3 (T=0-40°C; @T=0°C)  ->  0.0445 g/m^3 (T=-10-60°C; @T=25°C)
-  !!     - max. rel. deviation: 3.46  %     (T=0-40°C; @T=0°C)  ->  0.194  %     (T=-10-60°C; @T=25°C)
+  !!     - max. abs. deviation: 0.168 g/m^3 (T=0-40°C; \@T=0°C)  ->  0.0445 g/m^3 (T=-10-60°C; \@T=25°C)
+  !!     - max. rel. deviation: 3.46  %     (T=0-40°C; \@T=0°C)  ->  0.194  %     (T=-10-60°C; \@T=25°C)
   
   elemental function water_vapor_saturated_density(tempc)
     use SUFR_kinds, only: double
