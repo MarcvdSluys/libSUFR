@@ -437,7 +437,7 @@ contains
   
   subroutine prob_range(data, range, llim, ulim, mask)
     use SUFR_kinds, only: double
-    use SUFR_system, only: quit_program_error, error
+    use SUFR_system, only: quit_program_error, error, warn
     use SUFR_sorting, only: sorted_index_list
     use SUFR_numerics, only: deq
     
@@ -483,8 +483,14 @@ contains
        end if
     end do
     
+    i1 = i0 + di
+    if(i1.gt.ni) then
+       call warn('prob_range(): results are shaky...')
+       i1 = ni  ! Prevent crashes in extreme cases - probably only when very few data points...
+    end if
+    
     llim = data(indexx(i0))
-    ulim = data(indexx(i0+di))
+    ulim = data(indexx(i1))
     
   end subroutine prob_range
   !*********************************************************************************************************************************
