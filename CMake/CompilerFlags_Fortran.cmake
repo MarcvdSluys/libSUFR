@@ -72,7 +72,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   endif( WANT_STATIC )
   
   if( WANT_CHECKS )
-    set( CHECK_FLAGS "-ffpe-trap=zero,invalid -fsignaling-nans -fbacktrace" )
+    set( CHECK_FLAGS "-ffpe-trap=invalid,zero,overflow,underflow,denormal -fsignaling-nans -fbacktrace" )
     if( COMPILER_VERSION VERSION_GREATER "4.4.99" )
       set( CHECK_FLAGS "-fcheck=all ${CHECK_FLAGS}" )    # >= v.4.5
     else( COMPILER_VERSION VERSION_GREATER "4.4.99" )
