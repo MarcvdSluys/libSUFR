@@ -3,7 +3,7 @@
 ##  Currently, specific flags for gfortran, g95 and ifort are provided
 ##  Make sure to choose the correct ~last line (printing of the compiler options)
 ##  
-##  Copyright 2010-2015 Marc van der Sluys - marc.vandersluys.nl
+##  Copyright 2010-2024 Marc van der Sluys - marc.vandersluys.nl
 ##   
 ##  This file is part of the CMakeFiles package, 
 ##  see: http://cmakefiles.sf.net/
@@ -46,8 +46,8 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
     set( CMAKE_Fortran_FLAGS_ALL "${CMAKE_Fortran_FLAGS_ALL} -fwhole-file" )  # >= v.4.5
   endif( COMPILER_VERSION VERSION_GREATER "4.4.99" )
   
-  set( CMAKE_Fortran_FLAGS "-pipe -funroll-all-loops" )
-  set( CMAKE_Fortran_FLAGS_RELEASE "-pipe -funroll-all-loops" )
+  set( CMAKE_Fortran_FLAGS "-pipe -funroll-loops" )
+  set( CMAKE_Fortran_FLAGS_RELEASE "-pipe -funroll-loops" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g -ffpe-trap=zero,invalid -fsignaling-nans -fbacktrace" )
   set( CMAKE_Fortran_FLAGS_PROFILE "-g -gp" )
   
@@ -65,6 +65,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   
   if( WANT_OPENMP )
     set( OPENMP_FLAGS "-fopenmp" )
+    message( STATUS "Compiling with OpenMP support" )
   endif( WANT_OPENMP )
   
   if( WANT_STATIC )
@@ -86,7 +87,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   endif( WANT_CHECKS )
   
   if( WANT_WARNINGS )
-    set( WARN_FLAGS "-Wall -Wextra -ffree-line-length-0 -Wno-conversion" )
+    set( WARN_FLAGS "-Wall -Wextra -Wno-conversion -ffree-line-length-0" )
   endif( WANT_WARNINGS )
   if( STOP_ON_WARNING )
     set( WARN_FLAGS "${WARN_FLAGS} -Werror" )
@@ -127,7 +128,8 @@ elseif( Fortran_COMPILER_NAME MATCHES "g95" )
   
   if( WANT_WARNINGS )
     # 102: module procedure not referenced,  136: module variable not used,  165: implicit interface
-    set( WARN_FLAGS "-Wall -Wextra -Wno=102,136,165" )
+    # set( WARN_FLAGS "-Wall -Wextra -Wno=102,136,165" )
+    set( WARN_FLAGS "-Wall -Wextra" )
     set( WARN_FLAGS "-std=f2003 -ffree-line-length-huge ${WARN_FLAGS}" )
   endif( WANT_WARNINGS )
   if( STOP_ON_WARNING )
@@ -178,7 +180,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   
   if( WANT_OPENMP )
     set( OPENMP_FLAGS "-openmp -openmp-report0" )
-    message( STATUS "Linking with OpenMP support" )
+    message( STATUS "Compiling with OpenMP support" )
   endif( WANT_OPENMP )
   
   if( WANT_STATIC )
@@ -201,7 +203,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( STOP_ON_WARNING )
   
   if( WANT_LIBRARY )
-    set( LIB_FLAGS "-fPIC -g" )
+    set( LIB_FLAGS "-fPIC -g" )  # -fPIC is also provided by CMake?
   endif( WANT_LIBRARY )
   
   
