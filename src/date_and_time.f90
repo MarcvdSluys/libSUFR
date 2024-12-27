@@ -174,7 +174,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a Julian day to date and time (h,m,s, UT)
   !!
-  !! \param  jd  Julian day (UT)
+  !! \param jd  Julian day (UT)
   !!
   !! \param yy  Year (CE, UT) (output)
   !! \param mm  Month (UT) (output)
@@ -194,7 +194,7 @@ contains
     
     call jd2cal(jd,  yy,mm,dd)
     
-    ! jd2cal returns zeroes if JD not defined (i.e., JD=-huge) - catch this:
+    ! jd2cal returns zeroes if JD is not defined (i.e., JD=-huge) - catch this:
     if(yy.eq.0.and.mm.eq.0) then
        d = 0
        h = 0
@@ -341,9 +341,17 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Correct time after manipulation, i.e. ensure a correct date and time is returned (0<month<13, 0<=minute<60, etc.)
+  !> \brief  Ensure date and time are consistent after manipulation (0<month<13, 0<=minute<60, etc.)
+  !!
+  !! \param year    Year CE (I/O)
+  !! \param month   Month of year (I/O)
+  !! \param day     Day of month (I/O)
+  !! 
+  !! \param hour    Hour of day (I/O)
+  !! \param minute  Minute (I/O)
+  !! \param second  Second (I/O)
   
-  elemental subroutine correct_time(year,month,day, hour,minute,second)
+  elemental subroutine consistent_date_time(year,month,day, hour,minute,second)
     use SUFR_kinds, only: double
     
     implicit none
@@ -354,7 +362,7 @@ contains
     jd = ymdhms2jd(year,month,day, hour,minute,second)
     call jd2ymdhms(jd, year,month,day, hour,minute,second)
     
-  end subroutine correct_time
+  end subroutine consistent_date_time
   !*********************************************************************************************************************************
   
   
@@ -473,9 +481,9 @@ contains
   !> \brief  Convert time (h) to hours, minutes and (decimal) seconds
   !!
   !! \param  tm  Time (hours)
-  !! \param h   Hours (output)
-  !! \param m   Minutes (output)
-  !! \param s   Seconds (output)
+  !! \param  h   Hours (output)
+  !! \param  m   Minutes (output)
+  !! \param  s   Seconds (output)
   
   elemental subroutine tm2hmss(tm, h,m,s)
     use SUFR_kinds, only: double
@@ -503,7 +511,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Calculates day of week (0 = Sunday, ..., 6 = Saturday).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
   !!
-  !! \param  jd0  Julian day number (double)
+  !! \param  jd0     Julian day number (double)
   !! \retval dow_ut  The day-of-week number, 0-6 for Sun-Sat (int)
   
   elemental function dow_ut(jd0)
@@ -845,7 +853,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief Return system-clock date and time in (year, month, ..., minute, second and tz)
   !! 
-  !! \param year    Year (output)
+  !! \param year    Year CE (output)
   !! \param month   Month of year (output)
   !! \param day     Day of month (output)
   !! 
