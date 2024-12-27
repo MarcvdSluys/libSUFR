@@ -852,15 +852,18 @@ contains
   !! \param hour    Hour of day (output)
   !! \param minute  Minute (output)
   !! \param second  Second (output)
+  !! \param ms      Millisecond (output)
   !! 
-  !! \param tz      Time zone w.r.t. Greenwich - >0 = east (output)
+  !! \param tz      Time zone w.r.t. Greenwich in hours - >0 = east (output)
+  !!
+  !! \note  If second is present and ms is not, the milliseconds are added as a fraction to the seconds.
   
-  subroutine system_clock_2_ymdhms(year,month,day, hour,minute,second, tz)
+  subroutine system_clock_2_ymdhms(year,month,day, hour,minute,second, ms, tz)
     use SUFR_kinds, only: double
     use SUFR_dummy, only: dumstr99
     
     implicit none
-    integer, intent(out), optional :: year,month,day, hour,minute
+    integer, intent(out), optional :: year,month,day, hour,minute, ms
     real(double), intent(out), optional :: second, tz
     integer :: dt(8)
     
@@ -872,7 +875,13 @@ contains
     
     if(present(hour))   hour   = dt(5)
     if(present(minute)) minute = dt(6)
-    if(present(second)) second = dble(dt(7)) + dble(dt(8))*1.d-3
+    
+    if(present(ms)) then
+       if(present(second)) second = dble(dt(7))
+       ms = dt(8)
+    else
+       if(present(second)) second = dble(dt(7)) + dble(dt(8))*1.d-3
+    end if
     
     if(present(tz))     tz     = dble(dt(4))/60.d0
     
