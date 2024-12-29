@@ -216,7 +216,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a Julian day to a date string (yyyy-mm-dd)
   !!
-  !! \param jd  Julian day (UT)
+  !! \param  jd          Julian day (UT)
+  !! \retval jd2datestr  The date as a string (yyyy-mm-dd)
   
   elemental function jd2datestr(jd)
     use SUFR_kinds, only: double
@@ -237,7 +238,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a Julian day to time (UT, h)
   !!
-  !! \param jd  Julian day (UT)
+  !! \param  jd       Julian day (UT)
+  !! \retval jd2time  Time in hours
   
   elemental function jd2time(jd)
     use SUFR_kinds, only: double
@@ -259,6 +261,7 @@ contains
   !> \brief  Convert a Julian day to decimal year (e.g. 2000.0)
   !!
   !! \param jd  Julian day (UT)
+  !! \retval jd2year  Decimal year CE
   
   elemental function jd2year(jd)
     use SUFR_kinds, only: double
@@ -369,10 +372,11 @@ contains
   !*********************************************************************************************************************************
   !> \brief Convert date and time (h) to a Julian day -  input in UT
   !!
-  !! \param yy    Year (CE)
-  !! \param mo    Month
-  !! \param dd    Day of month
-  !! \param time  Time (hours)
+  !! \param yy       Year (CE)
+  !! \param mo       Month
+  !! \param dd       Day of month
+  !! \param time     Time (hours)
+  !! \retval dtm2jd  Julian day
   
   elemental function dtm2jd(yy,mo,dd,time)
     use SUFR_kinds, only: double
@@ -389,7 +393,7 @@ contains
   !*********************************************************************************************************************************
   
   
-  
+     
   
   
   !*********************************************************************************************************************************
@@ -534,8 +538,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Calculates ISO day of week (1 = Monday, ..., 7 = Sunday).  Output for timezone of input - call dow_ut(jd+tz/24.d0) for local time.
   !!
-  !! \param  jd0  Julian day number (double)
-  !! \retval dow_ut  The day-of-week number, 1-7 for Mon-Sun (int)
+  !! \param  jd0      Julian day number (double)
+  !! \retval dow_iso  The day-of-week number, 1-7 for Mon-Sun (int)
   
   elemental function dow_iso(jd0)
     use SUFR_kinds, only: double
@@ -554,7 +558,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Calculate day of year (1-366) from JD
   !!
-  !! \param jd0  Julian day
+  !! \param  jd0  Julian day
+  !! \retval doy  The day of year (1-366)
   
   elemental function doy(jd0)
     use SUFR_kinds, only: double
@@ -576,9 +581,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Calculate day of year (1-366) from year,month,day
   !!
-  !! \param yr   Year (CE)
-  !! \param mon  Month
-  !! \param dy   Day of month
+  !! \param  yr       Year (CE)
+  !! \param  mon      Month
+  !! \param  dy       Day of month
+  !! \retval ymd2doy  Day of year (1-366)
   
   elemental function ymd2doy(yr,mon,dy)
     use SUFR_kinds, only: double
@@ -626,10 +632,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Calculate whether year is leap (1) or not (0).  The number of days in February is then given by 28 + leapyr(yr) and
-  !!         number of days in a year by 365 + leapyr(yr)
+  !> \brief  Calculate whether year is leap (1) or not (0).  The number of days in February is then given by 
+  !!         28 + leapyr(yr) and number of days in a year by 365 + leapyr(yr)
   !!
   !! \param yr  Year (CE)
+  !! \retval leapyr  Leap year (1) or no (0)
   
   elemental function leapyr(yr)
     
@@ -649,6 +656,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
+  !! \retval jd2iso8601  Date string in ISO 8601 format.
   
   elemental function jd2iso8601(jd, tz)
     use SUFR_kinds, only: double
@@ -684,6 +692,7 @@ contains
   !!
   !! \param jd  Julian day (UT)
   !! \param tz  Time zone (optional - default: 0 = UT)
+  !! \retval jd2rfc822  Date string in RFC-822 format
   
   elemental function jd2rfc822(jd, tz)
     use SUFR_kinds, only: double
@@ -725,6 +734,7 @@ contains
   !! \param jd  Julian day (UT)
   !!
   !! \todo Check: leap seconds taken into account until 2022.
+  !! \retval jd2gps  GPS time
   
   function jd2gps(jd)
     use SUFR_kinds, only: double
@@ -770,6 +780,7 @@ contains
   !> \brief  Convert a GPS time to Julian day (UT)
   !!
   !! \param GPStime  GPS time: seconds since 1980-01-06
+  !! \retval gps2jd  Julian day
   !!
   !! \todo Check leap seconds since 2009
   !!
@@ -818,6 +829,7 @@ contains
   !> \brief  Convert a Julian day (UT) to Unix time (seconds since 1970-01-01)
   !!
   !! \param jd  Julian day (UT)
+  !! \retval jd2unix  UNIX time
   
   elemental function jd2unix(jd)
     use SUFR_kinds, only: double
@@ -837,6 +849,7 @@ contains
   !> \brief  Convert UNIX time stamp to Julian day
   !!
   !! \param  unixTime  Unix time: 0 = JD 2440587.5 = 1970-01-01
+  !! \retval unix2jd   Julian day
   
   elemental function unix2jd(unixTime)
     use SUFR_kinds, only: double

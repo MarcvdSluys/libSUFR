@@ -20,14 +20,20 @@
 
 !***********************************************************************************************************************************
 !> \brief  Procedures to handle command-line options and arguments
+!!
 
 module SUFR_command_line
   implicit none
   save
   
+  
+  !> \brief Struct to store command-line options
   type :: cl_options
-     character :: name*(99), value*(99)
-     logical :: short, long, has_val
+     character :: name*(99)           !< Name of the cl option
+     character :: value*(99)          !< Value of the cl option
+     logical :: short                 !< This is a short option (-s)
+     logical :: long                  !< This is a long option (--long)
+     logical :: has_val               !< This option has a value/argument
   end type cl_options
   
 contains

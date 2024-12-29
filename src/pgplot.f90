@@ -31,6 +31,9 @@ contains
   
   !*********************************************************************************************************************************
   !> \brief  Read/create PGPlot settings file ~/.PGPlot
+  !! 
+  !! \param scrsz   Horizontal screen size (pixels)
+  !! \param scrrat  Screen ratio (height/width)
   
   subroutine PGPlot_settings(scrsz,scrrat)
     use SUFR_constants, only: homedir

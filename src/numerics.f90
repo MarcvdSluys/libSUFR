@@ -432,6 +432,10 @@ contains
   !!
   !!         Since array indices in Fortran run from 1 to N, and the mod() function returns 0 to N-1 which can be used as an array
   !!         index directly in e.g. C, mod1() provides that service in Fortran.
+  !! 
+  !! \param number  Number to take the modulo of
+  !! \param period  Period to wrap around
+  !! \retval mod1   Modulo of the given number with the given period
   
   pure function mod1(number, period)
     implicit none
