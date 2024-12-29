@@ -35,7 +35,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in radians between 0 and 2pi
   !!
-  !! \param ang  Input angle (radians)
+  !! \param  ang  Input angle (radians)
+  !! \retval rev  Angle in radians between 0 and 2pi
   
   pure function rev(ang)
     use SUFR_kinds, only: double
@@ -53,7 +54,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in radians between 0 and 2pi  --  single precision
   !!
-  !! \param ang  Input angle (radians)
+  !! \param  ang  Input angle (radians)
+  !! \retval rrev  Angle in radians between 0 and 2pi
   
   pure function rrev(ang)
     use SUFR_constants, only: rpi2
@@ -72,7 +74,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in degrees between 0 and 360
   !!
-  !! \param ang  Input angle (degrees)
+  !! \param  ang     Input angle (degrees)
+  !! \retval rev360  Angle in degrees between 0 and 360
   
   pure function rev360(ang)
     use SUFR_kinds, only: double
@@ -93,7 +96,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in radians between -pi and pi
   !!
-  !! \param ang  Input angle (radians)
+  !! \param  ang   Input angle (radians)
+  !! \retval rev2  Angle in radians between -pi and pi
   
   pure function rev2(ang)
     use SUFR_kinds, only: double
@@ -113,7 +117,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in radians between -pi and pi  --  single precision
   !!
-  !! \param ang  Input angle (radians)
+  !! \param  ang    Input angle (radians)
+  !! \retval rrev2  Angle in radians between -pi and pi
   
   pure function rrev2(ang)
     use SUFR_constants, only: rpi,rpi2
@@ -136,8 +141,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in radians between cen-pi and cen+pi
   !!
-  !! \param ang  Input angle (radians)
-  !! \param cen  'Central value' (radians)
+  !! \param  ang   Input angle (radians)
+  !! \param  cen   'Central value' (radians)
+  !! \retval revc  Angle in radians between cen-pi and cen+pi
   
   pure function revc(ang,cen)
     use SUFR_kinds, only: double
@@ -163,7 +169,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns time in hours between 0 and 24
   !!
-  !! \param tm  Input time (hours)
+  !! \param  tm  Input time (hours)
+  !! \retval rv  Time in hours between 0 and 24
   
   pure function rv(tm)
     use SUFR_kinds, only: double
@@ -180,7 +187,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns time in hours between -12 and 12
   !!
-  !! \param tm  Input time (hours)
+  !! \param  tm    Input time (hours)
+  !! \retval rv12  Time in hours between -12 and 12
   
   pure function rv12(tm)
     use SUFR_kinds, only: double
@@ -198,7 +206,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Returns angle in degrees between -180 and 180
   !!
-  !! \param ang  Input angle (degrees)
+  !! \param  ang    Input angle (degrees)
+  !! \retval rv180  Angle in degrees between -180 and 180
   
   pure function rv180(ang)
     use SUFR_kinds, only: double
@@ -222,6 +231,8 @@ contains
   !! \param l2  Longitude of object 2 (rad).
   !! \param b1  Latitude of object 1 (rad).
   !! \param b2  Latitude of object 2 (rad).
+  !! 
+  !! \retval asep  Angular separation between the two objects (rad).
   !!
   !! \see Celestial Mechanics in a Nutshell (CMiaNS), Sect.5.3: Angular distance and phase angle between two
   !! celestial objects (CMiaNS.sf.net).
@@ -253,6 +264,8 @@ contains
   !! \param lon2  Longitude of object 2 - RA if measuring from the north (rad)
   !! \param lat1  Latitude of object 1 - Dec if measuring from the north (rad)
   !! \param lat2  Latitude of object 2 - Dec if measuring from the north (rad)
+  !! 
+  !! \retval calpa  Position angle of object 2 wrt object 1 (rad)
   
   pure function calpa(lon1,lon2,lat1,lat2)
     implicit none
@@ -271,7 +284,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight English two-letter abbreviations (NE, SW)
   !!
-  !! \param pa  Position angle (radians, N=0)
+  !! \param  pa        Position angle (radians, N=0)
+  !! \retval pastr_en  English two-letter wind-direction abbreviation
   
   pure function pastr_en(pa)
     use SUFR_kinds, only: double
@@ -291,7 +305,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight full Dutch strings (noordoosten, noorden)
   !!
-  !! \param pa  Position angle (radians, N=0)
+  !! \param  pa        Position angle (radians, N=0)
+  !! \retval pastr_nl  Full Dutch wind-direction string
   
   pure function pastr_nl(pa)
     use SUFR_kinds, only: double
@@ -312,7 +327,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a position angle to one of eight Dutch abbreviations (NO,ZW)
   !!
-  !! \param pa  Position angle (radians, N=0)
+  !! \param  pa         Position angle (radians, N=0)
+  !! \retval pastr_nls  Dutch wind-direction abbreviation
   
   pure function pastr_nls(pa)
     use SUFR_kinds, only: double
@@ -336,7 +352,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 English wind directions (northnortheast, westsouthwest)
   !!
-  !! \param  wd  Wind direction/azimuth (radians, N=0)
+  !! \param  wd        Wind direction/azimuth (radians, N=0)
+  !! \retval wdstr_en  Full English wind direction
   
   pure function wdstr_en(wd)
     use SUFR_kinds, only: double
@@ -358,7 +375,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 three-letter English wind-direction abbreviations (NNE, WSW)
   !!
-  !! \param  wd  Wind direction/azimuth (radians, N=0)
+  !! \param  wd         Wind direction/azimuth (radians, N=0)
+  !! \retval wdstr_ens  Three-letter English wind-direction abbreviation
   
   pure function wdstr_ens(wd)
     use SUFR_kinds, only: double
@@ -378,7 +396,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 three-letter Dutch wind-direction abbreviations (NNO, WZW)
   !!
-  !! \param  wd  Wind direction/azimuth (radians, N=0)
+  !! \param  wd         Wind direction/azimuth (radians, N=0)
+  !! \retval wdstr_nls  Three-letter Dutch wind-direction abbreviation
   
   pure function wdstr_nls(wd)
     use SUFR_kinds, only: double
@@ -398,7 +417,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Converts a wind direction/azimuth to one of 16 full Dutch wind-direction strings (noordnoordoost, zuidwest)
   !!
-  !! \param wd  Wind direction (radians, N=0)
+  !! \param  wd        Wind direction (radians, N=0)
+  !! \retval wdstr_nl  Full Dutch wind-direction string
   
   pure function wdstr_nl(wd)
     use SUFR_kinds, only: double
@@ -424,7 +444,8 @@ contains
   !> \brief  Converts a wind direction/azimuth to one of 8 two-letter Dutch secondary wind-direction abbreviations (NO, Z).
   !!         Wrapper for pastr_nls().
   !!
-  !! \param wd  Wind direction (radians, N=0)
+  !! \param  wd          Wind direction (radians, N=0)
+  !! \retval wdstr_nls2  Dutch two-letter wind-direction abbreviation
   
   pure function wdstr_nls2(wd)
     use SUFR_kinds, only: double
@@ -444,7 +465,8 @@ contains
   !> \brief  Converts a wind direction/azimuth to one of 8 full Dutch secondary wind-direction (noordoost, zuid).
   !!         Derived from pastr_nl().
   !!
-  !! \param wd  Wind direction (radians, N=0)
+  !! \param  wd         Wind direction (radians, N=0)
+  !! \retval wdstr_nl8  String with full Dutch wind-direction
   
   pure function wdstr_nl8(wd)
     use SUFR_kinds, only: double

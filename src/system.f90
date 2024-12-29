@@ -639,11 +639,12 @@ contains
   !*********************************************************************************************************************************
   
   !*********************************************************************************************************************************
-  !> \brief Print angle as mm:ss.s string, input in hours
+  !> \brief  Print time as mm:ss.s string, input in hours
+  !! 
+  !! \param  t    Time (h)
+  !! \retval tms  Time as mm:ss.s string
   !! 
   !! \note use here to drop dependency to SUFR_time2string. Alternative: move printProgressBar elsewhere
-  !! 
-  !! \param t  Time (h)
   
   pure function tms(t)
     use SUFR_kinds, only: double

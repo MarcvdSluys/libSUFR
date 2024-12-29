@@ -31,8 +31,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data array
   !!
-  !! \param data  1D array of data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data    1D array of data points
+  !! \param  mask    Mask to apply to data (optional)
+  !! \retval median  The median of a data array
   
   function median(data, mask)
     use SUFR_kinds, only: double
@@ -78,8 +79,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the median of a data array - single-precision wrapper for median()
   !!
-  !! \param data  1D array of data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data       1D array of data points
+  !! \param  mask       Mask to apply to data (optional)
+  !! \retval median_sp  The median of a data array
   
   function median_sp(data, mask)
     use SUFR_kinds, only: double
@@ -111,8 +113,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the mean of a data array
   !!
-  !! \param data  1D array of data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data  1D array of data points
+  !! \param  mask  Mask to apply to data (optional)
+  !! \retval mean  The mean of a data array
   
   function mean(data, mask)
     use SUFR_kinds, only: double
@@ -149,8 +152,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the mean of a data array - single-precision wrapper for mean()
   !!
-  !! \param data  1D array of data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data     1D array of data points
+  !! \param  mask     Mask to apply to data (optional)
+  !! \retval mean_sp  The mean of a data array
   
   function mean_sp(data, mask)
     use SUFR_kinds, only: double
@@ -182,9 +186,11 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the weighted mean of a data array
   !!
-  !! \param data  1D array of data points
-  !! \param wgts  Weights for all data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data  1D array of data points
+  !! \param  wgts  Weights for all data points
+  !! \param  mask  Mask to apply to data (optional)
+  !! 
+  !! \retval mean_weight  The weighted mean of a data array
   !! 
   !! \see https://en.wikipedia.org/wiki/Weighted_arithmetic_mean
   
@@ -294,9 +300,11 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the standard deviation of a data array with mean 'mean' - single-precision wrapper for stDev()
   !!
-  !! \param data  1D array with data points
-  !! \param mean  Mean of the data points
-  !! \param mask  Mask to apply to data (optional)
+  !! \param  data   1D array with data points
+  !! \param  mean   Mean of the data points
+  !! \param  mask   Mask to apply to data (optional)
+  !!
+  !! \retval stDev  The standard deviation
   
   function stDev_sp(data, mean, mask)
     use SUFR_kinds, only: double
@@ -326,10 +334,12 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Compute the weighted standard deviation of a data array with weighted mean 'wMean'
   !!
-  !! \param data   1D array with data points
-  !! \param wgts   Weights for all data points
-  !! \param wMean  Weighted mean of the data points (optional)
-  !! \param mask   Mask to apply to data (optional)
+  !! \param  data   1D array with data points
+  !! \param  wgts   Weights for all data points
+  !! \param  wMean  Weighted mean of the data points (optional)
+  !! \param  mask   Mask to apply to data (optional)
+  !! 
+  !! \retval stDev_weight  The weighted standard deviation
   
   function stDev_weight(data, wgts, wMean, mask)
     use SUFR_kinds, only: double

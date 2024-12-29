@@ -333,6 +333,8 @@ contains
   
   !*********************************************************************************************************************************
   !> \brief  Return the number of arguments on the command line (excluding the command).
+  !! 
+  !! \retval getopt_command_argument_count  Number of *arguments* excluding the command
   
   function getopt_command_argument_count()
     implicit none
@@ -380,8 +382,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Extract and return an integer value from the argument optArg.  On error, report and abort.
   !!
-  !! \param  minValue  Minimum acceptable value for this argument (optional).
-  !! \param  maxValue  Maximum acceptable value for this argument (optional).
+  !! \param   minValue  Minimum acceptable value for this argument (optional).
+  !! \param   maxValue  Maximum acceptable value for this argument (optional).
+  !!
+  !! \retval getopt_optarg_to_int  The integer value of the argument
   
   function getopt_optarg_to_int(minValue, maxValue)
     use SUFR_system, only: quit_program_error
@@ -417,6 +421,8 @@ contains
   !!
   !! \param  minValue  Minimum acceptable value for this argument (optional).
   !! \param  maxValue  Maximum acceptable value for this argument (optional).
+  !! 
+  !! \retval getopt_optarg_to_real  The real value of the argument
   
   function getopt_optarg_to_real(minValue, maxValue)
     use SUFR_system, only: quit_program_error
@@ -453,6 +459,8 @@ contains
   !!
   !! \param  minValue  Minimum acceptable value for this argument (optional).
   !! \param  maxValue  Maximum acceptable value for this argument (optional).
+  !! 
+  !! \retval getopt_optarg_to_dbl  The integer value of the argument
   
   function getopt_optarg_to_dbl(minValue, maxValue)
     use SUFR_kinds, only: double

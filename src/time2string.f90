@@ -53,7 +53,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as hh:mm:ss string, input in hours;  Display '--:--:--' for t=0
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval hms  Time as hh:mm:ss string
   
   pure function hms(t)
     use SUFR_kinds, only: double
@@ -91,7 +92,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as hh:mm:ss string, input in hours;  No special output for t=0
   !!
-  !! \param t  Time (h)
+  !! \param  t     Time (h)
+  !! \retval hhms  Time as hh:mm:ss string
   
   pure function hhms(t)
     use SUFR_kinds, only: double
@@ -132,7 +134,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hh:mm, input in hours, output between -12 and 12
   !!
-  !! \param t  Time (h)
+  !! \param  t     Time (h)
+  !! \retval hms2  Time as string in hh:mm
   
   pure function hms2(t)
     use SUFR_kinds, only: double
@@ -178,7 +181,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as 00u11m22s string, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval ums  Time as 00u11m22s string
   
   pure function ums(t)
     use SUFR_kinds, only: double
@@ -223,7 +227,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hms.s, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t      Time (h)
+  !! \retval hms_s  Time as string in hms.s
   
   pure function hms_s(t)
     use SUFR_kinds, only: double
@@ -269,7 +274,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hms.sss, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t        Time (h)
+  !! \retval hms_sss  Time as string in hms.sss
   
   pure function hms_sss(t)
     use SUFR_kinds, only: double
@@ -315,7 +321,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hm.m, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval hmm  Time as string in hm.m
   
   pure function hmm(t)
     use SUFR_kinds, only: double
@@ -352,7 +359,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in 00u11.2m, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval umm  Time as string in 00u11.2m
   
   pure function umm(t)
     use SUFR_kinds, only: double
@@ -389,7 +397,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hh:mm, input in hours.
   !!
-  !! \param time  Time (h)
+  !! \param  time  Time (h)
+  !! \retval hm    Time as string in hh:mm
   !!
   !! \note
   !! - Prints '--:--' for time=0!  Use hhm() to avoid this.
@@ -428,7 +437,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in hh:mm.mmm, input in hours
   !!
-  !! \param time  Time (h)
+  !! \param  time    Time (h)
+  !! \retval hm_mmm  Time as string in hh:mm.mmm
   
   pure function hm_mmm(time)
     use SUFR_kinds, only: double
@@ -463,7 +473,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in h:mm or hh:mm, input in hours; no special output for h=0
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval hhm  Time as string in h:mm or hh:mm
   
   pure function hhm(t)
     use SUFR_kinds, only: double
@@ -501,7 +512,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in 01u23m, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t   Time (h)
+  !! \retval um  Time as string in 01u23m
   
   pure function um(t)
     use SUFR_kinds, only: double
@@ -542,7 +554,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in 01u23m, input in hours, web version (HTML superscripts)
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval wum  Time as HTML string in 01u23m
   
   pure function wum(t)
     use SUFR_kinds, only: double
@@ -582,7 +595,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in 01u23.1m, input in hours, web version (HTML superscripts)
   !!
-  !! \param t  Time (h)
+  !! \param  t     Time (h)
+  !! \retval wumm  Time as HTML string in 01u23.1m
   
   pure function wumm(t)
     use SUFR_kinds, only: double
@@ -622,7 +636,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as 00u11m22s HTML string, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t     Time (h)
+  !! \retval wums  Time as 00u11m22s HTML string
   
   pure function wums(t)
     use SUFR_kinds, only: double
@@ -666,7 +681,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print time as a Dutch HTML string in 11u22m33.4s, input in hours.  HTML equivalent of hms_s()
   !!
-  !! \param t  Time (h)
+  !! \param  t       Time (h)
+  !! \retval wums_s  Time as a Dutch HTML string in 11u22m33.4s
   
   pure function wums_s(t)
     use SUFR_kinds, only: double
@@ -717,7 +733,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as string in +/-hh:mm, input in hours, between -12 and 12
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval hm2  Time as string in +/-hh:mm
   
   pure function hm2(t)
     use SUFR_kinds, only: double
@@ -756,7 +773,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as a nice string in hh.mm, so with a . in stead of :  Input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval hdm  Time as a nice string in hh.mm
   
   pure function hdm(t)
     use SUFR_kinds, only: double
@@ -794,9 +812,10 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print angle as mm:ss.s string, input in hours
+  !> \brief Print time as mm:ss.s string, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t    Time (h)
+  !! \retval tms  Time as mm:ss.s string
   
   pure function tms(t)
     use SUFR_kinds, only: double
@@ -821,7 +840,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as mm:ss.s string, input in hours
   !!
-  !! \param t  Time (h)
+  !! \param  t     Time (h)
+  !! \retval tms2  Time as mm:ss.s string
   
   pure function tms2(t)
     use SUFR_kinds, only: double
@@ -833,7 +853,7 @@ contains
     
     a = t
     
-    !sign = '+'
+    ! sign = '+'
     sign = ' '
     if(a.lt.0.d0) then
        sign = '-'
@@ -855,7 +875,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print time as m:ss.s string, input in hours, like tms2, but t<10 min(!)
   !!
-  !! \param t  Time (h)
+  !! \param  t       Time (h)
+  !! \retval tmsss2  Time as m:ss.s string
   
   pure function tmsss2(t)
     use SUFR_kinds, only: double
@@ -867,7 +888,7 @@ contains
     
     a = t
     
-    !sign = '+'
+    ! sign = '+'
     sign = ' '
     if(a.lt.0.d0) then
        sign = '-'

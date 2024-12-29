@@ -31,7 +31,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Make a string lower case
   !!
-  !! \param str  String
+  !! \param  str        String
+  !! \retval lowercase  String as lower case
   
   pure function lowercase(str)
     implicit none
@@ -54,7 +55,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Make a string upper case
   !!
-  !! \param str  String
+  !! \param  str        String
+  !! \retval uppercase  String as uppercase
   
   pure function uppercase(str)
     implicit none
@@ -77,7 +79,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Make a string lower case with an upper-case initial
   !!
-  !! \param str  String
+  !! \param  str               String
+  !! \retval uppercaseinitial  String in lower case, with upper-case initial
   
   pure function uppercaseinitial(str)
     implicit none
@@ -404,7 +407,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print multiple tab characters
   !!
-  !! \param number  Desired number of tab characters
+  !! \param  number  Desired number of tab characters
+  !! \retval tabs    String containing tabs
   
   pure function tabs(number)
     implicit none
@@ -425,9 +429,10 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert an integer to a character string
+  !> \brief  Convert an integer to a character string of the proper length
   !!
-  !! \param number  Integer number to convert
+  !! \param  number   Integer number to convert
+  !! \retval int2str  Character string
   
   pure function int2str(number)
     implicit none
@@ -444,9 +449,10 @@ contains
   !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor: 
   !!         replace leading . or -. with 0. and -0. respectively (0.1 iso .1; -0.1 iso -.1).
   !!
-  !! \param number  Value to convert
-  !! \param decim   Number of decimals to use
-  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \param  number   Value to convert
+  !! \param  decim    Number of decimals to use
+  !! \param  mark     Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \retval dbl2str  String containing the double
   
   pure function dbl2str(number, decim, mark)
     use SUFR_kinds, only: double, long
@@ -508,9 +514,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a double-precision real to a nice character string. Short alias for dbl2str().
   !!
-  !! \param number  Value to convert
-  !! \param decim   Number of decimals to use
-  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \param  number  Value to convert
+  !! \param  decim   Number of decimals to use
+  !! \param  mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \retval d2s     String containing the double
   
   pure function d2s(number, decim, mark)
     use SUFR_kinds, only: double, long
@@ -537,8 +544,9 @@ contains
   !> \brief  Convert a double-precision real to a nice character string using a comma as decimal mark.
   !!         Alias for dbl2str(number, decim, ',').
   !!
-  !! \param number  Value to convert
-  !! \param decim   Number of decimals to use
+  !! \param  number  Value to convert
+  !! \param  decim   Number of decimals to use
+  !! \retval d2sc    String containing the double
   
   pure function d2sc(number, decim)
     use SUFR_kinds, only: double, long
@@ -559,9 +567,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a single-precision real to a nice character string.  Single-precision wrapper for dbl2str.
   !!
-  !! \param number  Value to convert
-  !! \param decim   Number of decimals to use
-  !! \param mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \param  number    Value to convert
+  !! \param  decim     Number of decimals to use
+  !! \param  mark      Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \retval real2str  String containing the real
   
   pure function real2str(number, decim, mark)
     implicit none

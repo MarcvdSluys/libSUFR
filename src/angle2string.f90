@@ -69,7 +69,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print separation angle (>0) as ddd.mm or mm.ss string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval prs    Separation angle (>0) as ddd.mm or mm.ss string
   
   pure function prs(angle)
     use SUFR_kinds, only: double
@@ -111,7 +112,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss string, input in rad  -  See wdms() for HTML version
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dms    Angle as ddd.mm.ss string
   
   pure function dms(angle)
     use SUFR_kinds, only: double
@@ -152,7 +154,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a ddd.mm.ss.ss string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dmss   Angle as a ddd.mm.ss.ss string
   
   pure function dmss(angle)
     use SUFR_kinds, only: double
@@ -194,7 +197,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dms string, input in rad, output between -180 and +180  -  See wdms2() for HTML version
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dms2   Angle as dms string
   
   pure function dms2(angle)
     use SUFR_kinds, only: double
@@ -241,7 +245,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm.ss string, input in rad, output between -99 and +99  -  See wddms2() for HTML version
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval ddms2  Angle as dd.mm.ss string
   
   pure function ddms2(angle)
     use SUFR_kinds, only: double
@@ -285,7 +290,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as d.mm.ss string, input in rad, output between -9 and +9 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval d1ms2  Angle as d.mm.ss string
   
   pure function d1ms2(angle)
     use SUFR_kinds, only: double
@@ -329,8 +335,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dms.ss string, input in rad, output between -180 and +180
   !!
-  !! \param angle      Angle (rad)
-  !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
+  !! \param  angle      Angle (rad)
+  !! \param  noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
+  !! \retval dmss2      Angle as ddd:mm string
   
   pure function dmss2(angle, noSymbols)
     use SUFR_kinds, only: double
@@ -388,7 +395,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd:mm string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dm     Angle as ddd:mm string
   
   pure function dm(angle)
     use SUFR_kinds, only: double
@@ -423,7 +431,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm string, input in rad, output between -180 and +180
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dm2    Angle as ddd.mm string
   
   pure function dm2(angle)
     use SUFR_kinds, only: double
@@ -463,7 +472,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm string, input in rad, output between -99 and +99 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dmm2   Angle as dd.mm string
   
   pure function dmm2(angle)
     use SUFR_kinds, only: double
@@ -503,7 +513,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.m string, input in rad, output between -99 and +99 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval dmmm2  Angle as dd:mm.m string
   
   pure function dmmm2(angle)
     use SUFR_kinds, only: double
@@ -544,8 +555,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.mmm string (for gps), input in rad, output between -180 and +180 !!!
   !!
-  !! \param angle      Angle (rad)
-  !! \param noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
+  !! \param  angle      Angle (rad)
+  !! \param  noSymbols  Do not print symbols (d,',") - use spaces instead; default: false (do use symbols)
+  !! \retval dmmmmm2    Angle as dd.d string
   
   pure function dmmmmm2(angle, noSymbols)
     use SUFR_kinds, only: double
@@ -596,7 +608,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.d string, input in rad, output between -99.9 and +99.9 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval ddd2   Angle as dd.d string
   
   pure function ddd2(angle)
     use SUFR_kinds, only: double
@@ -633,7 +646,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss string, input in rad with \&deg;, &rsquo; and &rdquo;  -  HTML version of dms()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdms   Angle as ddd.mm.ss HTML string
   
   pure function wdms(angle)
     use SUFR_kinds, only: double
@@ -674,7 +688,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm.ss.ss string, input in rad with \&deg;, &rsquo; and &rdquo;  -  HTML version of dmss()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdmss  Angle as ddd.mm.ss.ss HTML string
   
   pure function wdmss(angle)
     use SUFR_kinds, only: double
@@ -717,7 +732,8 @@ contains
   !> \brief Print angle as dms string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
   !!        HTML version of dms2()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdms2  Angle as dms HTML string
   
   pure function wdms2(angle)
     use SUFR_kinds, only: double
@@ -764,7 +780,8 @@ contains
   !> \brief Print angle as ddd.mm.ss.ss string, input in rad, output between -180 and +180 with \&deg;, \&rsquo; and \&rdquo;  -  
   !!        HTML version of dmss2()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle   Angle (rad)
+  !! \retval wdmss2  Angle as ddd.mm.ss.ss HTML string
   
   pure function wdmss2(angle)
     use SUFR_kinds, only: double
@@ -811,10 +828,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief Print angle as dd.mm'ss" string, input in rad, output between -99 and +99 with \&deg;, \&rsquo; and \&rdquo;  -
-  !!        HTML version of ddms2()
+  !> \brief Print angle as dd.mm'ss" string, input in rad, output between -99 and +99 with \&deg;, \&rsquo;
+  !!        and \&rdquo; HTML version of ddms2()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle   Angle (rad)
+  !! \retval wddms2  Angle as dd.mm'ss" HTML string
   
   pure function wddms2(angle)
     use SUFR_kinds, only: double
@@ -861,7 +879,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as d.mm.ss string, input in rad, output between -9 and +9  -  HTML version of d1ms2
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle   Angle (rad)
+  !! \retval wd1ms2  Angle as d.mm.ss HTML string
   
   pure function wd1ms2(angle)
     use SUFR_kinds, only: double
@@ -905,7 +924,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd:mm string, input in rad with \&deg; and \&rsquo;  -  HTML version of dm()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdm    Angle as ddd:mm HTML string
   
   pure function wdm(angle)
     use SUFR_kinds, only: double
@@ -939,7 +959,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as ddd.mm string, input in rad, output between -180 and +180 with \&deg; and \&rsquo;
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdm2   Angle as ddd.mm HTML string
   
   pure function wdm2(angle)
     use SUFR_kinds, only: double
@@ -980,7 +1001,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.mm string, HTML version input in rad, output between -99 and +99 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wdmm2  Angle as dd.mm string
   
   pure function wdmm2(angle)
     use SUFR_kinds, only: double
@@ -1019,7 +1041,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd:mm.m string, HTML version. Input in rad, output between -99 and +99 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle   Angle (rad)
+  !! \retval wdmmm2  Angle as dd:mm.m HTML string
   
   pure function wdmmm2(angle)
     use SUFR_kinds, only: double
@@ -1059,7 +1082,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as dd.d string, HTML version input in rad, output between -99.9 and +99.9 !!!
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wddd2  Angle as dd.d HTML string
   
   pure function wddd2(angle)
     use SUFR_kinds, only: double
@@ -1094,7 +1118,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.s string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval ams    Angle as mm:ss.s string
   
   pure function ams(angle)
     use SUFR_kinds, only: double
@@ -1125,7 +1150,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.s string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval ams2   Angle as mm:ss.s string
   
   pure function ams2(angle)
     use SUFR_kinds, only: double
@@ -1162,7 +1188,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm:ss.ss string, input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval amss   Angle as mm:ss.ss string
   
   pure function amss(angle)
     use SUFR_kinds, only: double
@@ -1192,7 +1219,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a string of ss.s", input in rad
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval ass    Angle as a string of ss.s"
   
   pure function ass(angle)
     use SUFR_kinds, only: double
@@ -1225,7 +1253,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as mm'ss.s" string, input in rad;  HTML version of ams()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wams   Angle as mm'ss.s" HTML string
   
   pure function wams(angle)
     use SUFR_kinds, only: double
@@ -1256,7 +1285,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Print angle as mm'ss.s" string, input in rad - html version of ams2()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wams2  Angle as mm'ss.s" HTML string
   
   pure function wams2(angle)
     use SUFR_kinds, only: double
@@ -1293,7 +1323,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as HTML mm:ss.ss string, input in rad - HTML version of amss()
   !!
-  !! \param angle  Angle (rad)
+  !! \param angle   Angle (rad)
+  !! \retval wamss  Angle as HTML mm:ss.ss string
   
   pure function wamss(angle)
     use SUFR_kinds, only: double
@@ -1323,7 +1354,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief Print angle as a string of ss.s", input in rad - HTML version of ass()
   !!
-  !! \param angle  Angle (rad)
+  !! \param  angle  Angle (rad)
+  !! \retval wass   Angle as a HTML string of ss.s"
   
   pure function wass(angle)
     use SUFR_kinds, only: double

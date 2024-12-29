@@ -29,16 +29,109 @@ module SUFR_dummy
   use SUFR_kinds, only: double, long
   implicit none
   
-  integer :: dumint, dumint1,dumint2,dumint3,dumint4,dumint5,dumint6,dumint7,dumint8,dumint9
-  integer :: dmi, dmi1,dmi2,dmi3,dmi4,dmi5,dmi6,dmi7,dmi8,dmi9
-  integer(long) :: dumlong, dumlong1,dumlong2,dumlong3,dumlong4,dumlong5,dumlong6,dumlong7,dumlong8,dumlong9
-  integer(long) :: dml, dml1,dml2,dml3,dml4,dml5,dml6,dml7,dml8,dml9
-  real :: dumreal, dumreal1,dumreal2,dumreal3,dumreal4,dumreal5,dumreal6,dumreal7,dumreal8,dumreal9
-  real :: dmr, dmr1,dmr2,dmr3,dmr4,dmr5,dmr6,dmr7,dmr8,dmr9
-  real(double) :: dumdbl, dumdbl1,dumdbl2,dumdbl3,dumdbl4,dumdbl5,dumdbl6,dumdbl7,dumdbl8,dumdbl9
-  real(double) :: dmd, dmd1,dmd2,dmd3,dmd4,dmd5,dmd6,dmd7,dmd8,dmd9, dmd10,dmd11,dmd12,dmd13,dmd14,dmd15,dmd16,dmd17,dmd18,dmd19
-  character :: dumstr, dumstr9*(9), dumstr99*(99)
-  logical :: dumlog
+  integer :: dumint   !< Dummy integer
+  integer :: dumint1  !< Dummy integer
+  integer :: dumint2  !< Dummy integer
+  integer :: dumint3  !< Dummy integer
+  integer :: dumint4  !< Dummy integer
+  integer :: dumint5  !< Dummy integer
+  integer :: dumint6  !< Dummy integer
+  integer :: dumint7  !< Dummy integer
+  integer :: dumint8  !< Dummy integer
+  integer :: dumint9  !< Dummy integer
+  
+  integer :: dmi   !< Dummy integer
+  integer :: dmi1  !< Dummy integer
+  integer :: dmi2  !< Dummy integer
+  integer :: dmi3  !< Dummy integer
+  integer :: dmi4  !< Dummy integer
+  integer :: dmi5  !< Dummy integer
+  integer :: dmi6  !< Dummy integer
+  integer :: dmi7  !< Dummy integer
+  integer :: dmi8  !< Dummy integer
+  integer :: dmi9  !< Dummy integer
+  
+  integer(long) :: dumlong   !< Dummy long integer
+  integer(long) :: dumlong1  !< Dummy long integer
+  integer(long) :: dumlong2  !< Dummy long integer
+  integer(long) :: dumlong3  !< Dummy long integer
+  integer(long) :: dumlong4  !< Dummy long integer
+  integer(long) :: dumlong5  !< Dummy long integer
+  integer(long) :: dumlong6  !< Dummy long integer
+  integer(long) :: dumlong7  !< Dummy long integer
+  integer(long) :: dumlong8  !< Dummy long integer
+  integer(long) :: dumlong9  !< Dummy long integer
+  integer(long) :: dml   !< Dummy long integer
+  integer(long) :: dml1  !< Dummy long integer
+  integer(long) :: dml2  !< Dummy long integer
+  integer(long) :: dml3  !< Dummy long integer
+  integer(long) :: dml4  !< Dummy long integer
+  integer(long) :: dml5  !< Dummy long integer
+  integer(long) :: dml6  !< Dummy long integer
+  integer(long) :: dml7  !< Dummy long integer
+  integer(long) :: dml8  !< Dummy long integer
+  integer(long) :: dml9  !< Dummy long integer
+  
+  real :: dumreal   !< Dummy real
+  real :: dumreal1  !< Dummy real
+  real :: dumreal2  !< Dummy real
+  real :: dumreal3  !< Dummy real
+  real :: dumreal4  !< Dummy real
+  real :: dumreal5  !< Dummy real
+  real :: dumreal6  !< Dummy real
+  real :: dumreal7  !< Dummy real
+  real :: dumreal8  !< Dummy real
+  real :: dumreal9  !< Dummy real
+  
+  real :: dmr   !< Dummy real
+  real :: dmr1  !< Dummy real
+  real :: dmr2  !< Dummy real
+  real :: dmr3  !< Dummy real
+  real :: dmr4  !< Dummy real
+  real :: dmr5  !< Dummy real
+  real :: dmr6  !< Dummy real
+  real :: dmr7  !< Dummy real
+  real :: dmr8  !< Dummy real
+  real :: dmr9  !< Dummy real
+  
+  real(double) :: dumdbl   !< Dummy double
+  real(double) :: dumdbl1  !< Dummy double
+  real(double) :: dumdbl2  !< Dummy double
+  real(double) :: dumdbl3  !< Dummy double
+  real(double) :: dumdbl4  !< Dummy double
+  real(double) :: dumdbl5  !< Dummy double
+  real(double) :: dumdbl6  !< Dummy double
+  real(double) :: dumdbl7  !< Dummy double
+  real(double) :: dumdbl8  !< Dummy double
+  real(double) :: dumdbl9  !< Dummy double
+  
+  real(double) :: dmd    !< Dummy double
+  real(double) :: dmd1   !< Dummy double
+  real(double) :: dmd2   !< Dummy double
+  real(double) :: dmd3   !< Dummy double
+  real(double) :: dmd4   !< Dummy double
+  real(double) :: dmd5   !< Dummy double
+  real(double) :: dmd6   !< Dummy double
+  real(double) :: dmd7   !< Dummy double
+  real(double) :: dmd8   !< Dummy double
+  real(double) :: dmd9   !< Dummy double
+  real(double) :: dmd10  !< Dummy double
+  real(double) :: dmd11  !< Dummy double
+  real(double) :: dmd12  !< Dummy double
+  real(double) :: dmd13  !< Dummy double
+  real(double) :: dmd14  !< Dummy double
+  real(double) :: dmd15  !< Dummy double
+  real(double) :: dmd16  !< Dummy double
+  real(double) :: dmd17  !< Dummy double
+  real(double) :: dmd18  !< Dummy double
+  real(double) :: dmd19  !< Dummy double
+
+  
+  character :: dumstr         !< Dummy character
+  character :: dumstr9*(9)    !< Dummy string of length 9
+  character :: dumstr99*(99)  !< Dummy string of length 99
+  
+  logical :: dumlog  !< Dummy logical
   
 end module SUFR_dummy
 !***********************************************************************************************************************************

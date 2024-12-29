@@ -42,7 +42,7 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Get an integer from the command line
   !! 
-  !! \param  nArg    Number of command-line argument (1,2,...)
+  !! \param nArg    Number of command-line argument (1,2,...)
   !! \param arg     Value of the argument (output)
   !! \param status  Exit status: 0: ok, !=0: not ok (output)
   
@@ -480,8 +480,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Check whether a command-line option is present
   !!
-  !! \param option   Option to verify the presence of
-  !! \param verbose  Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
+  !! \param option              Option to verify the presence of
+  !! \param verbose             Verbosity: 0-print nothing, 1-print warnings, 2-print information, 3-print debugging info
+  !! \retval cl_option_present  The cl option is present (true/false).
   
   function cl_option_present(option, verbose)
     implicit none

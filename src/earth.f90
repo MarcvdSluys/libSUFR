@@ -35,7 +35,10 @@ contains
   !! \param lat1   Latitude of first location (rad)
   !! \param lon2   Longitude of second location (rad)
   !! \param lat2   Latitude of second location (rad)
+  !! 
   !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
+  !! 
+  !! \retval distance  The distance between the two points over the Earth's surface (in km or mi)
   
   pure function distance(lon1,lat1, lon2,lat2, miles)
     use SUFR_kinds, only: double
@@ -83,7 +86,10 @@ contains
   !! \param lat1   Latitude of first location (rad)
   !! \param lon2   Longitude of second location (rad)
   !! \param lat2   Latitude of second location (rad)
+  !! 
   !! \param miles  Return result in miles if present and True, otherwise return result in kilometres
+  !! 
+  !! \retval distance_r  The distance between the two points over the Earth's surface (in km or mi)
   
   pure function distance_r(lon1,lat1, lon2,lat2, miles)
     implicit none

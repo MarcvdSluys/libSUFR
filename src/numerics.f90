@@ -31,8 +31,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Return the relative difference between two numbers: dx/\<x\> - double precision
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param  x1       First number
+  !! \param  x2       Second number
+  !! \retval reldiff  The relative difference
   
   pure function reldiff(x1,x2)
     use SUFR_kinds, only: double, dbl
@@ -60,8 +61,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Return the relative difference between two numbers: dx/\<x\> - single precision version
   !!
-  !! \param x1  First number
-  !! \param x2  Second number
+  !! \param  x1          First number
+  !! \param  x2          Second number
+  !! \retval reldiff_sp  The relative difference
   
   pure function reldiff_sp(x1,x2)
     implicit none
@@ -79,9 +81,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two double-precision variables are equal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1   First number
-  !! \param x2   Second number
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x1   First number
+  !! \param  x2   Second number
+  !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval deq  The two numers are equal (true/false)
   
   pure function deq(x1,x2, eps)
     use SUFR_kinds, only: double
@@ -107,8 +110,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a double-precision variable is equal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0   Number to check
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x0    Number to check
+  !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval deq0  The number is equal to 0 (true/false)
   
   pure function deq0(x0, eps)
     use SUFR_kinds, only: double
@@ -135,9 +139,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two single-precision variables are equal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1   First number
-  !! \param x2   Second number
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param x1    First number
+  !! \param x2    Second number
+  !! \param eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval seq  The two numers are equal (true/false)
   
   pure function seq(x1,x2, eps)
     implicit none
@@ -161,8 +166,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a single-precision variable ais equal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0   Number to check
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x0    Number to check
+  !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval seq0  The number is equal to 0 (true/false)
   
   pure function seq0(x0, eps)
     implicit none
@@ -187,9 +193,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two double-precision variables are unequal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1   First number
-  !! \param x2   Second number
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x1   First number
+  !! \param  x2   Second number
+  !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval dne  The two numbers are unequal (true/false)
   
   pure function dne(x1,x2, eps)
     use SUFR_kinds, only: double
@@ -209,8 +216,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a double-precision variable is unequal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0   Number to check
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x0    Number to check
+  !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval dne0  The number is unequal to 0 (true/false)
   
   pure function dne0(x0, eps)
     use SUFR_kinds, only: double
@@ -232,9 +240,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether two single-precision variables are unequal to better than a given value (default: 2x machine precision)
   !!
-  !! \param x1   First number
-  !! \param x2   Second number
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x1   First number
+  !! \param  x2   Second number
+  !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval sne  The two numers are unequal (true/false)
   
   pure function sne(x1,x2, eps)
     implicit none
@@ -254,8 +263,9 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a single-precision variable is unequal to zero better than a given value (default: 2x machine precision)
   !!
-  !! \param x0   Number to check
-  !! \param eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \param  x0    Number to check
+  !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! \retval sne0  The number is unequal to 0 (true/false)
   
   pure function sne0(x0, eps)
     implicit none
@@ -279,7 +289,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a double-precision variable is (+/-) infinite
   !!
-  !! \param x0   Number to check
+  !! \param  x0     Number to check
+  !! \retval isinf  The number is infinite (true/false)
   
   elemental function isinf(x0)
     use SUFR_kinds, only: double
@@ -294,7 +305,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a single-precision variable is (+/-) infinite
   !!
-  !! \param x0   Number to check
+  !! \param  x0      Number to check
+  !! \retval sisinf  The number is infinite (true/false)
   
   elemental function sisinf(x0)
     implicit none
@@ -309,7 +321,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a double-precision variable is not a number (NaN)
   !!
-  !! \param x0   Number to check
+  !! \param  x0      Number to check
+  !! \retval isanan  The value is a NaN (true/false)
   
   elemental function isanan(x0)
     use SUFR_kinds, only: double
@@ -324,7 +337,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a single-precision variable is not a number (NaN)
   !!
-  !! \param x0   Number to check
+  !! \param  x0       Number to check
+  !! \retval sisanan  The value is a NaN (true/false)
   
   elemental function sisanan(x0)
     implicit none
@@ -339,7 +353,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a double-precision variable is normal (not +/- Inf, not NaN)
   !!
-  !! \param x0   Number to check
+  !! \param  x0        Number to check
+  !! \retval isnormal  This is a normal value (true/false)
   
   elemental function isnormal(x0)
     use SUFR_kinds, only: double
@@ -354,7 +369,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Test whether a single-precision variable is normal (not +/- Inf, not NaN)
   !!
-  !! \param x0   Number to check
+  !! \param  x0         Number to check
+  !! \retval sisnormal  This is a normal value (true/false)
   
   elemental function sisnormal(x0)
     implicit none
@@ -372,10 +388,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Determine plot ranges from data arrays in x and y, and relative margins
   !!
-  !! \param plx    Array contaiting x values
-  !! \param ply    Array contaiting y values
-  !! \param ddx    Relative margin in x
-  !! \param ddy    Relative margin in y
+  !! \param plx   Array contaiting x values
+  !! \param ply   Array contaiting y values
+  !! \param ddx   Relative margin in x
+  !! \param ddy   Relative margin in y
   !!
   !! \param xmin  Minimum of plot range in x (output)
   !! \param xmax  Maximum of plot range in x (output)
@@ -435,6 +451,7 @@ contains
   !! 
   !! \param number  Number to take the modulo of
   !! \param period  Period to wrap around
+  !!
   !! \retval mod1   Modulo of the given number with the given period
   
   pure function mod1(number, period)

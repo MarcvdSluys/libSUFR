@@ -24,8 +24,9 @@
 module SUFR_pgplot
   implicit none
   save
-  integer :: screen_size_h,screen_size_v
-  real :: screen_dpi
+  integer :: screen_size_h  !< Horizontal screen size (pixels)
+  integer :: screen_size_v  !< Vertical screen size (pixels)
+  real :: screen_dpi        !< Screen resolution (DPI)
 contains
   
   

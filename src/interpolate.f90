@@ -36,7 +36,8 @@ contains
   !! \param y2  Y value 2, belonging to x2
   !!
   !! \param x   X value to find y value for
-  !! \retval y  Y value to find
+  !! 
+  !! \retval linear_interpolation  Y value found
   
   pure function linear_interpolation(x1,x2, y1,y2, x)
     use SUFR_kinds, only: double
@@ -64,7 +65,8 @@ contains
   !! \param y2  Y value 2, belonging to x2
   !!
   !! \param x   X value to find y value for
-  !! \retval y  Y value to find
+  !! 
+  !! \retval linear_interpolation_sp  Y value found
   
   pure function linear_interpolation_sp(x1,x2, y1,y2, x)
     implicit none
@@ -84,6 +86,8 @@ contains
   !! \param yArr  Y-array
   !!
   !! \param xVal  X value to find y value for
+  !! 
+  !! \retval linear_interpolate_array  Y value found
   
   function linear_interpolate_array(xArr, yArr, xVal)
     use SUFR_kinds, only: double
@@ -149,6 +153,8 @@ contains
   !! \param a  Coefficient a in y = a*x^2 +b*x + c
   !! \param b  Coefficient b in y = a*x^2 +b*x + c
   !! \param c  Coefficient c in y = a*x^2 +b*x + c
+  !! 
+  !! \retval parabola  The value of the parabola at x.
   
   pure function parabola(x, a,b,c)
     use SUFR_kinds, only: double
@@ -168,6 +174,8 @@ contains
   !!
   !! \param xVal    Value to locate
   !! \param xArray  Array to locate value in.  xArray must be monotonic, either ascending or descending
+  !! 
+  !! \retval locate_value_in_array  Index such that the value lies between array(index) and array(index+1).
   !!
   !! \see  Numerical Recipes in Fortran, Sect.3.4
   

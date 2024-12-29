@@ -29,18 +29,20 @@ module SUFR_kinds
   save
   
   ! Integer, double precision:
-  integer, parameter :: long = selected_int_kind(18)
-  integer, parameter :: lng = selected_int_kind(18)
+  integer, parameter :: long = selected_int_kind(18)  !< Long integer
+  integer, parameter :: lng = selected_int_kind(18)   !< Long integer
   
   ! Real, double precision:
-  integer, parameter :: double = selected_real_kind(15,307)  ! Precision = 15, range = 307
-  integer, parameter :: dbl = selected_real_kind(15,307)     ! Precision = 15, range = 307
+  integer, parameter :: double = selected_real_kind(15,307)  !< Double-precision float.  Precision = 15, range = 307
+  integer, parameter :: dbl = selected_real_kind(15,307)     !< Double-precision float.  Precision = 15, range = 307
   
-  ! Maximum integer and real kinds:
-  ! integer :: intkindmax, realkindmax
+  !> Maximum integer kind:
   integer, parameter :: intkindmax = max(selected_int_kind(9),selected_int_kind(18),selected_int_kind(38),selected_int_kind(99))
+  
+  !> Maximum real kind:
   integer, parameter :: realkindmax = max(selected_real_kind(6),selected_real_kind(15),selected_real_kind(18), &
        selected_real_kind(31),selected_real_kind(33),selected_real_kind(99))
+  
   ! Problem with g95: not all functions have been defined in the maximum accuracy yet!
   ! integer, parameter :: realmaxkind = double  ! If the above doesn't work
 
