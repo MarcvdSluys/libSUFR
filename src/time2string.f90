@@ -5,7 +5,7 @@
 !  Copyright (c) 2002-2020  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
-!  see: http://libsufr.sourceforge.net/
+!  see: https://libsufr.sourceforge.net/
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -14,7 +14,7 @@
 !  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 !  
 !  You should have received a copy of the GNU General Public License along with this code.  If not, see 
-!  <http://www.gnu.org/licenses/>.
+!  <https://www.gnu.org/licenses/>.
 
 
 
@@ -56,7 +56,7 @@ contains
   !! \param  t    Time (h)
   !! \retval hms  Time as hh:mm:ss string
   
-  pure function hms(t)
+  elemental function hms(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -95,7 +95,7 @@ contains
   !! \param  t     Time (h)
   !! \retval hhms  Time as hh:mm:ss string
   
-  pure function hhms(t)
+  elemental function hhms(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -137,7 +137,7 @@ contains
   !! \param  t     Time (h)
   !! \retval hms2  Time as string in hh:mm
   
-  pure function hms2(t)
+  elemental function hms2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
@@ -184,7 +184,7 @@ contains
   !! \param  t    Time (h)
   !! \retval ums  Time as 00u11m22s string
   
-  pure function ums(t)
+  elemental function ums(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -230,7 +230,7 @@ contains
   !! \param  t      Time (h)
   !! \retval hms_s  Time as string in hms.s
   
-  pure function hms_s(t)
+  elemental function hms_s(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -277,7 +277,7 @@ contains
   !! \param  t        Time (h)
   !! \retval hms_sss  Time as string in hms.sss
   
-  pure function hms_sss(t)
+  elemental function hms_sss(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -324,7 +324,7 @@ contains
   !! \param  t    Time (h)
   !! \retval hmm  Time as string in hm.m
   
-  pure function hmm(t)
+  elemental function hmm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -362,7 +362,7 @@ contains
   !! \param  t    Time (h)
   !! \retval umm  Time as string in 00u11.2m
   
-  pure function umm(t)
+  elemental function umm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -403,7 +403,7 @@ contains
   !! \note
   !! - Prints '--:--' for time=0!  Use hhm() to avoid this.
   
-  pure function hm(time)
+  elemental function hm(time)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -440,7 +440,7 @@ contains
   !! \param  time    Time (h)
   !! \retval hm_mmm  Time as string in hh:mm.mmm
   
-  pure function hm_mmm(time)
+  elemental function hm_mmm(time)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -476,7 +476,7 @@ contains
   !! \param  t    Time (h)
   !! \retval hhm  Time as string in h:mm or hh:mm
   
-  pure function hhm(t)
+  elemental function hhm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -515,7 +515,7 @@ contains
   !! \param  t   Time (h)
   !! \retval um  Time as string in 01u23m
   
-  pure function um(t)
+  elemental function um(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -557,7 +557,7 @@ contains
   !! \param  t    Time (h)
   !! \retval wum  Time as HTML string in 01u23m
   
-  pure function wum(t)
+  elemental function wum(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -598,7 +598,7 @@ contains
   !! \param  t     Time (h)
   !! \retval wumm  Time as HTML string in 01u23.1m
   
-  pure function wumm(t)
+  elemental function wumm(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -639,7 +639,7 @@ contains
   !! \param  t     Time (h)
   !! \retval wums  Time as 00u11m22s HTML string
   
-  pure function wums(t)
+  elemental function wums(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -684,7 +684,7 @@ contains
   !! \param  t       Time (h)
   !! \retval wums_s  Time as a Dutch HTML string in 11u22m33.4s
   
-  pure function wums_s(t)
+  elemental function wums_s(t)
     use SUFR_kinds, only: double
     use SUFR_constants, only: r2h,h2r
     use SUFR_angles, only: rev
@@ -736,7 +736,7 @@ contains
   !! \param  t    Time (h)
   !! \retval hm2  Time as string in +/-hh:mm
   
-  pure function hm2(t)
+  elemental function hm2(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rv12
     
@@ -776,7 +776,7 @@ contains
   !! \param  t    Time (h)
   !! \retval hdm  Time as a nice string in hh.mm
   
-  pure function hdm(t)
+  elemental function hdm(t)
     use SUFR_kinds, only: double
     use SUFR_angles, only: rev
     use SUFR_constants, only: r2h,h2r
@@ -817,7 +817,7 @@ contains
   !! \param  t    Time (h)
   !! \retval tms  Time as mm:ss.s string
   
-  pure function tms(t)
+  elemental function tms(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t
@@ -843,7 +843,7 @@ contains
   !! \param  t     Time (h)
   !! \retval tms2  Time as mm:ss.s string
   
-  pure function tms2(t)
+  elemental function tms2(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t
@@ -878,7 +878,7 @@ contains
   !! \param  t       Time (h)
   !! \retval tmsss2  Time as m:ss.s string
   
-  pure function tmsss2(t)
+  elemental function tmsss2(t)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: t

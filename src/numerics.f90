@@ -35,7 +35,7 @@ contains
   !! \param  x2       Second number
   !! \retval reldiff  The relative difference
   
-  pure function reldiff(x1,x2)
+  elemental function reldiff(x1,x2)
     use SUFR_kinds, only: double, dbl
     
     implicit none
@@ -65,7 +65,7 @@ contains
   !! \param  x2          Second number
   !! \retval reldiff_sp  The relative difference
   
-  pure function reldiff_sp(x1,x2)
+  elemental function reldiff_sp(x1,x2)
     implicit none
     real, intent(in) :: x1,x2
     real :: reldiff_sp
@@ -84,9 +84,10 @@ contains
   !! \param  x1   First number
   !! \param  x2   Second number
   !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
+  !! 
   !! \retval deq  The two numers are equal (true/false)
   
-  pure function deq(x1,x2, eps)
+  elemental function deq(x1,x2, eps)
     use SUFR_kinds, only: double
     
     implicit none
@@ -114,7 +115,7 @@ contains
   !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval deq0  The number is equal to 0 (true/false)
   
-  pure function deq0(x0, eps)
+  elemental function deq0(x0, eps)
     use SUFR_kinds, only: double
     
     implicit none
@@ -144,7 +145,7 @@ contains
   !! \param eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval seq  The two numers are equal (true/false)
   
-  pure function seq(x1,x2, eps)
+  elemental function seq(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
     real, intent(in), optional :: eps
@@ -170,7 +171,7 @@ contains
   !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval seq0  The number is equal to 0 (true/false)
   
-  pure function seq0(x0, eps)
+  elemental function seq0(x0, eps)
     implicit none
     real, intent(in) :: x0
     real, intent(in), optional :: eps
@@ -198,7 +199,7 @@ contains
   !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval dne  The two numbers are unequal (true/false)
   
-  pure function dne(x1,x2, eps)
+  elemental function dne(x1,x2, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x1,x2
@@ -220,7 +221,7 @@ contains
   !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval dne0  The number is unequal to 0 (true/false)
   
-  pure function dne0(x0, eps)
+  elemental function dne0(x0, eps)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: x0
@@ -245,7 +246,7 @@ contains
   !! \param  eps  Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval sne  The two numers are unequal (true/false)
   
-  pure function sne(x1,x2, eps)
+  elemental function sne(x1,x2, eps)
     implicit none
     real, intent(in) :: x1,x2
     real, intent(in), optional :: eps
@@ -267,7 +268,7 @@ contains
   !! \param  eps   Maximum absolute difference allowed (optional - default: twice the machine precision)
   !! \retval sne0  The number is unequal to 0 (true/false)
   
-  pure function sne0(x0, eps)
+  elemental function sne0(x0, eps)
     implicit none
     real, intent(in) :: x0
     real, intent(in), optional :: eps
@@ -454,7 +455,7 @@ contains
   !!
   !! \retval mod1   Modulo of the given number with the given period
   
-  pure function mod1(number, period)
+  elemental function mod1(number, period)
     implicit none
     integer, intent(in) :: number, period
     integer :: mod1

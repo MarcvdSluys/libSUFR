@@ -4,7 +4,7 @@
 !  Copyright (c) 2002-2023  Marc van der Sluys - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
-!  see: http://libsufr.sourceforge.net/
+!  see: https://libsufr.sourceforge.net/
 !   
 !  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 !  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
@@ -13,7 +13,7 @@
 !  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 !  
 !  You should have received a copy of the GNU General Public License along with this code.  If not, see 
-!  <http://www.gnu.org/licenses/>.
+!  <https://www.gnu.org/licenses/>.
 
 
 
@@ -37,7 +37,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Scale_height
   
-  pure function air_pressure(elev, press0)
+  elemental function air_pressure(elev, press0)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: elev
@@ -63,13 +63,13 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Density_of_air
   
-  pure function air_density(press, temp)
+  elemental function air_density(press, temp)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: press, temp
     real(double) :: air_density, Rspec
     
-    !air_density = 1.225d0  ! Density of air, at std pressure and 15 deg C - https://en.wikipedia.org/wiki/Density_of_air
+    ! air_density = 1.225d0  ! Density of air, at std pressure and 15 deg C - https://en.wikipedia.org/wiki/Density_of_air
     
     Rspec = 287.058d0  ! Specific gas constant for dry air, J/(kg K) - https://en.wikipedia.org/wiki/Density_of_air
     
@@ -88,7 +88,7 @@ contains
   !!
   !! \see https://en.wikipedia.org/wiki/Density_of_air
   
-  pure function air_density_sp(press, temp)
+  elemental function air_density_sp(press, temp)
     implicit none
     real, intent(in) :: press, temp
     real :: air_density_sp
@@ -105,9 +105,9 @@ contains
   !! \param  speed             Wind speed (m/s)
   !! \retval wind_speed_2_bft  Wind "force" on the Beaufort scale
   !!
-  !! \see http://en.wikipedia.org/wiki/Beaufort_scale#Modern_scale
+  !! \see https://en.wikipedia.org/wiki/Beaufort_scale#Modern_scale
   
-  pure function beaufort(speed)
+  elemental function beaufort(speed)
     use SUFR_kinds, only: double
     implicit none
     real(double), intent(in) :: speed
@@ -157,7 +157,7 @@ contains
   !! \param  RH         Relative humidity (fraction)
   !! \retval dew_point  Dew point (degrees Celsius)
   !!
-  !! \see http://en.wikipedia.org/wiki/Dew_point
+  !! \see https://en.wikipedia.org/wiki/Dew_point
   
   elemental function dew_point(tempc, RH)
     use SUFR_kinds, only: double
@@ -183,7 +183,7 @@ contains
   !! \retval water_vapor_saturated_density  Saturated water-vapor density (g/m^3)
   !!
   !! \note
-  !! - uses data from http://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3:
+  !! - uses data from https://hyperphysics.phy-astr.gsu.edu/hbase/kinetic/relhum.html#c3:
   !!   - for T= -10 - +60°C.
   !! - drops to 0 below T~-25°C;
   !! - significantly better results than original fit (3rd order polynomial):
