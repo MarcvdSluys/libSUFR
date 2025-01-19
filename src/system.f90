@@ -97,9 +97,10 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Execute a shell command and print a message upon error.  Optionally stop the execution of the current program in that case.
   !!
-  !! \param command  Command line to execute
-  !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
-  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  !! \param command        Command line to execute
+  !! \param wait           Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
+  !! \param status         Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  !! \param quit_on_error  Quit the program upon error (optional; defaults to false)
   
   subroutine execute_command_line_verbose(command, wait, status, quit_on_error)
     implicit none
@@ -156,8 +157,7 @@ contains
     logical, intent(in), optional :: wait
     integer, intent(in), optional :: status
     
-    integer :: exitstat, cmdstat, lstatus
-    character :: cmdmsg*(1024)
+    integer :: lstatus
     logical :: lwait
     
     ! Handle optional variables:
@@ -165,16 +165,7 @@ contains
     lstatus = 1
     if(present(wait)) lwait = wait
     if(present(status)) lstatus = status
-    
-    ! Execute command:
-    cmdmsg = ''
-    call execute_command_line(command, lwait, exitstat, cmdstat, cmdmsg)
-    
-    if(lwait .and. exitstat.ne.0)  &
-         call quit_program_error('the command "'//trim(command)//'" was not executed correctly', lstatus)
-    
-    if(cmdstat.ne.0)  &
-         call quit_program_error('the command "'//trim(command)//'" could not be executed: '//trim(cmdmsg), lstatus)
+    call execute_command_line_verbose(command, lwait, lstatus, quit_on_error=.true.)
     
   end subroutine execute_command_line_quit_on_error
   !*********************************************************************************************************************************
