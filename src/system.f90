@@ -95,6 +95,55 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Execute a shell command and print a message upon error.  Optionally stop the execution of the current program in that case.
+  !!
+  !! \param command  Command line to execute
+  !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
+  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  
+  subroutine execute_command_line_verbose(command, wait, status, quit_on_error)
+    implicit none
+    character, intent(in) :: command*(*)
+    logical, intent(in), optional :: wait, quit_on_error
+    integer, intent(in), optional :: status
+    
+    integer :: exitstat, cmdstat, lstatus
+    character :: cmdmsg*(1024)
+    logical :: lwait, lquit_on_error
+    
+    ! Handle optional variables:
+    lwait = .true.
+    lstatus = 1
+    lquit_on_error = .false.
+    if(present(wait)) lwait = wait
+    if(present(status)) lstatus = status
+    if(present(quit_on_error)) lquit_on_error = quit_on_error
+    
+    ! Execute command:
+    cmdmsg = ''
+    call execute_command_line(command, lwait, exitstat, cmdstat, cmdmsg)
+    
+    if(lwait .and. exitstat.ne.0) then
+       if(lquit_on_error) then
+          call quit_program_error('the command "'//trim(command)//'" was not executed correctly', lstatus)
+       else
+          call error('the command "'//trim(command)//'" was not executed correctly')
+       end if
+    end if
+    
+    if(cmdstat.ne.0) then
+       if(lquit_on_error) then
+          call quit_program_error('the command "'//trim(command)//'" could not be executed: '//trim(cmdmsg), lstatus)
+       else
+          call error('the command "'//trim(command)//'" could not be executed: '//trim(cmdmsg))
+       end if
+    end if
+    
+  end subroutine execute_command_line_verbose
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Execute a shell command.  Upon error, print a message and stop the execution of the current program
   !!
   !! \param command  Command line to execute
@@ -168,7 +217,7 @@ contains
     write(ranfile, '(A,I8.8,A)') trim(homedir)//'/.libsufr-system-file-', nint(randble*1.d8), '.temp'
     
     ! Execute command and redirect output to file:
-    call execute_command_line_quit_on_error(command//' > '//trim(ranfile), lwait, lstatus)
+    call execute_command_line_verbose(command//' > '//trim(ranfile), lwait, lstatus)
     
     ! Open file with output:
     call find_free_io_unit(ip)
@@ -197,7 +246,7 @@ contains
     close(ip)
     
     ! Remove temporary output file:
-    call execute_command_line_quit_on_error('rm -f '//trim(ranfile))
+    call execute_command_line_verbose('rm -f '//trim(ranfile))
     
   end function execute_command_line_and_return_str
   !*********************************************************************************************************************************
@@ -571,12 +620,14 @@ contains
     implicit none
     character, intent(in) :: message*(*)
     integer, intent(in), optional :: unit
-    integer :: u
+    integer :: lunit
     
-    u = 6                       ! Default: stdOut
-    if(present(unit)) u = unit  ! Optional variable
-    if(u.ne.6) u = 0            ! If not stdOut, then stdErr: 0
-    write(u,'(/,A,/)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
+    ! Handle optional variable:
+    lunit = 6                       ! Default: stdOut
+    if(present(unit)) lunit = unit  ! Optional variable
+    if(lunit.ne.6) lunit = 0        ! If not stdOut, then stdErr: 0
+    
+    write(lunit,'(/,A,/)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
     
   end subroutine warn
   !*********************************************************************************************************************************
@@ -594,12 +645,14 @@ contains
     implicit none
     character, intent(in) :: message*(*)
     integer, intent(in), optional :: unit
-    integer :: u
+    integer :: lunit
     
-    u = 0                      ! Default: stdErr
-    if(present(unit)) u = unit  ! Optional variable
-    if(u.ne.0) u = 6           ! If not StdErr, then StdOut: 6
-    write(u,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ****'
+    ! Handle optional variable:
+    lunit = 0                       ! Default: stdErr
+    if(present(unit)) lunit = unit  ! Optional variable
+    if(lunit.ne.0) lunit = 6        ! If not StdErr, then StdOut: 6
+    
+    write(lunit,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ****'
     
   end subroutine error
   !*********************************************************************************************************************************
