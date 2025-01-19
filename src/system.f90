@@ -95,7 +95,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Print an error message to StdErr and stop the execution of the current program
+  !> \brief  Execute a shell command.  Upon error, print a message and stop the execution of the current program
   !!
   !! \param command  Command line to execute
   !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
@@ -111,7 +111,7 @@ contains
     character :: cmdmsg*(1024)
     logical :: lwait
     
-    ! Get optional variables:
+    ! Handle optional variables:
     lwait = .true.
     lstatus = 1
     if(present(wait)) lwait = wait
@@ -187,7 +187,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Print a message to StdErr on file open error
+  !> \brief  Print a message to StdErr upon file open error
   !!
   !! \param filename  Filename
   !! \param filetype  File type: 0: (0)utput, 1: (1)nput

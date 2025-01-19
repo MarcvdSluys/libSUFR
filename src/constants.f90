@@ -336,6 +336,8 @@ module SUFR_constants
   character, parameter, public :: cursorright*(4) = char(27)//'[1C'  !<  Print this to move the cursor to the right one space
   character, parameter, public :: cursorleft*(4)  = char(27)//'[1D'  !<  Print this to move the cursor to the left one space
   
+  character, parameter, public :: newline*(2)     = achar(13)//achar(10)  !<  Newline character: ASCII Carriage Return (13) + Line Feed (10)
+  
   
   integer, public :: stdErr                !<  Default standard error unit for most (not all!) Fortran compilers
   integer, public :: StdIn                 !<  Default standard input unit for most (not all!) Fortran compilers
