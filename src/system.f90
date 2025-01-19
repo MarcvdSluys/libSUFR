@@ -132,6 +132,78 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Execute a shell command and return the result as a string
+  !!
+  !! \param command  Command line to execute
+  !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
+  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  !!
+  !! \retval  String containing the result.  Multiple lines are separated by newline code.  The size is 10kb, and an error occurs when one attempts to stuff more into it.
+  
+  function execute_command_line_and_return_str(command, wait, status)
+    use SUFR_kinds, only: double
+    use SUFR_constants, only: homedir, newline
+    use SUFR_random_numbers, only: get_ran_seed, ran_unif
+    
+    implicit none
+    character, intent(in) :: command*(*)
+    logical, intent(in), optional :: wait
+    integer, intent(in), optional :: status
+    character :: execute_command_line_and_return_str*(1024*10)  ! Runtime errors: >10kb: corrupted size vs. prev_size; >19kb: malloc(): corrupted top size;  >82kb: Segmentation fault - invalid memory reference
+    
+    integer :: seed,ip,ln, lstatus, iostat
+    real(double) :: randble
+    character :: line*(1024), ranfile*(128), ioMsg*(128)
+    logical :: lwait
+    
+    ! Handle optional variables:
+    lwait = .true.
+    lstatus = 1
+    if(present(wait)) lwait = wait
+    if(present(status)) lstatus = status
+    
+    ! Get random name for temporary file:
+    seed = get_ran_seed(0)
+    randble = ran_unif(seed)
+    write(ranfile, '(A,I8.8,A)') trim(homedir)//'/.libsufr-system-file-', nint(randble*1.d8), '.temp'
+    
+    ! Execute command and redirect output to file:
+    call execute_command_line_quit_on_error(command//' > '//trim(ranfile), lwait, lstatus)
+    
+    ! Open file with output:
+    call find_free_io_unit(ip)
+    open(unit=ip,form='formatted', status='old', action='read', position='rewind', file=trim(ranfile), iostat=iostat)
+    if(iostat.ne.0) call file_open_error_quit(trim(ranfile), 1, 1)  ! 1: input file, 1: status: not ok
+    
+    ! Read file with output:
+    ln = 0
+    execute_command_line_and_return_str = ''  ! Prevent lingering rubbish from entering
+    do while(.true.)
+       ln = ln + 1
+       
+       ! Read a line:
+       read(ip,'(A)',iostat=iostat, iomsg=ioMsg) line
+       if(iostat.lt.0) exit
+       if(iostat.gt.0) call file_read_error_quit(trim(ranfile), ln, 0, iomsg=trim(ioMsg))
+       
+       ! Stick multiple lines together:
+       if(ln.eq.1) then
+          write(execute_command_line_and_return_str, '(A)') trim(line)
+       else
+          write(execute_command_line_and_return_str, '(A)') trim(execute_command_line_and_return_str)//trim(newline)//trim(line)
+       end if
+       
+    end do  ! ln
+    close(ip)
+    
+    ! Remove temporary output file:
+    call execute_command_line_quit_on_error('rm -f '//trim(ranfile))
+    
+  end function execute_command_line_and_return_str
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a syntax message to StdErr
   !!
   !! \param syntax  Description of syntax
