@@ -244,6 +244,43 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief  Execute a shell command and return the result as an integer
+  !!
+  !! \param command  Command line to execute
+  !! \param wait     Execute command synchronously (in the foreground) if true, asynchronously (in the background) if false (optional; default=true)
+  !! \param status   Exit code: 0-ok, 1-not ok.  The latter makes the stop command appear on screen (optional; default=1)
+  !!
+  !! \retval  Integer containing the result.  If more data were returned by the command, only the first is parsed.
+  
+  function execute_command_line_and_return_int(command, wait, status)
+    implicit none
+    character, intent(in) :: command*(*)
+    logical, intent(in), optional :: wait
+    integer, intent(in), optional :: status
+    integer :: execute_command_line_and_return_int
+    character :: return_str*(1024*10), ioMsg*(1024)
+    
+    integer :: lstatus, iostat
+    logical :: lwait
+    
+    ! Handle optional variables:
+    lwait = .true.
+    lstatus = 1
+    if(present(wait)) lwait = wait
+    if(present(status)) lstatus = status
+    
+    ! Call the command and return the output as a string:
+    return_str = execute_command_line_and_return_str(command, lwait, lstatus)
+    
+    ! Read the integer from the return string:
+    read(return_str, *, iostat=iostat, iomsg=ioMsg) execute_command_line_and_return_int
+    if(iostat.ne.0) call quit_program_error('the command "'//trim(command)//'" did not return an integer: '//trim(ioMsg), lstatus)
+    
+  end function execute_command_line_and_return_int
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Print a syntax message to StdErr
   !!
   !! \param syntax  Description of syntax
