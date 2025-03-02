@@ -1,19 +1,16 @@
 !> \file weather.f90  Procedures to deal with weather
 
 
-!  Copyright (c) 2002-2023  Marc van der Sluys - marc.vandersluys.nl
+!  Copyright (c) 2002-2025  Marc van der Sluys - Nikhef/Utrecht University - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
 !  see: https://libsufr.sourceforge.net/
 !   
-!  This is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
-!  by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-!  
-!  This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-!  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-!  
-!  You should have received a copy of the GNU General Public License along with this code.  If not, see 
-!  <https://www.gnu.org/licenses/>.
+!  This is free software: you can redistribute it and/or modify it under the terms of the European Union
+!  Public Licence 1.2 (EUPL 1.2).  This software is distributed in the hope that it will be useful, but
+!  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+!  PURPOSE.  See the EU Public Licence for more details.  You should have received a copy of the European
+!  Union Public Licence along with this code.  If not, see <https://www.eupl.eu/1.2/en/>.
 
 
 
