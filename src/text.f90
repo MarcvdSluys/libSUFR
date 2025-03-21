@@ -127,7 +127,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Search and replace occurences of a substring in a string as often as the search string is found
+  !> \brief  Search and replace occurrences of a substring in a string as often as the search string is found
   !!
   !! \param string    Original string to replace in.  Trailing spaces are retained, call with string(1:len_trim(string))
   !!                  to ignore them and speed things up.
@@ -300,24 +300,29 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Search and replace occurences of a string in a text file.  Lines up to 9999 characters only, otherwise a warning 
-  !!         is given
+  !> \brief Search and replace occurrences of a string in a text file.  Lines up to 9999 characters only,
+  !!        otherwise a warning is given.
   !!
   !! \param  file_in   Name of the text file to replace in
-  !! \param  file_out  Name of the text file to store the result in
   !! \param  str_srch  Search string
   !! \param  str_repl  Replacement string
+  !! \param  file_out  Name of the text file to store the result in (optional).  If omitted, the input file is the output file.
   !!
   !! \param  status    Exit status: 0-ok, 1/2: could not open I/O file, 11/12: character array string too small (output)
   
-  subroutine replace_string_in_textfile(file_in, file_out, str_srch, str_repl, status)
-    use SUFR_system, only: error, find_free_io_unit
+  subroutine replace_string_in_textfile(file_in, str_srch, str_repl, status, file_out)
+    use SUFR_system, only: error, find_free_io_unit, execute_command_line_quit_on_error
     
     implicit none
-    character, intent(in) :: file_in*(*),file_out*(*), str_srch*(*),str_repl*(*)
+    character, intent(in) :: file_in*(*), str_srch*(*),str_repl*(*)
+    character, intent(in), optional :: file_out*(*)
     integer, intent(out) :: status
     integer :: io,ip,op
-    character :: string*(9999)
+    character :: string*(9999), lfile_out*(1024)
+    
+    ! Optional parameters:
+    lfile_out = '.sufr_replace_string_in_textfile_tmp'
+    if(present(file_out)) lfile_out = file_out
     
     status = 0
     
@@ -332,13 +337,13 @@ contains
     
     ! Output file:
     call find_free_io_unit(op)
-    open(unit=op, file=trim(file_out), status='replace', action='write', iostat=io)
+    open(unit=op, file=trim(lfile_out), status='replace', action='write', iostat=io)
     if(io.ne.0) then
-       call error('libSUFR replace_string_in_textfile():  could not open file: '//trim(file_out), 0)
+       call error('libSUFR replace_string_in_textfile():  could not open file: '//trim(lfile_out), 0)
        status = 2
        return
     end if
-       
+    
     
     io = 0
     do while(io.eq.0)
@@ -363,6 +368,9 @@ contains
     
     close(ip)
     close(op)
+    
+    ! If the output file is the input file:
+    if(.not. present(file_out)) call execute_command_line_quit_on_error('mv -f '//trim(lfile_out)//' '//trim(file_in))
     
   end subroutine replace_string_in_textfile
   !*********************************************************************************************************************************
