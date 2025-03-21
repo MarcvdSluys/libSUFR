@@ -302,12 +302,12 @@ contains
   !*********************************************************************************************************************************
   !> \brief Search and replace occurrences of a string in a text file.  Lines up to 9999 characters only,
   !!        otherwise a warning is given.
-  !!
+  !! 
   !! \param  file_in   Name of the text file to replace in
   !! \param  str_srch  Search string
   !! \param  str_repl  Replacement string
-  !! \param  file_out  Name of the text file to store the result in (optional).  If omitted, the input file is the output file.
-  !!
+  !! \param  file_out  Name of the text file to store the result in, if different from the input file (optional)
+  !! 
   !! \param  status    Exit status: 0-ok, 1/2: could not open I/O file, 11/12: character array string too small (output)
   
   subroutine replace_string_in_textfile(file_in, str_srch, str_repl, status, file_out)

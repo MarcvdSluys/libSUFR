@@ -195,6 +195,39 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Set the metadata title and optionally author of a PGPlot (e)ps file
+  !!
+  !! \param epsfile  Name of the (e)ps file
+  !! \param title    Title of the file/plot
+  !! \param author   Author name; will be changed from the used ID if specified.
+  
+  subroutine pgplot_eps_title(epsfile, title, author)
+    use SUFR_constants, only: userName, set_SUFR_constants, stdIn
+    use SUFR_system, only: quit_program_error
+    use SUFR_text, only: replace_string_in_textfile
+    
+    implicit none
+    character, intent(in) :: epsfile*(*), title*(*)
+    character, intent(in), optional :: author*(*)
+    integer :: status
+    
+    call replace_string_in_textfile(epsfile, 'PGPLOT PostScript plot', title, status)
+    if(status.ne.0) call quit_program_error('libSUFR/text/pgplot_eps_title(): An error occurred when '// &
+         'changing the title of the PGPlot output file.', 1)
+    
+    ! Change author name from user ID if desired:
+    if(present(author)) then
+       if(stdIn.ne.5) call set_SUFR_constants()
+       call replace_string_in_textfile(epsfile, trim(userName), author, status)
+       if(status.ne.0) call quit_program_error('libSUFR/text/pgplot_eps_title(): An error occurred when'// &
+            ' changing the author name of the PGPlot output file.', 1)
+    end if
+    
+  end subroutine pgplot_eps_title
+  !*********************************************************************************************************************************
+  
+  
   
   
 end module SUFR_pgplot
