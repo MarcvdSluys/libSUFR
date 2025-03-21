@@ -228,6 +228,31 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert a PGPlot (or any, really) file.(e)ps to file.pdf and remove file.eps.
+  !!
+  !! \param epsfile    Name of the (e)ps file.
+  !! \param converter  Name of the converter script.  Optional, defaults to 'eps2pdf'.
+  
+  subroutine pgplot_eps2pdf(epsfile, converter)
+    use SUFR_system, only: execute_command_line_quit_on_error
+    
+    implicit none
+    character, intent(in) :: epsfile*(*)
+    character, intent(in), optional :: converter*(*)
+    character :: lconverter*(1024)
+    
+    ! Optional variables:
+    lconverter = 'eps2pdf'
+    if(present(converter)) lconverter = converter
+    
+    call execute_command_line_quit_on_error(trim(lconverter)//' '//epsfile)
+    call execute_command_line_quit_on_error('rm -f '//epsfile)
+    
+  end subroutine pgplot_eps2pdf
+  !*********************************************************************************************************************************
+  
+  
   
   
 end module SUFR_pgplot
