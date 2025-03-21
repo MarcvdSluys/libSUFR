@@ -229,23 +229,35 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert a PGPlot (or any, really) file.(e)ps to file.pdf and remove file.eps.
+  !> \brief  Convert a PGPlot (or any, really) file.(e)ps to file.pdf, update title and author if desired, and remove file.eps.
   !!
   !! \param epsfile    Name of the (e)ps file.
+  !! \param title      Title of the file/plot (optional).
+  !! \param author     Author name; will be changed from the used ID if specified (optional).
   !! \param converter  Name of the converter script.  Optional, defaults to 'eps2pdf'.
   
-  subroutine pgplot_eps2pdf(epsfile, converter)
+  subroutine pgplot_eps2pdf(epsfile, title, author, converter)
     use SUFR_system, only: execute_command_line_quit_on_error
     
     implicit none
     character, intent(in) :: epsfile*(*)
-    character, intent(in), optional :: converter*(*)
+    character, intent(in), optional :: title*(*), author*(*), converter*(*)
     character :: lconverter*(1024)
     
     ! Optional variables:
     lconverter = 'eps2pdf'
     if(present(converter)) lconverter = converter
     
+    ! Set the title and if desired:
+    if(present(title)) then
+       if(present(author)) then
+          call pgplot_eps_title(epsfile, title, author)
+       else
+          call pgplot_eps_title(epsfile, title)
+       end if
+    end if
+    
+    ! Convert the eps file to pdf and remove the eps file:
     call execute_command_line_quit_on_error(trim(lconverter)//' '//epsfile)
     call execute_command_line_quit_on_error('rm -f '//epsfile)
     
