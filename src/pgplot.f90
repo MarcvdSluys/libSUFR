@@ -269,16 +269,18 @@ contains
   !> \brief  Convert a PGPlot (or any, really) file.ppm to file.png and remove file.ppm.
   !!
   !! \param ppmfile    Name of the ppm file.
+  !! \param size       Size of the new image in pixels (h or hxv; optional; defaults to same as original).
+  !! \param comment    Comment to add as metadata.
   !! \param converter  Name of the converter script.  Optional; defaults to 'convert'.
   
-  subroutine pgplot_ppm2png(ppmfile, converter)
+  subroutine pgplot_ppm2png(ppmfile, size, comment, converter)
     use SUFR_system, only: quit_program_error, execute_command_line_quit_on_error
     use SUFR_text, only: replace_substring
     
     implicit none
     character, intent(in) :: ppmfile*(*)
-    character, intent(in), optional :: converter*(*)
-    character :: lconverter*(1024), pngfile*(len(ppmfile))
+    character, intent(in), optional :: size*(*), comment*(*), converter*(*)
+    character :: lconverter*(1024), pngfile*(len(ppmfile)), convert_command*(2048)
     
     ! Optional variables:
     lconverter = 'convert'
@@ -289,8 +291,14 @@ contains
     call replace_substring(pngfile, '.ppm', '.png')
     if(pngfile .eq. ppmfile) call quit_program_error('libSUFR pgplot_ppm2png(): I could not distill '// &
          'a png file name from '//ppmfile//'!  Are you sure you specified a ppm file?', 1)
+
+    convert_command = trim(lconverter)//' '//ppmfile//' -depth 8 '
+    if(present(size)) convert_command = trim(convert_command)//' -resize '//size
+    if(present(comment)) convert_command = trim(convert_command)//' -comment "'//comment//'"'
+    convert_command = trim(convert_command)//' '//pngfile
+    print*, trim(convert_command)
     
-    call execute_command_line_quit_on_error(trim(lconverter)//' '//ppmfile//' '//pngfile)
+    call execute_command_line_quit_on_error(trim(convert_command))
     call execute_command_line_quit_on_error('rm -f '//ppmfile)
     
   end subroutine pgplot_ppm2png
