@@ -234,7 +234,7 @@ contains
   !! \param epsfile    Name of the (e)ps file.
   !! \param title      Title of the file/plot (optional).
   !! \param author     Author name; will be changed from the used ID if specified (optional).
-  !! \param converter  Name of the converter script.  Optional, defaults to 'eps2pdf'.
+  !! \param converter  Name of the converter script.  Optional; defaults to 'eps2pdf'.
   
   subroutine pgplot_eps2pdf(epsfile, title, author, converter)
     use SUFR_system, only: execute_command_line_quit_on_error
@@ -262,6 +262,38 @@ contains
     call execute_command_line_quit_on_error('rm -f '//epsfile)
     
   end subroutine pgplot_eps2pdf
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a PGPlot (or any, really) file.ppm to file.png and remove file.ppm.
+  !!
+  !! \param ppmfile    Name of the ppm file.
+  !! \param converter  Name of the converter script.  Optional; defaults to 'convert'.
+  
+  subroutine pgplot_ppm2png(ppmfile, converter)
+    use SUFR_system, only: quit_program_error, execute_command_line_quit_on_error
+    use SUFR_text, only: replace_substring
+    
+    implicit none
+    character, intent(in) :: ppmfile*(*)
+    character, intent(in), optional :: converter*(*)
+    character :: lconverter*(1024), pngfile*(len(ppmfile))
+    
+    ! Optional variables:
+    lconverter = 'convert'
+    if(present(converter)) lconverter = converter
+    
+    ! Convert the ppm file to png and remove the ppm file:
+    pngfile = ppmfile
+    call replace_substring(pngfile, '.ppm', '.png')
+    if(pngfile .eq. ppmfile) call quit_program_error('libSUFR pgplot_ppm2png(): I could not distill '// &
+         'a png file name from '//ppmfile//'!  Are you sure you specified a ppm file?', 1)
+    
+    call execute_command_line_quit_on_error(trim(lconverter)//' '//ppmfile//' '//pngfile)
+    call execute_command_line_quit_on_error('rm -f '//ppmfile)
+    
+  end subroutine pgplot_ppm2png
   !*********************************************************************************************************************************
   
   
