@@ -196,6 +196,46 @@ contains
   
   
   !*********************************************************************************************************************************
+  !> \brief Return foreground and background colour indices for bitmap or vector images with dark or bright
+  !!        backgrounds.
+  !! 
+  !! \param bitmap           Image has bitmap format or not: vector format.
+  !! \param dark_background  Plot should have a dark (black) background or not (white).
+  !! 
+  !! \param fgclri  Colour index for the foreground colour (0 or 1).
+  !! \param bgclri  Colour index for the background colour (0 or 1).
+  !!
+  !! \note In PGPlot, vector-format plots (e.g. eps) have black on white by default, bitmap plots (e.g. ppm)
+  !!       have white on black!
+  
+  pure subroutine pgplot_set_fg_bg_colour_index(bitmap, dark_background, fgclr, bgclr)
+    implicit none
+    logical, intent(in) :: bitmap, dark_background
+    integer, intent(out) :: fgclr, bgclr
+    
+    if(bitmap) then  ! e.g. ppm: default white on black
+       if(dark_background) then
+          bgclr = 1
+          fgclr = 0
+       else
+          bgclr = 0
+          fgclr = 1
+       end if
+    else              ! e.g. eps: default black on white
+       if(dark_background) then
+          bgclr = 0
+          fgclr = 1
+       else
+          bgclr = 1
+          fgclr = 0
+       end if
+    end if
+    
+  end subroutine pgplot_set_fg_bg_colour_index
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
   !> \brief  Set the metadata title and optionally author of a PGPlot (e)ps file
   !!
   !! \param epsfile  Name of the (e)ps file
