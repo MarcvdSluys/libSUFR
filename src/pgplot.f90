@@ -208,26 +208,26 @@ contains
   !! \note In PGPlot, vector-format plots (e.g. eps) have black on white by default, bitmap plots (e.g. ppm)
   !!       have white on black!
   
-  pure subroutine pgplot_set_fg_bg_colour_index(bitmap, dark_background, fgclr, bgclr)
+  pure subroutine pgplot_set_fg_bg_colour_index(bitmap, dark_background, fgclri, bgclri)
     implicit none
     logical, intent(in) :: bitmap, dark_background
-    integer, intent(out) :: fgclr, bgclr
+    integer, intent(out) :: fgclri, bgclri
     
     if(bitmap) then  ! e.g. ppm: default white on black
        if(dark_background) then
-          bgclr = 1
-          fgclr = 0
+          bgclri = 0
+          fgclri = 1
        else
-          bgclr = 0
-          fgclr = 1
+          bgclri = 1
+          fgclri = 0
        end if
     else              ! e.g. eps: default black on white
        if(dark_background) then
-          bgclr = 0
-          fgclr = 1
+          bgclri = 1
+          fgclri = 0
        else
-          bgclr = 1
-          fgclr = 0
+          bgclri = 0
+          fgclri = 1
        end if
     end if
     
