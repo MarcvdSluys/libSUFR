@@ -188,13 +188,14 @@ contains
   
   !*********************************************************************************************************************************
   !> \brief  Return an RGB-value representing the colour corresponding to a light ray with a given wavelength
-  !!
-  !! \param wl  Wavelength in nm (390-770 nm)
-  !! \param df  Dimming factor 0-1 to scale RGB values with (0-1; 0: black, 1: full colour)
-  !!
+  !! 
+  !! \param wavelen          Wavelength in nm (390-770 nm)
+  !! \param dimfac           Dimming factor 0-1 to scale RGB values with (0-1; 0: black, 1: full colour)
+  !! \param dark_background  Dark (black) background (true) or bright (white; false).  Optional; defaults to true (dark).
+  !! 
   !! \retval  wavelength2rgb  RGB values: (0-1, 0-1, 0-1)
-  !!
-  !!
+  !! 
+  !! 
   !! \note 
   !! - Assumed pure colour at centre of their wavelength bands:
   !!   Colours: Violet,   blue,   green,    yellow,    orange,     red:
@@ -202,16 +203,22 @@ contains
   !! 
   !! - Colours between 390 and 420nm and 696 and 770nm are darker due to 'fading in' and 'fading out' effects
   
-  function wavelength2rgb(wl, df)
+  function wavelength2rgb(wavelen, dimfac, dark_background)
     use SUFR_kinds, only: double
     use SUFR_system, only: warn
     
     implicit none
-    real(double), intent(in) :: wl,df
+    real(double), intent(in) :: wavelen,dimfac
+    logical, intent(in), optional :: dark_background
     integer, parameter :: nc = 6  ! Number of colours in the spectrum (violet, blue, green, yellow, orange, red)
-    integer :: ic
-    real(double) :: wavelength2RGB(3), xIpol,dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1), RGB(3)
     
+    integer :: ic
+    real(double) :: wavelength2RGB(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1), RGB(3)
+    logical :: ldark
+    
+    ! Optional parameters:
+    ldark = .true.
+    if(present(dark_background)) ldark = dark_background
     
     ! Set the boundaries of the colour bands and compute their centres and mutual distances:
     CBbnd = dble([390,450,492,577,597,622,770])  ! Colour-band boundaries: 1:UV-V, 2:VB, 3:BG, 4:GY, 5:YO, 6:OR, 7:R-IR (nc+1)
@@ -223,12 +230,12 @@ contains
     CBdst(nc+1) = CBbnd(nc+1)-CBctr(nc)
     
     
-    ! Convert wavelength to 0 <= x <= 4.5:
+    ! Convert wavelength to 0 <= xIpol <= 4.5:
     dxIpol = dble([0.5,1.0,1.0,0.5,0.5,0.5])
     xIpol0 = dble([0.5,1.0,2.0,3.0,3.5,4.0])
-    xIpol = (wl-390.d0)/30.d0*0.5d0                                         ! Black to violet    xIpol: 0.0 - 0.5
+    xIpol  = (wavelen-390.d0)/30.d0*0.5d0                                      ! 390-770 -> 0-6.3???
     do ic=1,nc
-       if(wl.gt.CBctr(ic))  xIpol = (wl-CBctr(ic)) / CBdst(ic+1) * dxIpol(ic) + xIpol0(ic)
+       if(wavelen.gt.CBctr(ic))  xIpol = (wavelen-CBctr(ic)) / CBdst(ic+1) * dxIpol(ic) + xIpol0(ic)
     end do
     xIpol = min(4.5d0, max(0.d0, xIpol) )  ! xIpol should be 0 <= xIpol <= 4.5
     
@@ -236,7 +243,11 @@ contains
     ! Convert xIpol to RGB.  Use black as 'invisible', i.e. UV or IR:
     RGB = [0.d0, 0.d0, 0.d0]  ! Ensure always defined
     if(xIpol.ge.0.d0 .and. xIpol.le.0.5d0) then
-       RGB =                         [xIpol,           0.d0,       xIpol]       ! Black to violet    xIpol: 0.0 - 0.5
+       if(ldark) then
+          RGB =                         [xIpol,           0.d0,       xIpol]         ! Black to violet    xIpol: 0.0 - 0.5
+       else
+          RGB =                         [1-xIpol,         1-2*xIpol,      1-xIpol]   ! White to violet    xIpol: 0.0 - 0.5
+       end if
     else if(xIpol.le.1.0d0) then
        RGB =                         [1.d0-xIpol,      0.d0,       xIpol]       ! Violet to blue     xIpol: 0.5 - 1.0
     else if(xIpol.le.2.0d0) then
@@ -248,14 +259,23 @@ contains
     else if(xIpol.le.4.0d0) then
        RGB =                         [1.d0,            4.d0-xIpol, 0.d0]        ! Orange to red      xIpol: 3.5 - 4.0
     else if(xIpol.le.4.5d0) then
-       RGB =                         [(4.5d0-xIpol)*2, 0.d0,       0.d0]        ! Red to black       xIpol: 4.0 - 4.5
+       xIpoli = (4.5d0-xIpol)*2  ! xIpol: 4.0 - 4.5  ->  xIpoli 1.0 - 0.0
+       if(ldark) then
+          RGB =                      [xIpoli,     0.d0,       0.d0]        ! Red to black       xIpol: 4.0 - 4.5
+       else
+          RGB =                      [1.d0,   1-xIpoli,   1-xIpoli]        ! Red to white       xIpol: 4.0 - 4.5
+       end if
     else
        call warn('SUFR_optics/wavelength2RGB(): xIpol out of bounds')
     end if
     
     
     ! Apply dimming and return:
-    wavelength2RGB = RGB*df
+    if(ldark) then
+       wavelength2RGB = RGB * dimfac                  ! Darken to black for dark/black background
+    else
+       wavelength2RGB = (1.d0 - (1.d0-RGB) * dimfac)  ! Brighten to white for bright/white background
+    end if
     
   end function wavelength2rgb
   !*********************************************************************************************************************************
