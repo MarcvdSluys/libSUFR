@@ -274,15 +274,17 @@ contains
   !! \param epsfile    Name of the (e)ps file.
   !! \param title      Title of the file/plot (optional).
   !! \param author     Author name; will be changed from the used ID if specified (optional).
+  !! \param outfile    Output filename (optional).
   !! \param converter  Name of the converter script.  Optional; defaults to 'eps2pdf'.
   
-  subroutine pgplot_eps2pdf(epsfile, title, author, converter)
+  subroutine pgplot_eps2pdf(epsfile, title, author, outfile, converter)
     use SUFR_system, only: execute_command_line_quit_on_error
+    use SUFR_text, only: replace_substring
     
     implicit none
     character, intent(in) :: epsfile*(*)
-    character, intent(in), optional :: title*(*), author*(*), converter*(*)
-    character :: lconverter*(1024)
+    character, intent(in), optional :: title*(*), author*(*), outfile*(*), converter*(*)
+    character :: pdffile*(len(epsfile)), lconverter*(1024)
     
     ! Optional variables:
     lconverter = 'eps2pdf'
@@ -300,6 +302,13 @@ contains
     ! Convert the eps file to pdf and remove the eps file:
     call execute_command_line_quit_on_error(trim(lconverter)//' '//epsfile)
     call execute_command_line_quit_on_error('rm -f '//epsfile)
+    
+    if(present(outfile)) then
+       pdffile = epsfile
+       call replace_substring(pdffile, '.eps', '.pdf')
+       call execute_command_line_quit_on_error('mv -f '//trim(pdffile)//' '//outfile)
+    end if
+    
     
   end subroutine pgplot_eps2pdf
   !*********************************************************************************************************************************
@@ -321,7 +330,7 @@ contains
     implicit none
     character, intent(in) :: ppmfile*(*)
     character, intent(in), optional :: size*(*), comment*(*), outfile*(*), converter*(*)
-    character :: lconverter*(1024), convert_command*(2048), loutfile*(1024)
+    character :: loutfile*(1024), lconverter*(1024), convert_command*(2048)
     
     ! Optional variables:
     lconverter = 'convert'
