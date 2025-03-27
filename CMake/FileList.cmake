@@ -1,4 +1,5 @@
 set(SRC_FILES
+  src/astro.f90
   src/angle2string.f90
   src/angles.f90
   src/command_line.f90
