@@ -190,7 +190,7 @@ contains
   !> \brief  Return an RGB-value representing the colour corresponding to a light ray with a given wavelength
   !! 
   !! \param wavelen          Wavelength in nm (390-770 nm)
-  !! \param dimfac           Dimming factor 0-1 to scale RGB values with (0-1; 0: black, 1: full colour)
+  !! \param dimfac           Dimming factor 0-1 to scale RGB values with (0-1; 0: black/white, 1: full colour; optional; defaults to 1)
   !! \param dark_background  Dark (black) background (true) or bright (white; false).  Optional; defaults to true (dark).
   !! 
   !! \retval  wavelength2rgb  RGB values: (0-1, 0-1, 0-1)
@@ -208,15 +208,20 @@ contains
     use SUFR_system, only: warn
     
     implicit none
-    real(double), intent(in) :: wavelen,dimfac
     logical, intent(in), optional :: dark_background
+    real(double), intent(in) :: wavelen
+    real(double), intent(in), optional :: dimfac
     integer, parameter :: nc = 6  ! Number of colours in the spectrum (violet, blue, green, yellow, orange, red)
     
     integer :: ic
-    real(double) :: wavelength2RGB(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1), RGB(3)
     logical :: ldark
+    real(double) :: wavelength2RGB(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1)
+    real(double) :: RGB(3), ldimfac
     
     ! Optional parameters:
+    ldimfac = 1.d0
+    if(present(dimfac)) ldimfac = dimfac
+    
     ldark = .true.
     if(present(dark_background)) ldark = dark_background
     
@@ -272,9 +277,9 @@ contains
     
     ! Apply dimming and return:
     if(ldark) then
-       wavelength2RGB = RGB * dimfac                  ! Darken to black for dark/black background
+       wavelength2RGB = RGB * ldimfac                  ! Darken to black for dark/black background
     else
-       wavelength2RGB = (1.d0 - (1.d0-RGB) * dimfac)  ! Brighten to white for bright/white background
+       wavelength2RGB = (1.d0 - (1.d0-RGB) * ldimfac)  ! Brighten to white for bright/white background
     end if
     
   end function wavelength2rgb
