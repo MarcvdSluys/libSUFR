@@ -1,4 +1,4 @@
-!> \file filename.f90  Procedures to deal with astronomy and astrophysics.
+!> \file astro.f90  Procedures to deal with astronomy and astrophysics.
 
 
 !  Copyright (c) 2002-2025  Marc van der Sluys - Nikhef/Utrecht University - marc.vandersluys.nl
@@ -92,7 +92,7 @@ contains
   !! \param  band  The photometric band used.
   !! \param  flux  The flux in the desired band (W/m2).
   !! 
-  !! \param        The magnitude in that band (-; ~ -2.5 log f).
+  !! \retval       The magnitude in that band (-; ~ -2.5 log f).
   !!
   !! \note
   !!  Available photometric bands:
