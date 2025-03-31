@@ -190,6 +190,7 @@ contains
   !> \brief  Return an RGB-value representing the colour corresponding to a light ray with a given wavelength
   !! 
   !! \param wavelen          Wavelength in nm (390-770 nm)
+  !! \param stars            Colours are for stars (T/F).  Optional; defaults to .false.
   !! \param dimfac           Dimming factor 0-1 to scale RGB values with (0-1; 0: black/white, 1: full colour; optional; defaults to 1)
   !! \param dark_background  Dark (black) background (true) or bright (white; false).  Optional; defaults to true (dark).
   !! 
@@ -198,27 +199,34 @@ contains
   !! 
   !! \note 
   !! - Assumed pure colour at centre of their wavelength bands:
-  !!   Colours: Violet,   blue,   green,    yellow,    orange,     red:
-  !!            (1,0,1)  (0,0,1)  (0,1,0)   (1,1,0)   (1,0.5,0)  (1,0,0)
+  !!   Colours:           UV,       Violet,    blue,   green,  yellow,    orange,     red,     IR:
+  !!   RGB:               (0,0,0), (1,0,1), (0,0,1), (0,1,0), (1,1,0), (1,0.5,0), (1,0,0), (0,0,0)
+  !!   Wavelength bounds:        390,     450,     492,     577,     597,       622,     770  nm
+  !!
+  !! - If stars is .true., green (0,1,0) is replaced with white (1,1,1) to represent the surface colour of
+  !!   stars peaking around 530nm
   !! 
   !! - Colours between 390 and 420nm and 696 and 770nm are darker due to 'fading in' and 'fading out' effects
   
-  function wavelength2rgb(wavelen, dimfac, dark_background)
+  function wavelength2rgb(wavelen, stars, dimfac, dark_background)
     use SUFR_kinds, only: double
     use SUFR_system, only: warn
     
     implicit none
-    logical, intent(in), optional :: dark_background
     real(double), intent(in) :: wavelen
     real(double), intent(in), optional :: dimfac
+    logical, intent(in), optional :: stars, dark_background
     integer, parameter :: nc = 6  ! Number of colours in the spectrum (violet, blue, green, yellow, orange, red)
     
     integer :: ic
-    logical :: ldark
     real(double) :: wavelength2RGB(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1)
     real(double) :: RGB(3), ldimfac
+    logical :: ldark, lstars
     
     ! Optional parameters:
+    lstars = .false.
+    if(present(stars)) lstars = stars
+    
     ldimfac = 1.d0
     if(present(dimfac)) ldimfac = dimfac
     
@@ -256,9 +264,17 @@ contains
     else if(xIpol.le.1.0d0) then
        RGB =                         [1.d0-xIpol,      0.d0,       xIpol]       ! Violet to blue     xIpol: 0.5 - 1.0
     else if(xIpol.le.2.0d0) then
-       RGB =                         [0.d0,            xIpol-1.d0, 2.d0-xIpol]  ! Blue to green      xIpol: 1.0 - 2.0
+       if(lstars) then
+          RGB = ipolRGB(xIpol, 1.d0,2.d0, [0.d0,0.d0,1.d0], [1.d0,1.d0,1.d0])  ! xIpol: 1.0-2.0: blue to white
+       else
+          RGB =                      [0.d0,            xIpol-1.d0, 2.d0-xIpol]  ! Blue to green      xIpol: 1.0 - 2.0
+       end if
     else if(xIpol.le.3.0d0) then
-       RGB =                         [xIpol-2.d0,      1.d0,       0.d0]        ! Green to yellow    xIpol: 2.0 - 3.0
+       if(lstars) then
+          RGB = ipolRGB(xIpol, 2.d0,3.d0, [1.d0,1.d0,1.d0], [1.d0,1.d0,0.d0])  ! xIpol: 2.0-3.0: white to yellow
+       else
+          RGB =                         [xIpol-2.d0,      1.d0,       0.d0]        ! Green to yellow    xIpol: 2.0 - 3.0
+       end if
     else if(xIpol.le.3.5d0) then
        RGB =                         [1.d0,            4.d0-xIpol, 0.d0]        ! Yellow to orange   xIpol: 3.0 - 3.5
     else if(xIpol.le.4.0d0) then
@@ -285,6 +301,31 @@ contains
   end function wavelength2rgb
   !*********************************************************************************************************************************
   
+  !*********************************************************************************************************************************
+  !> \brief  Return RGB-values interpolated between two boundaries.
+  !! 
+  !! \param ipl              The linear interpolation variable
+  !! \param ipl1             Minimum of the linear interpolation value
+  !! \param ipl2             Maximum of the linear interpolation value
+  !! \param rgb1             RGB values corresponding to the minimum of the linear interpolation value
+  !! \param rgb2             RGB values corresponding to the maximum of the linear interpolation value
+  !! 
+  !! \retval  ipolRGB        Interpolated RGB values: (0-1, 0-1, 0-1)
+  
+  function ipolRGB(ipl, ipl1,ipl2, rgb1,rgb2)
+    use SUFR_kinds, only: double
+    use SUFR_system, only: warn
+    
+    implicit none
+    real(double), intent(in) :: ipl1,ipl2, ipl, rgb1(3), rgb2(3)
+    real(double) :: frac_ipol, ipolRGB(3)
+    
+    frac_ipol = (ipl-ipl1)/(ipl2-ipl1)
+    ipolRGB = rgb1 * (1d0-frac_ipol) + rgb2 * frac_ipol
+    
+  end function ipolRGB
+!***********************************************************************************************************************************
+
   
 end module SUFR_optics
 !***********************************************************************************************************************************
