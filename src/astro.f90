@@ -38,14 +38,14 @@ contains
   !! \note
   !!  Available photometric bands:
   !!    - 'bol':  bolometric
-  !!    - 'U':    Johnson U
-  !!    - 'B':    Johnson B
-  !!    - 'V':    Johnson V
-  !!    - 'R':    Johnson R
-  !!    - 'I':    Johnson I
-  !!    - 'GG':   Gaia G
-  !!    - 'GBP':  Gaia BP
-  !!    - 'GRP':  Gaia RP
+  !!    - 'U':    Johnson/Bessell U
+  !!    - 'B':    Johnson/Bessell B
+  !!    - 'V':    Johnson/Bessell V
+  !!    - 'R':    Johnson/Bessell R
+  !!    - 'I':    Johnson/Bessell I
+  !!    - 'GG':   Gaia G  - to be implemented
+  !!    - 'GBP':  Gaia BP - to be implemented
+  !!    - 'GRP':  Gaia RP - to be implemented
     
   function flux_from_magnitude(band, mag)
     use SUFR_kinds, only: double
@@ -54,33 +54,43 @@ contains
     implicit none
     character, intent(in) :: band*(*)
     real(double), intent(in) :: mag
-    real(double) :: flux_from_magnitude, bandconst
+    real(double) :: flux_from_magnitude, bandconst, bandwidth
     
     bandconst = -1.d99
+    bandwidth = -1.d99
     select case(band)
     case('bol')
        bandconst = 18.99d0    ! Bolometric
+       bandwidth = 1.d0
     case('U')
-       bandconst = 25.90d0    ! Johnson U
+       bandconst = 25.90d0    ! Johnson/Bessell U
+       bandwidth = 68.d0
     case('B')
-       bandconst = 25.36d0    ! Johnson B
+       bandconst = 25.36d0    ! Johnson/Bessell B
+       bandwidth = 98.d0
     case('V')
-       bandconst = 26.02d0    ! Johnson V
+       bandconst = 26.02d0    ! Johnson/Bessell V
+       bandwidth = 89.d0
     case('R')
-       bandconst = 26.66d0    ! Johnson R
+       bandconst = 26.66d0    ! Johnson/Bessell R
+       bandwidth = 138.d0
     case('I')
-       bandconst = 27.37d0    ! Johnson I
-    case('GG')
-       bandconst = 25.6884d0  ! Gaia G: https://dc.g-vo.org/tableinfo/gaia.dr2epochflux
-    case('GBP')
-       bandconst = 25.3514d0  ! Gaia BP
-    case('GRP')
-       bandconst = 24.7619d0  ! Gaia RP
+       bandconst = 27.37d0    ! Johnson/Bessell I
+       bandwidth = 149.d0
+    ! case('GG')
+    !    bandconst = 25.6884d0  ! Gaia G: https://dc.g-vo.org/tableinfo/gaia.dr2epochflux
+    !    bandwidth = .d0
+    ! case('GBP')
+    !    bandconst = 25.3514d0  ! Gaia BP
+    !    bandwidth = .d0
+    ! case('GRP')
+    !    bandconst = 24.7619d0  ! Gaia RP
+    !    bandwidth = .d0
     case default
        call quit_program_error('Unknown photometric band: '//trim(band), 1)
     end select
     
-    flux_from_magnitude = 10.d0**(-(mag+bandconst)/2.5d0)
+    flux_from_magnitude = 10.d0**(-(mag+bandconst)/2.5d0) * bandwidth
     
   end function flux_from_magnitude
   !*********************************************************************************************************************************
@@ -97,14 +107,14 @@ contains
   !! \note
   !!  Available photometric bands:
   !!    - 'bol':  bolometric
-  !!    - 'U':    Johnson U
-  !!    - 'B':    Johnson B
-  !!    - 'V':    Johnson V
-  !!    - 'R':    Johnson R
-  !!    - 'I':    Johnson I
-  !!    - 'GG':   Gaia G
-  !!    - 'GBP':  Gaia BP
-  !!    - 'GRP':  Gaia RP
+  !!    - 'U':    Johnson/Bessell U
+  !!    - 'B':    Johnson/Bessell B
+  !!    - 'V':    Johnson/Bessell V
+  !!    - 'R':    Johnson/Bessell R
+  !!    - 'I':    Johnson/Bessell I
+  !!    - 'GG':   Gaia G  - to be implemented
+  !!    - 'GBP':  Gaia BP - to be implemented
+  !!    - 'GRP':  Gaia RP - to be implemented
   
   function magnitude_from_flux(band, flux)
     use SUFR_kinds, only: double
@@ -113,33 +123,43 @@ contains
     implicit none
     character, intent(in) :: band*(*)
     real(double), intent(in) :: flux
-    real(double) :: magnitude_from_flux, bandconst
+    real(double) :: magnitude_from_flux, bandconst, bandwidth
     
     bandconst = -1.d99
+    bandwidth = -1.d99
     select case(band)
     case('bol')
        bandconst = 18.99d0    ! Bolometric
+       bandwidth = 1.d0
     case('U')
-       bandconst = 25.90d0    ! Johnson U
+       bandconst = 25.90d0    ! Johnson/Bessell U
+       bandwidth = 68.d0
     case('B')
-       bandconst = 25.36d0    ! Johnson B
+       bandconst = 25.36d0    ! Johnson/Bessell B
+       bandwidth = 98.d0
     case('V')
-       bandconst = 26.02d0    ! Johnson V
+       bandconst = 26.02d0    ! Johnson/Bessell V
+       bandwidth = 89.d0
     case('R')
-       bandconst = 26.66d0    ! Johnson R
+       bandconst = 26.66d0    ! Johnson/Bessell R
+       bandwidth = 138.d0
     case('I')
-       bandconst = 27.37d0    ! Johnson I
-    case('GG')
-       bandconst = 25.6884d0  ! Gaia G: https://dc.g-vo.org/tableinfo/gaia.dr2epochflux
-    case('GBP')
-       bandconst = 25.3514d0  ! Gaia BP
-    case('GRP')
-       bandconst = 24.7619d0  ! Gaia RP
+       bandconst = 27.37d0    ! Johnson/Bessell I
+       bandwidth = 149.d0
+    ! case('GG')
+    !    bandconst = 25.6884d0  ! Gaia G: https://dc.g-vo.org/tableinfo/gaia.dr2epochflux
+    !    bandwidth = .d0
+    ! case('GBP')
+    !    bandconst = 25.3514d0  ! Gaia BP
+    !    bandwidth = .d0
+    ! case('GRP')
+    !    bandconst = 24.7619d0  ! Gaia RP
+    !    bandwidth = .d0
     case default
        call quit_program_error('Unknown photometric band: '//trim(band), 1)
     end select
     
-    magnitude_from_flux = -2.5d0 * log10(flux) - bandconst
+    magnitude_from_flux = -2.5d0 * log10(flux/bandwidth) - bandconst
     
   end function magnitude_from_flux
   !*********************************************************************************************************************************
