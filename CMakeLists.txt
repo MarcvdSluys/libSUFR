@@ -22,7 +22,12 @@
 ##    $ make install
 
 
-cmake_minimum_required( VERSION 3.0 FATAL_ERROR )
+# Version check:
+cmake_minimum_required( VERSION 3.5 FATAL_ERROR )
+if (CMAKE_VERSION VERSION_LESS "3.27.0") # Maximum version check
+  message(FATAL_ERROR "CMake version must be 3.5 or higher and less than 3.28.")
+endif()
+  
 
 # Set build type. Do this *before* we set the project name:
 if( NOT CMAKE_BUILD_TYPE )
