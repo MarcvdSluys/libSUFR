@@ -36,50 +36,71 @@ contains
   !! \param accur  The accuracy with which the root is to be determined
   !! 
   !! \param status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (output, optional)
+  !! 
   !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
+  !! \param stop_on_error  Stop the code when an error is encountered (input, optional argument, default=.false.)
   !! 
   !! \retval root_solver  The value of the root of func, between xlow and xhigh and with accuracy accur.  If a root was not bracketed by (output)
   !!                      xlow and xhigh, -huge is returned and status=1.
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
-  function root_solver(func, xlow,xhigh, accur, status,verbosity)
+  function root_solver(func, xlow,xhigh, accur,  status, verbosity,stop_on_error)
     use SUFR_kinds, only: double, dbl
+    use SUFR_system, only: error, quit_program_error
     use SUFR_numerics, only: deq
     
     implicit none
     real(double), intent(in) :: xlow,xhigh,accur
     integer, intent(in), optional :: verbosity
     integer, intent(out), optional :: status
+    logical, intent(in), optional :: stop_on_error
     
     real(double) :: root_solver
     real(double), external :: func
     
     integer, parameter :: max_iter = 100                            ! Maximum allowed number of iterations
     real(double), parameter :: eps = epsilon(0.0_dbl)               ! Machine precision
+    character(len=*), parameter :: myname = 'libSUFR/solvers/root_solver()'
     
     integer :: iter,verbosityl
     real(double) :: xlowl,xhighl, fxlow,fxhigh, xhelp,fxhelp,  dd,ee,  pp,qq,rr,ss, accur1,xm
+    logical :: stop_on_errorl
     
+    
+    ! Handle optional parameters:
     if(present(status)) status = 0
     verbosityl = 2
     if(present(verbosity)) verbosityl = verbosity
+    stop_on_errorl = .false.
+    if(present(stop_on_error)) stop_on_errorl = stop_on_error
     
-    xlowl  = xlow
-    xhighl = xhigh
+    ! Initialise local variables:
+    xlowl  = min(xlow, xhigh)
+    xhighl = max(xlow, xhigh)
     fxlow  = func(xlowl)
     fxhigh = func(xhighl)
+    root_solver = -huge(0.d0)
     
-    ! Prevent compiler complaints:
-    dd =  huge(0.0_dbl)
-    ee =  huge(0.0_dbl)
-    
+    ! Check input values:
+    if( deq(xlowl,xhighl) ) then
+       if(stop_on_errorl) call quit_program_error(trim(myname)//': specified range has zero width', 1)
+       if(verbosityl.gt.0) call error(trim(myname)//': specified range has zero width')
+       if(present(status)) status = 1
+       return
+    end if
     if(fxlow*fxhigh .gt. 0.0_dbl) then     ! func(xlow) and func(xhigh) have the same sign
-       if(verbosityl.gt.0) write(0,'(2(A,2ES12.3))') ' libSUFR - root_solver():  root is not bracketed by xlow and xhigh: ', &
-            xlow,xhigh,' - ',fxlow,fxhigh
+       if(verbosityl.gt.0) write(0,'(2(A,2ES12.3))') myname//':  root is not bracketed by xlow and xhigh: ', &
+            xlowl,xhighl,' - ',fxlow,fxhigh
+       if(stop_on_errorl) stop 1
        root_solver = -huge(0.0_dbl)        ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return
     end if
+    
+    
+    ! Prevent compiler complaints:
+    dd =  huge(0.0_dbl)
+    ee =  huge(0.0_dbl)
     
     ! Set xhelp to high:
     xhelp = xhighl
@@ -156,8 +177,9 @@ contains
     end do
     
     
+    if(stop_on_errorl) call quit_program_error(trim(myname)//': maximum number of iterations exceeded', 1)
     if(verbosityl.gt.0) write(0,'(A)') ' libSUFR - root_solver():  maximum number of iterations exceeded'
-    if(present(status)) status = 1
+    if(present(status)) status = 9
     
     root_solver = xhighl
     
@@ -204,7 +226,7 @@ contains
     
     integer, parameter :: max_iter = 100
     real(double), parameter :: eps = epsilon(0.0_dbl)  ! Machine precision
-    character(len=*), parameter :: myname = 'LibSUFR/solvers/minimum_solver()'
+    character(len=*), parameter :: myname = 'libSUFR/solvers/minimum_solver()'
     
     integer :: iter,verbosityl
     real(double) :: xlowl,xhighl, dd,ee,ee1, pp,qq,rr, accur1,accur2
@@ -212,7 +234,7 @@ contains
     logical :: stop_on_errorl
     
     
-    ! Optional parameters:
+    ! Handle optional parameters:
     if(present(status)) status = 0
     verbosityl = 2
     if(present(verbosity)) verbosityl = verbosity
@@ -226,7 +248,7 @@ contains
     
     minimum_solver = -huge(xguess)
     
-    ! Check input:
+    ! Check input values:
     if( deq(xlowl,xhighl) ) then
        if(stop_on_errorl) call quit_program_error(trim(myname)//': specified range has zero width', 1)
        if(verbosityl.gt.0) call error(trim(myname)//': specified range has zero width')
