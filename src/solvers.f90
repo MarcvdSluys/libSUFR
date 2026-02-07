@@ -1,6 +1,6 @@
 !> \file solvers.f90  Procedures to solve equations
 
-   
+
 !  Copyright (c) 2002-2025  Marc van der Sluys - Nikhef/Utrecht University - marc.vandersluys.nl
 !   
 !  This file is part of the libSUFR package, 
@@ -35,7 +35,8 @@ contains
   !! \param xhigh  Upper limit in x for root: xlow < root < xhigh;  func(xlow) and func(xhigh) must be positive and negative or vice versa
   !! \param accur  The accuracy with which the root is to be determined
   !! 
-  !! \param status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (output, optional)
+  !! \param status  Status: 0-ok, 1-range has zero width, 2-root not bracketed,
+  !!                        9-maximum number of iterations exceeded  (output, optional)
   !! 
   !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
   !! \param stop_on_error  Stop the code when an error is encountered (input, optional argument, default=.false.)
@@ -106,6 +107,7 @@ contains
     xhelp = xhighl
     fxhelp = fxhigh
     
+    ! Find the root:
     do iter = 1,max_iter
        if(fxhigh*fxhelp.gt.0.0_dbl) then       ! func(xhigh) and func(c) have the same sign - set c = xlow
           xhelp = xlowl
@@ -131,6 +133,8 @@ contains
        ! **************************************************************************************************
        if(abs(xm).le.accur1 .or. deq(fxhigh,0.0_dbl)) then  ! Then we have a sufficiently accurate solution
           root_solver = xhighl
+          if(verbosityl.gt.2) write(*,'(2(A,ES10.3),2(A,I0),A)') 'Root (y = ',fxhigh,') found at x = ',&
+               root_solver, ', after ',iter,'/',max_iter,' iterations.'
           return
        end if
        ! **************************************************************************************************
@@ -246,7 +250,8 @@ contains
     xhighl = max(xlow, xhigh)
     
     
-    minimum_solver = -huge(xguess)
+    xmin = -huge(xguess)
+    minimum_solver = xmin
     
     ! Check input values:
     if( deq(xlowl,xhighl) ) then
@@ -286,6 +291,7 @@ contains
        ! **************************************************************************************************
        if( abs(xval-xmean) .le. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
           xmin = xval
+          
           xrange = abs(xhigh-xlow)
           if( (abs(xmin-xlow) .lt. xrange*1.d-9) .or. (abs(xmin-xhigh) .lt. xrange*1.d-9) ) then
              if(stop_on_errorl) call quit_program_error(trim(myname)//': minimum not within specified range', 1)
@@ -294,6 +300,10 @@ contains
           end if
           
           minimum_solver = fxval
+          
+          if(verbosityl.gt.2) write(*,'(2(A,ES10.3),2(A,I0),A)') 'Minimum (y = ',minimum_solver, &
+               ') found at x = ', xmin, ', after ',iter,'/',max_iter,' iterations.'
+          
           return
        end if
        ! **************************************************************************************************
