@@ -90,9 +90,9 @@ contains
        return
     end if
     if(fxlow*fxhigh .gt. 0.0_dbl) then     ! func(xlow) and func(xhigh) have the same sign
-       if(verbosityl.gt.0) write(0,'(2(A,2ES12.3))') myname//':  root is not bracketed by xlow and xhigh: ', &
-            xlowl,xhighl,' - ',fxlow,fxhigh
-       if(stop_on_errorl) stop 1
+       write(0,'(7x,4(A,ES10.3))') 'Xlow: ', xlowl,',  Xhigh: ', xhighl,';   f(Xlow): ',fxlow,',  f(Xhigh): ', fxhigh
+       if(stop_on_errorl) call quit_program_error(trim(myname)//': root is not bracketed by xlow and xhigh', 1)
+       if(verbosityl.gt.0) call error(trim(myname)//': root is not bracketed by xlow and xhigh')
        root_solver = -huge(0.0_dbl)        ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return

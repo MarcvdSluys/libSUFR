@@ -679,7 +679,7 @@ contains
     if(present(unit)) lunit = unit  ! Optional variable
     if(lunit.ne.0) lunit = 6        ! If not StdErr, then StdOut: 6
     
-    write(lunit,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ****'
+    write(lunit,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ***'
     
   end subroutine error
   !*********************************************************************************************************************************
