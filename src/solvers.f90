@@ -172,7 +172,8 @@ contains
   !! \param accur      Relative accuracy with which the minimum is to be found
   !! 
   !! \param xmin       X-value of the minimum (output)
-  !! \param status     Status: 0-ok, 1-maximum number of iterations exceeded   (output, optional)
+  !! \param status     Status: 0-ok, 1-range has zero width, 2-initial guess outside range,
+  !!                           5-minimum outside range, 9-maximum number of iterations exceeded  (output, optional)
   !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info
   !!                   (output, optional argument, default=2)
   !! 
@@ -182,6 +183,7 @@ contains
   
   function minimum_solver(func, xlow,xguess,xhigh, accur,xmin, status,verbosity)
     use SUFR_kinds, only: double, dbl
+    use SUFR_system, only: error
     use SUFR_numerics, only: deq
     
     implicit none
@@ -195,10 +197,11 @@ contains
     
     integer, parameter :: max_iter = 100
     real(double), parameter :: eps = epsilon(0.0_dbl)  ! Machine precision
+    character(len=*), parameter :: myname = 'LibSUFR/solvers/minimum_solver()'
     
     integer :: iter,verbosityl
     real(double) :: xlowl,xhighl, dd,ee,ee1, pp,qq,rr, accur1,accur2
-    real(double) :: xval,xnew, fxval,fxnew, xmean, vv,ww, fv,fw
+    real(double) :: xval,xnew, fxval,fxnew, xmean,xrange, vv,ww, fv,fw
     
     
     ! Optional parameters:
@@ -210,7 +213,22 @@ contains
     xlowl = min(xlow, xhigh)
     xhighl = max(xlow, xhigh)
     
+    minimum_solver = -huge(xguess)
     
+    ! Check input:
+    if( deq(xlowl,xhighl) ) then
+       if(verbosityl.gt.0) call error(trim(myname)//': specified range has zero width')
+       if(present(status)) status = 1
+       return
+    end if
+    if( (xguess.lt.xlowl) .or. (xguess.gt.xhighl)) then
+       if(verbosityl.gt.0) call error(trim(myname)//': initial guess not within specified range')
+       if(present(status)) status = 2
+       return
+    end if
+    
+    
+    ! Initialise variables:
     xval = xguess
     vv = xguess
     ww = xguess
@@ -232,6 +250,12 @@ contains
        
        if( abs(xval-xmean) .le. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
           xmin = xval
+          xrange = abs(xhigh-xlow)
+          if( (abs(xmin-xlow) .lt. xrange*1.d-9) .or. (abs(xmin-xhigh) .lt. xrange*1.d-9) ) then
+             if(verbosityl.gt.0) call error(trim(myname)//': minimum not within specified range')
+             if(present(status)) status = 5
+          end if
+          
           minimum_solver = fxval
           return
        end if
@@ -305,8 +329,8 @@ contains
     end do
     
     
-    if(verbosityl.gt.0) write(0,'(A)') ' libSUFR - minimum_solver():  maximum number of iterations exceeded'
-    if(present(status)) status = 1
+    if(verbosityl.gt.0) call error(trim(myname)//': maximum number of iterations exceeded')
+    if(present(status)) status = 9
     
     ! Return the best we have anyway:
     xmin = xval
