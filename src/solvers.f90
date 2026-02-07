@@ -175,22 +175,24 @@ contains
   !! \param status     Status: 0-ok, 1-range has zero width, 2-initial guess outside range,
   !!                           5-minimum outside range, 9-maximum number of iterations exceeded  (output, optional)
   !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info
-  !!                   (output, optional argument, default=2)
+  !!                   (input, optional argument, default=2)
+  !! \param stop_on_error  Stop the code when an error is encountered (input, optional argument, default=.false.)
   !! 
   !! \retval minimum_solver  The value of the minimum of the function func, to accuracy accur
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   
-  function minimum_solver(func, xlow,xguess,xhigh, accur,xmin, status,verbosity)
+  function minimum_solver(func, xlow,xguess,xhigh, accur,xmin,  status, verbosity,stop_on_error)
     use SUFR_kinds, only: double, dbl
-    use SUFR_system, only: error
+    use SUFR_system, only: error, quit_program_error
     use SUFR_numerics, only: deq
     
     implicit none
-    real(double), intent(in) :: xlow,xguess,xhigh,accur
+    real(double), intent(in) :: xlow,xguess,xhigh, accur
     real(double), intent(out) :: xmin
     integer, intent(out), optional :: status
     integer, intent(in), optional :: verbosity
+    logical, intent(in), optional :: stop_on_error
     
     real(double) :: minimum_solver
     real(double), external :: func
@@ -202,26 +204,32 @@ contains
     integer :: iter,verbosityl
     real(double) :: xlowl,xhighl, dd,ee,ee1, pp,qq,rr, accur1,accur2
     real(double) :: xval,xnew, fxval,fxnew, xmean,xrange, vv,ww, fv,fw
+    logical :: stop_on_errorl
     
     
     ! Optional parameters:
     if(present(status)) status = 0
     verbosityl = 2
     if(present(verbosity)) verbosityl = verbosity
+    stop_on_errorl = .false.
+    if(present(stop_on_error)) stop_on_errorl = stop_on_error
     
     ! Local versions of dummy parameters:
     xlowl = min(xlow, xhigh)
     xhighl = max(xlow, xhigh)
     
+    
     minimum_solver = -huge(xguess)
     
     ! Check input:
     if( deq(xlowl,xhighl) ) then
+       if(stop_on_errorl) call quit_program_error(trim(myname)//': specified range has zero width', 1)
        if(verbosityl.gt.0) call error(trim(myname)//': specified range has zero width')
        if(present(status)) status = 1
        return
     end if
     if( (xguess.lt.xlowl) .or. (xguess.gt.xhighl)) then
+       if(stop_on_errorl) call quit_program_error(trim(myname)//': initial guess not within specified range', 1)
        if(verbosityl.gt.0) call error(trim(myname)//': initial guess not within specified range')
        if(present(status)) status = 2
        return
@@ -252,6 +260,7 @@ contains
           xmin = xval
           xrange = abs(xhigh-xlow)
           if( (abs(xmin-xlow) .lt. xrange*1.d-9) .or. (abs(xmin-xhigh) .lt. xrange*1.d-9) ) then
+             if(stop_on_errorl) call quit_program_error(trim(myname)//': minimum not within specified range', 1)
              if(verbosityl.gt.0) call error(trim(myname)//': minimum not within specified range')
              if(present(status)) status = 5
           end if
@@ -329,6 +338,7 @@ contains
     end do
     
     
+    if(stop_on_errorl) call quit_program_error(trim(myname)//': maximum number of iterations exceeded', 1)
     if(verbosityl.gt.0) call error(trim(myname)//': maximum number of iterations exceeded')
     if(present(status)) status = 9
     
