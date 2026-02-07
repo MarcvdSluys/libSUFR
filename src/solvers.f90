@@ -28,27 +28,27 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Using Brent's method, find the root of a function func that lies between x1 and x2.
+  !> \brief  Using Brent's method, find the root of a function func that lies between xlow and xhigh.
   !!
-  !! \param func  Function to find the root of
-  !! \param x1    Lower limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
-  !! \param x2    Upper limit in x for root: x1 < root < x2;  func(x1) and func(x2) must be positive and negative or vice versa
+  !! \param func   Function to find the root of
+  !! \param xlow   Lower limit in x for root: xlow < root < xhigh;  func(xlow) and func(xhigh) must be positive and negative or vice versa
+  !! \param xhigh  Upper limit in x for root: xlow < root < xhigh;  func(xlow) and func(xhigh) must be positive and negative or vice versa
   !! \param accur  The accuracy with which the root is to be determined
   !! 
   !! \param status   Status: 0-ok, 1-maximum number of iterations exceeded, 2-root not bracketed  (output, optional)
-  !! \param verbose  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
+  !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
   !! 
-  !! \retval root_solver  The value of the root of func, between x1 and x2 and with accuracy accur.  If a root was not bracketed by (output)
-  !!                      x1 and x2, -huge is returned and status=1.
+  !! \retval root_solver  The value of the root of func, between xlow and xhigh and with accuracy accur.  If a root was not bracketed by (output)
+  !!                      xlow and xhigh, -huge is returned and status=1.
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
-  function root_solver(func,x1,x2,accur, status,verbose)
+  function root_solver(func, xlow,xhigh, accur, status,verbosity)
     use SUFR_kinds, only: double, dbl
     use SUFR_numerics, only: deq
     
     implicit none
-    real(double), intent(in) :: x1,x2,accur
-    integer, intent(in), optional :: verbose
+    real(double), intent(in) :: xlow,xhigh,accur
+    integer, intent(in), optional :: verbosity
     integer, intent(out), optional :: status
     
     real(double) :: root_solver
@@ -57,104 +57,109 @@ contains
     integer, parameter :: max_iter = 100                            ! Maximum allowed number of iterations
     real(double), parameter :: eps = epsilon(0.0_dbl)               ! Machine precision
     
-    integer :: iter,verbosity
-    real(double) :: a,b,c,d,e, fa,fb,fc
-    real(double) :: p,q,r,s, accur1,xm
+    integer :: iter,verbosityl
+    real(double) :: xlowl,xhighl, fxlow,fxhigh, xhelp,fxhelp,  dd,ee,  pp,qq,rr,ss, accur1,xm
     
     if(present(status)) status = 0
-    verbosity = 2
-    if(present(verbose)) verbosity = verbose
+    verbosityl = 2
+    if(present(verbosity)) verbosityl = verbosity
     
-    a = x1
-    b = x2
-    fa = func(a)
-    fb = func(b)
+    xlowl  = xlow
+    xhighl = xhigh
+    fxlow  = func(xlowl)
+    fxhigh = func(xhighl)
     
-    !Prevent compiler complaints:
-    d =  1.0_dbl
-    e =  2.0_dbl
+    ! Prevent compiler complaints:
+    dd =  huge(0.0_dbl)
+    ee =  huge(0.0_dbl)
     
-    if(fa*fb .gt. 0.0_dbl) then                                     ! func(a) and func(b) have the same sign
-       if(verbosity.gt.0) write(0,'(2(A,2ES12.3))') ' libSUFR - root_solver():  root is not bracketed by x1 and x2: ', &
-            x1,x2,' - ',fa,fb
-       root_solver = -huge(0.0_dbl)                                 ! return -huge: the smallest number for this kind
+    if(fxlow*fxhigh .gt. 0.0_dbl) then     ! func(xlow) and func(xhigh) have the same sign
+       if(verbosityl.gt.0) write(0,'(2(A,2ES12.3))') ' libSUFR - root_solver():  root is not bracketed by xlow and xhigh: ', &
+            xlow,xhigh,' - ',fxlow,fxhigh
+       root_solver = -huge(0.0_dbl)        ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return
     end if
     
-    c = b
-    fc = fb
+    ! Set xhelp to high:
+    xhelp = xhighl
+    fxhelp = fxhigh
     
     do iter = 1,max_iter
-       if(fb*fc.gt.0.0_dbl) then                                    ! func(b) and func(c) have the same sign
-          c = a
-          fc = fa
-          d = b-a
-          e = d
+       if(fxhigh*fxhelp.gt.0.0_dbl) then       ! func(xhigh) and func(c) have the same sign - set c = xlow
+          xhelp = xlowl
+          fxhelp = fxlow
+          dd = xhighl - xlowl
+          ee = dd
        end if
        
-       if(abs(fc).lt.abs(fb)) then
-          a = b
-          b = c
-          c = a
-          fa = fb
-          fb = fc
-          fc = fa
+       if(abs(fxhigh).gt.abs(fxhelp)) then     ! Swap xhigh and xhelp
+          xlowl = xhighl
+          xhighl = xhelp
+          xhelp = xlowl
+          
+          fxlow = fxhigh
+          fxhigh = fxhelp
+          fxhelp = fxlow
        end if
        
-       accur1 = 2*eps*abs(b) + 0.5_dbl*accur
-       xm = 0.5_dbl*(c-b)
+       accur1 = 2*eps*abs(xhighl) + 0.5_dbl*accur
+       xm = 0.5_dbl*(xhelp-xhighl)
        
-       if(abs(xm).le.accur1 .or. deq(fb,0.0_dbl)) then          ! Then we have a sufficiently accurate solution
-          root_solver = b
+       
+       ! **************************************************************************************************
+       if(abs(xm).le.accur1 .or. deq(fxhigh,0.0_dbl)) then  ! Then we have a sufficiently accurate solution
+          root_solver = xhighl
           return
        end if
+       ! **************************************************************************************************
        
-       if(abs(e).ge.accur1 .and. abs(fa).gt.abs(fb)) then
-          s = fb/fa
-          if(deq(a,c)) then
-             p = 2*xm*s
-             q = 1.0_dbl - s
+       
+       if(abs(ee).ge.accur1 .and. abs(fxlow).gt.abs(fxhigh)) then
+          ss = fxhigh/fxlow
+          if(deq(xlowl,xhelp)) then
+             pp = 2*xm*ss
+             qq = 1.0_dbl - ss
           else
-             q = fa/fc
-             r = fb/fc
-             p = s * ( 2*xm*q*(q-r) - (b-a)*(r-1.0_dbl) )
-             q = (q-1.0_dbl) * (r-1.0_dbl) * (s-1.0_dbl)
+             qq = fxlow/fxhelp
+             rr = fxhigh/fxhelp
+             pp = ss * ( 2*xm*qq*(qq-rr) - (xhighl-xlowl)*(rr-1.0_dbl) )
+             qq = (qq-1.0_dbl) * (rr-1.0_dbl) * (ss-1.0_dbl)
           end if
           
-          if(p.gt.0.0_dbl) q = -q
-          p = abs(p)
+          if(pp.gt.0.0_dbl) qq = -qq
+          pp = abs(pp)
           
-          if(2*p .lt. min(3*xm*q-abs(accur1*q),abs(e*q))) then
-             e = d
-             d = p/q
+          if(2*pp .lt. min(3*xm*qq-abs(accur1*qq),abs(ee*qq))) then
+             ee = dd
+             dd = pp/qq
           else
-             d = xm
-             e = d
+             dd = xm
+             ee = dd
           end if
        else
-          d = xm
-          e = d
+          dd = xm
+          ee = dd
        end if
        
-       a = b
-       fa = fb
+       xlowl = xhighl
+       fxlow = fxhigh
        
-       if(abs(d) .gt. accur1) then
-          b = b + d
+       if(abs(dd) .gt. accur1) then
+          xhighl = xhighl + dd
        else
-          b = b + sign(accur1,xm)
+          xhighl = xhighl + sign(accur1,xm)
        end if
        
-       fb = func(b)                                                 ! Evaluate the function func
+       fxhigh = func(xhighl)                                                 ! Evaluate the function func
        
     end do
     
     
-    if(verbosity.gt.0) write(0,'(A)') ' libSUFR - root_solver():  maximum number of iterations exceeded'
+    if(verbosityl.gt.0) write(0,'(A)') ' libSUFR - root_solver():  maximum number of iterations exceeded'
     if(present(status)) status = 1
     
-    root_solver = b
+    root_solver = xhighl
     
   end function root_solver
   !*********************************************************************************************************************************
@@ -256,6 +261,7 @@ contains
     do iter=1,max_iter
        xmean = 0.5_dbl*(xlowl+xhighl)
        
+       ! **************************************************************************************************
        if( abs(xval-xmean) .le. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
           xmin = xval
           xrange = abs(xhigh-xlow)
