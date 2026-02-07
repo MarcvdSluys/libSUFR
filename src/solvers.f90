@@ -126,12 +126,12 @@ contains
           fxhelp = fxlow
        end if
        
-       accur1 = 2*eps*abs(xhighl) + 0.5_dbl*accur
+       accur1 = 2*eps*abs(xhighl) + 0.5_dbl*abs(accur)
        xm = 0.5_dbl*(xhelp-xhighl)
        
        
        ! **************************************************************************************************
-       if(abs(xm).le.accur1 .or. deq(fxhigh,0.0_dbl)) then  ! Then we have a sufficiently accurate solution
+       if(abs(xm).lt.accur1 .or. deq(fxhigh,0.0_dbl)) then  ! Then we have a sufficiently accurate solution
           root_solver = xhighl
           if(verbosityl.gt.2) write(*,'(2(A,ES10.3),2(A,I0),A)') 'Root (y = ',fxhigh,') found at x = ',&
                root_solver, ', after ',iter,'/',max_iter,' iterations.'
@@ -282,18 +282,19 @@ contains
     ee = huge(0.0_dbl)
     
     
-    accur1 = accur + eps                                                    ! Use absolute accuracy
+    accur1 = abs(accur) + eps                                                    ! Use absolute accuracy
     accur2 = 2*accur1
     
     do iter=1,max_iter
        xmean = 0.5_dbl*(xlowl+xhighl)
        
        ! **************************************************************************************************
-       if( abs(xval-xmean) .le. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
+       if( abs(xval-xmean) .lt. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
           xmin = xval
           
           xrange = abs(xhigh-xlow)
-          if( (abs(xmin-xlow) .lt. xrange*1.d-9) .or. (abs(xmin-xhigh) .lt. xrange*1.d-9) ) then
+          ! print*,abs(xmin-xlow), abs(xmin-xhigh), accur, '    ', xval,xmean, '   ', abs(xval-xmean), accur2 - 0.5_dbl*(xhighl-xlowl), accur2, 0.5_dbl*(xhighl-xlowl)
+          if( (abs(xmin-xlow) .lt. 2*abs(accur)) .or. (abs(xmin-xhigh) .lt. 2*abs(accur)) ) then
              if(stop_on_errorl) call quit_program_error(trim(myname)//': minimum not within specified range', 1)
              if(verbosityl.gt.0) call error(trim(myname)//': minimum not within specified range')
              if(present(status)) status = 5
