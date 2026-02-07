@@ -163,137 +163,141 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Use Brent's method and parabolic interpolation to find the minimum of function func that lies between xa and xc.
+  !> \brief  Use Brent's method and parabolic interpolation to find the minimum of function func that lies between xlow and xhigh.
   !!
-  !! \param func      The function of which the minimum is to be found
-  !! \param ax        The lower limit for the x-value of the minimum:  xa < x_min < xc
-  !! \param bx        A good guess for the x-value of the minimum:  xa < xb < xc  and  func(xb) < min(funx(xa),func(xc))
-  !! \param cx        The upper limit for the x-value of the minimum:  xa < x_min < xc
-  !! \param accur     Relative accuracy with which the minimum is to be found
+  !! \param func       The function of which the minimum is to be found
+  !! \param xlow       The lower limit for the x-value of the minimum:  xlow < x_min < xhigh
+  !! \param xguess     A good guess for the x-value of the minimum:  xlow < xb < xhigh  and  func(xb) < min(funx(xlow),func(xhigh))
+  !! \param xhigh      The upper limit for the x-value of the minimum:  xlow < x_min < xhigh
+  !! \param accur      Relative accuracy with which the minimum is to be found
   !! 
-  !! \param xmin      X-value of the minimum (output)
-  !! \param status    Status: 0-ok, 1-maximum number of iterations exceeded   (output, optional)
-  !! \param verbose   Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info
-  !!                  (output, optional argument, default=2)
+  !! \param xmin       X-value of the minimum (output)
+  !! \param status     Status: 0-ok, 1-maximum number of iterations exceeded   (output, optional)
+  !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info
+  !!                   (output, optional argument, default=2)
   !! 
   !! \retval minimum_solver  The value of the minimum of the function func, to accuracy accur
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   
-  function minimum_solver(func,ax,bx,cx,accur,xmin, status,verbose)
+  function minimum_solver(func, xlow,xguess,xhigh, accur,xmin, status,verbosity)
     use SUFR_kinds, only: double, dbl
     use SUFR_numerics, only: deq
     
     implicit none
-    real(double), intent(in) :: ax,bx,cx,accur
+    real(double), intent(in) :: xlow,xguess,xhigh,accur
     real(double), intent(out) :: xmin
     integer, intent(out), optional :: status
-    integer, intent(in), optional :: verbose
+    integer, intent(in), optional :: verbosity
+    
     real(double) :: minimum_solver
     real(double), external :: func
     
     integer, parameter :: max_iter = 100
     real(double), parameter :: eps = epsilon(0.0_dbl)  ! Machine precision
     
-    integer :: iter,verbosity
-    real(double) :: a,b,d,e,e1, p,q,r, accur1,accur2
-    real(double) :: u,v,w,x,xm, fu,fv,fw,fx
+    integer :: iter,verbosityl
+    real(double) :: xlowl,xhighl, dd,ee,ee1, pp,qq,rr, accur1,accur2
+    real(double) :: xval,xnew, fxval,fxnew, xmean, vv,ww, fv,fw
     
     
+    ! Optional parameters:
     if(present(status)) status = 0
-    verbosity = 2
-    if(present(verbose)) verbosity = verbose
+    verbosityl = 2
+    if(present(verbosity)) verbosityl = verbosity
     
-    a = min(ax,cx)
-    b = max(ax,cx)
+    ! Local versions of dummy parameters:
+    xlowl = min(xlow, xhigh)
+    xhighl = max(xlow, xhigh)
     
-    x = bx
-    v = bx
-    w = bx
     
-    fx = func(x)
-    fv = fx
-    fw = fx
+    xval = xguess
+    vv = xguess
+    ww = xguess
+    
+    fxval = func(xval)
+    fv = fxval
+    fw = fxval
     
     ! Prevent compiler complaints:
-    d = 1.0_dbl
-    e = 2.0_dbl
+    dd = huge(0.0_dbl)
+    ee = huge(0.0_dbl)
     
     
     accur1 = accur + eps                                                    ! Use absolute accuracy
     accur2 = 2*accur1
     
     do iter=1,max_iter
-       xm = 0.5_dbl*(a+b)
+       xmean = 0.5_dbl*(xlowl+xhighl)
        
-       if( abs(x-xm) .le. accur2 - 0.5_dbl*(b-a) ) then                     ! Then we have a sufficiently accurate solution
-          xmin = x
-          minimum_solver = fx
+       if( abs(xval-xmean) .le. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
+          xmin = xval
+          minimum_solver = fxval
           return
        end if
+       ! **************************************************************************************************
        
-       
-       if(abs(e).gt.accur1) then
-          r = (x-w) * (fx-fv)
-          q = (x-v) * (fx-fw)
-          p = (x-v)*q - (x-w)*r
-          q = 2*(q-r)
-          if(q.gt.0.0_dbl) p = -p
-          q = abs(q)
-          e1 = e
-          e = d
+       if(abs(ee).gt.accur1) then
+          rr = (xval-ww) * (fxval-fv)
+          qq = (xval-vv) * (fxval-fw)
+          pp = (xval-vv)*qq - (xval-ww)*rr
+          qq = 2*(qq-rr)
+          if(qq.gt.0.0_dbl) pp = -pp
+          qq = abs(qq)
+          ee1 = ee
+          ee = dd
           
-          if(abs(p).ge.abs(0.5_dbl*q*e1) .or. p.le.q*(a-x) .or. p.ge.q*(b-x)) then
-             call golden_section(x,xm,a,b,d,e)                                         ! Do a golden-section step
+          if(abs(pp).ge.abs(0.5_dbl*qq*ee1) .or. pp.le.qq*(xlowl-xval) .or. pp.ge.qq*(xhighl-xval)) then
+             call golden_section(xval,xmean, xlowl,xhighl, dd,ee)                                         ! Do a golden-section step
           else
-             d = p/q
-             u = x+d
-             if(u-a.lt.accur2 .or. b-u.lt.accur2) d = sign(accur1,xm-x)
+             dd = pp/qq
+             xnew = xval + dd
+             if(xnew-xlowl.lt.accur2 .or. xhighl-xnew.lt.accur2) dd = sign(accur1,xmean-xval)
           end if
        else
-          call golden_section(x,xm,a,b,d,e)                                            ! Do a golden-section step
+          call golden_section(xval,xmean, xlowl,xhighl, dd,ee)                                            ! Do a golden-section step
        end if
        
-       ! Determine the point u where func must be evaluated next:
-       if(abs(d).ge.accur1) then
-          u = x + d
+       ! Determine the point xnew where func must be evaluated next:
+       if(abs(dd).ge.accur1) then
+          xnew = xval + dd
        else
-          u = x + sign(accur1,d)
+          xnew = xval + sign(accur1,dd)
        end if
        
        
-       fu = func(u)
+       fxnew = func(xnew)
        
-       if(fu.le.fx) then   ! func(u) <= func(x): replace x with u and one of the boundaries with x
-          if(u.ge.x) then  ! Replace a with x
-             a = x
+       if(fxnew.le.fxval) then   ! func(xnew) <= func(x): replace xval with xnew and one of the boundaries with x
+          if(xnew.ge.xval) then
+             xlowl = xval        ! Replace xlow with xval
           else
-             b = x         ! Replace b with x
+             xhighl = xval       ! Replace xhigh with xval
           end if
           
-          v = w
+          vv = ww
           fv = fw
-          w = x
-          fw = fx
-          x = u            ! Replace x with the new point u
-          fx = fu
+          ww = xval
+          fw = fxval
+          xval = xnew            ! Replace xval with the new point xnew
+          fxval = fxnew
           
-       else                ! func(u) > func(x): keep x, and replace one of the boundaries with u
+       else                      ! func(xnew) > func(x): keep x, and replace one of the boundaries with xnew
           
-          if(u.lt.x) then  ! Replace a with u
-             a = u
-          else             ! Replace b with u
-             b = u
+          if(xnew.lt.xval) then
+             xlowl = xnew   ! Replace xlow with xnew
+          else               
+             xhighl = xnew  ! Replace xhigh with xnew
           end if
           
-          if(fu.le.fw .or. deq(w,x)) then
-             v = w
+          if(fxnew.le.fw .or. deq(ww,xval)) then
+             vv = ww
              fv = fw
-             w = u
-             fw = fu
-          else if(fu.le.fv .or. deq(v,x) .or. deq(v,w)) then
-             v = u
-             fv = fu
+             ww = xnew
+             fw = fxnew
+          else if(fxnew.le.fv .or. deq(vv,xval) .or. deq(vv,ww)) then
+             vv = xnew
+             fv = fxnew
           end if
           
        end if
@@ -301,12 +305,12 @@ contains
     end do
     
     
-    if(verbosity.gt.0) write(0,'(A)') ' libSUFR - minimum_solver():  maximum number of iterations exceeded'
+    if(verbosityl.gt.0) write(0,'(A)') ' libSUFR - minimum_solver():  maximum number of iterations exceeded'
     if(present(status)) status = 1
     
     ! Return the best we have anyway:
-    xmin = x
-    minimum_solver = fx
+    xmin = xval
+    minimum_solver = fxval
     
   end function minimum_solver
   !*********************************************************************************************************************************
