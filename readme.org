@@ -5,7 +5,7 @@
 + Package:      libSUFR
 + Description:  A LIBrary of Some Useful Fortran Routines
 + Homepage:     https://libsufr.sourceforge.net
-+ Copyright:    (c) 2002-2025  Marc van der Sluys - Nikhef/Utrecht University - https://marc.vandersluys.nl
++ Copyright:    (c) 2002-2026  Marc van der Sluys - Nikhef/Utrecht University - https://marc.vandersluys.nl
 + Licence:      EUPL1.2
 
 libSUFR is a LIBrary of Some Useful Fortran Routines that I wrote for my own use, but that may also be useful
@@ -120,7 +120,7 @@ https://marc.vandersluys.nl.
 
 * Licence
 
-Copyright (c) 2002-2025  Marc van der Sluys - Nikhef/Utrecht University - https://marc.vandersluys.nl
+Copyright (c) 2002-2026  Marc van der Sluys - Nikhef/Utrecht University - https://marc.vandersluys.nl
 
 This file is part of the libSUFR package.
 
