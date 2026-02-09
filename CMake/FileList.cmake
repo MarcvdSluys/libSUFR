@@ -1,7 +1,7 @@
 set(SRC_FILES
-  src/astro.f90
   src/angle2string.f90
   src/angles.f90
+  src/astro.f90
   src/command_line.f90
   src/constants.f90
   src/date_and_time.f90
@@ -12,6 +12,7 @@ set(SRC_FILES
   src/interpolate.f90
   src/kinds.f90
   src/libSUFR_version.f90
+  src/math.f90
   src/numerics.f90
   src/optics.f90
   src/pgplot.f90
