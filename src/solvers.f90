@@ -24,16 +24,18 @@ module SUFR_solvers
   implicit none
   save
   
+  private :: golden_section
+  
 contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Using Brent's method, find the root of a function func that lies between xlow and xhigh.
+  !> \brief  Using Brent's method, find the root of a function myFunc that lies between xlow and xhigh.
   !!
-  !! \param func   Function to find the root of
-  !! \param xlow   Lower limit in x for root: xlow < root < xhigh;  func(xlow) and func(xhigh) must be positive and negative or vice versa
-  !! \param xhigh  Upper limit in x for root: xlow < root < xhigh;  func(xlow) and func(xhigh) must be positive and negative or vice versa
-  !! \param accur  The accuracy with which the root is to be determined
+  !! \param myFunc  Function to find the root of
+  !! \param xlow    Lower limit in x for root: xlow < root < xhigh;  myFunc(xlow) and myFunc(xhigh) must be positive and negative or vice versa
+  !! \param xhigh   Upper limit in x for root: xlow < root < xhigh;  myFunc(xlow) and myFunc(xhigh) must be positive and negative or vice versa
+  !! \param accur   The accuracy with which the root is to be determined
   !! 
   !! \param status  Status: 0-ok, 1-range has zero width, 2-root not bracketed,
   !!                        9-maximum number of iterations exceeded  (output, optional)
@@ -41,11 +43,11 @@ contains
   !! \param verbosity  Verbosity: 0-print nothing, 1-print errors, 2-print warnings, 3-print info  (output, optional, default=2)
   !! \param stop_on_error  Stop the code when an error is encountered (input, optional argument, default=.false.)
   !! 
-  !! \retval root_solver  The value of the root of func, between xlow and xhigh and with accuracy accur.  If a root was not bracketed by (output)
+  !! \retval root_solver  The value of the root of myFunc, between xlow and xhigh and with accuracy accur.  If a root was not bracketed by (output)
   !!                      xlow and xhigh, -huge is returned and status=1.
   !! \see Numerical Recipes in Fortran 77, Sect.9.3.
   
-  function root_solver(func, xlow,xhigh, accur,  status, verbosity,stop_on_error)
+  function root_solver(myFunc, xlow,xhigh, accur,  status, verbosity,stop_on_error)
     use SUFR_kinds, only: double, dbl
     use SUFR_system, only: error, quit_program_error
     use SUFR_numerics, only: deq
@@ -57,7 +59,6 @@ contains
     logical, intent(in), optional :: stop_on_error
     
     real(double) :: root_solver
-    real(double), external :: func
     
     integer, parameter :: max_iter = 100                            ! Maximum allowed number of iterations
     real(double), parameter :: eps = epsilon(0.0_dbl)               ! Machine precision
@@ -67,6 +68,14 @@ contains
     real(double) :: xlowl,xhighl, fxlow,fxhigh, xhelp,fxhelp,  dd,ee,  pp,qq,rr,ss, accur1,xm
     logical :: stop_on_errorl
     
+    interface
+       function myFunc(xDat)
+         use SUFR_kinds, only: double
+         implicit none
+         real(double), intent(in)  :: xDat
+         real(double) :: myFunc
+       end function myFunc
+    end interface
     
     ! Handle optional parameters:
     if(present(status)) status = 0
@@ -78,8 +87,8 @@ contains
     ! Initialise local variables:
     xlowl  = min(xlow, xhigh)
     xhighl = max(xlow, xhigh)
-    fxlow  = func(xlowl)
-    fxhigh = func(xhighl)
+    fxlow  = myFunc(xlowl)
+    fxhigh = myFunc(xhighl)
     root_solver = -huge(0.d0)
     
     ! Check input values:
@@ -89,8 +98,8 @@ contains
        if(present(status)) status = 1
        return
     end if
-    if(fxlow*fxhigh .gt. 0.0_dbl) then     ! func(xlow) and func(xhigh) have the same sign
-       write(0,'(7x,4(A,ES10.3))') 'Xlow: ', xlowl,',  Xhigh: ', xhighl,';   f(Xlow): ',fxlow,',  f(Xhigh): ', fxhigh
+    if(fxlow*fxhigh .gt. 0.0_dbl) then     ! myFunc(xlow) and myFunc(xhigh) have the same sign
+       write(0,'(7x,4(A,ES20.13))') 'Xlow: ', xlowl,',  Xhigh: ', xhighl,';   f(Xlow): ',fxlow,',  f(Xhigh): ', fxhigh
        if(stop_on_errorl) call quit_program_error(trim(myname)//': root is not bracketed by xlow and xhigh', 1)
        if(verbosityl.gt.0) call error(trim(myname)//': root is not bracketed by xlow and xhigh')
        root_solver = -huge(0.0_dbl)        ! return -huge: the smallest number for this kind
@@ -109,7 +118,7 @@ contains
     
     ! Find the root:
     do iter = 1,max_iter
-       if(fxhigh*fxhelp.gt.0.0_dbl) then       ! func(xhigh) and func(c) have the same sign - set c = xlow
+       if(fxhigh*fxhelp.gt.0.0_dbl) then       ! myFunc(xhigh) and myFunc(c) have the same sign - set c = xlow
           xhelp = xlowl
           fxhelp = fxlow
           dd = xhighl - xlowl
@@ -133,7 +142,7 @@ contains
        ! **************************************************************************************************
        if(abs(xm).lt.accur1 .or. deq(fxhigh,0.0_dbl)) then  ! Then we have a sufficiently accurate solution
           root_solver = xhighl
-          if(verbosityl.gt.2) write(*,'(2(A,ES10.3),2(A,I0),A)') 'Root (y = ',fxhigh,') found at x = ',&
+          if(verbosityl.gt.2) write(*,'(2(A,ES20.13),2(A,I0),A)') 'Root (y = ',fxhigh,') found at x = ',&
                root_solver, ', after ',iter,'/',max_iter,' iterations.'
           return
        end if
@@ -176,7 +185,7 @@ contains
           xhighl = xhighl + sign(accur1,xm)
        end if
        
-       fxhigh = func(xhighl)                                                 ! Evaluate the function func
+       fxhigh = myFunc(xhighl)                                                 ! Evaluate the function myFunc
        
     end do
     
@@ -194,11 +203,11 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Use Brent's method and parabolic interpolation to find the minimum of function func that lies between xlow and xhigh.
+  !> \brief  Use Brent's method and parabolic interpolation to find the minimum of function myFunc that lies between xlow and xhigh.
   !!
-  !! \param func       The function of which the minimum is to be found
+  !! \param myFunc     The function of which the minimum is to be found
   !! \param xlow       The lower limit for the x-value of the minimum:  xlow < x_min < xhigh
-  !! \param xguess     A good guess for the x-value of the minimum:  xlow < xb < xhigh  and  func(xb) < min(funx(xlow),func(xhigh))
+  !! \param xguess     A good guess for the x-value of the minimum:  xlow < xb < xhigh  and  myFunc(xb) < min(funx(xlow),myFunc(xhigh))
   !! \param xhigh      The upper limit for the x-value of the minimum:  xlow < x_min < xhigh
   !! \param accur      Relative accuracy with which the minimum is to be found
   !! 
@@ -209,11 +218,11 @@ contains
   !!                   (input, optional argument, default=2)
   !! \param stop_on_error  Stop the code when an error is encountered (input, optional argument, default=.false.)
   !! 
-  !! \retval minimum_solver  The value of the minimum of the function func, to accuracy accur
+  !! \retval minimum_solver  The value of the minimum of the function myFunc, to accuracy accur
   !!
   !! \see Numerical Recipes in Fortran 77, Sect.10.2.
   
-  function minimum_solver(func, xlow,xguess,xhigh, accur,xmin,  status, verbosity,stop_on_error)
+  function minimum_solver(myFunc, xlow,xguess,xhigh, accur,xmin,  status, verbosity,stop_on_error)
     use SUFR_kinds, only: double, dbl
     use SUFR_system, only: error, quit_program_error
     use SUFR_numerics, only: deq
@@ -226,7 +235,6 @@ contains
     logical, intent(in), optional :: stop_on_error
     
     real(double) :: minimum_solver
-    real(double), external :: func
     
     integer, parameter :: max_iter = 100
     real(double), parameter :: eps = epsilon(0.0_dbl)  ! Machine precision
@@ -234,9 +242,17 @@ contains
     
     integer :: iter,verbosityl
     real(double) :: xlowl,xhighl, dd,ee,ee1, pp,qq,rr, accur1,accur2
-    real(double) :: xval,xnew, fxval,fxnew, xmean,xrange, vv,ww, fv,fw
+    real(double) :: xval,xnew, fxval,fxnew, xmean, vv,ww, fv,fw
     logical :: stop_on_errorl
     
+    interface
+       function myFunc(xDat)
+         use SUFR_kinds, only: double
+         implicit none
+         real(double), intent(in)  :: xDat
+         real(double) :: myFunc
+       end function myFunc
+    end interface
     
     ! Handle optional parameters:
     if(present(status)) status = 0
@@ -276,7 +292,7 @@ contains
     vv = xguess
     ww = xguess
     
-    fxval = func(xval)
+    fxval = myFunc(xval)
     fv = fxval
     fw = fxval
     
@@ -295,7 +311,6 @@ contains
        if( abs(xval-xmean) .lt. accur2 - 0.5_dbl*(xhighl-xlowl) ) then       ! Then we have a sufficiently accurate solution
           xmin = xval
           
-          xrange = abs(xhigh-xlow)
           ! print*,abs(xmin-xlow), abs(xmin-xhigh), accur, '    ', xval,xmean, '   ', abs(xval-xmean), accur2 - 0.5_dbl*(xhighl-xlowl), accur2, 0.5_dbl*(xhighl-xlowl)
           if( (abs(xmin-xlow) .lt. 2*abs(accur)) .or. (abs(xmin-xhigh) .lt. 2*abs(accur)) ) then
              if(stop_on_errorl) call quit_program_error(trim(myname)//': minimum not within specified range', 1)
@@ -305,7 +320,7 @@ contains
           
           minimum_solver = fxval
           
-          if(verbosityl.gt.2) write(*,'(2(A,ES10.3),2(A,I0),A)') 'Minimum (y = ',minimum_solver, &
+          if(verbosityl.gt.2) write(*,'(2(A,ES20.13),2(A,I0),A)') 'Minimum (y = ',minimum_solver, &
                ') found at x = ', xmin, ', after ',iter,'/',max_iter,' iterations.'
           
           return
@@ -333,7 +348,7 @@ contains
           call golden_section(xval,xmean, xlowl,xhighl, dd,ee)                                            ! Do a golden-section step
        end if
        
-       ! Determine the point xnew where func must be evaluated next:
+       ! Determine the point xnew where myFunc must be evaluated next:
        if(abs(dd).ge.accur1) then
           xnew = xval + dd
        else
@@ -341,9 +356,9 @@ contains
        end if
        
        
-       fxnew = func(xnew)
+       fxnew = myFunc(xnew)
        
-       if(fxnew.le.fxval) then   ! func(xnew) <= func(x): replace xval with xnew and one of the boundaries with x
+       if(fxnew.le.fxval) then   ! myFunc(xnew) <= myFunc(x): replace xval with xnew and one of the boundaries with x
           if(xnew.ge.xval) then
              xlowl = xval        ! Replace xlow with xval
           else
@@ -357,7 +372,7 @@ contains
           xval = xnew            ! Replace xval with the new point xnew
           fxval = fxnew
           
-       else                      ! func(xnew) > func(x): keep x, and replace one of the boundaries with xnew
+       else                      ! myFunc(xnew) > myFunc(x): keep x, and replace one of the boundaries with xnew
           
           if(xnew.lt.xval) then
              xlowl = xnew   ! Replace xlow with xnew
