@@ -442,7 +442,7 @@ contains
   pure function int2str(number)
     implicit none
     integer, intent(in) :: number
-    character :: int2str*(max(ceiling(log10(dble(abs(number)+1))),1) - (sign(1,number)-1)/2)  ! 0-9 -> 1; 10-99 -> 2; +1 if <0
+    character :: int2str*(max(ceiling(log10(dble(abs(number)+1))), 1) - (sign(1,number)-1)/2)  ! 0-9 -> 1; 10-99 -> 2; +1 if <0
     
     write(int2str,'(I0)') number
     
@@ -477,8 +477,8 @@ contains
     ! -  + decim: add the decimals to the total string length
     ! -  + 1:     add the decimal separator
     
-    character :: dbl2str*(max(ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))),1) -  &
-         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    character :: dbl2str*(int(max(ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))), 1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1))
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
     write(dbl2str, trim(fmt)) number
@@ -503,12 +503,12 @@ contains
     !     log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps))), &
     !     ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), &
     !     ceiling(log10((abs(number) + 10.d0**(-decim)/2.d0) * (1.d0+eps))), &
-    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1), &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), 1), &
     !     (sign(1_long,floor(number,long))-1)/2 + decim + 1, &
-    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) - &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), 1) - &
     !     (sign(1_long,floor(number,long))-1)/2 + decim + 1, &
     !     len_trim(dbl2str), &
-    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) - &
+    !     max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), 1) - &
     !     (sign(1_long,floor(number,long))-1)/2 + decim + 1 - len_trim(dbl2str), &
     !     '###'//dbl2str//'###'
     
@@ -532,8 +532,8 @@ contains
     character, intent(in), optional :: mark*(*)
     
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
-    character :: d2s*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
-         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    character :: d2s*(int(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), 1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1))
     
     if(present(mark)) then
        d2s = dbl2str(number, decim, mark)
@@ -560,8 +560,8 @@ contains
     integer, intent(in) :: decim
     
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
-    character :: d2sc*(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))),1) -  &
-         (sign(1_long,floor(number,long))-1)/2 + decim + 1)
+    character :: d2sc*(int(max(ceiling(log10(abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)))), 1) -  &
+         (sign(1_long,floor(number,long))-1)/2 + decim + 1))
     
     d2sc = dbl2str(number, decim, ',')
     
@@ -582,7 +582,8 @@ contains
     real, intent(in) :: number
     integer, intent(in) :: decim
     character, intent(in), optional :: mark*(*)
-    character :: real2str*(max(ceiling(log10(abs(number)+sqrt(epsilon(number)))),1) - (sign(1,floor(number))-1)/2 + decim + 1)
+    character :: real2str*(int(max(ceiling(log10(abs(number)+sqrt(epsilon(number)))), 1) - &
+         (sign(1,floor(number))-1)/2 + decim + 1))
     
     if(present(mark)) then
        real2str = dbl2str(dble(number), decim, mark)
