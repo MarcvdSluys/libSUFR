@@ -44,7 +44,7 @@ contains
     press00 = 1010  ! 1010 mbar by default
     if(present(press0)) press00 = press0
     
-    air_pressure = press0*exp(-elev/8500.d0)  ! 8500m: typical pressure scale height for Earth's atmosphere
+    air_pressure = press00*exp(-elev/8500.d0)  ! 8500m: typical pressure scale height for Earth's atmosphere
     
   end function air_pressure
   !*********************************************************************************************************************************
