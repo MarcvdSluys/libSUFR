@@ -213,7 +213,8 @@ contains
     xlowl = min(xlow, xhigh)
     xhighl = max(xlow, xhigh)
     
-    minimum_solver = -huge(xguess)
+    ! minimum_solver = -huge(xguess)  # Causes havoc
+    minimum_solver = xguess
     
     ! Check input:
     if( deq(xlowl,xhighl) ) then
