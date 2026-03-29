@@ -400,7 +400,7 @@ contains
   !> \brief  Define the values of variables that describe the current date and time
   
   subroutine set_SUFR_constants_currentDate()
-    use SUFR_date_and_time
+    use SUFR_date_and_time, only: ymdhms2jd, dow_ut
     
     implicit none
     integer :: dt(8)

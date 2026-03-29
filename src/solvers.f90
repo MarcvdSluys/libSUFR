@@ -407,42 +407,73 @@ contains
   !*********************************************************************************************************************************
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Return a status message for minimum_solver() to the status code.
+  !!
+  !! \param status  Status code from minimum_solver(): 1, 2, 5 or 9
+  
+  function minimum_solver_message(status)
+    use SUFR_system, only: error
+    use SUFR_text, only: int2str
+    
+    implicit none
+    integer, intent(in) :: status
+    character(len=:), allocatable :: minimum_solver_message
+    character(len=128) :: buf
+    
+    
+    if(status.eq.0) then
+       buf = 'exited correctly'
+    else if(status.eq.1) then
+       buf = 'specified range has zero width'
+    else if(status.eq.2) then
+       buf = 'initial guess not within specified range'
+    else if(status.eq.5) then
+       buf = 'minimum not within specified range'
+    else if(status.eq.9) then
+       buf = 'maximum number of iterations exceeded'
+    else
+       call error('Unknown status for minimum_solver(): '//int2str(status), 0)
+    end if
+    
+    minimum_solver_message = trim(buf)
+  end function minimum_solver_message
+  !*********************************************************************************************************************************
+  
+  !***********************************************************************************************************************************
+  !> \brief  Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
+  !!
+  !! \param  x1  
+  !! \param  x2  
+  !! \param  a1  
+  !! \param  a2
+  !! 
+  !! \param  y1   (output)
+  !! \param  y2   (output)
+  
+  
+  pure subroutine golden_section(x1,x2, a1,a2, y1,y2)
+    use SUFR_kinds, only: double, dbl
+    
+    implicit none
+    real(double), intent(in)  :: x1,x2, a1,a2
+    real(double), intent(out) :: y1,y2
+    real(double), parameter   :: golden_ratio = 0.3819660_dbl         ! The golden ratio
+    
+    if(x1.ge.x2) then
+       y2 = a1 - x1
+    else
+       y2 = a2 - x1
+    end if
+    y1 = y2 * golden_ratio
+    
+  end subroutine golden_section
+  !***********************************************************************************************************************************
+  
   
 end module SUFR_solvers
 !***********************************************************************************************************************************
 
-
-
-
-!***********************************************************************************************************************************
-!> \brief  Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
-!!
-!! \param  x1  
-!! \param  x2  
-!! \param  a1  
-!! \param  a2
-!! 
-!! \param  y1   (output)
-!! \param  y2   (output)
-
-
-pure subroutine golden_section(x1,x2, a1,a2, y1,y2)
-  use SUFR_kinds, only: double, dbl
-  
-  implicit none
-  real(double), intent(in)  :: x1,x2, a1,a2
-  real(double), intent(out) :: y1,y2
-  real(double), parameter :: golden_ratio = 0.3819660_dbl         ! The golden ratio
-  
-  if(x1.ge.x2) then
-     y2 = a1 - x1
-  else
-     y2 = a2 - x1
-  end if
-  y1 = y2 * golden_ratio
-  
-end subroutine golden_section
-!***********************************************************************************************************************************
 
 
 
