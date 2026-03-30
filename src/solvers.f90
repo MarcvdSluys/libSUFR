@@ -413,9 +413,6 @@ contains
   !! \param status  Status code from minimum_solver(): 1, 2, 5 or 9
   
   function minimum_solver_message(status)
-    use SUFR_system, only: error
-    use SUFR_text, only: int2str
-    
     implicit none
     integer, intent(in) :: status
     character(len=:), allocatable :: minimum_solver_message
@@ -433,7 +430,9 @@ contains
     case(9)
        buf = 'minimum_solver(): maximum number of iterations exceeded'
     case default
-       call error('minimum_solver(): unknown status value: '//int2str(status), 0)
+       ! This could cause a deadlock when the returned string is written to unit 0 as well:
+       ! call error('minimum_solver(): unknown status value: '//int2str(status), 0)
+       write(buf, '(A,I0)') 'minimum_solver(): received an unknown status value: ', status
     end select
     
     minimum_solver_message = trim(buf)

@@ -657,7 +657,7 @@ contains
     if(present(unit)) lunit = unit  ! Optional variable
     if(lunit.ne.6) lunit = 0        ! If not stdOut, then stdErr: 0
     
-    write(lunit,'(/,A,/)')'  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
+    write(lunit,'(/,A,/)') '  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
     
   end subroutine warn
   !*********************************************************************************************************************************
@@ -682,7 +682,7 @@ contains
     if(present(unit)) lunit = unit  ! Optional variable
     if(lunit.ne.0) lunit = 6        ! If not StdErr, then StdOut: 6
     
-    write(lunit,'(/,A,/)')'  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ***'
+    write(lunit,'(/,A,/)') '  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ***'
     
   end subroutine error
   !*********************************************************************************************************************************
