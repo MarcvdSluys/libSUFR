@@ -421,20 +421,20 @@ contains
     character(len=:), allocatable :: minimum_solver_message
     character(len=128) :: buf
     
-    
-    if(status.eq.0) then
-       buf = 'exited correctly'
-    else if(status.eq.1) then
-       buf = 'specified range has zero width'
-    else if(status.eq.2) then
-       buf = 'initial guess not within specified range'
-    else if(status.eq.5) then
-       buf = 'minimum not within specified range'
-    else if(status.eq.9) then
-       buf = 'maximum number of iterations exceeded'
-    else
-       call error('Unknown status for minimum_solver(): '//int2str(status), 0)
-    end if
+    select case(status)
+    case(0)
+       buf = 'minimum_solver(): exited correctly'
+    case(1)
+       buf = 'minimum_solver(): specified range has zero width'
+    case(2)
+       buf = 'minimum_solver(): initial guess not within specified range'
+    case(5)
+       buf = 'minimum_solver(): minimum not within specified range'
+    case(9)
+       buf = 'minimum_solver(): maximum number of iterations exceeded'
+    case default
+       call error('minimum_solver(): unknown status value: '//int2str(status), 0)
+    end select
     
     minimum_solver_message = trim(buf)
   end function minimum_solver_message
