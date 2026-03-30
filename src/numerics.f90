@@ -356,6 +356,38 @@ contains
   !! \param  x0        Number to check
   !! \retval isnormal  This is a normal value (true/false)
   
+  elemental function isnotnormal(x0)
+    use SUFR_kinds, only: double
+    implicit none
+    real(double), intent(in) :: x0
+    logical :: isnotnormal
+    
+    isnotnormal = isinf(x0) .or. isanan(x0)
+  end function isnotnormal
+  !*********************************************************************************************************************************
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a single-precision variable is normal (not +/- Inf, not NaN)
+  !!
+  !! \param  x0         Number to check
+  !! \retval sisnormal  This is a normal value (true/false)
+  
+  elemental function sisnotnormal(x0)
+    implicit none
+    real, intent(in) :: x0
+    logical :: sisnotnormal
+    
+    sisnotnormal = sisinf(x0) .or. sisanan(x0)
+  end function sisnotnormal
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Test whether a double-precision variable is normal (not +/- Inf, not NaN)
+  !!
+  !! \param  x0        Number to check
+  !! \retval isnormal  This is a normal value (true/false)
+  
   elemental function isnormal(x0)
     use SUFR_kinds, only: double
     implicit none
