@@ -50,13 +50,13 @@ contains
   !! \param  yErr      Errors (standard deviations) of the y values (nDat)
   !!
   !! \param  nCoef     Number of coefficients of the fitting function
-  !! \param fCoef     Coefficients of the fitting function (nCoef) (output)
+  !! \param  fCoef     Coefficients of the fitting function (nCoef) (output)
   !! \param  freeCoef  Fix coefficient coef(i) if freeCoef(i)=0, otherwise let if vary freely and fit it (nCoef)
   !!
   !! \param  nCov      Size of both dimensions of covMat()
-  !! \param covMat    Covariance matrix (nCov,nCov) (output)
+  !! \param  covMat    Covariance matrix (nCov,nCov) (output)
   !!
-  !! \param chiSq     Chi^2 - chi squared (output)
+  !! \param  chiSq     Chi^2 - chi squared (output)
   !!
   !! \param  myFunc    External subroutine that describes the model value of Y for given value X
   !!
@@ -77,8 +77,17 @@ contains
     real(double), intent(out) :: chiSq, covMat(nCov,nCov)
     
     integer :: ii,ij,ik,il,im, nFit
-    real(double) :: err2i,bf_e2i, tot,ym, basefunc(mMax),beta(mMax)
-    external myFunc
+    real(double) :: err2i,bf_e2i, tot,ym,beta(mMax), basefunc(mMax)
+    
+    interface
+       subroutine myFunc(xDat, nCoef, basefunc)
+         use SUFR_kinds, only: double
+         implicit none
+         real(double), intent(in)  :: xDat
+         integer,      intent(in)  :: nCoef
+         real(double), intent(out) :: basefunc(:)
+       end subroutine myFunc
+    end interface
     
     if(minval(abs(yErr)).lt.10*tiny(yErr)) call quit_program_error('libSUFR linear_fit_yerr(): errors cannot be zero', 0)
     
@@ -202,12 +211,17 @@ contains
     integer :: iFit,mFit, iCoef,cntCoef
     real(double) :: oChiSq,tryCoef(mMax),dChiSq(mMax),dfCoef(mMax)
     
+    interface
+       subroutine myFunc(nY, xDat, nCoef,fCoef, yDat, dyda)
+         use SUFR_kinds, only: double
+         implicit none
+         integer,      intent(in)  :: nY, nCoef
+         real(double), intent(in)  :: xDat, fCoef(:)
+         real(double), intent(out) :: yDat(:), dyda(:,:)
+       end subroutine myFunc
+    end interface
+    
     save oChiSq,tryCoef,dChiSq,dfCoef,mFit
-    external myFunc
-    
-    
-    ! An EXTERNAL subroutine must be CALLed - use a dummy call here, since the subroutine name is only passed on:
-    if(.false.) call myFunc()  ! myFunc(nY, xDat(iDat), nCoef,fCoef, yMod,dyda)
     
     
     ! Initialisation on the first call:
@@ -326,7 +340,16 @@ contains
     integer, parameter :: mMax = 20
     integer :: iFit,jFit,mFit, iY,iDat, iCoef,jCoef, cntCoefi,cntCoefj
     real(double) :: err2i,dyda_e2i, dy,yMod(nY),dyda(nY,mMax)
-    external myFunc
+    
+    interface
+       subroutine myFunc(nY, xDat, nCoef,fCoef, yDat, dyda)
+         use SUFR_kinds, only: double
+         implicit none
+         integer,      intent(in)  :: nY, nCoef
+         real(double), intent(in)  :: xDat, fCoef(:)
+         real(double), intent(out) :: yDat(:), dyda(:,:)
+       end subroutine myFunc
+    end interface
     
     
     ! Determine the number of non-fixed parameters:
@@ -577,8 +600,8 @@ contains
   !*********************************************************************************************************************************
   !> \brief  User-provided base function to fit a polynomial to
   !!
-  !! \param  xVal      X value to evaluate yVal = basefunc_polynimial(xVal) for
-  !! \param  nCoef     Number of coefficients for the base function
+  !! \param xVal      X value to evaluate yVal = basefunc_polynimial(xVal) for
+  !! \param nCoef     Number of coefficients for the base function
   !!
   !! \param baseFunc  Base function i for coefficent i.  For a polynomial, BF(i) = x**(i-1) (output)
   

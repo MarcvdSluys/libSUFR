@@ -120,9 +120,12 @@ contains
     if(present(quit_on_error)) lquit_on_error = quit_on_error
     
     ! Execute command:
-    cmdmsg = ''
+    cmdmsg   = ''
+    exitstat = 0
+    cmdstat  = 0
+#ifndef G95
     call execute_command_line(command, lwait, exitstat, cmdstat, cmdmsg)
-    
+#endif
     if(lwait .and. exitstat.ne.0) then
        if(lquit_on_error) then
           call quit_program_error('the command "'//trim(command)//'" was not executed correctly', lstatus)
