@@ -73,7 +73,7 @@ if( Fortran_COMPILER_NAME MATCHES "gfortran" )
   endif( WANT_STATIC )
   
   if( WANT_CHECKS )
-    set( CHECK_FLAGS "-ffpe-trap=invalid,zero,overflow,underflow,denormal -fsignaling-nans -fbacktrace" )
+    set( CHECK_FLAGS "-g -ffpe-trap=invalid,zero,overflow,underflow,denormal -fsignaling-nans -fbacktrace -fsanitize=undefined" )
     if( COMPILER_VERSION VERSION_GREATER "4.4.99" )
       set( CHECK_FLAGS "-fcheck=all ${CHECK_FLAGS}" )    # >= v.4.5
     else( COMPILER_VERSION VERSION_GREATER "4.4.99" )
@@ -119,7 +119,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "g95" )
   set( CMAKE_Fortran_FLAGS_DEBUG "-g" )
   
   if( WANT_CHECKS )
-    set( CHECK_FLAGS "-fbounds-check -ftrace=full" )
+    set( CHECK_FLAGS "-g -fbounds-check -ftrace=full" )
     set( OPT_FLAGS "-O0" )
   else( WANT_CHECKS )
     set( CHECK_FLAGS "-fshort-circuit" )
@@ -188,7 +188,7 @@ elseif( Fortran_COMPILER_NAME MATCHES "ifort" )
   endif( WANT_STATIC )
   
   if( WANT_CHECKS )
-    set( CHECK_FLAGS "-ftrapuv -check all -check noarg_temp_created -check nostack -traceback" )  #  -check stack doesn't link in ifort 2013.3.174 14.0.3
+    set( CHECK_FLAGS "-g -ftrapuv -check all -check noarg_temp_created -check nostack -traceback" )  #  -check stack doesn't link in ifort 2013.3.174 14.0.3
     set( OPT_FLAGS "-O0" )
   else( WANT_CHECKS )
     set( OPT_FLAGS "-O2" )
@@ -256,7 +256,7 @@ message( STATUS "" )
 message( STATUS "Using Fortran compiler:  ${Fortran_COMPILER_NAME} ${COMPILER_VERSION}  (${CMAKE_Fortran_COMPILER})" )
 
 if( WANT_CHECKS )
-  message( STATUS "Compiling with run-time checks:  ${CHECK_FLAGS}" )
+  message( STATUS "Compiling with debug info and run-time checks:  ${CHECK_FLAGS}" )
 endif( WANT_CHECKS )
 if( WANT_WARNINGS )
   message( STATUS "Compiling with warnings:  ${WARN_FLAGS}" )
