@@ -30,48 +30,49 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Convert a calendar date to JD.  Input and output in UT.
   !!
-  !! \param yy  The year (int)
-  !! \param mm  The month (int)
-  !! \param dd  The day (double)
+  !! \param yr   The year (int)
+  !! \param mon  The month (int)
+  !! \param day  The day (double)
   !!
   !! \retval  cal2jd  The Julian day number (double)
   !!
   !! \note  The Gregorian calendar is assumed to start on 1582-10-15.
   
-  elemental function cal2jd(yy,mm,dd)
+  elemental function cal2jd(yr,mon,day)
     use SUFR_kinds, only: double
     
     implicit none
-    real(double), intent(in) :: dd
-    integer, intent(in) :: yy,mm
+    real(double), intent(in) :: day
+    integer, intent(in) :: yr,mon
     
-    real(double) :: cal2jd,d
-    integer :: y,m,a,b,greg
+    real(double) :: cal2jd, lday
+    integer :: lyr,lmon, aa,bb, greg
     
-    y = yy
-    m = mm
-    d = dd
+    ! Use local variables:
+    lyr = yr
+    lmon = mon
+    lday = day
     
     greg = 0                 ! Julian or gregorian?
-    if(y.gt.1582) greg = 1
-    if(y.eq.1582) then
-       if(m.gt.10) greg = 1
-       if((m.eq.10).and.(d.ge.15)) greg = 1
+    if(lyr.gt.1582) greg = 1
+    if(lyr.eq.1582) then
+       if(lmon.gt.10) greg = 1
+       if((lmon.eq.10).and.(lday.ge.15)) greg = 1
     end if
-    !greg=0                 ! Force julian/gregorian calendar
+    ! greg=0                 ! Force julian/gregorian calendar
     
-    if(m.le.2) then 
-       y = y-1
-       m = m+12
+    if(lmon.le.2) then 
+       lyr = lyr-1
+       lmon = lmon+12
     end if
-    b = 0
+    bb = 0
     
     if(greg.eq.1) then     ! Assume a Gregorian date
-       a = floor(y/100.d0)
-       b = 2 - a + floor(a/4.d0)
+       aa = floor(lyr/100.d0)
+       bb = 2 - aa + floor(aa/4.d0)
     end if
     
-    cal2jd = floor(365.25d0*(y+4716)) + floor(30.6001d0*(m+1)) + d + b - 1524.5d0
+    cal2jd = floor(365.25d0*(lyr+4716)) + floor(30.6001d0*(lmon+1)) + lday + bb - 1524.5d0
     
   end function cal2jd
   !*********************************************************************************************************************************
@@ -175,38 +176,38 @@ contains
   !!
   !! \param jd  Julian day (UT)
   !!
-  !! \param yy  Year (CE, UT) (output)
-  !! \param mm  Month (UT) (output)
-  !! \param d   Day (UT) (output)
-  !! \param h   Hour (UT) (output)
-  !! \param m   Minute (UT) (output)
-  !! \param s   Second (+ fraction, UT) (output)
+  !! \param yy   Year (CE, UT) (output)
+  !! \param mm   Month (UT) (output)
+  !! \param dy   Day (UT) (output)
+  !! \param hr   Hour (UT) (output)
+  !! \param mn   Minute (UT) (output)
+  !! \param sec  Second (+ fraction, UT) (output)
   
-  elemental subroutine jd2ymdhms(jd,  yy,mm,d, h,m,s)
+  elemental subroutine jd2ymdhms(jd,  yy,mm,dy, hr,mn,sec)
     use SUFR_kinds, only: double, dbl
     
     implicit none
     real(double), intent(in) :: jd
-    integer, intent(out) :: yy,mm,d,h,m
-    real(double), intent(out) :: s
+    integer, intent(out) :: yy,mm,dy, hr,mn
+    real(double), intent(out) :: sec
     real(double) :: dd,tm
     
     call jd2cal(jd,  yy,mm,dd)
     
     ! jd2cal returns zeroes if JD is not defined (i.e., JD=-huge) - catch this:
     if(yy.eq.0.and.mm.eq.0) then
-       d = 0
-       h = 0
-       m = 0
-       s = 0.0_dbl
+       dy  = 0
+       hr  = 0
+       mn  = 0
+       sec = 0.0_dbl
        return
     end if
     
-    d  = floor(dd)
-    tm = (dd - dble(d))*24.d0
-    h  = floor(tm)
-    m  = floor((tm-h)*60.d0)
-    s  = (tm-h-m/60.d0)*3600.d0
+    dy  = floor(dd)
+    tm  = (dd - dble(dy))*24
+    hr  = floor(tm)
+    mn  = floor((tm-hr)*60)
+    sec = (tm-hr-mn/60.d0)*3600
     
   end subroutine jd2ymdhms
   !*********************************************************************************************************************************
