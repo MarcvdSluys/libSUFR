@@ -461,11 +461,14 @@ contains
   
   pure function dbl2str(number, decim, mark)
     use SUFR_kinds, only: double, long
+    
     implicit none
     real(double), intent(in) :: number
     integer, intent(in) :: decim
     character, intent(in), optional :: mark*(*)
+    
     real(double), parameter :: eps = sqrt(epsilon(number))  ! sqrt of epsilon for a double real
+    
     character :: fmt*(9)
     integer :: d2slen  !, status
     
@@ -482,10 +485,10 @@ contains
     
     write(fmt,'(A,I0,A)') '(F0.',max(decim,0),')'
     write(dbl2str, trim(fmt)) number
-    !write(dbl2str, trim(fmt), iostat=status) number
-    !if(status.ne.0) continue  ! Ignore EoR errors
+    ! write(dbl2str, trim(fmt), iostat=status) number
+    ! if(status.ne.0) continue  ! Ignore EoR errors
     
-    ! Prepend a zero before leading decimal points:
+    ! Prefix a zero before leading decimal points:
     if(dbl2str(1:1).eq.'.') then
        d2slen = len(dbl2str)
        dbl2str = '0'//trim(dbl2str(1:d2slen-1))
@@ -496,7 +499,7 @@ contains
     if(present(mark)) call replace_substring(dbl2str, '.', mark(1:1))  ! Replace default decimal point with a specified mark
     
     ! Debug output:
-    !write(*,'(4F9.4, 7I3, 3x, A)') &
+    ! write(*,'(4F9.4, 7I3, 3x, A)') &
     !     number, &
     !     10.d0**(-decim)/2.d0, &
     !     abs((number + 10.d0**(-decim)/2.d0) * (1.d0+eps)), &
