@@ -832,6 +832,8 @@ contains
   
   subroutine print_runtimes(calltype, sp,dec)
     use SUFR_kinds, only: double, long
+    use SUFR_text, only: d2s
+    
     implicit none
     integer, intent(in), optional :: calltype, sp, dec
     integer :: loc_calltype, loc_sp, loc_dec
@@ -880,6 +882,14 @@ contains
        end if
        write(*,trim(fmt)) 'Program took ',walltime-oldwalltime,' seconds of wall time and ',cputime-oldcputime, &
             ' seconds of CPU time.'
+       
+       if(loc_sp.eq.0) then  ! No leading spaces:
+          fmt = '(A)'
+       else
+          write(fmt, '(A,I0,A)') '(',max(0,loc_sp),'x,A)'
+       end if
+       write(*,trim(fmt)) 'Program took '//d2s(walltime-oldwalltime, loc_dec)//' seconds of wall time and '// &
+            d2s(cputime-oldcputime, loc_dec)//' seconds of CPU time.'
     end if
     
     ! Reset times:
@@ -903,6 +913,8 @@ contains
   
   subroutine print_cputime(sp,dec,unit)
     use SUFR_kinds, only: double
+    use SUFR_text, only: d2s
+    
     implicit none
     integer, intent(in), optional :: sp, dec, unit
     integer :: loc_sp, loc_dec, loc_unit
@@ -925,15 +937,15 @@ contains
     
     ! Print CPU time:
     if(loc_sp.eq.0) then  ! No leading spaces:
-       write(fmt, '(A,I0,A)') '(A,2(F0.',max(0,loc_dec),',A))'
+       fmt = '(A)'
     else
-       write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
+       write(fmt, '(A,I0,A)') '(',max(0,loc_sp),'x,A)'
     end if
     
     if(loc_unit.eq.6) then     ! Use stdOut
-       write(*,trim(fmt))    'Program took ',cputime,' seconds of CPU time.'
+       write(*,trim(fmt))    'Program took '//d2s(cputime, loc_dec)//' seconds of CPU time.'
     else                       ! Use specified unit
-       write(unit,trim(fmt)) 'Program took ',cputime,' seconds of CPU time.'
+       write(unit,trim(fmt)) 'Program took '//d2s(cputime, loc_dec)//' seconds of CPU time.'
     end if
     
   end subroutine print_cputime
