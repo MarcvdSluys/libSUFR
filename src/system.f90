@@ -21,7 +21,11 @@
 !> \brief  System-related procedures
 
 module SUFR_system
+  use SUFR_io, only: warn, error
+  
   implicit none
+  public :: warn, error
+  
   save
   
 contains
@@ -632,62 +636,6 @@ contains
     
   end subroutine file_read_end_error
   !*********************************************************************************************************************************
-  
-  
-  
-  
-  
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Print a warning to StdOut or StErr
-  !!
-  !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr, 1-StdOut (optional; default = 0)
-  
-  subroutine warn(message, unit)
-    use SUFR_constants, only: program_name
-    implicit none
-    character, intent(in) :: message*(*)
-    integer, intent(in), optional :: unit
-    integer :: lunit
-    
-    ! Handle optional variable:
-    lunit = 6                       ! Default: stdOut
-    if(present(unit)) lunit = unit  ! Optional variable
-    if(lunit.ne.6) lunit = 0        ! If not stdOut, then stdErr: 0
-    
-    write(lunit,'(/,A,/)') '  * Warning: '//trim(program_name)//':  '//trim(message)//' *'
-    
-  end subroutine warn
-  !*********************************************************************************************************************************
-  
-  
-  
-  !*********************************************************************************************************************************
-  !> \brief  Print an error to StdOut or StErr
-  !!
-  !! \param message  Warning message
-  !! \param unit     Output unit: 0-StdErr, 1-StdOut - (optional; default = 0)
-  
-  subroutine error(message, unit)
-    use SUFR_constants, only: program_name
-    implicit none
-    character, intent(in) :: message*(*)
-    integer, intent(in), optional :: unit
-    integer :: lunit
-    
-    ! Handle optional variable:
-    lunit = 0                       ! Default: stdErr
-    if(present(unit)) lunit = unit  ! Optional variable
-    if(lunit.ne.0) lunit = 6        ! If not StdErr, then StdOut: 6
-    
-    write(lunit,'(/,A,/)') '  ***  ERROR: '//trim(program_name)//':  '//trim(message)//'  ***'
-    
-  end subroutine error
-  !*********************************************************************************************************************************
-  
-  
   
   
   !*********************************************************************************************************************************

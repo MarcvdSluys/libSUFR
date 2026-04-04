@@ -10,6 +10,7 @@ set(SRC_FILES
   src/fitting.f90
   src/getopt.f90
   src/interpolate.f90
+  src/io.f90
   src/kinds.f90
   src/libSUFR_version.f90
   src/math.f90
