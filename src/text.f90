@@ -215,9 +215,9 @@ contains
   !! \param string  String to remove the substring from.  Trailing spaces are retained, call with string(1:len_trim(string))
   !!                to ignore them and speed things up.
   !! \param substr  Substring to remove
-  !! \param debug   Print debug info (T/F, optional)
+  !! \param debug   Print debug info (T/F, optional) - NO LONGER USED
   
-  subroutine remove_substring(string,substr, debug)
+  pure subroutine remove_substring(string,substr, debug)
     implicit none
     character, intent(inout) :: string*(*)
     character, intent(in) :: substr*(*)
@@ -243,12 +243,12 @@ contains
        
        tstr = string(1:i1-1)//string(i1+ls:l)  ! String gets shorter by ls
        
-       if(print_debug) then
-          print*,string(1:i1-1)
-          print*,string(i1+ls:l)
-          print*,string(i1:i1+ls),i1,l
-          print*,trim(tstr)
-       end if
+       ! if(print_debug) then
+       !    print*,string(1:i1-1)
+       !    print*,string(i1+ls:l)
+       !    print*,string(i1:i1+ls),i1,l
+       !    print*,trim(tstr)
+       ! end if
        
        string = tstr
     end do
@@ -266,7 +266,7 @@ contains
   !!
   !! \retval count  Number of times substring was found in string.
   
-  function count_substring(string,substr)
+  pure function count_substring(string,substr)
     implicit none
     character, intent(in) :: string*(*), substr*(*)
     
