@@ -109,7 +109,6 @@ contains
   !! \retval UTF16to8  UTF-8 string (about half the length of str16)
   
   pure function UTF16to8(str16)
-    use SUFR_system, only: warn
     implicit none
     character, intent(in) :: str16*(*)
     character :: UTF16to8*((len(str16)+1)/2)
@@ -454,12 +453,58 @@ contains
   !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor: 
   !!         replace leading . or -. with 0. and -0. respectively (0.1 iso .1; -0.1 iso -.1).
   !!
+  !! \param  number  Value to convert
+  !! \param  decim   Number of decimals to use
+  !! \param  mark    Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
+  !! \retval outstr  String containing the double
+  
+  pure function dbl2str(number, decim, mark) result(outstr)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: number
+    integer, intent(in) :: decim
+    character, intent(in), optional :: mark
+    
+    character(:), allocatable :: outstr
+    
+    character(128) :: fmtstr, tmpstr
+    integer :: dot_pos
+    
+    ! Create the format string:
+    write(fmtstr, '("(F0.",I0,")")') decim
+    write(tmpstr, fmtstr) number
+    tmpstr = adjustl(tmpstr)
+    
+    ! Add a leading zero where needed:
+    if (tmpstr(1:2) == '-.') then
+       outstr = '-0.' // trim(tmpstr(3:))
+    else if (tmpstr(1:1) == '.') then
+       outstr = '0' // trim(tmpstr)
+    else
+       outstr = trim(tmpstr)
+    end if
+    
+    ! Replace the decimal point if desired:
+    if (present(mark)) then
+       dot_pos = index(outstr, '.')
+       if (dot_pos > 0) outstr = outstr(1:dot_pos-1) // mark // outstr(dot_pos+1:)
+    end if
+    
+  end function dbl2str
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor: 
+  !!         replace leading . or -. with 0. and -0. respectively (0.1 iso .1; -0.1 iso -.1).
+  !!
   !! \param  number   Value to convert
   !! \param  decim    Number of decimals to use
   !! \param  mark     Decimal mark to separate the integer and fractional parts; single character, e.g. "," (optional; default: ".")
   !! \retval dbl2str  String containing the double
   
-  pure function dbl2str(number, decim, mark)
+  pure function dbl2str_old(number, decim, mark) result(dbl2str)
     use SUFR_kinds, only: double, long
     
     implicit none
@@ -515,7 +560,7 @@ contains
     !     (sign(1_long,floor(number,long))-1)/2 + decim + 1 - len_trim(dbl2str), &
     !     '###'//dbl2str//'###'
     
-  end function dbl2str
+  end function dbl2str_old
   !*********************************************************************************************************************************
   
   
