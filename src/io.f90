@@ -35,7 +35,7 @@ contains
   !!
   !! \param[in]  string  The text string to be coloured.
   !! \param[in]  colour  The name of the colour, one of 'black','red', 'green', 'brown', 'yellow', 'blue',
-  !!                       'magenta', 'cyan' or 'white'.  Append 'bg' to highlight the background, e.g.
+  !!                       'magenta', 'cyan', 'white' or 'grey'.  Append 'bg' to highlight the background, e.g.
   !!                       'redbg'.
   !! \return     clrstr  The string padded with colour codes.
   
@@ -55,7 +55,7 @@ contains
     case('green')
        myclr = achar(27) // '[1;32m'
     case('brown')
-       myclr = achar(27) // '[33m'
+       myclr = achar(27) // '[33m'  ! no bold: yellow -> brown
     case('yellow','orange')
        myclr = achar(27) // '[1;33m'
     case('blue')
@@ -66,13 +66,15 @@ contains
        myclr = achar(27) // '[1;36m'
     case('white')
        myclr = achar(27) // '[1;37m'
+    case('grey','gray')
+       myclr = achar(27) // '[38;5;244m'
        
     case('blackbg')
        myclr = achar(27) // '[1;40m'  ! 1; - use bold!
     case('redbg')
        myclr = achar(27) // '[1;41m'
     case('greenbg')
-       myclr = achar(27) // '[1;42m'
+       myclr = achar(27) // '[1;48;5;2m'  ! Darker than default 42
     case('yellowbg','orangebg','brownbg')
        myclr = achar(27) // '[1;43m'
     case('bluebg')
@@ -83,6 +85,9 @@ contains
        myclr = achar(27) // '[1;46m'
     case('whitebg')
        myclr = achar(27) // '[1;47m'
+    case('greybg','graybg')
+       myclr = achar(27) // '[48;5;8m'
+       
        
     case default  ! Silently ignore non-existant colour?
        myclr = ''
@@ -107,7 +112,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;31m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'red')
     
   end function red
   !*********************************************************************************************************************************
@@ -124,7 +129,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;32m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'green')
     
   end function green
   !*********************************************************************************************************************************
@@ -141,7 +146,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;33m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'yellow')
     
   end function yellow
   !*********************************************************************************************************************************
@@ -158,7 +163,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;34m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'blue')
     
   end function blue
   !*********************************************************************************************************************************
@@ -175,7 +180,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;35m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'magenta')
     
   end function magenta
   !*********************************************************************************************************************************
@@ -192,9 +197,27 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;36m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'cyan')
     
   end function cyan
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Make a string grey by wrapping it in ANSI-colour escape codes.
+  !!
+  !! \param[in]  string  The text string to be coloured.
+  !! \return     clrstr  The string padded with colour codes.
+  
+  pure function grey(string) result(clrstr)
+    implicit none
+    character(*), intent(in)  :: string
+    character(:), allocatable :: clrstr
+    
+    clrstr = clr(string, 'grey')
+    
+  end function grey
   !*********************************************************************************************************************************
   
   
@@ -210,7 +233,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;41m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'redbg')
     
   end function redbg
   !*********************************************************************************************************************************
@@ -227,7 +250,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;42m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'greenbg')
     
   end function greenbg
   !*********************************************************************************************************************************
@@ -244,7 +267,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;43m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'yellowbg')
     
   end function yellowbg
   !*********************************************************************************************************************************
@@ -261,7 +284,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;44m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'bluebg')
     
   end function bluebg
   !*********************************************************************************************************************************
@@ -278,7 +301,7 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;45m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'magentabg')
     
   end function magentabg
   !*********************************************************************************************************************************
@@ -295,9 +318,27 @@ contains
     character(*), intent(in)  :: string
     character(:), allocatable :: clrstr
     
-    clrstr = achar(27) // '[1;46m' // string // achar(27) // '[0m'
+    clrstr = clr(string, 'cyanbg')
     
   end function cyanbg
+  !*********************************************************************************************************************************
+  
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Give a string a grey background by wrapping it in ANSI-colour escape codes.
+  !!
+  !! \param[in]  string  The text string to be coloured.
+  !! \return     clrstr  The string padded with colour codes.
+  
+  pure function greybg(string) result(clrstr)
+    implicit none
+    character(*), intent(in)  :: string
+    character(:), allocatable :: clrstr
+    
+    clrstr = clr(string, 'greybg')
+    
+  end function greybg
   !*********************************************************************************************************************************
   
   
