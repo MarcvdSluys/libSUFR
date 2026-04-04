@@ -24,19 +24,42 @@ module SUFR_io
   implicit none
   save
   
+  character(*), parameter :: ansi_black     = achar(27) // '[1;30m'      ! 1; - use bold!
+  character(*), parameter :: ansi_red       = achar(27) // '[1;31m'
+  character(*), parameter :: ansi_green     = achar(27) // '[1;32m'
+  character(*), parameter :: ansi_brown     = achar(27) // '[33m'        ! no bold: yellow -> brown
+  character(*), parameter :: ansi_yellow    = achar(27) // '[1;33m'
+  character(*), parameter :: ansi_blue      = achar(27) // '[1;34m'
+  character(*), parameter :: ansi_magenta   = achar(27) // '[1;35m'
+  character(*), parameter :: ansi_cyan      = achar(27) // '[1;36m'
+  character(*), parameter :: ansi_white     = achar(27) // '[1;37m'
+  character(*), parameter :: ansi_grey      = achar(27) // '[38;5;244m'
+  
+  character(*), parameter :: ansi_blackbg   = achar(27) // '[1;40m'      ! 1; - use bold!
+  character(*), parameter :: ansi_redbg     = achar(27) // '[1;41m'
+  character(*), parameter :: ansi_greenbg   = achar(27) // '[1;48;5;2m'  ! Darker than default 42
+  character(*), parameter :: ansi_yellowbg  = achar(27) // '[1;43m'
+  character(*), parameter :: ansi_bluebg    = achar(27) // '[1;44m'
+  character(*), parameter :: ansi_magentabg = achar(27) // '[1;45m'
+  character(*), parameter :: ansi_cyanbg    = achar(27) // '[1;46m'
+  character(*), parameter :: ansi_whitebg   = achar(27) // '[1;47m'
+  character(*), parameter :: ansi_greybg    = achar(27) // '[48;5;8m'
+  
+  character(*), parameter :: ansi_reset     = achar(27) // '[0m'
+  
 contains
   
   
   !*********************************************************************************************************************************
   !> \brief  Wrap a string in ANSI-colour escape codes.
   !!
-  !! \details  Prepends the given ANSI escape sequence and appends a reset code (`ESC[0m`), so that subsequent
+  !! \details  Prefixes the given ANSI colour escape sequence and appends a reset code, so that subsequent
   !!           terminal output is unaffected.
   !!
   !! \param[in]  string  The text string to be coloured.
   !! \param[in]  colour  The name of the colour, one of 'black','red', 'green', 'brown', 'yellow', 'blue',
-  !!                       'magenta', 'cyan', 'white' or 'grey'.  Append 'bg' to highlight the background, e.g.
-  !!                       'redbg'.
+  !!                       'magenta', 'cyan', 'white' or 'grey'.  Append 'bg' to highlight the background,
+  !!                       e.g. 'redbg'.
   !! \return     clrstr  The string padded with colour codes.
   
   pure function clr(string, colour) result(clrstr)
@@ -45,48 +68,48 @@ contains
     character(:), allocatable :: clrstr, reset
     character(128) :: myclr
 
-    reset = achar(27) // '[0m'
+    reset = ansi_reset
     
     select case(colour)
     case('black')
-       myclr = achar(27) // '[1;30m'  ! 1; - use bold!
+       myclr = ansi_black
     case('red')
-       myclr = achar(27) // '[1;31m'
+       myclr = ansi_red
     case('green')
-       myclr = achar(27) // '[1;32m'
+       myclr = ansi_green
     case('brown')
-       myclr = achar(27) // '[33m'  ! no bold: yellow -> brown
+       myclr = ansi_brown
     case('yellow','orange')
-       myclr = achar(27) // '[1;33m'
+       myclr = ansi_yellow
     case('blue')
-       myclr = achar(27) // '[1;34m'
+       myclr = ansi_blue
     case('magenta','purple')
-       myclr = achar(27) // '[1;35m'
+       myclr = ansi_magenta
     case('cyan','lightblue')
-       myclr = achar(27) // '[1;36m'
+       myclr = ansi_cyan
     case('white')
-       myclr = achar(27) // '[1;37m'
+       myclr = ansi_white
     case('grey','gray')
-       myclr = achar(27) // '[38;5;244m'
+       myclr = ansi_grey
        
     case('blackbg')
-       myclr = achar(27) // '[1;40m'  ! 1; - use bold!
+       myclr = ansi_blackbg
     case('redbg')
-       myclr = achar(27) // '[1;41m'
+       myclr = ansi_redbg
     case('greenbg')
-       myclr = achar(27) // '[1;48;5;2m'  ! Darker than default 42
+       myclr = ansi_greenbg
     case('yellowbg','orangebg','brownbg')
-       myclr = achar(27) // '[1;43m'
+       myclr = ansi_yellowbg
     case('bluebg')
-       myclr = achar(27) // '[1;44m'
+       myclr = ansi_bluebg
     case('magentabg','purplebg')
-       myclr = achar(27) // '[1;45m'
+       myclr = ansi_magentabg
     case('cyanbg','lightbluebg')
-       myclr = achar(27) // '[1;46m'
+       myclr = ansi_cyanbg
     case('whitebg')
-       myclr = achar(27) // '[1;47m'
+       myclr = ansi_whitebg
     case('greybg','graybg')
-       myclr = achar(27) // '[48;5;8m'
+       myclr = ansi_greybg
        
        
     case default  ! Silently ignore non-existant colour?
