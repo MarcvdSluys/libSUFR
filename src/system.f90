@@ -954,7 +954,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor: 
+  !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor:
   !!         replace leading . or -. with 0. and -0. respectively (0.1 iso .1; -0.1 iso -.1).
   !!
   !! \param  number  Value to convert
