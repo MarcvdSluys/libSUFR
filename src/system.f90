@@ -824,7 +824,7 @@ contains
   
   
   !*********************************************************************************************************************************
-  !> \brief  Print run times: wall time and CPU time
+  !> \brief  Print run times: wall time and CPU time, in seconds with three decimals.
   !!
   !! \param calltype  Type of call: 1-reset time; 2-print and reset time; 3-print time (optional; default = 1 on first call, else 3)
   !! \param sp        Number of leading spaces (optional; default = 0)
@@ -842,7 +842,7 @@ contains
     
     integer(long) :: count, count_rate, count_max
     real(double) :: cputime, walltime
-    character :: fmt*(99)
+    character(128) :: fmt, timestr1, timestr2
     
     ! Optional dummy variables:
     loc_calltype = 1  ! First call - reset time, don't print
@@ -874,13 +874,21 @@ contains
           return
        end if
        
-       if(loc_sp.eq.0) then  ! No leading spaces:
-          write(fmt, '(A,I0,A)') '(A,2(F0.',max(0,loc_dec),',A))'
-       else
-          write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
+       ! Get time strings:
+       timestr1 = dbl2str_local_nonnegative(walltime-oldwalltime, 3)
+       timestr2 = dbl2str_local_nonnegative(cputime-oldcputime, 3)
+       
+       ! Get format:
+       if(loc_sp.eq.0) then         ! No leading spaces:
+          write(fmt, '(A)') '(A))'
+       else                         ! loc_sp leading spaces:
+          write(fmt, '(A,I0,A)') '(',max(0,loc_sp),'x,A))'
        end if
-       write(*,trim(fmt)) 'Program took ',walltime-oldwalltime,' seconds of wall time and ',cputime-oldcputime, &
+       
+       ! Print the run times:
+       write(*,trim(fmt)) 'Program took '//trim(timestr1)//' seconds of wall time and '//trim(timestr2)// &
             ' seconds of CPU time.'
+       
     end if
     
     ! Reset times:
@@ -910,7 +918,7 @@ contains
     integer :: loc_sp, loc_dec, loc_unit
     
     real(double) :: cputime
-    character :: fmt*(99)
+    character :: fmt*(128), timestr*(128)
     
     ! Optional dummy variables:
     loc_sp = 0  ! No leading spaces by default
@@ -926,16 +934,18 @@ contains
     call cpu_time(cputime)
     
     ! Print CPU time - cannot use d2s() due to circular dependencies:
+    timestr = dbl2str_local_nonnegative(cputime, loc_dec)  ! Print cputime with loc_dec decimals
+    
     if(loc_sp.eq.0) then  ! No leading spaces:
-       write(fmt, '(A,I0,A)') '(A,2(F0.',max(0,loc_dec),',A))'
+       write(fmt, '(A)') '(A))'
     else
-       write(fmt, '(A,I0,A,I0,A)') '(',max(0,loc_sp),'x,A,2(F0.',max(0,loc_dec),',A))'
+       write(fmt, '(A,I0,A)') '(',max(0,loc_sp),'x,A))'
     end if
     
     if(loc_unit.eq.6) then     ! Use stdOut
-       write(*,trim(fmt))    'Program took ',cputime,' seconds of CPU time.'
+       write(*,trim(fmt))    'Program took '//trim(timestr)//' seconds of CPU time.'
     else                       ! Use specified unit
-       write(unit,trim(fmt)) 'Program took ',cputime,' seconds of CPU time.'
+       write(unit,trim(fmt)) 'Program took '//trim(timestr)//' seconds of CPU time.'
     end if
     
   end subroutine print_cputime
@@ -943,8 +953,38 @@ contains
   
   
   
+  !*********************************************************************************************************************************
+  !> \brief  Convert a double-precision real to a nice character string. Difference with the F0 format descriptor: 
+  !!         replace leading . or -. with 0. and -0. respectively (0.1 iso .1; -0.1 iso -.1).
+  !!
+  !! \param  number  Value to convert
+  !! \param  decim   Number of decimals to use
+  !! \retval outstr  String containing the double
   
-  
+  pure function dbl2str_local_nonnegative(number, decim) result(outstr)
+    use SUFR_kinds, only: double
+    
+    implicit none
+    real(double), intent(in) :: number
+    integer, intent(in) :: decim
+    
+    character(:), allocatable :: outstr
+    character(128) :: fmtstr, tmpstr
+    
+    ! Create the format string:
+    write(fmtstr, '("(F0.",I0,")")') decim
+    write(tmpstr, fmtstr) number
+    tmpstr = adjustl(tmpstr)
+    
+    ! Add a leading zero where needed:
+    if (tmpstr(1:1) == '.') then
+       outstr = '0' // trim(tmpstr)
+    else
+       outstr = trim(tmpstr)
+    end if
+    
+  end function dbl2str_local_nonnegative
+  !*********************************************************************************************************************************
   
   
   !*********************************************************************************************************************************
