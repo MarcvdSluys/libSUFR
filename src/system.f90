@@ -777,13 +777,18 @@ contains
   !! \param calltype  Type of call: 1-reset time; 2-print and reset time; 3-print time (optional; default = 1 on first call, else 3)
   !! \param sp        Number of leading spaces (optional; default = 0)
   !! \param dec       Number of decimals in the time (optional; default = 3)
+  !! \param grey      Use a grey text (true/false; optional; defaults to true).
   
-  subroutine print_runtimes(calltype, sp,dec)
+  subroutine print_runtimes(calltype, sp,dec, grey)
     use SUFR_kinds, only: double, long
+    use SUFR_io, only: ansi_grey, ansi_reset
     
     implicit none
     integer, intent(in), optional :: calltype, sp, dec
+    logical, intent(in), optional :: grey
+    
     integer :: loc_calltype, loc_sp, loc_dec
+    logical :: lgrey
     
     integer, save :: firstcall
     real(double), save :: oldcputime,oldwalltime
@@ -802,6 +807,9 @@ contains
     
     loc_dec = 3  ! 3 decimals in time in seconds by default
     if(present(dec)) loc_dec = dec
+
+    lgrey = .true.
+    if(present(grey)) lgrey = grey
     
     
     ! Get CPU time:
@@ -834,8 +842,11 @@ contains
        end if
        
        ! Print the run times:
-       write(*,trim(fmt)) 'Program took '//trim(timestr1)//' seconds of wall time and '//trim(timestr2)// &
+       if(lgrey) write(*,'(A)', advance='no') ansi_grey  ! Use a grey font
+       write(*,trim(fmt), advance='no') 'Program took '//trim(timestr1)//' seconds of wall time and '//trim(timestr2)// &
             ' seconds of CPU time.'
+       if(lgrey) write(*,'(A)', advance='no') ansi_reset  ! Reset font colour
+       write(*,*)  ! Finish the line
        
     end if
     
@@ -857,13 +868,18 @@ contains
   !! \param sp        Number of leading spaces (optional; default = 0)
   !! \param dec       Number of decimals in the time (optional; default = 3)
   !! \param unit      Output unit (0: stdErr, 6: stdOut; optional; default = 6)
+  !! \param grey      Use a grey text (true/false; optional; defaults to true).
   
-  subroutine print_cputime(sp,dec,unit)
+  subroutine print_cputime(sp,dec,unit, grey)
     use SUFR_kinds, only: double
+    use SUFR_io, only: ansi_grey, ansi_reset
     
     implicit none
     integer, intent(in), optional :: sp, dec, unit
+    logical, intent(in), optional :: grey
+    
     integer :: loc_sp, loc_dec, loc_unit
+    logical :: lgrey
     
     real(double) :: cputime
     character :: fmt*(128), timestr*(128)
@@ -877,6 +893,10 @@ contains
     
     loc_unit = 6
     if(present(unit)) loc_unit = max(unit, 0)  ! Don't use a negative unit number
+
+    lgrey = .true.
+    if(present(grey)) lgrey = grey
+    
     
     ! Get CPU time:
     call cpu_time(cputime)
@@ -890,9 +910,12 @@ contains
        write(fmt, '(A,I0,A)') '(',max(0,loc_sp),'x,A))'
     end if
     
-    if(loc_unit.eq.6) then     ! Use stdOut
-       write(*,trim(fmt))    'Program took '//trim(timestr)//' seconds of CPU time.'
-    else                       ! Use specified unit
+    if(loc_unit.eq.0 .or. loc_unit.eq.6) then     ! Use stdErr or stdOut with grey text
+       if(lgrey) write(loc_unit,'(A)', advance='no') ansi_grey  ! Use a grey font
+       write(loc_unit,trim(fmt), advance='no')    'Program took '//trim(timestr)//' seconds of CPU time.'
+       if(lgrey) write(loc_unit,'(A)', advance='no') ansi_reset  ! Reset font colour
+       write(loc_unit,*)  ! Finish the line
+    else                       ! Use specified file unit
        write(unit,trim(fmt)) 'Program took '//trim(timestr)//' seconds of CPU time.'
     end if
     
