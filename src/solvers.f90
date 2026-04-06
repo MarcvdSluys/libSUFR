@@ -223,17 +223,17 @@ contains
     
     select case(status)
     case(0)
-       buf = 'libSUFR/solvers/root_solver(): exited correctly'
+       buf = 'libSUFR/solvers/root_solver():  exited correctly'
     case(1)
-       buf = 'libSUFR/solvers/root_solver(): specified range Xlow--Xhigh has zero width'
+       buf = 'libSUFR/solvers/root_solver():  specified range Xlow--Xhigh has zero width'
     case(2)
-       buf = 'libSUFR/solvers/root_solver(): no root is bracketed by the specified range Xlow--Xhigh'
+       buf = 'libSUFR/solvers/root_solver():  no root is bracketed by the specified range Xlow--Xhigh'
     case(9)
-       buf = 'libSUFR/solvers/root_solver(): maximum number of iterations exceeded'
+       buf = 'libSUFR/solvers/root_solver():  maximum number of iterations exceeded'
     case default
        ! This could cause a deadlock when the returned string is written to unit 0 as well:
        ! call error('root_solver(): unknown status value: '//int2str(status), 0)
-       write(buf, '(A,I0)') 'root_solver(): received an unknown status value: ', status
+       write(buf, '(A,I0)') 'root_solver():  received an unknown status value: ', status
     end select
     
     root_solver_message = trim(buf)
@@ -461,19 +461,19 @@ contains
     
     select case(status)
     case(0)
-       buf = 'libSUFR/solvers/minimum_solver(): exited correctly'
+       buf = 'libSUFR/solvers/minimum_solver():  exited correctly'
     case(1)
-       buf = 'libSUFR/solvers/minimum_solver(): specified range has zero width'
+       buf = 'libSUFR/solvers/minimum_solver():  specified range has zero width'
     case(2)
-       buf = 'libSUFR/solvers/minimum_solver(): initial guess not within specified range'
+       buf = 'libSUFR/solvers/minimum_solver():  initial guess not within specified range'
     case(5)
-       buf = 'libSUFR/solvers/minimum_solver(): minimum not within specified range'
+       buf = 'libSUFR/solvers/minimum_solver():  minimum not within specified range'
     case(9)
-       buf = 'libSUFR/solvers/minimum_solver(): maximum number of iterations exceeded'
+       buf = 'libSUFR/solvers/minimum_solver():  maximum number of iterations exceeded'
     case default
        ! This could cause a deadlock when the returned string is written to unit 0 as well:
        ! call error('minimum_solver(): unknown status value: '//int2str(status), 0)
-       write(buf, '(A,I0)') 'libSUFR/solvers/minimum_solver(): received an unknown status value: ', status
+       write(buf, '(A,I0)') 'libSUFR/solvers/minimum_solver():  received an unknown status value: ', status
     end select
     
     minimum_solver_message = trim(buf)
