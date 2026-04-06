@@ -49,7 +49,8 @@ contains
   
   function root_solver(myFunc, xlow,xhigh, accur,  status, verbosity,stop_on_error)
     use SUFR_kinds, only: double, dbl
-    use SUFR_system, only: error, quit_program_error
+    use SUFR_io, only: error, ansi_red, ansi_reset
+    use SUFR_system, only: quit_program_error
     use SUFR_numerics, only: deq
     
     implicit none
@@ -89,19 +90,27 @@ contains
     xhighl = max(xlow, xhigh)
     fxlow  = myFunc(xlowl)
     fxhigh = myFunc(xhighl)
-    root_solver = -huge(0.d0)
+    root_solver = -huge(0.d0)   ! By default, return -huge: the smallest number for this kind as an indication that no solution was found below
     
     ! Check input values:
     if( deq(xlowl,xhighl) ) then
        if(stop_on_errorl) call quit_program_error(trim(myname)//': specified range has zero width', 1)
        if(verbosityl.gt.0) call error(trim(myname)//': specified range has zero width')
+       
+       root_solver = -huge(0.d0)        ! return -huge: the smallest number for this kind
        if(present(status)) status = 1
        return
     end if
     if(fxlow*fxhigh .gt. 0.0_dbl) then     ! myFunc(xlow) and myFunc(xhigh) have the same sign
-       write(0,'(7x,4(A,ES20.13))') 'Xlow: ', xlowl,',  Xhigh: ', xhighl,';   f(Xlow): ',fxlow,',  f(Xhigh): ', fxhigh
-       if(stop_on_errorl) call quit_program_error(trim(myname)//': root is not bracketed by xlow and xhigh', 1)
-       if(verbosityl.gt.0) call error(trim(myname)//': root is not bracketed by xlow and xhigh')
+       if(verbosityl.gt.0) then
+          call error(root_solver_message(2))
+          write(0,'(7x,5(A,ES20.13))') ansi_red//'root_solver(): no root is bracketed by Xlow and Xhigh:  Xlow: ', &
+               xlowl,',  Xhigh: ', xhighl,';   Xhigh-Xlow: ',xhighl-xlowl,';   f(Xlow): ',fxlow,',  f(Xhigh): ', &
+               fxhigh, ansi_reset
+       end if
+       
+       if(stop_on_errorl) call quit_program_error(trim(myname)//': no root is bracketed by Xlow and Xhigh', 1)
+       
        root_solver = -huge(0.0_dbl)        ! return -huge: the smallest number for this kind
        if(present(status)) status = 2
        return
@@ -194,9 +203,41 @@ contains
     if(verbosityl.gt.0) write(0,'(A)') ' libSUFR - root_solver():  maximum number of iterations exceeded'
     if(present(status)) status = 9
     
-    root_solver = xhighl
+    root_solver = xhighl  ! Return the best value anyway...  -  Smart?
     
   end function root_solver
+  !*********************************************************************************************************************************
+  
+  
+  !*********************************************************************************************************************************
+  !> \brief  Return a status message for root_solver() to the status code.
+  !!
+  !! \param status  Status code from root_solver(): 0-ok, 1-range has zero width, 2-root not bracketed,
+  !!                                                9-maximum number of iterations exceeded
+  
+  pure function root_solver_message(status)
+    implicit none
+    integer, intent(in) :: status
+    character(len=:), allocatable :: root_solver_message
+    character(len=128) :: buf
+    
+    select case(status)
+    case(0)
+       buf = 'libSUFR/solvers/root_solver(): exited correctly'
+    case(1)
+       buf = 'libSUFR/solvers/root_solver(): specified range Xlow--Xhigh has zero width'
+    case(2)
+       buf = 'libSUFR/solvers/root_solver(): no root is bracketed by the specified range Xlow--Xhigh'
+    case(9)
+       buf = 'libSUFR/solvers/root_solver(): maximum number of iterations exceeded'
+    case default
+       ! This could cause a deadlock when the returned string is written to unit 0 as well:
+       ! call error('root_solver(): unknown status value: '//int2str(status), 0)
+       write(buf, '(A,I0)') 'root_solver(): received an unknown status value: ', status
+    end select
+    
+    root_solver_message = trim(buf)
+  end function root_solver_message
   !*********************************************************************************************************************************
   
   
@@ -420,24 +461,27 @@ contains
     
     select case(status)
     case(0)
-       buf = 'minimum_solver(): exited correctly'
+       buf = 'libSUFR/solvers/minimum_solver(): exited correctly'
     case(1)
-       buf = 'minimum_solver(): specified range has zero width'
+       buf = 'libSUFR/solvers/minimum_solver(): specified range has zero width'
     case(2)
-       buf = 'minimum_solver(): initial guess not within specified range'
+       buf = 'libSUFR/solvers/minimum_solver(): initial guess not within specified range'
     case(5)
-       buf = 'minimum_solver(): minimum not within specified range'
+       buf = 'libSUFR/solvers/minimum_solver(): minimum not within specified range'
     case(9)
-       buf = 'minimum_solver(): maximum number of iterations exceeded'
+       buf = 'libSUFR/solvers/minimum_solver(): maximum number of iterations exceeded'
     case default
        ! This could cause a deadlock when the returned string is written to unit 0 as well:
        ! call error('minimum_solver(): unknown status value: '//int2str(status), 0)
-       write(buf, '(A,I0)') 'minimum_solver(): received an unknown status value: ', status
+       write(buf, '(A,I0)') 'libSUFR/solvers/minimum_solver(): received an unknown status value: ', status
     end select
     
     minimum_solver_message = trim(buf)
   end function minimum_solver_message
   !*********************************************************************************************************************************
+  
+  
+  
   
   !***********************************************************************************************************************************
   !> \brief  Do a golden-section step for minimum_solver(): find the point that is a fraction 0.382 into the larger of two intervals
