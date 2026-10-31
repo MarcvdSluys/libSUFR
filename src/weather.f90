@@ -151,15 +151,15 @@ contains
   !> \brief  Compute the dew point from the temperature and relative humidity
   !!
   !! \param  tempc      Air temperature (degrees Celsius)
-  !! \param  RH         Relative humidity (fraction)
+  !! \param  rh         Relative humidity (fraction)
   !! \retval dew_point  Dew point (degrees Celsius)
   !!
   !! \see https://en.wikipedia.org/wiki/Dew_point
   
-  elemental function dew_point(tempc, RH)
+  elemental function dew_point(tempc, rh)
     use SUFR_kinds, only: double
     implicit none
-    real(double), intent(in) :: tempc, RH
+    real(double), intent(in) :: tempc, rh
     real(double) :: dew_point, temp0, tempfac, gam
     
     temp0  = 273.7d0

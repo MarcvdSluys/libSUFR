@@ -26,7 +26,7 @@ module SUFR_fitting
   
   private
   
-  public linear_fit_yerr, nonlin_fit_yerr, nonlin_fit_example_myfunc, basefunc_polynomial
+  public linear_fit_yerr, nonlin_fit_yerr, nonlin_fit_example_myFunc, basefunc_polynomial
   
 contains
   
@@ -36,9 +36,9 @@ contains
   !! Do a chi^2-minimisation fit of nDat data points xDat and yDat, the latter with errors yErr, to function func.  The fit uses
   !! the nCoef coefficients stored in fCoef() that should be varied if the corresponding entry in freeCoef=1, fixed if =0.
   !!
-  !! The fitting function must be provided as the subroutine myFunc which returns a value y = myFunc(x, basefunc, nCoef), where
-  !!   y is a linear combination of x, i.e.  y = SUM(i=1,nCoef) fCoef(i) * basefunc(i)(x).
-  !!   For example, for a polynomial, basefunc(i) = x**(i-1).
+  !! The fitting function must be provided as the subroutine myFunc which returns a value y = myFunc(x, baseFunc, nCoef), where
+  !!   y is a linear combination of x, i.e.  y = SUM(i=1,nCoef) fCoef(i) * baseFunc(i)(x).
+  !!   For example, for a polynomial, baseFunc(i) = x**(i-1).
   !!
   !! The routine returns the fit coefficients in fCoef(), the variance-covariance matrix in covMat sith size nCov, and the chi^2
   !!   value in chiSq.
@@ -77,15 +77,15 @@ contains
     real(double), intent(out) :: chiSq, covMat(nCov,nCov)
     
     integer :: ii,ij,ik,il,im, nFit
-    real(double) :: err2i,bf_e2i, tot,ym,beta(mMax), basefunc(mMax)
+    real(double) :: err2i,bf_e2i, tot,ym,beta(mMax), baseFunc(mMax)
     
     interface
-       subroutine myFunc(xDat, nCoef, basefunc)
+       subroutine myFunc(xDat, nCoef, baseFunc)
          use SUFR_kinds, only: double
          implicit none
          real(double), intent(in)  :: xDat
          integer,      intent(in)  :: nCoef
-         real(double), intent(out) :: basefunc(:)
+         real(double), intent(out) :: baseFunc(:)
        end subroutine myFunc
     end interface
     
@@ -102,11 +102,11 @@ contains
     beta(1:nFit) = 0.d0
     
     do ii=1,nDat
-       call myFunc(xDat(ii),nCoef, basefunc)
+       call myFunc(xDat(ii),nCoef, baseFunc)
        ym = yDat(ii)
        if(nFit.lt.nCoef) then
           do ij=1,nCoef
-             if(freeCoef(ij).eq.0) ym = ym - fCoef(ij)*basefunc(ij)
+             if(freeCoef(ij).eq.0) ym = ym - fCoef(ij)*baseFunc(ij)
           end do
        end if
        err2i = 1.d0/yErr(ii)**2  ! 1/sigma_i^2
@@ -115,13 +115,13 @@ contains
        do il=1,nCoef
           if(freeCoef(il).ne.0) then
              ij = ij + 1
-             bf_e2i = basefunc(il)*err2i
+             bf_e2i = baseFunc(il)*err2i
              
              ik = 0
              do im=1,il
                 if(freeCoef(im).ne.0) then
                    ik = ik + 1
-                   covMat(ij,ik) = covMat(ij,ik) + bf_e2i*basefunc(im)
+                   covMat(ij,ik) = covMat(ij,ik) + bf_e2i*baseFunc(im)
                 end if
              end do
              beta(ij) = beta(ij) + ym*bf_e2i
@@ -148,9 +148,9 @@ contains
     
     chiSq = 0.d0
     do ii=1,nDat
-       call myFunc(xDat(ii),nCoef, basefunc)
+       call myFunc(xDat(ii),nCoef, baseFunc)
        
-       tot = sum(fCoef(1:nCoef)*basefunc(1:nCoef))
+       tot = sum(fCoef(1:nCoef)*baseFunc(1:nCoef))
        chiSq = chiSq  +  ( (yDat(ii)-tot) / yErr(ii) )**2
     end do
     
@@ -600,23 +600,23 @@ contains
   !*********************************************************************************************************************************
   !> \brief  User-provided base function to fit a polynomial to
   !!
-  !! \param xVal      X value to evaluate yVal = basefunc_polynimial(xVal) for
+  !! \param xval      X value to evaluate yVal = baseFunc_polynimial(xval) for
   !! \param nCoef     Number of coefficients for the base function
   !!
   !! \param baseFunc  Base function i for coefficent i.  For a polynomial, BF(i) = x**(i-1) (output)
   
-  pure subroutine basefunc_polynomial(xVal,nCoef, baseFunc)
+  pure subroutine basefunc_polynomial(xval,nCoef, baseFunc)
     use SUFR_kinds, only: double
     implicit none
     integer, intent(in) :: nCoef
-    real(double), intent(in) :: xVal
+    real(double), intent(in) :: xval
     real(double), intent(out) :: baseFunc(nCoef)
     
     integer :: coefi
     
     baseFunc(1) = 1.d0
     do coefi = 2,nCoef
-       baseFunc(coefi) = baseFunc(coefi-1) * xVal
+       baseFunc(coefi) = baseFunc(coefi-1) * xval
     end do
     
   end subroutine basefunc_polynomial

@@ -244,21 +244,21 @@ contains
   !*********************************************************************************************************************************
   !> \brief  Sort strings alphabetically
   !!
-  !! \param  narr        Number of strings in array str
+  !! \param  nArr        Number of strings in array str
   !! \param  strlen      Length of the strings in array str
   !! \param  strarr      Array of n strings with length len
   !! \param  index_list  Sorting index (output)
   
-  subroutine sort_string_array(narr, strlen, strarr, index_list)
+  subroutine sort_string_array(nArr, strlen, strarr, index_list)
     implicit none
-    integer, intent(in) :: narr, strlen
-    character, intent(in) :: strarr(narr)*(strlen)
-    integer, intent(out) :: index_list(narr)
+    integer, intent(in) :: nArr, strlen
+    character, intent(in) :: strarr(nArr)*(strlen)
+    integer, intent(out) :: index_list(nArr)
     
     integer :: i,l,ic
-    real :: score(narr)
+    real :: score(nArr)
     
-    do i=1,narr
+    do i=1,nArr
        score(i) = 0.
        do l=1,strlen
           ic = ichar(strarr(i)(l:l))

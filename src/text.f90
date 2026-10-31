@@ -145,7 +145,7 @@ contains
     character, intent(in) :: str_srch*(*),str_repl*(*)
     integer, parameter :: lRan=100
     character(len=lRan), parameter :: ranStr = 'G^$("q]WvtDB5VCFCJ/\gAo9|8^wDB|G,?q|Vi)|9wUhN.mKZI6>VMkGa~NkBMk(~F{b?<:kW1TDJ-Gmq8q-eW<WD3=(1M#*MhSy'
-    character :: tmpStr*(len(str_srch))
+    character :: tmpstr*(len(str_srch))
     integer :: iStart,iStop,di,iLoop, lTmp,lstr,is,lsrch, il, maxLoop
     
     lstr  = len(string)
@@ -156,18 +156,18 @@ contains
        ! Obtain a 'random' temporary string of the same length as the search string.  Since ran_str() is
        !   impure, so will this subroutine be, and hence its dependencies (e.g. dbl2str())
        !seed = -1
-       !call ran_str(seed, tmpStr)
+       !call ran_str(seed, tmpstr)
        
        ! Construct a 'random' string from slowly changing selections from the hardcoded ranStr
-       lTmp = len(tmpStr)
+       lTmp = len(tmpstr)
        if(lTmp.le.lRan) then
-          tmpStr = ranStr(1:lTmp)
+          tmpstr = ranStr(1:lTmp)
        else
           iStart = 1
           iStop  = lRan
           do iLoop=1,huge(iLoop)-1
              di = iStop-iStart
-             tmpStr(iStart:iStop) = ranStr(1:1+di)
+             tmpstr(iStart:iStop) = ranStr(1:1+di)
              if(iStop.ge.lTmp) exit
              
              iStart = iStop+1
@@ -185,11 +185,11 @@ contains
           if(is.le.0) exit
           if(is.gt.maxLoop) exit
           !print*,il,maxLoop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output
-          string = string(1:is-1)//tmpStr//trim(string(is+lsrch:))
+          string = string(1:is-1)//tmpstr//trim(string(is+lsrch:))
        end do
        
     else  ! Search string is NOT part of replace string
-       tmpStr = str_srch
+       tmpstr = str_srch
     end if  ! Search string is part of replace string
     
     
@@ -197,7 +197,7 @@ contains
     is = huge(is)
     maxLoop = lstr+1-lsrch  ! Prevent infinite loops
     do il = 1,maxLoop
-       is = index(string, tmpStr, back=.false.)
+       is = index(string, tmpstr, back=.false.)
        if(is.le.0) exit
        if(is.gt.maxLoop) exit
        !print*,il,maxLoop,lstr,is,'###'//string(max(is-5,1):min(is+5,lstr))//'###'  ! Debug output

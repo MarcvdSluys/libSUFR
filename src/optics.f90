@@ -59,19 +59,19 @@ contains
     real(double), intent(in) :: angI, Nref1,Nref2
     real(double), intent(out) :: Runp
     real(double), intent(out), optional :: Rprp,Rpar, Tunp,Tprp,Tpar, angT
-    real(double) :: var, langT, cosAngI,cosAngT, lRprp,lRpar
+    real(double) :: var, lAngT, cosAngI,cosAngT, lRprp,lRpar
     
     var = Nref1/Nref2 * sin(angI)  ! Argument for Snell's law
     if(var.gt.1.d0 .or. abs(angI).gt.pio2) then  ! Total internal reflection or an impossible input value
        lRprp = 1.d0
        lRpar = 1.d0
-       lAngt = 0.d0
+       lAngT = 0.d0
     else
-       langT = asin(var)  ! Angle of transmittance - Snell's law - local variable
+       lAngT = asin(var)  ! Angle of transmittance - Snell's law - local variable
        
        ! Reused variables:
        cosAngI = cos(angI)
-       cosAngT = cos(langT)
+       cosAngT = cos(lAngT)
        
        lRprp = ( (Nref1 * cosAngI - Nref2 * cosAngT) / (Nref1 * cosAngI + Nref2 * cosAngT) )**2
        lRpar = ( (Nref1 * cosAngT - Nref2 * cosAngI) / (Nref1 * cosAngT + Nref2 * cosAngI) )**2
@@ -88,7 +88,7 @@ contains
     if(present(Tprp))  Tprp = 1.d0 - lRprp
     if(present(Tpar))  Tpar = 1.d0 - lRpar
     
-    if(present(angT))  angT = langT
+    if(present(angT))  angT = lAngT
     
   end subroutine reflectance_transmittance
   !***********************************************************************************************************************************
@@ -219,7 +219,7 @@ contains
     integer, parameter :: nc = 6  ! Number of colours in the spectrum (violet, blue, green, yellow, orange, red)
     
     integer :: ic
-    real(double) :: wavelength2RGB(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1)
+    real(double) :: wavelength2rgb(3), xIpol,xIpoli, dxIpol(nc),xIpol0(nc), CBbnd(nc+1),CBctr(0:nc),CBdst(nc+1)
     real(double) :: RGB(3), ldimfac
     logical :: ldark, lstars
     
@@ -287,15 +287,15 @@ contains
           RGB =                      [1.d0,   1-xIpoli,   1-xIpoli]        ! Red to white       xIpol: 4.0 - 4.5
        end if
     else
-       call warn('SUFR_optics/wavelength2RGB(): xIpol out of bounds')
+       call warn('SUFR_optics/wavelength2rgb(): xIpol out of bounds')
     end if
     
     
     ! Apply dimming and return:
     if(ldark) then
-       wavelength2RGB = RGB * ldimfac                  ! Darken to black for dark/black background
+       wavelength2rgb = RGB * ldimfac                  ! Darken to black for dark/black background
     else
-       wavelength2RGB = (1.d0 - (1.d0-RGB) * ldimfac)  ! Brighten to white for bright/white background
+       wavelength2rgb = (1.d0 - (1.d0-RGB) * ldimfac)  ! Brighten to white for bright/white background
     end if
     
   end function wavelength2rgb

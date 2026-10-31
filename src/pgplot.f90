@@ -37,7 +37,7 @@ contains
   !! \param scrrat  Screen ratio (height/width)
   
   subroutine PGPlot_settings(scrsz,scrrat)
-    use SUFR_constants, only: homedir
+    use SUFR_constants, only: homeDir
     use SUFR_system, only: find_free_io_unit
     
     implicit none
@@ -48,7 +48,7 @@ contains
     
     ! Define namelist, file name:
     namelist /screen_settings/ screen_size_h,screen_size_v,screen_dpi
-    filename = trim(homedir)//'/.PGPlot'
+    filename = trim(homeDir)//'/.PGPlot'
     inquire(file=trim(filename), exist=ex)
     
     call find_free_io_unit(ip)

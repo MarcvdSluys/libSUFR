@@ -188,7 +188,7 @@ contains
   
   function execute_command_line_and_return_str(command, wait, status)
     use SUFR_kinds, only: double
-    use SUFR_constants, only: homedir, newline
+    use SUFR_constants, only: homeDir, newline
     use SUFR_random_numbers, only: get_ran_seed, ran_unif
     
     implicit none
@@ -211,7 +211,7 @@ contains
     ! Get random name for temporary file:
     seed = get_ran_seed(0)
     randble = ran_unif(seed)
-    write(ranfile, '(A,I8.8,A)') trim(homedir)//'/.libsufr-system-file-', nint(randble*1.d8), '.temp'
+    write(ranfile, '(A,I8.8,A)') trim(homeDir)//'/.libsufr-system-file-', nint(randble*1.d8), '.temp'
     
     ! Execute command and redirect output to file:
     call execute_command_line_verbose(command//' > '//trim(ranfile), lwait, lstatus)
@@ -992,7 +992,7 @@ contains
     
     ! Read and discard lines in file:
     do ln=1,nLines
-       read(unit,'(A)') dumStr
+       read(unit,'(A)') dumstr
     end do
     
   end subroutine file_skip_header

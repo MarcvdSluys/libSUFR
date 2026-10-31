@@ -154,18 +154,18 @@ module SUFR_constants
   real(double), parameter, public :: solConst = 1361.5d0                    !< Solar constant in W/m^2
   
   ! True for J2000.0:
-  real(double), parameter, public :: gregmonth = 30.4369d0      * solday    !< Gregorian month in seconds:    average calendar month length of 4800 months over 400 years
-  real(double), parameter, public :: sidmonth  = 27.321661547d0 * solday    !< Sidereal month in seconds:     fixed star to fixed star
-  real(double), parameter, public :: tropmonth = 27.321582241d0 * solday    !< Tropical month in seconds:     equinox to equinox, influenced by precession
-  real(double), parameter, public :: anomonth  = 27.554549878d0 * solday    !< Anomalistic month in seconds:  apside to apside
-  real(double), parameter, public :: dracmonth = 27.212220817d0 * solday    !< Draconic month in seconds:     node to node
-  real(double), parameter, public :: synmonth  = 29.530588853d0 * solday    !< Synodic month in seconds:      phase to phase
+  real(double), parameter, public :: gregmonth = 30.4369d0      * solDay    !< Gregorian month in seconds:    average calendar month length of 4800 months over 400 years
+  real(double), parameter, public :: sidmonth  = 27.321661547d0 * solDay    !< Sidereal month in seconds:     fixed star to fixed star
+  real(double), parameter, public :: tropmonth = 27.321582241d0 * solDay    !< Tropical month in seconds:     equinox to equinox, influenced by precession
+  real(double), parameter, public :: anomonth  = 27.554549878d0 * solDay    !< Anomalistic month in seconds:  apside to apside
+  real(double), parameter, public :: dracmonth = 27.212220817d0 * solDay    !< Draconic month in seconds:     node to node
+  real(double), parameter, public :: synmonth  = 29.530588853d0 * solDay    !< Synodic month in seconds:      phase to phase
   
-  real(double), parameter, public :: julyear  = 365.25d0        * solday    !< Julian year in seconds:        assumes 100 leap years in 400 years
-  real(double), parameter, public :: gregyear = 365.2425d0      * solday    !< Gregorian year in seconds:     assumes 97 leap years in 400 years
-  real(double), parameter, public :: sidyear  = 365.256363051d0 * solday    !< Siderial year in seconds:      fixed star to fixed star
-  real(double), parameter, public :: tropyear = 365.24218967d0  * solday    !< Tropical year in seconds:      equinox to equinox, influenced by precession
-  real(double), parameter, public :: anomyear = 365.259635864d0 * solday    !< Anomalistic year in seconds:   apside to apside
+  real(double), parameter, public :: julyear  = 365.25d0        * solDay    !< Julian year in seconds:        assumes 100 leap years in 400 years
+  real(double), parameter, public :: gregyear = 365.2425d0      * solDay    !< Gregorian year in seconds:     assumes 97 leap years in 400 years
+  real(double), parameter, public :: sidyear  = 365.256363051d0 * solDay    !< Siderial year in seconds:      fixed star to fixed star
+  real(double), parameter, public :: tropyear = 365.24218967d0  * solDay    !< Tropical year in seconds:      equinox to equinox, influenced by precession
+  real(double), parameter, public :: anomyear = 365.259635864d0 * solDay    !< Anomalistic year in seconds:   apside to apside
   
   real(double), parameter, public :: jd1875 = 2405890.d0                    !< JD at J1875.0 (when constellation boundaries were defined)
   real(double), parameter, public :: jd1900 = 2415021.d0                    !< JD at J1900.0
@@ -310,11 +310,11 @@ module SUFR_constants
   character, public :: currentDateTimeStr*(29)  !<  Current date, time and time zone as a character string (system clock at init)
   
   character, public :: currentDateStrEn*(10)    !<  Current date as a US character string MM/DD/YYYY (system clock)
-  character, public :: currentDowStrEn*(9)      !<  Current English day of week as a character string (system clock)
+  character, public :: currentDoWStrEn*(9)      !<  Current English day of week as a character string (system clock)
   character, public :: currentDateStrEnl*(39)   !<  Current English date as long character string DayOfWeek Month DD YY (sys.clock)
   
   character, public :: currentDateStrNl*(10)    !<  Current date as a Dutch/EU character string DD/MM/YYYY (system clock)
-  character, public :: currentDowStrNl*(9)      !<  Current Dutch day of week as a character string (system clock)
+  character, public :: currentDoWStrNl*(9)      !<  Current Dutch day of week as a character string (system clock)
   character, public :: currentDateStrNll*(39)   !<  Current Dutch date as a long character string DayOfWeek Month DD YY (sys.clock)
   
   
@@ -339,8 +339,8 @@ module SUFR_constants
   
   
   integer, public :: stdErr                !<  Default standard error unit for most (not all!) Fortran compilers
-  integer, public :: StdIn                 !<  Default standard input unit for most (not all!) Fortran compilers
-  integer, public :: StdOut                !<  Default standard output unit for most (not all!) Fortran compilers
+  integer, public :: stdIn                 !<  Default standard input unit for most (not all!) Fortran compilers
+  integer, public :: stdOut                !<  Default standard output unit for most (not all!) Fortran compilers
   
   character, public :: homeDir*(199)       !<  Current user's home directory  (= $HOME, will contain e.g. '/home/user')
   character, public :: workDir*(199)       !<  Current working directory  (= $PWD, may contain e.g. '/home/user/myCode/...')
@@ -405,10 +405,10 @@ contains
     implicit none
     integer :: dt(8)
     real(double) :: tz
-    character :: tmpStr*(99),tzStr*(9),signStr
+    character :: tmpstr*(99),tzStr*(9),signStr
     
     ! Date/time variables:
-    call date_and_time(tmpStr,tmpStr,tmpStr,dt)
+    call date_and_time(tmpstr,tmpstr,tmpstr,dt)
     currentYear = dt(1)
     currentMonth = dt(2)
     currentDay = dt(3)
@@ -432,8 +432,8 @@ contains
     ! JD, dow, dow strings:
     currentJD = ymdhms2jd(currentYear,currentMonth,currentDay,currentHour,currentMinute,dble(currentSecond))
     currentDoW = dow_ut(currentJD)
-    currentDoWstren = endays(currentDoW)  ! English
-    currentDoWstrnl = nldays(currentDoW)  ! Dutch
+    currentDoWStrEn = endays(currentDoW)  ! English
+    currentDoWStrNl = nldays(currentDoW)  ! Dutch
     
     write(currentYearStr,'(I4)') currentYear
     
@@ -458,7 +458,7 @@ contains
   subroutine set_SUFR_constants_environment()
     implicit none
     integer :: i, narg, status
-    character :: tmpStr*(999)
+    character :: tmpstr*(999)
     
     ! Standard error, input, and output
     stdErr = 0  ! Unit for standard error
@@ -479,14 +479,14 @@ contains
     
     
     ! Store the path and name of the program that is being executed in program_path and program_name:
-    call get_command_argument(0,tmpStr)
-    i = index(tmpStr,'/',back=.true.)
+    call get_command_argument(0,tmpstr)
+    i = index(tmpstr,'/',back=.true.)
     if(i.eq.0) then
        program_path = ' '
-       program_name = trim(tmpStr)
+       program_name = trim(tmpstr)
     else
-       program_path = trim(tmpStr(1:i))      ! The string before the last slash should be the program path
-       program_name = trim(tmpStr(i+1:))     ! The bit after the last slash should be the program name
+       program_path = trim(tmpstr(1:i))      ! The string before the last slash should be the program path
+       program_name = trim(tmpstr(i+1:))     ! The bit after the last slash should be the program name
     end if
     
     ! Store the command-line arguments of the program that is being executed in program_args:
@@ -494,8 +494,8 @@ contains
     program_args = ' '
     if(narg.ge.1) then
        do i=1,narg
-          call get_command_argument(i,tmpStr)
-          write(program_args,'(A)', iostat=status) trim(program_args)//'  '//trim(tmpStr)
+          call get_command_argument(i,tmpstr)
+          write(program_args,'(A)', iostat=status) trim(program_args)//'  '//trim(tmpstr)
           if(status.ne.0) then
              write(program_args,'(A)') program_args(1:len(program_args)-13)//'  (truncated)'
              exit  ! Too many/long arguments

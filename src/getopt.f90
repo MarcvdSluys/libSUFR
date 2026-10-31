@@ -500,7 +500,7 @@ contains
     
     implicit none
     character, intent(inout) :: CLoptStr*(*)
-    integer :: iArg, in1,din, status, iChar,nChar, lverbose
+    integer :: iArg, in1,din, status, iChr,nChar, lverbose
     character :: subStr*(99),newSubStr*(99)
     
     iArg = 0
@@ -535,8 +535,8 @@ contains
                       
                       nChar = len_trim(subStr)
                       newSubStr = ''
-                      do iChar=2,nChar
-                         newSubStr = trim(newSubStr)//' -'//subStr(iChar:iChar)
+                      do iChr=2,nChar
+                         newSubStr = trim(newSubStr)//' -'//subStr(iChr:iChr)
                       end do
                       if(lverbose.gt.0) print*,'New substring:  ###'//trim(newSubStr)//'###'
                       
@@ -576,7 +576,7 @@ contains
     character, intent(in) :: optStr*(*)
     integer, intent(in), optional :: lineBef, lineAft
     character :: curChar
-    integer :: iLine,iChar
+    integer :: iLine,iChr
     
     ! Print empty lines:
     if(present(lineBef)) then
@@ -598,13 +598,13 @@ contains
     end if
     
     write(*,'(A)', advance='no') 'Available options: '
-    do iChar=1,len_trim(optStr)
-       curChar = optStr(iChar:iChar)
+    do iChr=1,len_trim(optStr)
+       curChar = optStr(iChr:iChr)
        
        if(curChar.eq.':') then
           write(*,'(A)', advance='no') ' <arg>'
        else
-          if(iChar.gt.1) write(*,'(A)', advance='no') ','
+          if(iChr.gt.1) write(*,'(A)', advance='no') ','
           write(*,'(A)', advance='no') ' -'//curChar
        end if
     end do

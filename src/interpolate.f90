@@ -84,15 +84,15 @@ contains
   !! \param xArr  X-array, sorted to increasing value
   !! \param yArr  Y-array
   !!
-  !! \param xVal  X value to find y value for
+  !! \param xval  X value to find y value for
   !! 
   !! \retval linear_interpolate_array  Y value found
   
-  function linear_interpolate_array(xArr, yArr, xVal)
+  function linear_interpolate_array(xArr, yArr, xval)
     use SUFR_kinds, only: double
     use SUFR_system, only: warn
     implicit none
-    real(double), intent(in) :: xArr(:), yArr(:), xVal
+    real(double), intent(in) :: xArr(:), yArr(:), xval
     integer :: ind
     real(double) :: linear_interpolate_array
     
@@ -102,8 +102,8 @@ contains
        return
     end if
     
-    ind = locate_value_in_array(xVal, xArr)                                ! Find index ind such that xArr(ind) <= x <= xArr(ind+1)
-    linear_interpolate_array = linear_interpolation(xArr(ind),xArr(ind+1), yArr(ind),yArr(ind+1), xVal)  ! Interpolate
+    ind = locate_value_in_array(xval, xArr)                                ! Find index ind such that xArr(ind) <= x <= xArr(ind+1)
+    linear_interpolate_array = linear_interpolation(xArr(ind),xArr(ind+1), yArr(ind),yArr(ind+1), xval)  ! Interpolate
 
   end function linear_interpolate_array
   !*********************************************************************************************************************************
@@ -171,19 +171,19 @@ contains
   !> \brief  Locate the index in a monotonic array, such that a given value lies between array(index) and array(index+1).
   !!         0 or nArr+1 is returned if the value lies outside the array.
   !!
-  !! \param xVal    Value to locate
+  !! \param xval    Value to locate
   !! \param xArray  Array to locate value in.  xArray must be monotonic, either ascending or descending
   !! 
   !! \retval locate_value_in_array  Index such that the value lies between array(index) and array(index+1).
   !!
   !! \see  Numerical Recipes in Fortran, Sect.3.4
   
-  pure function locate_value_in_array(xVal, xArray)
+  pure function locate_value_in_array(xval, xArray)
     use SUFR_kinds, only: double
     use SUFR_numerics, only: deq
     
     implicit none
-    real(double), intent(in) :: xVal, xArray(:)
+    real(double), intent(in) :: xval, xArray(:)
     integer :: locate_value_in_array,  nArr,iLow,iMid,iUp
     logical :: ascending
     
@@ -196,17 +196,17 @@ contains
        if(iUp-iLow.le.1) exit  ! We've converged
        
        iMid = (iUp+iLow)/2  ! Bisect
-       if(ascending .eqv. (xVal.ge.xArray(iMid))) then  ! xVal >= array_m and ascending,  or xVal < array_m and descending
+       if(ascending .eqv. (xval.ge.xArray(iMid))) then  ! xval >= array_m and ascending,  or xval < array_m and descending
           iLow = iMid                                   !   -> replace lower index
-       else                                             ! xVal < array_m and ascending,  or xVal >= array_m and descending
+       else                                             ! xval < array_m and ascending,  or xval >= array_m and descending
           iUp = iMid                                    !   -> replace upper index
        end if
     end do
     
     ! Assign the index to the return value:
-    if(deq(xVal, xArray(1))) then  ! Double equality
+    if(deq(xval, xArray(1))) then  ! Double equality
        locate_value_in_array = 1
-    else if(deq(xVal, xArray(nArr))) then  ! Double equality
+    else if(deq(xval, xArray(nArr))) then  ! Double equality
        locate_value_in_array = nArr-1
     else
        locate_value_in_array = iLow  ! = iUp
